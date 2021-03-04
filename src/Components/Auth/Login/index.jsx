@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
+
+import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
 
@@ -9,6 +11,7 @@ export default class LoginForm extends Component {
     phoneNumber: '',
     password: '',
     error: '',
+    isLoading: false
   };
 
   // 保存使用者輸入的手機號碼到state
@@ -60,12 +63,20 @@ export default class LoginForm extends Component {
     return (
       <div className="form-container">
           <Form>
+          <Form.Control as="select" defaultValue="區號" className="form-input">
+            <option  disable>區號</option>
+            <option>台灣  ＋886</option>
+            <option>中國  ＋86</option>
+            <option>香港  ＋852</option>
+          </Form.Control>
+
+
             <Form.Group controlId="formBasicPhoneNumber">
               <Form.Control
                 className="form-input"
                 size="lg"
                 type="tel"
-                placeholder="手機號碼"
+                placeholder="電話號碼"
                 onChange={this.setPhoneNumber}
               />
               {/* <Form.Text className="text-muted">
@@ -81,6 +92,7 @@ export default class LoginForm extends Component {
                 placeholder="密碼"
                 onChange={this.setPassword}
               />
+
             </Form.Group>
 
             <Button
@@ -93,10 +105,10 @@ export default class LoginForm extends Component {
               登入
             </Button>
             <div className="forget_pw-box">
+              <Link to="/forget-pw" className="forget_pw-link">
               <span className="forget_pw"></span>
-              <button href="#" className="forget_pw-link">
                 忘記密碼
-              </button>
+              </Link>
             </div>
           </Form>
       </div>

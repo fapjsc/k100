@@ -1,9 +1,20 @@
 .user-auth {
+    background-image: url(../../Assets//easy_bg.png);
     background-color: #242e47;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left;
+    background-position: center;
+    background-size: cover;
+    object-fit: cover;
+
     height: 100vh;
     width: 100vw;
     position: absolute;
     top: 0;
+    h4 {
+        font-size: 2.5rem;
+    }
 }
 
 .form-nav {
@@ -25,7 +36,7 @@
     }
 }
 
-.active {
+.isActive {
     border-bottom: 3px solid #3f80fa;
     width: 50%;
 }

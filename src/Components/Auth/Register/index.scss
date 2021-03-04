@@ -1,0 +1,13 @@
+.user-agreement {
+    display: flex;
+    align-items: center;
+
+    label {
+        cursor: pointer;
+        margin-left: 0.7rem;
+    }
+
+    span {
+        color: #3f80fa;
+    }
+}
