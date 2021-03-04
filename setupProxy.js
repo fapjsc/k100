@@ -1,10 +1,12 @@
-const proxy = require('http-proxy-middleware');
+/*const proxy = require('http-proxy-middleware');
 
 module.exports = function (app) {
     app.use(
-        proxy({
-            target: 'http://10.168.192.1:3000',
+        "/j",
+        createProxyMiddleWare({
+            target: 'http://10.168.192.1',
             changeOrigin: true,
         })
     );
 };
+*/

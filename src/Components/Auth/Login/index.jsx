@@ -33,30 +33,38 @@ export default class LoginForm extends Component {
     event.preventDefault(); //防止表單提交
     const { phoneNumber, password } = this.state;
     
-    let url = 'http://10.168.192.1/j/login.aspx'
+    let loginApi = '/j/login.aspx'
 
-    // 解決跨域
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    headers.append('Access-Control-Allow-Origin', 'http://10.168.192.10:3000/');
-    headers.append('Access-Control-Allow-Credentials', 'true');
-    headers.append('GET', 'POST', 'OPTIONS');
-  
-
-
-    const res = await fetch(url, {
-      headers: headers,
-      method: 'POST',
-      body: JSON.stringify({
-        Login_countrycode: 86,
-        Login_tel: phoneNumber,
-        login_pwd: password
+    try {
+      const res = await fetch(loginApi, {
+        method: "POST",
+        body: JSON.stringify({
+          Login_countrycode: 86,
+          Login_tel: phoneNumber,
+          Login_pwd: password
+        })
       })
-    })
+
+      const resData = await res.json()
+      console.log(resData)
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+    
 
 
-    console.log(res)
+      
+   
+
+
+
+
+  
+    
+
+    
   };
 
   render() {
@@ -64,7 +72,7 @@ export default class LoginForm extends Component {
       <div className="form-container">
           <Form>
           <Form.Control as="select" defaultValue="區號" className="form-input">
-            <option  disable>區號</option>
+            <option>區號</option>
             <option>台灣  ＋886</option>
             <option>中國  ＋86</option>
             <option>香港  ＋852</option>
