@@ -1,12 +1,12 @@
-import './App.css';
-import LoginForm from './Components/Auth/Login';
+import './App.scss';
+import Auth from './Components/Auth';
 
 function App() {
-  return (
-    <div className="App">
-      <LoginForm />
-    </div>
-  );
+    return (
+        <div className="App">
+            <Auth />
+        </div>
+    );
 }
 
 export default App;

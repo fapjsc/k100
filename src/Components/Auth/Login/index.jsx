@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import BaseCard from '../../../Components/Ui/BaseCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
@@ -27,17 +26,39 @@ export default class LoginForm extends Component {
   };
 
   // 表單提交
-  handleLoginSubmit = event => {
+  handleLoginSubmit =  async (event) => {
     event.preventDefault(); //防止表單提交
     const { phoneNumber, password } = this.state;
-    console.log(`手機：${phoneNumber} 密碼：${password}`);
+    
+    let url = 'http://10.168.192.1/j/login.aspx'
+
+    // 解決跨域
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Origin', 'http://10.168.192.10:3000/');
+    headers.append('Access-Control-Allow-Credentials', 'true');
+    headers.append('GET', 'POST', 'OPTIONS');
+  
+
+
+    const res = await fetch(url, {
+      headers: headers,
+      method: 'POST',
+      body: JSON.stringify({
+        Login_countrycode: 86,
+        Login_tel: phoneNumber,
+        login_pwd: password
+      })
+    })
+
+
+    console.log(res)
   };
 
   render() {
     return (
-      <div className="form-bg">
-        <BaseCard>
-          <h4 className="text-center p-4">登入帳號</h4>
+      <div className="form-container">
           <Form>
             <Form.Group controlId="formBasicPhoneNumber">
               <Form.Control
@@ -78,7 +99,6 @@ export default class LoginForm extends Component {
               </button>
             </div>
           </Form>
-        </BaseCard>
       </div>
     );
   }
