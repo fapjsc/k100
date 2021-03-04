@@ -10,6 +10,7 @@ import './index.scss';
 export default class Auth extends Component {
   state = {
     formState: '登入',
+    isAuthenticated: false,
   };
 
   toggleForm = mode => {
@@ -50,16 +51,17 @@ export default class Auth extends Component {
               className={
                 formState === '登入' ? 'isActive form-link' : 'form-link'
               }
-              to="/login"
+              to="/auth/login"
               onClick={() => this.toggleForm('登入')}
             >
               登入
             </Link>
+
             <Link
               className={
                 formState === '註冊' ? 'isActive form-link' : 'form-link'
               }
-              to="/register"
+              to="/auth/register"
               onClick={() => this.toggleForm('註冊')}
             >
               註冊
@@ -68,9 +70,9 @@ export default class Auth extends Component {
 
           {/* 註冊路由 */}
           <Switch>
-            <Route path="/login" component={LoginForm} />
-            <Route path="/register" component={RegisterForm} />
-            <Redirect to="/login" />
+            <Route path="/auth/login" component={LoginForm} />
+            <Route path="/auth/register" component={RegisterForm} />
+            <Redirect to="/auth/login" />
           </Switch>
         </BaseCard>
       </div>
