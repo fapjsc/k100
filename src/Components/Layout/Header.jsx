@@ -1,31 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 import { Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Header.scss'
+import './Header.scss';
 
 export default class Header extends Component {
-
     logout = async () => {
         window.confirm('確定要登出嗎');
 
-        const {token, history} = this.props
-        localStorage.removeItem('token')
-        history.replace('/login')
+        const { token, history } = this.props;
+        localStorage.removeItem('token');
+        history.replace('/login');
 
-        let headers = new Headers()
-        headers.append('Content-Type', 'application/json')
-        headers.append('login_session', token)
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
 
         let logoutApi = '/j/logout.aspx';
         try {
-             fetch(logoutApi, { headers })
-
+            fetch(logoutApi, { headers });
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-      }
-
+    };
 
     render() {
         return (
@@ -48,6 +45,6 @@ export default class Header extends Component {
                     </Nav.Item>
                 </Nav>
             </header>
-        )
+        );
     }
 }
