@@ -47,9 +47,6 @@ export default class index extends Component {
                             placeholder="手機號碼"
                             onChange={this.setPhoneNumber}
                         />
-                        {/* <Form.Text className="text-muted">
-        We'll never share your email with anyone else.
-      </Form.Text> */}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">

@@ -14,8 +14,6 @@ export default class MoneyRecord extends Component {
             return;
         }
 
-        console.log('get balance');
-
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
@@ -42,7 +40,6 @@ export default class MoneyRecord extends Component {
         if (!token) {
             return;
         }
-        console.log('get tick');
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -55,6 +52,13 @@ export default class MoneyRecord extends Component {
                 headers,
             });
             const resData = await res.json();
+
+            if (!res.ok) {
+                if (resData.code === '91') {
+                    console.log('hi');
+                }
+            }
+
             const { UpdateTick: tick } = resData.data;
             this.setState({
                 tick,
@@ -68,7 +72,6 @@ export default class MoneyRecord extends Component {
         if (!token) {
             return;
         }
-        console.log('check tick');
 
         const { tick } = this.state;
 
@@ -90,6 +93,7 @@ export default class MoneyRecord extends Component {
             }
         } catch (error) {
             console.log(error);
+            console.log('get check error');
         }
     };
 
