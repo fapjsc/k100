@@ -6,9 +6,24 @@ import './Header.scss'
 
 export default class Header extends Component {
 
-    logout = () => {
+    logout = async () => {
+        window.confirm('確定要登出嗎');
+
+        const {token, history} = this.props
         localStorage.removeItem('token')
-        this.props.history.replace('/login')
+        history.replace('/login')
+
+        let headers = new Headers()
+        headers.append('Content-Type', 'application/json')
+        headers.append('login_session', token)
+
+        let logoutApi = '/j/logout.aspx';
+        try {
+             fetch(logoutApi, { headers })
+
+        } catch (error) {
+            console.log(error)
+        }
       }
 
 
@@ -25,11 +40,11 @@ export default class Header extends Component {
                     </Nav.Item>
 
                     <Nav.Item as="li">
-                        <Nav.Link href="/home">錢包</Nav.Link>
+                        <Nav.Link href="/home/wallet">錢包</Nav.Link>
                     </Nav.Item>
 
                     <Nav.Item as="li">
-                        <Nav.Link href="/home" onClick={this.logout}>登出</Nav.Link>
+                        <Nav.Link onClick={this.logout}>登出</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </header>

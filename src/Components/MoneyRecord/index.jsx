@@ -16,7 +16,7 @@ export default class MoneyRecord extends Component {
         }
 
         console.log('get balance')
-        
+
         let headers = new Headers()
             headers.append('Content-Type', 'application/json')
             headers.append('login_session', token)
@@ -147,9 +147,14 @@ export default class MoneyRecord extends Component {
                         </div>
                  </div>
                 </div>
+
+                {/* for test */}
+                <h3>測試用</h3>
                 <button onClick={() => this.getBalance(token)}>test balance api</button>
                 <button onClick={() => this.getTick(token)}>Tick api</button>
+               
             </section>
+            
         )
     }
 }

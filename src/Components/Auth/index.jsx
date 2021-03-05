@@ -52,7 +52,6 @@ export default class Auth extends Component {
     }
 
     const token = localStorage.getItem('token')
-    console.log(token)
     if(token) {
       this.props.history.replace('/home')
     }
