@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import Header from '../../Components/Layout/Header'
+import MoneyRecord from '../../Components/MoneyRecord'
+import Overview from '../../Components/Overview'
 
 export default class index extends Component {
  
 
-  logout = () => {
-    localStorage.removeItem('token')
-    this.props.history.replace('/login')
-  }
+  
 
   componentDidMount() {
     const token = localStorage.getItem('token')
@@ -16,12 +16,12 @@ export default class index extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>登入成功</h1>
-        <button onClick={this.logout}>登出</button>
-
-      </div>
-      ) 
+    return  (
+      <>
+        <Header />
+        <MoneyRecord />
+        <Overview />
+      </>
+      )
   }
 }

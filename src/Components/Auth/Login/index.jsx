@@ -22,7 +22,6 @@ export default class LoginForm extends Component {
       isValid: true,
     },
     error: [],
-    isLoading: false,
     formIsValid: true,
   };
 
@@ -51,8 +50,8 @@ export default class LoginForm extends Component {
     }
 
     //驗證密碼
-    if (password.val === '' || !validator.isAlphanumeric(password.val)) {
-      error.push('密碼只能是英文及數字');
+    if (password.val === '' || !validator.isAlphanumeric(password.val) || password.val < 6) {
+      error.push('密碼只能是英文及數字，且至少六位數');
       this.setState({
         password: {
           val: '',

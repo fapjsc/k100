@@ -5,13 +5,16 @@ import BaseCard from './../Ui/BaseCard';
 import LoginForm from './Login';
 import RegisterForm from './Register';
 
+import BaseSpinner from '../Ui/BaseSpinner'
 import './index.scss';
 
 export default class Auth extends Component {
   state = {
     formState: '登入',
     isAuthenticated: true,
-    token: null
+    token: null,
+    isLoading: false,
+
   };
 
   toggleForm = mode => {
@@ -56,41 +59,48 @@ export default class Auth extends Component {
   }
 
   render() {
-    const { formState } = this.state;
+    const { formState, isLoading } = this.state;
     return (
       <div className="user-auth">
-        <BaseCard>
-          <h4 className="text-center p-4 font-weight-bold">{formState}帳號</h4>
+        <BaseCard isLoading={isLoading}>
+        {
+          isLoading ? <BaseSpinner /> : <div>
+                <h4 className="text-center p-4 font-weight-bold">{formState}帳號</h4>
 
-          <nav className="form-nav">
-            <Link
-              className={
-                formState === '登入' ? 'isActive form-link' : 'form-link'
-              }
-              to="/auth/login"
-              onClick={() => this.toggleForm('登入')}
-            >
-              登入
-            </Link>
+                <nav className="form-nav">
+                  <Link
+                    className={
+                      formState === '登入' ? 'isActive form-link' : 'form-link'
+                    }
+                    to="/auth/login"
+                    onClick={() => this.toggleForm('登入')}
+                  >
+                    登入
+                  </Link>
 
-            <Link
-              className={
-                formState === '註冊' ? 'isActive form-link' : 'form-link'
-              }
-              to="/auth/register"
-              onClick={() => this.toggleForm('註冊')}
-            >
-              註冊
-            </Link>
-          </nav>
+                  <Link
+                    className={
+                      formState === '註冊' ? 'isActive form-link' : 'form-link'
+                    }
+                    to="/auth/register"
+                    onClick={() => this.toggleForm('註冊')}
+                  >
+                    註冊
+                  </Link>
+                </nav>
 
-          {/* 註冊路由 */}
-          <Switch>
-            {/* <Route path="/auth/login" component={LoginForm} /> */}
-            <Route path="/auth/login" component={(props) => <LoginForm {...props} setUserAuth={this.setUserAuth} />} />
-            <Route path="/auth/register" component={RegisterForm} />
-            <Redirect to="/auth/login" />
-          </Switch>
+                {/* 註冊路由 */}
+                <Switch>
+                  {/* <Route path="/auth/login" component={LoginForm} /> */}
+                  <Route path="/auth/login" component={(props) => <LoginForm {...props} setUserAuth={this.setUserAuth} />} />
+                  <Route path="/auth/register" component={RegisterForm} />
+                  <Redirect to="/auth/login" />
+                </Switch>
+          </div>
+        }
+         
+
+         
         </BaseCard>
       </div>
     );
