@@ -10,7 +10,8 @@ import './index.scss';
 export default class Auth extends Component {
   state = {
     formState: '登入',
-    isAuthenticated: false,
+    isAuthenticated: true,
+    token: null
   };
 
   toggleForm = mode => {
@@ -26,6 +27,15 @@ export default class Auth extends Component {
     });
   };
 
+  setUserAuth = token => {
+    if(token) {
+      this.setState({
+        isAuthenticated: true
+      })
+      this.props.history.replace('/home')
+    }
+  }
+
   componentDidMount() {
     let curPath = window.location.pathname;
     if (curPath === '/register') {
@@ -36,6 +46,12 @@ export default class Auth extends Component {
       this.setState({
         formState: '登入',
       });
+    }
+
+    const token = localStorage.getItem('token')
+    console.log(token)
+    if(token) {
+      this.props.history.replace('/home')
     }
   }
 
@@ -70,7 +86,8 @@ export default class Auth extends Component {
 
           {/* 註冊路由 */}
           <Switch>
-            <Route path="/auth/login" component={LoginForm} />
+            {/* <Route path="/auth/login" component={LoginForm} /> */}
+            <Route path="/auth/login" component={(props) => <LoginForm {...props} setUserAuth={this.setUserAuth} />} />
             <Route path="/auth/register" component={RegisterForm} />
             <Redirect to="/auth/login" />
           </Switch>
