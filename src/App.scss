@@ -1,46 +1,74 @@
 *,
 *::before,
 *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
 html {
-    box-sizing: border-box;
-    font-size: 62.5%;
+  box-sizing: border-box;
+  font-size: 62.5%;
 }
 
 .bg_darkblue {
-    background-color: #242e47;
+  background-color: #242e47;
 }
 .bg_grey {
-    background-color: #e2e0e0;
+  background-color: #e2e0e0;
 }
 .bg_white {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 .c_fff {
-    color: #fff;
+  color: #fff;
 }
 .c_blue {
-    color: #3f80fa;
+  color: #3f80fa;
 }
 .c_green {
-    color: #1ba17a;
+  color: #1ba17a;
 }
 .c_grey {
-    color: #707070;
+  color: #707070;
+}
+
+// font size
+.fs_20 {
+  font-size: 2rem;
+}
+
+.fs_40 {
+  font-size: 4rem;
+}
+
+// 排版
+.h_88 {
+  min-height: 90vh;
+}
+
+.p_sm {
+  padding: 2rem;
+}
+
+.m_sm {
+  margin: 2rem;
 }
 
 .pl_6 {
-    padding-left: 6px;
+  padding-left: 6px;
 }
 
-.h_88 {
-    min-height: 90vh;
+.mt-big {
+  margin-top: 35%;
 }
 
-.fs_20 {
-    font-size: 2rem;
+// 文字自動換行
+.pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.h-large {
+  height: 10rem;
 }

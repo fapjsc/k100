@@ -1,13 +1,18 @@
 .content-box {
-    background-color: #fff;
-    margin-top: 5px;
-    padding: 20px;
-    border-radius: 5px;
+  background-color: #fff;
+  margin-top: 5px;
+  padding: 20px;
+  border-radius: 5px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .welcome_txt {
-    color: #707070;
-    padding: 10px;
-    font-size: 12px;
-    margin-bottom: 0px;
+  color: #707070;
+  padding: 10px;
+  font-size: 12px;
+  margin-bottom: 0px;
 }

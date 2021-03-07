@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Auth from './Components/Auth';
@@ -8,15 +7,15 @@ import { ProtectedRoute } from './router/ProtectedRoute';
 
 import './App.scss';
 function App() {
-    return (
-        <Switch>
-            <Switch>
-                <Route path="/auth" component={Auth} />
-                <ProtectedRoute path="/home" component={Home} />
-                <Redirect to="/auth" />
-            </Switch>
-        </Switch>
-    );
+  return (
+    <Switch>
+      <Switch>
+        <Route path="/auth" component={Auth} />
+        <ProtectedRoute path="/home" component={Home} />
+        <Redirect to="/auth" />
+      </Switch>
+    </Switch>
+  );
 }
 
 export default App;
