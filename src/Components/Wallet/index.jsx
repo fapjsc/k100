@@ -1,9 +1,76 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import PubSub from 'pubsub-js';
+import copy from 'copy-to-clipboard';
+
 import './index.scss';
 
 export default class index extends Component {
+    state = {
+        WalletAddress: null,
+        Qr_img: null,
+        Avb_Balance: null,
+        Real_Balance: null,
+    };
+
+    getQrCode = async () => {
+        const token = localStorage.getItem('token');
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        const walletApi = '/j/GetWallet.aspx';
+
+        try {
+            const res = await fetch(walletApi, {
+                headers,
+            });
+
+            const resData = await res.json();
+
+            if (!res.ok) {
+                console.log(resData);
+                return;
+            }
+
+            const { WalletAddress, Qr_img } = resData.data;
+
+            this.setState({
+                WalletAddress,
+                Qr_img,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    getBalance = () => {
+        console.log('test');
+        PubSub.subscribe('getBalance', (_, data) => {
+            const { Avb_Balance, Real_Balance } = data;
+            this.setState({
+                Real_Balance,
+                Avb_Balance,
+            });
+        });
+    };
+
+    handleCopy = value => {
+        copy(value);
+
+        if (copy(value)) {
+            alert('複製成功');
+        } else {
+            alert('複製失敗，請手動複製');
+        }
+    };
+
+    componentDidMount() {
+        this.getQrCode();
+        this.getBalance();
+    }
+
     render() {
+        const { WalletAddress, Qr_img, Avb_Balance, Real_Balance } = this.state;
         return (
             <section className="wallet bg_grey">
                 <div className="container h_88">
@@ -14,28 +81,36 @@ export default class index extends Component {
                                 <div className="txt_12 pt_20">我的錢包</div>
                                 <div className="row">
                                     <div className="col-md-3 col-12 center_p20">
-                                        <div className="qrCodeImg"></div>
+                                        <img
+                                            src={`data:image/png;base64,${Qr_img}`}
+                                            alt="qr code"
+                                        ></img>
                                     </div>
 
                                     <div className="col-md-8 col-12 pt_20">
-                                        <Link to="/#" className="easy_link">
-                                            https://www.easyusdt.com/search?q=qrcode&tbm=isch&ved=2ahUKEwiBs5iTsb7uAhWXEogKHXDpC-MQ2cCegQIABAA&oq=qrcode&gs_lcp=CgNpbWcQAzIECAAQQzIECAAQQzICCAAyBAgAEEMyAggAMgIIADICCAAyAggAMgIIADICCAA6BQgAELEDOgQIABAeOgYIABAFEB5QwsQvWIbPL2D81S9oAHAAeACAAWOIAecCkgEBNpgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=KI0SYIH_GZeloATw0q-YDg&bih=874&biw=919#imgrc=1_ez_zG7bRI5oM
-                                        </Link>
-                                        <div className="i_copy2"></div>
+                                        <div className="walletAddress-box">
+                                            <span className="easy_link">{WalletAddress}</span>
+                                            <div
+                                                className="i_copy2"
+                                                onClick={() => this.handleCopy(WalletAddress)}
+                                            ></div>
+                                        </div>
                                         <div className="pt_20">
                                             <div className="balance">
                                                 結餘：
-                                                <span className="usdt"></span>
-                                                <span className="c_green">USDT</span>
-                                                <span className="c_green fs_20">2112.00</span>
+                                                <span className="usdt mr_sm"></span>
+                                                <span className="c_green mr_sm">USDT</span>
+                                                <span className="c_green fs_20">
+                                                    {Real_Balance}
+                                                </span>
                                             </div>
                                         </div>
                                         <div>
                                             <div className="balance">
                                                 可提：
-                                                <span className="usdt"></span>
-                                                <span className="c_green">USDT</span>
-                                                <span className="c_green fs_20">2112.00</span>
+                                                <span className="usdt mr_sm"></span>
+                                                <span className="c_green mr_sm">USDT</span>
+                                                <span className="c_green fs_20">{Avb_Balance}</span>
                                             </div>
                                         </div>
                                     </div>

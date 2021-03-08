@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import BaseDialog from './../Ui/BaseDialog';
+import PubSub from 'pubsub-js';
 
 import './index.scss';
 
@@ -48,16 +49,17 @@ export default class MoneyRecord extends Component {
 
             const { Avb_Balance, Real_Balance } = resData.data;
 
-            if (!res.ok) {
-                if (resData.code === '91') {
-                    console.log('hi');
-                }
-            }
-
             this.setState({
                 Avb_Balance,
                 Real_Balance,
             });
+
+            const balance = {
+                Avb_Balance,
+                Real_Balance,
+            };
+
+            PubSub.publish('getBalance', balance);
         } catch (error) {
             const errStr = String(error);
             this.setState({
@@ -161,12 +163,6 @@ export default class MoneyRecord extends Component {
 
             const { UpdateTick: checkTick } = resData.data;
 
-            if (!res.ok) {
-                if (resData.code === '91') {
-                    console.log('hi');
-                }
-            }
-
             if (tick !== checkTick) {
                 this.getBalance();
             }
@@ -224,15 +220,15 @@ export default class MoneyRecord extends Component {
                         <div className="col-12">
                             <div className="balance">
                                 結餘：
-                                <span className="usdt"></span>
-                                <span className="c_green">USDT</span>
+                                <span className="usdt mr_sm"></span>
+                                <span className="c_green mr_sm">USDT</span>
                                 <span className="c_green fs_20">{Real_Balance}</span>
                             </div>
 
                             <div className="balance pl_6">
                                 可提：
-                                <span className="usdt"></span>
-                                <span className="c_green">USDT</span>
+                                <span className="usdt mr_sm"></span>
+                                <span className="c_green mr_sm">USDT</span>
                                 <span className="c_green fs_20">{Avb_Balance}</span>
                             </div>
                         </div>

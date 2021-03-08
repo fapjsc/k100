@@ -26,7 +26,6 @@ export default class LoginForm extends Component {
 
     // 驗證函數
     validateForm = async () => {
-        console.log('valid');
         this.setState({
             formIsValid: true,
             formErrors: [],
@@ -64,7 +63,11 @@ export default class LoginForm extends Component {
         }
 
         //驗證密碼
-        if (password.val === '' || !validator.isAlphanumeric(password.val) || password.val < 6) {
+        if (
+            password.val === '' ||
+            !validator.isAlphanumeric(password.val) ||
+            password.val.length < 6
+        ) {
             error.push('密碼只能是英文及數字，且至少六位數');
             this.setState({
                 password: {
@@ -138,15 +141,9 @@ export default class LoginForm extends Component {
         const { formIsValid, phoneNumber, password, Login_countrycode: countryCode } = this.state;
         const { setLoadingState, setHttpError } = this.props;
 
-        console.log(formIsValid, '1');
-
         if (!formIsValid) {
-            console.log(formIsValid, '2');
-            console.log('false');
             return;
         }
-
-        console.log('true');
 
         setLoadingState(true);
         console.log('object');

@@ -21,5 +21,9 @@ header {
     .navLink {
         color: #fff;
         margin-right: 6rem;
+
+        &:hover {
+            color: #0056b3;
+        }
     }
 }
