@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './index.scss';
 
 export default class index extends Component {
     render() {
         return (
-            <section>
+            <section className="wallet bg_grey">
                 <div className="container h_88">
                     <div className="row">
                         <div className="col-12">
@@ -13,13 +14,13 @@ export default class index extends Component {
                                 <div className="txt_12 pt_20">我的錢包</div>
                                 <div className="row">
                                     <div className="col-md-3 col-12 center_p20">
-                                        <img src="images/qr_demo.png" />
+                                        <div className="qrCodeImg"></div>
                                     </div>
 
                                     <div className="col-md-8 col-12 pt_20">
-                                        <a href="#" className="easy_link">
+                                        <Link to="/#" className="easy_link">
                                             https://www.easyusdt.com/search?q=qrcode&tbm=isch&ved=2ahUKEwiBs5iTsb7uAhWXEogKHXDpC-MQ2cCegQIABAA&oq=qrcode&gs_lcp=CgNpbWcQAzIECAAQQzIECAAQQzICCAAyBAgAEEMyAggAMgIIADICCAAyAggAMgIIADICCAA6BQgAELEDOgQIABAeOgYIABAFEB5QwsQvWIbPL2D81S9oAHAAeACAAWOIAecCkgEBNpgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=KI0SYIH_GZeloATw0q-YDg&bih=874&biw=919#imgrc=1_ez_zG7bRI5oM
-                                        </a>
+                                        </Link>
                                         <div className="i_copy2"></div>
                                         <div className="pt_20">
                                             <div className="balance">

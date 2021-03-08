@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link, Route, Switch, Redirect } from 'react-router-dom';
 
 import BaseCard from './../Ui/BaseCard';
+import BaseDialog from './../Ui/BaseDialog';
+
 import LoginForm from './Login';
 import RegisterForm from './Register';
 
@@ -14,6 +16,7 @@ export default class Auth extends Component {
         isAuthenticated: true,
         token: null,
         isLoading: false,
+        httpError: null,
     };
 
     toggleForm = mode => {
@@ -38,6 +41,28 @@ export default class Auth extends Component {
         }
     };
 
+    setLoadingState = isLoading => {
+        this.setState({
+            isLoading,
+        });
+    };
+
+    setHttpError = (errTitle, errBody) => {
+        const err = String(errBody);
+        this.setState({
+            httpError: {
+                title: errTitle,
+                body: err,
+            },
+        });
+    };
+
+    closeDialog = () => {
+        this.setState({
+            httpError: null,
+        });
+    };
+
     componentDidMount() {
         let curPath = window.location.pathname;
         if (curPath === '/register') {
@@ -57,12 +82,14 @@ export default class Auth extends Component {
     }
 
     render() {
-        const { formState, isLoading } = this.state;
+        const { formState, isLoading, httpError } = this.state;
         return (
             <div className="user-auth">
                 <BaseCard isLoading={isLoading}>
                     {isLoading ? (
-                        <BaseSpinner />
+                        <div className="mt_120">
+                            <BaseSpinner />
+                        </div>
                     ) : (
                         <div>
                             <h4 className="text-center p-4 font-weight-bold">{formState}帳號</h4>
@@ -89,13 +116,22 @@ export default class Auth extends Component {
                                 </Link>
                             </nav>
 
+                            {!!httpError ? (
+                                <BaseDialog httpError={httpError} closeDialog={this.closeDialog} />
+                            ) : null}
+
                             {/* 註冊路由 */}
                             <Switch>
                                 {/* <Route path="/auth/login" component={LoginForm} /> */}
                                 <Route
                                     path="/auth/login"
                                     component={props => (
-                                        <LoginForm {...props} setUserAuth={this.setUserAuth} />
+                                        <LoginForm
+                                            {...props}
+                                            setUserAuth={this.setUserAuth}
+                                            setLoadingState={this.setLoadingState}
+                                            setHttpError={this.setHttpError}
+                                        />
                                     )}
                                 />
                                 <Route path="/auth/register" component={RegisterForm} />

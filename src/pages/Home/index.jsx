@@ -4,7 +4,7 @@ import MoneyRecord from '../../Components/MoneyRecord';
 import Overview from '../../Components/Overview';
 import Wallet from '../../Components/Wallet';
 
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 export default class index extends Component {
     state = {
@@ -12,8 +12,8 @@ export default class index extends Component {
     };
 
     componentDidMount() {
-        const { history, location } = this.props;
         const token = localStorage.getItem('token');
+        const { history, location } = this.props;
         this.setState({
             token,
         });
@@ -32,10 +32,11 @@ export default class index extends Component {
         return (
             <>
                 <Header history={history} token={token} />
-                <MoneyRecord />
+                <MoneyRecord history={history} />
                 <Switch>
                     <Route path="/home/overview" component={Overview} />
                     <Route path="/home/wallet" component={Wallet} />
+                    <Redirect to="/home/overview" />
                 </Switch>
             </>
         );

@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
 
-// import Home from './../../../pages/Home';
-
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
 
 export default class LoginForm extends Component {
     state = {
-        Login_countrycode: '',
+        Login_countrycode: {
+            val: null,
+            isValid: true,
+        },
         phoneNumber: {
             val: '',
             isValid: true,
@@ -19,20 +20,34 @@ export default class LoginForm extends Component {
             val: '',
             isValid: true,
         },
-        error: [],
-        formIsValid: true,
+        formErrors: [],
+        formIsValid: false,
     };
 
     // 驗證函數
     validateForm = () => {
         this.setState({
             formIsValid: true,
-            error: [],
+            formErrors: [],
         });
 
-        const { phoneNumber, password } = this.state;
+        const { phoneNumber, password, Login_countrycode: countryCode } = this.state;
 
         let error = [];
+
+        // 驗證區碼
+        if (countryCode.val === null) {
+            error.push('請選擇區碼');
+
+            this.setState({
+                Login_countrycode: {
+                    val: null,
+                    isValid: false,
+                },
+                formIsValid: false,
+                formErrors: [...error],
+            });
+        }
 
         // 驗證電話號碼
         if (phoneNumber.val === '' || !validator.isMobilePhone(phoneNumber.val)) {
@@ -43,7 +58,7 @@ export default class LoginForm extends Component {
                     isValid: false,
                 },
                 formIsValid: false,
-                error,
+                formErrors: [...error],
             });
         }
 
@@ -56,18 +71,45 @@ export default class LoginForm extends Component {
                     isValid: false,
                 },
                 formIsValid: false,
-                error,
+                formErrors: [...error],
             });
         }
     };
 
     // 保存區碼
     setCountryCode = event => {
-        this.setState({
-            Login_countrycode: event.target.value,
-        });
-    };
+        const { target } = event;
 
+        if (target.value.includes('台灣')) {
+            this.setState({
+                Login_countrycode: {
+                    val: 886,
+                    isValid: true,
+                },
+            });
+        } else if (target.value.includes('中國')) {
+            this.setState({
+                Login_countrycode: {
+                    val: 86,
+                    isValid: true,
+                },
+            });
+        } else if (target.value.includes('香港')) {
+            this.setState({
+                Login_countrycode: {
+                    val: 852,
+                    isValid: true,
+                },
+            });
+        } else {
+            this.setState({
+                Login_countrycode: {
+                    val: null,
+                    isValid: false,
+                },
+            });
+        }
+    };
     // 保存使用者輸入的密碼到state
     setPassword = event => {
         this.setState({
@@ -90,22 +132,25 @@ export default class LoginForm extends Component {
 
     // 表單提交
     handleLoginSubmit = async event => {
-        const { formIsValid, phoneNumber, password } = this.state;
         event.preventDefault(); //防止表單提交
+        const { formIsValid, phoneNumber, password, Login_countrycode: countryCode } = this.state;
+        const { setLoadingState, setHttpError } = this.props;
 
-        this.validateForm();
+        await this.validateForm();
 
-        if (!formIsValid) {
+        if (!!formIsValid) {
             return;
         }
 
+        setLoadingState(true);
+        console.log('object');
         let loginApi = '/j/login.aspx';
 
         try {
             const res = await fetch(loginApi, {
                 method: 'POST',
                 body: JSON.stringify({
-                    Login_countrycode: 86,
+                    Login_countrycode: countryCode.val,
                     Login_tel: phoneNumber.val,
                     Login_pwd: password.val,
                 }),
@@ -113,24 +158,34 @@ export default class LoginForm extends Component {
 
             const resData = await res.json();
 
+            if (!res.ok) {
+                setLoadingState(false);
+                console.log(resData, 'res');
+                setHttpError('驗證失敗', resData.msg);
+                return;
+            }
+
             const {
                 data: { login_session },
             } = resData;
 
+            setLoadingState(false);
             localStorage.setItem('token', login_session);
-
             this.props.setUserAuth(login_session);
         } catch (error) {
-            console.log(error);
+            setLoadingState(false);
+            console.log(error, 'catch');
+            setHttpError('無法連接server', error);
         }
     };
 
     render() {
-        const { password, phoneNumber } = this.state;
+        const { password, phoneNumber, formErrors, Login_countrycode: countryCode } = this.state;
         return (
             <div className="form-container">
                 <Form>
                     <Form.Control
+                        isInvalid={!countryCode.isValid}
                         as="select"
                         defaultValue="區號"
                         className="form-input"
@@ -164,8 +219,8 @@ export default class LoginForm extends Component {
                         />
                     </Form.Group>
 
-                    {this.state.error.length
-                        ? this.state.error.map((err, index) => (
+                    {formErrors.length
+                        ? formErrors.map((err, index) => (
                               <Form.Text key={index} className="text-muted form-text">
                                   {err}
                               </Form.Text>

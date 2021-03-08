@@ -37,10 +37,40 @@ html {
     padding-left: 6px;
 }
 
+.pt_20 {
+    padding-top: 2rem;
+}
+
+.mt_120 {
+    margin-top: 12rem;
+}
+
 .h_88 {
     min-height: 90vh;
 }
 
 .fs_20 {
     font-size: 2rem;
+}
+
+.mt_mb {
+    margin-top: 2.2rem;
+    margin-bottom: 1.7rem;
+}
+
+.txt_12_grey {
+    color: #707070;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    font-weight: normal;
+}
+
+.txt_center {
+    text-align: center;
+    margin: auto;
+}
+
+.center_p20 {
+    text-align: center;
+    padding: 2rem;
 }

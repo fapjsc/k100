@@ -1,0 +1,25 @@
+header {
+    background-color: #242e47;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .logo {
+        background-image: url('../../Assets/logo_easy.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 2rem;
+        width: 13rem;
+        margin-left: 3rem;
+    }
+
+    .navList {
+    }
+
+    .navLink {
+        color: #fff;
+        margin-right: 6rem;
+    }
+}

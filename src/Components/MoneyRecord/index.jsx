@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import BaseDialog from './../Ui/BaseDialog';
+
 import './index.scss';
 
 export default class MoneyRecord extends Component {
@@ -7,12 +9,16 @@ export default class MoneyRecord extends Component {
         Real_Balance: 0,
         tick: null,
         token: null,
+        httpError: null,
     };
 
     getBalance = async token => {
         if (!token) {
             return;
         }
+        console.log('get balance');
+
+        const { history } = this.props;
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -25,6 +31,20 @@ export default class MoneyRecord extends Component {
                 headers: headers,
             });
             const resData = await res.json();
+
+            if (!res.ok) {
+                if (resData.code === '91' || resData.code === '90') {
+                    console.log('token 過期 => check tick');
+                    localStorage.removeItem('token');
+
+                    window.confirm('session過期，請重新登入');
+
+                    history.replace('/auth/login');
+                }
+
+                return;
+            }
+
             const { Avb_Balance, Real_Balance } = resData.data;
 
             this.setState({
@@ -32,7 +52,16 @@ export default class MoneyRecord extends Component {
                 Real_Balance,
             });
         } catch (error) {
-            console.log(error);
+            const errStr = String(error);
+            this.setState({
+                httpError: {
+                    title: 'Server錯誤',
+                    body: errStr,
+                },
+            });
+            clearInterval(this.checkTickLoop);
+
+            return;
         }
     };
 
@@ -40,6 +69,9 @@ export default class MoneyRecord extends Component {
         if (!token) {
             return;
         }
+        console.log('get tick');
+
+        const { history } = this.props;
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -54,9 +86,16 @@ export default class MoneyRecord extends Component {
             const resData = await res.json();
 
             if (!res.ok) {
-                if (resData.code === '91') {
-                    console.log('hi');
+                if (resData.code === '91' || resData.code === '90') {
+                    console.log('token 過期 => check tick');
+                    localStorage.removeItem('token');
+
+                    window.confirm('session過期，請重新登入');
+
+                    history.replace('/auth/login');
                 }
+
+                return;
             }
 
             const { UpdateTick: tick } = resData.data;
@@ -64,7 +103,16 @@ export default class MoneyRecord extends Component {
                 tick,
             });
         } catch (error) {
-            console.log(error);
+            const errStr = String(error);
+            this.setState({
+                httpError: {
+                    title: 'Server錯誤',
+                    body: errStr,
+                },
+            });
+            clearInterval(this.checkTickLoop);
+
+            return;
         }
     };
 
@@ -73,7 +121,10 @@ export default class MoneyRecord extends Component {
             return;
         }
 
+        console.log('check tick');
+
         const { tick } = this.state;
+        const { history } = this.props;
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -86,18 +137,47 @@ export default class MoneyRecord extends Component {
                 headers,
             });
             const resData = await res.json();
+
+            if (res.ok) {
+                if (resData.code === '91' || resData.code === '90') {
+                    console.log('token 過期 => check tick');
+                    localStorage.removeItem('token');
+
+                    window.confirm('session過期，請重新登入');
+
+                    history.replace('/auth/login');
+                }
+
+                return;
+            }
+
             const { UpdateTick: checkTick } = resData.data;
 
             if (tick !== checkTick) {
-                this.getTick();
+                this.getBalance();
             }
         } catch (error) {
-            console.log(error);
-            console.log('get check error');
+            const errStr = String(error);
+            this.setState({
+                httpError: {
+                    title: 'Server錯誤',
+                    body: errStr,
+                },
+            });
+            clearInterval(this.checkTickLoop);
+
+            return;
         }
     };
 
+    closeDialog = () => {
+        this.setState({
+            httpError: null,
+        });
+    };
+
     componentDidMount() {
+        const { history } = this.props;
         const token = localStorage.getItem('token');
         if (token) {
             this.setState({
@@ -107,14 +187,22 @@ export default class MoneyRecord extends Component {
             this.getTick(token);
             this.getBalance(token);
 
-            setInterval(() => {
+            const timer = 1000 * 60; //一分鐘
+
+            this.checkTickLoop = setInterval(() => {
                 this.checkTick(token);
-            }, 60000);
+            }, timer);
+        } else {
+            history.replace('/auth/login');
         }
     }
 
+    componentWillUnmount() {
+        clearInterval(this.checkTickLoop);
+    }
+
     render() {
-        const { Avb_Balance, Real_Balance, token } = this.state;
+        const { Avb_Balance, Real_Balance, httpError } = this.state;
         return (
             <section>
                 <div className="container">
@@ -137,10 +225,9 @@ export default class MoneyRecord extends Component {
                     </div>
                 </div>
 
-                {/* for test */}
-                <h3>測試用</h3>
-                <button onClick={() => this.getBalance(token)}>test balance api</button>
-                <button onClick={() => this.getTick(token)}>Tick api</button>
+                {!!httpError ? (
+                    <BaseDialog httpError={httpError} closeDialog={this.closeDialog} />
+                ) : null}
             </section>
         );
     }
