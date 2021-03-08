@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Nav } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import style from './Header.module.scss';
 
@@ -28,7 +28,7 @@ export default class Header extends Component {
     render() {
         return (
             <header>
-                <Link to="/home">
+                {/* <Link to="/home">
                     <div className={style.logo}></div>
                 </Link>
                 <Nav defaultActiveKey="/home" as="ul" className={style.navList}>
@@ -55,30 +55,32 @@ export default class Header extends Component {
                             登出
                         </Nav.Link>
                     </Nav.Item>
-                </Nav>
+                </Nav> */}
 
-                {/* <Navbar collapseOnSelect expand="sm" className={style.navBar}>
+                <Navbar bg="dark" expand="md" variant="dark" className={style.navBar}>
                     <Navbar.Brand href="#home">
-                        <div className={style.logo}></div>
+                        <Link to="/home">
+                            <div className={style.logo}></div>
+                        </Link>
                     </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className={style.navList}>
-                            <Nav.Link href="#features" className={style.navLink}>
+                            <Nav.Link href="#home" className={style.navLink}>
                                 交易
                             </Nav.Link>
-                            <Nav.Link href="#pricing" className={style.navLink}>
+                            <Nav.Link href="#link" className={style.navLink}>
                                 紀錄
                             </Nav.Link>
-                            <Nav.Link href="#pricing" className={style.navLink}>
+                            <Nav.Link href="/home/wallet" className={style.navLink}>
                                 錢包
                             </Nav.Link>
-                            <Nav.Link href="#pricing" className={style.navLink}>
+                            <Nav.Link href="#link" className={style.navLink}>
                                 登出
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
-                </Navbar> */}
+                </Navbar>
             </header>
         );
     }
