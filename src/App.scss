@@ -33,8 +33,13 @@ html {
     color: #707070;
 }
 
-.pl_6 {
-    padding-left: 6px;
+// font size
+.fs_20 {
+    font-size: 2rem;
+}
+
+.fs_40 {
+    font-size: 4rem;
 }
 
 .pt_20 {
@@ -49,8 +54,30 @@ html {
     min-height: 90vh;
 }
 
-.fs_20 {
-    font-size: 2rem;
+.p_sm {
+    padding: 2rem;
+}
+
+.m_sm {
+    margin: 2rem;
+}
+
+.pl_6 {
+    padding-left: 6px;
+}
+
+.mt-big {
+    margin-top: 35%;
+}
+
+// 文字自動換行
+.pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.h-large {
+    height: 10rem;
 }
 
 .mt_mb {

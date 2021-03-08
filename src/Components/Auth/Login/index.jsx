@@ -25,7 +25,8 @@ export default class LoginForm extends Component {
     };
 
     // 驗證函數
-    validateForm = () => {
+    validateForm = async () => {
+        console.log('valid');
         this.setState({
             formIsValid: true,
             formErrors: [],
@@ -133,14 +134,19 @@ export default class LoginForm extends Component {
     // 表單提交
     handleLoginSubmit = async event => {
         event.preventDefault(); //防止表單提交
+        await this.validateForm();
         const { formIsValid, phoneNumber, password, Login_countrycode: countryCode } = this.state;
         const { setLoadingState, setHttpError } = this.props;
 
-        await this.validateForm();
+        console.log(formIsValid, '1');
 
-        if (!!formIsValid) {
+        if (!formIsValid) {
+            console.log(formIsValid, '2');
+            console.log('false');
             return;
         }
+
+        console.log('true');
 
         setLoadingState(true);
         console.log('object');

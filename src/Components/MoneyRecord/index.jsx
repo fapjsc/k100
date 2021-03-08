@@ -30,6 +30,7 @@ export default class MoneyRecord extends Component {
             const res = await fetch(balanceApi, {
                 headers: headers,
             });
+
             const resData = await res.json();
 
             if (!res.ok) {
@@ -46,6 +47,12 @@ export default class MoneyRecord extends Component {
             }
 
             const { Avb_Balance, Real_Balance } = resData.data;
+
+            if (!res.ok) {
+                if (resData.code === '91') {
+                    console.log('hi');
+                }
+            }
 
             this.setState({
                 Avb_Balance,
@@ -77,10 +84,10 @@ export default class MoneyRecord extends Component {
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
 
-        const updateTickApi = '/j/ChkUpdate.aspx';
+        const getTickApi = '/j/ChkUpdate.aspx';
 
         try {
-            const res = await fetch(updateTickApi, {
+            const res = await fetch(getTickApi, {
                 headers,
             });
             const resData = await res.json();
@@ -130,12 +137,13 @@ export default class MoneyRecord extends Component {
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
 
-        const updateTickApi = '/j/ChkUpdate.aspx';
+        const getTickApi = '/j/ChkUpdate.aspx';
 
         try {
-            const res = await fetch(updateTickApi, {
+            const res = await fetch(getTickApi, {
                 headers,
             });
+
             const resData = await res.json();
 
             if (res.ok) {
@@ -152,6 +160,12 @@ export default class MoneyRecord extends Component {
             }
 
             const { UpdateTick: checkTick } = resData.data;
+
+            if (!res.ok) {
+                if (resData.code === '91') {
+                    console.log('hi');
+                }
+            }
 
             if (tick !== checkTick) {
                 this.getBalance();

@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Auth from './Components/Auth';
@@ -13,7 +12,7 @@ function App() {
             <Switch>
                 <Route path="/auth" component={Auth} />
                 <ProtectedRoute path="/home" component={Home} />
-                <Redirect to="/auth" />
+                <Redirect to="/auth/login" />
             </Switch>
         </Switch>
     );
