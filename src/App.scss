@@ -74,3 +74,13 @@ html {
     text-align: center;
     padding: 2rem;
 }
+
+// 文字自動換行
+.pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.h-large {
+    height: 10rem;
+}
