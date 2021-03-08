@@ -7,15 +7,15 @@ import { ProtectedRoute } from './router/ProtectedRoute';
 
 import './App.scss';
 function App() {
-  return (
-    <Switch>
-      <Switch>
-        <Route path="/auth" component={Auth} />
-        <ProtectedRoute path="/home" component={Home} />
-        <Redirect to="/auth" />
-      </Switch>
-    </Switch>
-  );
+    return (
+        <Switch>
+            <Switch>
+                <Route path="/auth" component={Auth} />
+                <ProtectedRoute path="/home" component={Home} />
+                <Redirect to="/auth/login" />
+            </Switch>
+        </Switch>
+    );
 }
 
 export default App;
