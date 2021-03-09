@@ -3,6 +3,7 @@ import Header from '../../Components/Layout/Header';
 import MoneyRecord from '../../Components/MoneyRecord';
 import Overview from '../../Components/Overview';
 import Wallet from '../../Components/Wallet';
+import History from '../../Components/History';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
 
@@ -36,6 +37,7 @@ export default class index extends Component {
                 <Switch>
                     <Route path="/home/overview" component={Overview} />
                     <Route path="/home/wallet" component={Wallet} />
+                    <Route path="/home/history" component={History} />
                     <Redirect to="/home/overview" />
                 </Switch>
             </>

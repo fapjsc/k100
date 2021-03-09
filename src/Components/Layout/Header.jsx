@@ -27,35 +27,6 @@ export default class Header extends Component {
     render() {
         return (
             <header>
-                {/* <Link to="/home">
-                    <div className={style.logo}></div>
-                </Link>
-                <Nav defaultActiveKey="/home" as="ul" className={style.navList}>
-                    <Nav.Item as="li" className={style.navItem}>
-                        <Nav.Link className={style.navLink} href="/home">
-                            交易
-                        </Nav.Link>
-                    </Nav.Item>
-
-                    <Nav.Item as="li">
-                        <Nav.Link className={style.navLink} href="/home">
-                            紀錄
-                        </Nav.Link>
-                    </Nav.Item>
-
-                    <Nav.Item as="li">
-                        <Nav.Link className={style.navLink} href="/home/wallet">
-                            錢包
-                        </Nav.Link>
-                    </Nav.Item>
-
-                    <Nav.Item as="li">
-                        <Nav.Link className={style.navLink} onClick={this.logout}>
-                            登出
-                        </Nav.Link>
-                    </Nav.Item>
-                </Nav> */}
-
                 <Navbar bg="dark" expand="md" variant="dark" className={style.navBar}>
                     <Navbar.Brand href="/home">
                         <div className={style.logo}></div>
@@ -66,7 +37,7 @@ export default class Header extends Component {
                             <Nav.Link href="/home" className={style.navLink}>
                                 交易
                             </Nav.Link>
-                            <Nav.Link href="/home" className={style.navLink}>
+                            <Nav.Link href="/home/history" className={style.navLink}>
                                 紀錄
                             </Nav.Link>
                             <Nav.Link href="/home/wallet" className={style.navLink}>
