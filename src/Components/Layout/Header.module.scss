@@ -26,9 +26,21 @@ header {
 
     .navList {
         margin-left: auto;
+        align-items: center;
     }
 
-    .navLink {
+    .navLink:visited,
+    .navLink:link {
         margin: 1rem 6rem 1rem 0;
+        color: #fff;
+        text-decoration: none;
+
+        @media only screen and (max-width: 767px) {
+            margin-left: -55rem;
+        }
+
+        &:hover {
+            color: #ddd;
+        }
     }
 }

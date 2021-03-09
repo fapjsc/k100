@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,21 +29,21 @@ export default class Header extends Component {
         return (
             <header>
                 <Navbar bg="dark" expand="md" variant="dark" className={style.navBar}>
-                    <Navbar.Brand href="/home">
+                    <Link to="/home">
                         <div className={style.logo}></div>
-                    </Navbar.Brand>
+                    </Link>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className={style.navList}>
-                            <Nav.Link href="/home" className={style.navLink}>
+                            <Link to="/home" className={style.navLink}>
                                 交易
-                            </Nav.Link>
-                            <Nav.Link href="/home/history" className={style.navLink}>
+                            </Link>
+                            <Link to="/home/history" className={style.navLink}>
                                 紀錄
-                            </Nav.Link>
-                            <Nav.Link href="/home/wallet" className={style.navLink}>
+                            </Link>
+                            <Link to="/home/wallet" className={style.navLink}>
                                 錢包
-                            </Nav.Link>
+                            </Link>
                             <Nav.Link onClick={this.logout} className={style.navLink}>
                                 登出
                             </Nav.Link>

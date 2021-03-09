@@ -1,0 +1,81 @@
+.tabcontent {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.history-detail {
+    margin-right: 5rem;
+    padding: 1rem;
+
+    @media (max-width: 1200px) {
+        margin-right: 10rem;
+    }
+}
+
+.master-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.i_blue {
+    background-image: url(../../../Assets/i_usdt_blue.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 1.8rem;
+    width: 2.2rem;
+    margin-top: -3px;
+    margin-right: 5px;
+}
+
+.i_green {
+    background-image: url(../../../Assets/i_usdt_green2.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 1.8rem;
+    width: 2.2rem;
+    margin-top: -3px;
+    margin-right: 5px;
+}
+
+.i_purple {
+    background-image: url(../../../Assets/i_usdt_purple.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 1.8rem;
+    width: 2.2rem;
+    margin-top: -3px;
+    margin-right: 5px;
+}
+
+.txt18 {
+    font-size: 1.8rem;
+    color: #1f7eff;
+}
+.txt18_g {
+    font-size: 18px;
+    color: #01b289;
+}
+.txt18_p {
+    font-size: 18px;
+    color: #8a52a2;
+}
+
+@media (max-width: 1200px) {
+    .receiving {
+        display: none;
+    }
+    .cny {
+        display: none;
+    }
+
+    .rate {
+        display: none;
+    }
+
+    .complete {
+        display: none;
+    }
+}
