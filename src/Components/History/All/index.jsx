@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+
+import { Switch, Route, Link, Redirect } from 'react-router-dom';
+import Detail from './Detail';
+
 import './index.scss';
 
 export default class All extends Component {
@@ -7,20 +11,19 @@ export default class All extends Component {
         date: null,
         usdtAmt: null,
         balance: null,
-        transactionToken: null,
         historyList: [],
         token: null,
         headers: null,
         transactionState: '',
+        showDetail: false,
+        detailToken: null,
     };
 
-    setRequestHeader = token => {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('login_session', token);
-
+    setDetailToken = detailToken => {
+        const { showDetail } = this.state;
         this.setState({
-            headers,
+            detailToken,
+            showDetail: !showDetail,
         });
     };
 
@@ -45,7 +48,6 @@ export default class All extends Component {
                 throw error;
             }
 
-            console.log(resData, 'res ok');
             const { data } = resData;
 
             const newData = data.map(h => {
@@ -77,18 +79,26 @@ export default class All extends Component {
             headers.append('login_session', token);
 
             this.getTransactions(token, headers);
+            // this.getDetail(token, headers);
         }
     }
     render() {
-        const { historyList } = this.state;
+        const { historyList, detailToken, showDetail } = this.state;
 
         return (
             <>
                 {historyList.map(h => (
-                    <div key={h.token} id="all" className="tabcontent">
+                    <Link
+                        to={`/home/history/all/${h.token}`}
+                        key={h.token}
+                        id="all"
+                        className="tabcontent"
+                        onClick={() => this.setDetailToken(h.token)}
+                        replace
+                    >
                         <div className="row easy_history2">
                             <div className="history-detail master-type">
-                                <div
+                                <span
                                     className={
                                         h.MasterType === '買'
                                             ? 'i_blue'
@@ -96,7 +106,7 @@ export default class All extends Component {
                                             ? 'i_green'
                                             : 'i_purple'
                                     }
-                                ></div>
+                                ></span>
                                 <span className="txt18">{h.MasterType}</span>
                             </div>
                             <div className="history-detail">
@@ -124,7 +134,14 @@ export default class All extends Component {
                                 <h6>狀態</h6>完成
                             </div>
                         </div>
-                    </div>
+
+                        {h.token === detailToken && showDetail ? (
+                            <Switch>
+                                <Route path={`/home/history/all/:id*`} component={Detail} />
+                                <Redirect to="/home/history/all" />
+                            </Switch>
+                        ) : null}
+                    </Link>
                 ))}
             </>
         );
