@@ -229,7 +229,7 @@ export default class MoneyRecord extends Component {
             <section>
                 <div className="container">
                     <div className="row">
-                        <div className="col-12">
+                        <div className="col-12 balance-box">
                             <div className="balance">
                                 結餘：
                                 <span className="usdt mr_sm"></span>
@@ -237,7 +237,7 @@ export default class MoneyRecord extends Component {
                                 <span className="c_green fs_20">{Real_Balance}</span>
                             </div>
 
-                            <div className="balance pl_6">
+                            <div className="balance">
                                 可提：
                                 <span className="usdt mr_sm"></span>
                                 <span className="c_green mr_sm">USDT</span>

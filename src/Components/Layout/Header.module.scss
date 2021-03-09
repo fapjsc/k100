@@ -13,6 +13,13 @@ header {
         height: 2rem;
         width: 13rem;
         margin-left: 3rem;
+        @media screen and(max-width: 30rem) {
+            margin-left: -1rem;
+        }
+
+        @media screen and(max-width: 13rem) {
+            display: none;
+        }
     }
 
     .navBar {
@@ -26,7 +33,7 @@ header {
 
     .navList {
         margin-left: auto;
-        align-items: center;
+        max-width: 95%;
     }
 
     .navLink:visited,
@@ -34,10 +41,6 @@ header {
         margin: 1rem 6rem 1rem 0;
         color: #fff;
         text-decoration: none;
-
-        @media only screen and (max-width: 767px) {
-            margin-left: -55rem;
-        }
 
         &:hover {
             color: #ddd;

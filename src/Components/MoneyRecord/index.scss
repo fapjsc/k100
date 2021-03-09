@@ -2,6 +2,11 @@
     color: #707070;
     display: inline;
     font-size: 12px;
+    margin-right: 2rem;
+
+    @media only screen and(max-width: 400px) {
+        margin-right: 0;
+    }
 
     .usdt {
         background-image: url(../../Assets/i_usdt_green.png);
@@ -10,5 +15,12 @@
         height: 12px;
         width: 13px;
         display: inline-block;
+    }
+}
+
+.balance-box {
+    @media only screen and(max-width: 400px) {
+        display: flex;
+        flex-direction: column;
     }
 }
