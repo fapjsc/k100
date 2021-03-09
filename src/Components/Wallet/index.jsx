@@ -12,8 +12,10 @@ export default class index extends Component {
         Real_Balance: null,
     };
 
-    getQrCode = async () => {
-        const token = localStorage.getItem('token');
+    getQrCode = async token => {
+        if (!token) {
+            return;
+        }
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
@@ -43,17 +45,6 @@ export default class index extends Component {
         }
     };
 
-    getBalance = () => {
-        console.log('test');
-        PubSub.subscribe('getBalance', (_, data) => {
-            const { Avb_Balance, Real_Balance } = data;
-            this.setState({
-                Real_Balance,
-                Avb_Balance,
-            });
-        });
-    };
-
     handleCopy = value => {
         copy(value);
 
@@ -64,9 +55,72 @@ export default class index extends Component {
         }
     };
 
+    getBalance = async token => {
+        if (!token) {
+            return;
+        }
+
+        const { history } = this.props;
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        const balanceApi = '/j/ChkBalance.aspx';
+
+        try {
+            const res = await fetch(balanceApi, {
+                headers: headers,
+            });
+
+            const resData = await res.json();
+
+            if (!res.ok) {
+                if (resData.code === '91' || resData.code === '90') {
+                    console.log('token 過期 => check tick');
+                    localStorage.removeItem('token');
+
+                    window.confirm('session過期，請重新登入');
+
+                    history.replace('/auth/login');
+                }
+
+                return;
+            }
+
+            const { Avb_Balance, Real_Balance } = resData.data;
+
+            this.setState({
+                Avb_Balance,
+                Real_Balance,
+            });
+
+            const balance = {
+                Avb_Balance,
+                Real_Balance,
+            };
+
+            PubSub.publish('getBalance', balance);
+        } catch (error) {
+            const errStr = String(error);
+            this.setState({
+                httpError: {
+                    title: 'Server錯誤',
+                    body: errStr,
+                },
+            });
+            clearInterval(this.checkTickLoop);
+
+            return;
+        }
+    };
+
     componentDidMount() {
-        this.getQrCode();
-        this.getBalance();
+        const token = localStorage.getItem('token');
+        if (token) {
+            this.getQrCode(token);
+            this.getBalance(token);
+        }
     }
 
     render() {

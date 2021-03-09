@@ -74,6 +74,17 @@ export default class MoneyRecord extends Component {
         }
     };
 
+    pubBalance = () => {
+        const { Avb_Balance, Real_Balance } = this.state;
+
+        const balance = {
+            Avb_Balance,
+            Real_Balance,
+        };
+
+        PubSub.publish('getBalance', balance);
+    };
+
     getTick = async token => {
         if (!token) {
             return;
@@ -209,6 +220,7 @@ export default class MoneyRecord extends Component {
 
     componentWillUnmount() {
         clearInterval(this.checkTickLoop);
+        this.pubBalance();
     }
 
     render() {

@@ -115,3 +115,15 @@ html {
 .h-large {
     height: 10rem;
 }
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #fff;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #ddd;
+}
+
+.navbar-collapse {
+    margin-left: 3rem;
+}

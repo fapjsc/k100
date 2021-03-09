@@ -16,10 +16,12 @@ header {
         width: 13rem;
         margin-left: 3rem;
     }
+
+    .navLink {
+        font-size: 100rem;
+    }
 }
 
-header a:link,
-header a:visited {
-    color: #fff;
-    margin-right: 6rem;
+.navbar-dark .navbar-nav .nav-link {
+    color: #fff !important;
 }
