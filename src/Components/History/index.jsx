@@ -20,7 +20,7 @@ export default class History extends Component {
     };
 
     render() {
-        const { historyState, isLoading } = this.state;
+        const { historyState } = this.state;
         return (
             <section className={style.section}>
                 <div className="container h_88">
@@ -54,10 +54,7 @@ export default class History extends Component {
                                 </div>
 
                                 <Switch>
-                                    <Route
-                                        path="/home/history/all"
-                                        render={() => <All historyState={historyState} />}
-                                    ></Route>
+                                    <Route path="/home/history/all" component={All}></Route>
                                     <Route path="/home/history/wait" component={Wait}></Route>
                                     <Redirect to="/home/history/all" />
                                 </Switch>

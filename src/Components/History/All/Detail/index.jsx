@@ -42,6 +42,8 @@ export default class Detail extends Component {
             });
             const resData = await res.json();
 
+            console.log(resData);
+
             if (!res.ok) {
                 this.setState({
                     isLoading: false,

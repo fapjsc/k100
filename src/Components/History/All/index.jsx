@@ -55,13 +55,16 @@ export default class All extends Component {
 
             const newData = data.map(h => {
                 if (h.MasterType === 0) {
-                    h.MasterType = '買';
+                    h.MasterType = '買入';
                     return h;
                 } else if (h.MasterType === 1) {
-                    h.MasterType = '賣';
+                    h.MasterType = '賣出';
+                    return h;
+                } else if (h.MasterType === 2) {
+                    h.MasterType = '轉出';
                     return h;
                 } else {
-                    h.MasterType = '轉';
+                    h.MasterType = '轉入';
                     return h;
                 }
             });
@@ -105,30 +108,42 @@ export default class All extends Component {
                                 onClick={() => this.setDetailToken(h.token)}
                                 replace
                             >
-                                <div className="row easy_history2">
+                                <div className="easy_history2">
                                     <div className="history-detail master-type">
                                         <div
                                             className={
-                                                h.MasterType === '買'
+                                                h.MasterType === '買入'
                                                     ? 'i_blue'
-                                                    : h.MasterType === '賣'
+                                                    : h.MasterType === '賣出'
                                                     ? 'i_green'
                                                     : 'i_purple'
                                             }
                                         ></div>
-                                        <span className="txt18">{h.MasterType}</span>
+                                        <span
+                                            className="txt18"
+                                            className={
+                                                h.MasterType === '買入'
+                                                    ? 'txt18'
+                                                    : h.MasterType === '賣出'
+                                                    ? 'txt18_g'
+                                                    : 'txt18_p'
+                                            }
+                                        >
+                                            {h.MasterType}
+                                        </span>
                                     </div>
                                     <div className="history-detail">
-                                        <h6>日期</h6>
-                                        {h.Date}
+                                        <h6 className="history-detail-title">日期</h6>
+                                        <span className="history-detail-text">{h.Date}</span>
                                     </div>
                                     <div className="history-detail">
-                                        <h6>交易額（USDT）</h6>
-                                        {h.UsdtAmt}
+                                        <h6 className="history-detail-title">交易額（USDT）</h6>
+                                        <span className="history-detail-text">{h.UsdtAmt}</span>
                                     </div>
+
                                     <div className="history-detail">
-                                        <h6>結餘（USDT）</h6>
-                                        {h.Balance}
+                                        <h6 className="history-detail-title">結餘（USDT）</h6>
+                                        <span className="history-detail-text">{h.Balance}</span>
                                     </div>
                                     {/* <div className="history-detail receiving ">
                                 <h6>收款賬號</h6>2783721947813471
@@ -139,8 +154,9 @@ export default class All extends Component {
                             <div className="history-detail rate">
                                 <h6>匯率</h6>6.224
                             </div> */}
-                                    <div className="history-detail complete">
-                                        <h6>狀態</h6>完成
+                                    <div className="history-detail">
+                                        <h6 className="history-detail-title">狀態</h6>
+                                        <span className="history-detail-text">完成</span>
                                     </div>
                                 </div>
                             </Link>
