@@ -9,11 +9,9 @@ import './App.scss';
 function App() {
     return (
         <Switch>
-            <Switch>
-                <Route path="/auth" component={Auth} />
-                <ProtectedRoute path="/home" component={Home} />
-                <Redirect to="/auth/login" />
-            </Switch>
+            <Route path="/auth" component={Auth} />
+            <ProtectedRoute path="/home" component={Home} />
+            <Redirect to="/auth/login" />
         </Switch>
     );
 }

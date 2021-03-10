@@ -26,9 +26,11 @@ export default class Detail extends Component {
             isLoading: true,
         });
 
-        const {
-            match: { params },
-        } = this.props;
+        // const {
+        //     match: { params },
+        // } = this.props;
+
+        const { detailToken } = this.props;
 
         const detailApi = '/j/GetTxDetail.aspx';
 
@@ -37,7 +39,7 @@ export default class Detail extends Component {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({
-                    Token: params.id,
+                    Token: detailToken,
                 }),
             });
             const resData = await res.json();

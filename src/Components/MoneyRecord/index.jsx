@@ -138,6 +138,9 @@ export default class MoneyRecord extends Component {
 
     checkTick = async token => {
         if (!token) {
+            const { history } = this.props;
+            history.replace('/auth/login');
+
             return;
         }
 

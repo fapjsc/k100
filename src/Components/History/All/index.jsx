@@ -102,7 +102,8 @@ export default class All extends Component {
                     historyList.map(h => (
                         <Fragment key={h.token}>
                             <Link
-                                to={`/home/history/all/${h.token}`}
+                                // to={`/home/history/all/${h.token}`}
+                                to={`/home/history/all/detail`}
                                 id="all"
                                 className="tabcontent"
                                 onClick={() => this.setDetailToken(h.token)}
@@ -120,7 +121,6 @@ export default class All extends Component {
                                             }
                                         ></div>
                                         <span
-                                            className="txt18"
                                             className={
                                                 h.MasterType === '買入'
                                                     ? 'txt18'
@@ -134,7 +134,9 @@ export default class All extends Component {
                                     </div>
                                     <div className="history-detail">
                                         <h6 className="history-detail-title">日期</h6>
-                                        <span className="history-detail-text">{h.Date}</span>
+                                        <span className="history-detail-text history-date">
+                                            {h.Date}
+                                        </span>
                                     </div>
                                     <div className="history-detail">
                                         <h6 className="history-detail-title">交易額（USDT）</h6>
@@ -156,14 +158,19 @@ export default class All extends Component {
                             </div> */}
                                     <div className="history-detail">
                                         <h6 className="history-detail-title">狀態</h6>
-                                        <span className="history-detail-text">完成</span>
+                                        <span className="history-detail-text history-complete">
+                                            完成
+                                        </span>
                                     </div>
                                 </div>
                             </Link>
 
                             {h.token === detailToken && showDetail ? (
                                 <Switch>
-                                    <Route path={`/home/history/all/:id*`} component={Detail} />
+                                    <Route
+                                        path={`/home/history/all/detail`}
+                                        component={() => <Detail detailToken={detailToken} />}
+                                    />
                                     <Redirect to="/home/history/all" />
                                 </Switch>
                             ) : null}
