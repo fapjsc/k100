@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
 import Detail from './Detail';
@@ -7,20 +7,12 @@ import './index.scss';
 
 export default class All extends Component {
     state = {
-        masterType: null,
-        date: null,
-        usdtAmt: null,
-        balance: null,
         historyList: [],
-        token: null,
-        headers: null,
-        transactionState: '',
-        showDetail: false,
         detailToken: null,
+        showDetail: false,
     };
 
     setDetailToken = detailToken => {
-        console.log('hi');
         const { showDetail } = this.state;
         this.setState({
             detailToken,
@@ -30,7 +22,6 @@ export default class All extends Component {
 
     getTransactions = async (token, headers) => {
         if (!token) {
-            console.log('return');
             return;
         }
 
@@ -52,10 +43,10 @@ export default class All extends Component {
             const { data } = resData;
 
             const newData = data.map(h => {
-                if (h.MasterType === 1) {
+                if (h.MasterType === 0) {
                     h.MasterType = '買';
                     return h;
-                } else if (h.MasterType === 2) {
+                } else if (h.MasterType === 1) {
                     h.MasterType = '賣';
                     return h;
                 } else {
@@ -80,7 +71,6 @@ export default class All extends Component {
             headers.append('login_session', token);
 
             this.getTransactions(token, headers);
-            // this.getDetail(token, headers);
         }
     }
     render() {
@@ -89,10 +79,9 @@ export default class All extends Component {
         return (
             <>
                 {historyList.map(h => (
-                    <>
+                    <Fragment key={h.token}>
                         <Link
                             to={`/home/history/all/${h.token}`}
-                            key={h.token}
                             id="all"
                             className="tabcontent"
                             onClick={() => this.setDetailToken(h.token)}
@@ -144,7 +133,7 @@ export default class All extends Component {
                                 <Redirect to="/home/history/all" />
                             </Switch>
                         ) : null}
-                    </>
+                    </Fragment>
                 ))}
             </>
         );

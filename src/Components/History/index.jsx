@@ -20,6 +20,7 @@ export default class History extends Component {
     };
 
     render() {
+        const { historyState } = this.state;
         return (
             <section className={style.section}>
                 <div className="container h_88">
@@ -27,13 +28,36 @@ export default class History extends Component {
                         <div className="col-12">
                             <p className="welcome_txt">歡迎登入</p>
                             <div className="contentbox">
-                                <div className="tab">
-                                    <Link to="/home/history/all">所有紀錄</Link>
-                                    <Link to="/home/history/wait">待處理</Link>
+                                <div className="history-tab">
+                                    <Link
+                                        to="/home/history/all"
+                                        className={
+                                            historyState === 'all'
+                                                ? 'history-link history-link-active'
+                                                : 'history-link'
+                                        }
+                                        onClick={() => this.handleHistoryState('all')}
+                                    >
+                                        所有紀錄
+                                    </Link>
+                                    <Link
+                                        to="/home/history/wait"
+                                        className={
+                                            historyState === 'wait'
+                                                ? 'history-link history-link-active'
+                                                : 'history-link'
+                                        }
+                                        onClick={() => this.handleHistoryState('wait')}
+                                    >
+                                        待處理
+                                    </Link>
                                 </div>
 
                                 <Switch>
-                                    <Route path="/home/history/all" component={All}></Route>
+                                    <Route
+                                        path="/home/history/all"
+                                        render={() => <All historyState={historyState} />}
+                                    ></Route>
                                     <Route path="/home/history/wait" component={Wait}></Route>
                                     <Redirect to="/home/history/all" />
                                 </Switch>

@@ -1,34 +1,28 @@
-.tab {
-    overflow: hidden;
-    border-bottom: 1px solid #d7e2f3;
-    color: #707070;
-}
+// .tab {
+//     overflow: hidden;
+//     border-bottom: 1px solid #d7e2f3;
+//     color: #707070;
+// }
 
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-    width: 49%;
-    color: #707070;
-    cursor: pointer;
-}
+// .tab button {
+//     background-color: inherit;
+//     float: left;
+//     border: none;
+//     outline: none;
+//     cursor: pointer;
+//     padding: 14px 16px;
+//     transition: 0.3s;
+//     font-size: 17px;
+//     width: 49%;
+//     color: #707070;
+//     cursor: pointer;
+// }
 
 /* Change background color of buttons on hover */
-.tab button:hover {
-    border-bottom: 2px solid #3f80fa;
-    color: #3f80fa;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-    border-bottom: 2px solid #3f80fa;
-    color: #3f80fa;
-}
+// .tab button:hover {
+//     border-bottom: 2px solid #3f80fa;
+//     color: #3f80fa;
+// }
 
 .contentbox {
     background-color: #fff;
@@ -36,4 +30,32 @@
     padding: 2.5rem;
     border-radius: 5px;
     max-width: 110rem;
+}
+
+.history-link {
+    &:link,
+    &:visited {
+        transition: 0.3s;
+        font-size: 2rem;
+        color: #707070;
+        padding: 2.2rem;
+        margin-right: 1rem;
+        text-decoration: none;
+    }
+
+    // &:active {
+    //     border-bottom: 1px solid #3f80fa;
+    // }
+}
+
+.history-link-active {
+    border-bottom: 1px solid #3f80fa;
+    color: #3f80fa !important;
+}
+
+.history-tab {
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }

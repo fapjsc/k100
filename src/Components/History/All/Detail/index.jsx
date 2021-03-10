@@ -7,7 +7,6 @@ import './index.scss';
 
 export default class Detail extends Component {
     state = {
-        detailToken: null,
         masterType: null,
         master: null,
         isLoading: false,
@@ -57,8 +56,6 @@ export default class Detail extends Component {
             this.setState({
                 masterType: data.MasterType,
             });
-
-            console.log(data);
 
             if (data.MasterType === 1 || data.MasterType === 0) {
                 this.setState({
