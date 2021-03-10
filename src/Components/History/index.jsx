@@ -20,7 +20,7 @@ export default class History extends Component {
     };
 
     render() {
-        const { historyState } = this.state;
+        const { historyState, isLoading } = this.state;
         return (
             <section className={style.section}>
                 <div className="container h_88">

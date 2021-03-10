@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
+
+import BaseSpinner from './../../Ui/BaseSpinner';
+
 import Detail from './Detail';
 
 import './index.scss';
@@ -10,6 +13,7 @@ export default class All extends Component {
         historyList: [],
         detailToken: null,
         showDetail: false,
+        isLoading: false,
     };
 
     setDetailToken = detailToken => {
@@ -25,6 +29,10 @@ export default class All extends Component {
             return;
         }
 
+        this.setState({
+            isLoading: true,
+        });
+
         const historyApi = '/j/GetTxHistory.aspx';
 
         try {
@@ -37,6 +45,9 @@ export default class All extends Component {
             if (!res.ok) {
                 const error = new Error(resData || 'something wrong');
                 console.log(resData, 'res error');
+                this.setState({
+                    isLoading: false,
+                });
                 throw error;
             }
 
@@ -58,8 +69,14 @@ export default class All extends Component {
             this.setState({
                 historyList: [...newData],
             });
+            this.setState({
+                isLoading: false,
+            });
         } catch (error) {
             console.log(error, 'catch');
+            this.setState({
+                isLoading: false,
+            });
         }
     };
 
@@ -74,45 +91,46 @@ export default class All extends Component {
         }
     }
     render() {
-        const { historyList, detailToken, showDetail } = this.state;
+        const { historyList, detailToken, showDetail, isLoading } = this.state;
 
         return (
             <>
-                {historyList.map(h => (
-                    <Fragment key={h.token}>
-                        <Link
-                            to={`/home/history/all/${h.token}`}
-                            id="all"
-                            className="tabcontent"
-                            onClick={() => this.setDetailToken(h.token)}
-                            replace
-                        >
-                            <div className="row easy_history2">
-                                <div className="history-detail master-type">
-                                    <div
-                                        className={
-                                            h.MasterType === '買'
-                                                ? 'i_blue'
-                                                : h.MasterType === '賣'
-                                                ? 'i_green'
-                                                : 'i_purple'
-                                        }
-                                    ></div>
-                                    <span className="txt18">{h.MasterType}</span>
-                                </div>
-                                <div className="history-detail">
-                                    <h6>日期</h6>
-                                    {h.Date}
-                                </div>
-                                <div className="history-detail">
-                                    <h6>交易額（USDT）</h6>
-                                    {h.UsdtAmt}
-                                </div>
-                                <div className="history-detail">
-                                    <h6>結餘（USDT）</h6>
-                                    {h.Balance}
-                                </div>
-                                {/* <div className="history-detail receiving ">
+                {!isLoading ? (
+                    historyList.map(h => (
+                        <Fragment key={h.token}>
+                            <Link
+                                to={`/home/history/all/${h.token}`}
+                                id="all"
+                                className="tabcontent"
+                                onClick={() => this.setDetailToken(h.token)}
+                                replace
+                            >
+                                <div className="row easy_history2">
+                                    <div className="history-detail master-type">
+                                        <div
+                                            className={
+                                                h.MasterType === '買'
+                                                    ? 'i_blue'
+                                                    : h.MasterType === '賣'
+                                                    ? 'i_green'
+                                                    : 'i_purple'
+                                            }
+                                        ></div>
+                                        <span className="txt18">{h.MasterType}</span>
+                                    </div>
+                                    <div className="history-detail">
+                                        <h6>日期</h6>
+                                        {h.Date}
+                                    </div>
+                                    <div className="history-detail">
+                                        <h6>交易額（USDT）</h6>
+                                        {h.UsdtAmt}
+                                    </div>
+                                    <div className="history-detail">
+                                        <h6>結餘（USDT）</h6>
+                                        {h.Balance}
+                                    </div>
+                                    {/* <div className="history-detail receiving ">
                                 <h6>收款賬號</h6>2783721947813471
                             </div>
                             <div className="history-detail cny">
@@ -121,20 +139,25 @@ export default class All extends Component {
                             <div className="history-detail rate">
                                 <h6>匯率</h6>6.224
                             </div> */}
-                                <div className="history-detail complete">
-                                    <h6>狀態</h6>完成
+                                    <div className="history-detail complete">
+                                        <h6>狀態</h6>完成
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
+                            </Link>
 
-                        {h.token === detailToken && showDetail ? (
-                            <Switch>
-                                <Route path={`/home/history/all/:id*`} component={Detail} />
-                                <Redirect to="/home/history/all" />
-                            </Switch>
-                        ) : null}
-                    </Fragment>
-                ))}
+                            {h.token === detailToken && showDetail ? (
+                                <Switch>
+                                    <Route path={`/home/history/all/:id*`} component={Detail} />
+                                    <Redirect to="/home/history/all" />
+                                </Switch>
+                            ) : null}
+                        </Fragment>
+                    ))
+                ) : (
+                    <div className="all-spinner">
+                        <BaseSpinner />
+                    </div>
+                )}
             </>
         );
     }
