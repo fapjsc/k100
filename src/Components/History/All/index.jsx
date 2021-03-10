@@ -20,6 +20,7 @@ export default class All extends Component {
     };
 
     setDetailToken = detailToken => {
+        console.log('hi');
         const { showDetail } = this.state;
         this.setState({
             detailToken,
@@ -88,40 +89,41 @@ export default class All extends Component {
         return (
             <>
                 {historyList.map(h => (
-                    <Link
-                        to={`/home/history/all/${h.token}`}
-                        key={h.token}
-                        id="all"
-                        className="tabcontent"
-                        onClick={() => this.setDetailToken(h.token)}
-                        replace
-                    >
-                        <div className="row easy_history2">
-                            <div className="history-detail master-type">
-                                <span
-                                    className={
-                                        h.MasterType === '買'
-                                            ? 'i_blue'
-                                            : h.MasterType === '賣'
-                                            ? 'i_green'
-                                            : 'i_purple'
-                                    }
-                                ></span>
-                                <span className="txt18">{h.MasterType}</span>
-                            </div>
-                            <div className="history-detail">
-                                <h6>日期</h6>
-                                {h.Date}
-                            </div>
-                            <div className="history-detail">
-                                <h6>交易額（USDT）</h6>
-                                {h.UsdtAmt}
-                            </div>
-                            <div className="history-detail">
-                                <h6>結餘（USDT）</h6>
-                                {h.Balance}
-                            </div>
-                            <div className="history-detail receiving ">
+                    <>
+                        <Link
+                            to={`/home/history/all/${h.token}`}
+                            key={h.token}
+                            id="all"
+                            className="tabcontent"
+                            onClick={() => this.setDetailToken(h.token)}
+                            replace
+                        >
+                            <div className="row easy_history2">
+                                <div className="history-detail master-type">
+                                    <div
+                                        className={
+                                            h.MasterType === '買'
+                                                ? 'i_blue'
+                                                : h.MasterType === '賣'
+                                                ? 'i_green'
+                                                : 'i_purple'
+                                        }
+                                    ></div>
+                                    <span className="txt18">{h.MasterType}</span>
+                                </div>
+                                <div className="history-detail">
+                                    <h6>日期</h6>
+                                    {h.Date}
+                                </div>
+                                <div className="history-detail">
+                                    <h6>交易額（USDT）</h6>
+                                    {h.UsdtAmt}
+                                </div>
+                                <div className="history-detail">
+                                    <h6>結餘（USDT）</h6>
+                                    {h.Balance}
+                                </div>
+                                {/* <div className="history-detail receiving ">
                                 <h6>收款賬號</h6>2783721947813471
                             </div>
                             <div className="history-detail cny">
@@ -129,11 +131,12 @@ export default class All extends Component {
                             </div>
                             <div className="history-detail rate">
                                 <h6>匯率</h6>6.224
+                            </div> */}
+                                <div className="history-detail complete">
+                                    <h6>狀態</h6>完成
+                                </div>
                             </div>
-                            <div className="history-detail complete">
-                                <h6>狀態</h6>完成
-                            </div>
-                        </div>
+                        </Link>
 
                         {h.token === detailToken && showDetail ? (
                             <Switch>
@@ -141,7 +144,7 @@ export default class All extends Component {
                                 <Redirect to="/home/history/all" />
                             </Switch>
                         ) : null}
-                    </Link>
+                    </>
                 ))}
             </>
         );
