@@ -139,78 +139,60 @@ export default class Detail extends Component {
                 ) : !isLoading && error ? (
                     <h1>test</h1>
                 ) : (
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
+                    <ul>
+                        <li className="thead">
+                            <ol className="tr">
                                 {masterType === 1 || masterType === 0 ? (
                                     <>
-                                        <th>日期</th>
-                                        <th>交易回執</th>
-                                        <th>UsdtAmt</th>
-                                        <th>帳號</th>
-                                        <th>收款人</th>
-                                        <th>銀行</th>
-                                        <th>分行</th>
-                                        <th>兌換費</th>
-                                        <th>RMB</th>
-                                        <th>手續費 %</th>
-                                        <th>State</th>
+                                        <li>交易回執</li>
+                                        <li>帳號</li>
+                                        <li>收款人</li>
+                                        <li>銀行</li>
+                                        <li>分行</li>
+                                        <li>手續費 %</li>
+                                        <li>兌換費</li>
+                                        <li>RMB</li>
                                     </>
                                 ) : masterType === 2 ? (
                                     <>
-                                        <th>日期</th>
-                                        <th>交易回執</th>
-                                        <th>UsdtAmt</th>
-                                        <th>收款地址</th>
-                                        <th>手續費</th>
-                                        <th>State</th>
+                                        <li>交易回執</li>
+                                        <li>收款地址</li>
+                                        <li>手續費</li>
                                     </>
                                 ) : masterType === 3 ? (
                                     <>
-                                        <th>日期</th>
-                                        <th>交易回執</th>
-                                        <th>UsdtAmt</th>
-                                        <th>State</th>
+                                        <li>交易回執</li>
                                     </>
                                 ) : null}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
+                            </ol>
+                        </li>
+                        <li className="tbody">
+                            <ol className="tr">
                                 {(masterType === 0 || masterType === 1) && master ? (
                                     <>
-                                        <td>{master.date}</td>
-                                        <td>{master.txHASH}</td>
-                                        <td>{master.usdtAmt}</td>
-                                        <td>{master.account}</td>
-                                        <td>{master.payee}</td>
-                                        <td>{master.bank}</td>
-                                        <td>{master.branch}</td>
-                                        <td>{master.exchangePrice}</td>
-                                        <td>{master.rmb}</td>
-                                        <td>{master.charge}%</td>
-                                        <td>{master.orderState}</td>
+                                        <li data-title="交易回執">{master.txHASH}</li>
+                                        <li data-title="帳號">{master.account}</li>
+                                        <li data-title="收款人">{master.payee}</li>
+                                        <li data-title="銀行">{master.bank}</li>
+                                        <li data-title="分行">{master.branch}</li>
+                                        <li data-title="手續費 %">{master.charge}%</li>
+                                        <li data-title="兌換費">{master.exchangePrice}</li>
+                                        <li data-title="RMB">{master.rmb}</li>
                                     </>
                                 ) : masterType === 2 && master ? (
                                     <>
-                                        <td>{master.date}</td>
-                                        <td>{master.txHASH}</td>
-                                        <td>{master.usdtAmt}</td>
-                                        <td>{master.receivingAddress}</td>
-                                        <td>{master.charge}</td>
-                                        <td>{master.orderState}</td>
+                                        <li data-title="交易回執">{master.txHASH}</li>
+                                        <li data-title="收款地址">{master.receivingAddress}</li>
+                                        <li data-title="手續費">{master.charge}</li>
                                     </>
                                 ) : masterType === 3 && master ? (
                                     <>
-                                        <td>{master.date}</td>
-                                        <td>{master.txHASH}</td>
-                                        <td>{master.usdtAmt}</td>
-                                        <td>{master.orderState}</td>
+                                        <li data-title="交易回執">{master.txHASH}</li>
                                     </>
                                 ) : null}
-                            </tr>
-                        </tbody>
-                    </Table>
+                            </ol>
+                        </li>
+                    </ul>
                 )}
             </div>
         );
