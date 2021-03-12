@@ -9,16 +9,23 @@ import './App.scss';
 function App() {
     const [isAuth, setIsAuth] = useState(false);
 
-    const test = token => {
+    const setAuth = token => {
+        console.log('call test', token);
         if (token) {
             setIsAuth(true);
+        } else {
+            setIsAuth(false);
         }
     };
     return (
         <Switch>
             <Switch>
-                <Route path="/auth" component={props => <Auth {...props} test={test} />} />
-                <ProtectedRoute isAuth={isAuth} path="/home" component={Home} />
+                <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
+                <ProtectedRoute
+                    isAuth={isAuth}
+                    path="/home"
+                    component={props => <Home {...props} setAuth={setAuth} />}
+                />
                 <Redirect to="/auth/login" />
             </Switch>
         </Switch>

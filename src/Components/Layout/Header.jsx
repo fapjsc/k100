@@ -17,6 +17,8 @@ export default class Header extends Component {
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
 
+        this.props.setAuth();
+
         let logoutApi = '/j/logout.aspx';
         try {
             fetch(logoutApi, { headers });

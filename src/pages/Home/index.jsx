@@ -30,11 +30,11 @@ export default class index extends Component {
     }
 
     render() {
-        const { history } = this.props;
+        const { history, setAuth } = this.props;
         const { token } = this.state;
         return (
             <>
-                <Header history={history} token={token} />
+                <Header history={history} token={token} setAuth={setAuth} />
                 <MoneyRecord history={history} />
                 <Switch>
                     <Route path="/home/overview" component={Overview} />

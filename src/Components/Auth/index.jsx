@@ -36,20 +36,15 @@ export default class Auth extends Component {
     setUserAuth = token => {
         console.log('set user auth');
         if (token) {
-            console.log(token);
-            console.log('have token');
-            // this.props.history.replace('/home');
             this.setState(
                 {
                     token,
                 },
                 () => {
-                    this.props.test(token);
+                    this.props.setAuth(token);
                     this.props.history.replace('/home');
                 }
             );
-        } else {
-            return;
         }
     };
 
@@ -96,13 +91,9 @@ export default class Auth extends Component {
             });
         }
 
-        // const token = localStorage.getItem('token');
-        // if (isAuthenticated) {
+        // if (token) {
         //     this.props.history.replace('/home');
         // }
-
-        this.setUserAuth(token);
-        // this.props.history.replace('/home');
     }
 
     render() {
