@@ -11,6 +11,7 @@ export default class index extends Component {
         confirmPassword: '',
         error: '',
         isLoading: false,
+        agreementConfirm: false,
     };
 
     setPhoneNumber = event => {
@@ -31,8 +32,10 @@ export default class index extends Component {
         });
     };
 
-    handleRegisterSubmit = async event => {
+    handleRegisterSubmit = event => {
         event.preventDefault(); //防止表單提交
+
+        console.log(this.state);
     };
 
     render() {
@@ -78,13 +81,7 @@ export default class index extends Component {
                         <span>{`《用戶協議》`}</span>
                     </Form.Group>
 
-                    <Button
-                        onClick={this.handleLoginSubmit}
-                        className="form-btn"
-                        variant="primary"
-                        block
-                        type="submit"
-                    >
+                    <Button className="form-btn" variant="primary" block type="submit">
                         註冊
                     </Button>
                 </Form>

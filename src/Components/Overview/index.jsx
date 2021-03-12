@@ -12,7 +12,7 @@ export default class index extends Component {
                         <div className="col-12">
                             <p className="welcome_txt">歡迎登入</p>
                             <div className="col-md-3 col-sm-6 col-12 d-inline-block">
-                                <Link className="home_btn" to="#">
+                                <Link className="home_btn" to="/home/transaction">
                                     <div className="trade"></div>
                                     <p>買賣</p>
                                 </Link>

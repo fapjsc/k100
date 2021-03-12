@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
 
 import './index.scss';
@@ -129,6 +128,7 @@ export default class Detail extends Component {
 
     render() {
         const { masterType, master, isLoading, error } = this.state;
+        console.log(this.props.detailToken);
 
         return (
             <div className="detail-box">

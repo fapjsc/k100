@@ -146,7 +146,6 @@ export default class LoginForm extends Component {
         }
 
         setLoadingState(true);
-        console.log('object');
         let loginApi = '/j/login.aspx';
 
         try {
@@ -174,6 +173,7 @@ export default class LoginForm extends Component {
 
             setLoadingState(false);
             localStorage.setItem('token', login_session);
+            console.log('調用 setUserAuth');
             this.props.setUserAuth(login_session);
         } catch (error) {
             setLoadingState(false);

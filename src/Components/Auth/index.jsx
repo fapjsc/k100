@@ -13,7 +13,7 @@ import './index.scss';
 export default class Auth extends Component {
     state = {
         formState: '登入',
-        isAuthenticated: true,
+        isAuthenticated: false,
         token: null,
         isLoading: false,
         httpError: null,
@@ -21,6 +21,7 @@ export default class Auth extends Component {
 
     toggleForm = mode => {
         let { formState } = this.state;
+        console.log('toggleForm');
 
         if (mode === '登入') {
             formState = '登入';
@@ -33,21 +34,36 @@ export default class Auth extends Component {
     };
 
     setUserAuth = token => {
+        console.log('set user auth');
         if (token) {
-            this.setState({
-                isAuthenticated: true,
-            });
-            this.props.history.replace('/home');
+            console.log(token);
+            console.log('have token');
+            // this.props.history.replace('/home');
+            this.setState(
+                {
+                    token,
+                },
+                () => {
+                    this.props.test(token);
+                    this.props.history.replace('/home');
+                }
+            );
+        } else {
+            return;
         }
     };
 
     setLoadingState = isLoading => {
+        console.log('setLoadingState');
+
         this.setState({
             isLoading,
         });
     };
 
     setHttpError = (errTitle, errBody) => {
+        console.log('setHttpError');
+
         const err = String(errBody);
         this.setState({
             httpError: {
@@ -58,12 +74,17 @@ export default class Auth extends Component {
     };
 
     closeDialog = () => {
+        console.log('closeDialog');
+
         this.setState({
             httpError: null,
         });
     };
 
     componentDidMount() {
+        console.log('auth component did mount');
+        const token = localStorage.getItem('token');
+        const { isAuthenticated } = this.state;
         let curPath = window.location.pathname;
         if (curPath === '/register') {
             this.setState({
@@ -75,10 +96,13 @@ export default class Auth extends Component {
             });
         }
 
-        const token = localStorage.getItem('token');
-        if (token) {
-            this.props.history.replace('/home');
-        }
+        // const token = localStorage.getItem('token');
+        // if (isAuthenticated) {
+        //     this.props.history.replace('/home');
+        // }
+
+        this.setUserAuth(token);
+        // this.props.history.replace('/home');
     }
 
     render() {

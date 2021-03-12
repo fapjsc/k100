@@ -39,7 +39,7 @@ export default class MoneyRecord extends Component {
                     console.log('token 過期 => check tick');
                     localStorage.removeItem('token');
 
-                    window.confirm('session過期，請重新登入');
+                    window.confirm('session過期，請重新登入 get balance');
 
                     history.replace('/auth/login');
                 }
@@ -64,7 +64,7 @@ export default class MoneyRecord extends Component {
             const errStr = String(error);
             this.setState({
                 httpError: {
-                    title: 'Server錯誤',
+                    title: '發生錯誤，from get balance',
                     body: errStr,
                 },
             });
@@ -110,7 +110,7 @@ export default class MoneyRecord extends Component {
                     console.log('token 過期 => check tick');
                     localStorage.removeItem('token');
 
-                    window.confirm('session過期，請重新登入');
+                    window.confirm('session過期，請重新登入 get tick');
 
                     history.replace('/auth/login');
                 }
@@ -126,7 +126,7 @@ export default class MoneyRecord extends Component {
             const errStr = String(error);
             this.setState({
                 httpError: {
-                    title: 'Server錯誤',
+                    title: '發生錯誤，from get tick',
                     body: errStr,
                 },
             });
@@ -167,7 +167,7 @@ export default class MoneyRecord extends Component {
                     console.log('token 過期 => check tick');
                     localStorage.removeItem('token');
 
-                    window.confirm('session過期，請重新登入');
+                    window.confirm('session過期，請重新登入 check tick');
 
                     history.replace('/auth/login');
                 }
@@ -184,7 +184,7 @@ export default class MoneyRecord extends Component {
             const errStr = String(error);
             this.setState({
                 httpError: {
-                    title: 'Server錯誤',
+                    title: '發生錯誤，from check tick',
                     body: errStr,
                 },
             });
