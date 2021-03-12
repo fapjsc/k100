@@ -79,7 +79,6 @@ export default class Auth extends Component {
     componentDidMount() {
         console.log('auth component did mount');
         const token = localStorage.getItem('token');
-        const { isAuthenticated } = this.state;
         let curPath = window.location.pathname;
         if (curPath === '/register') {
             this.setState({
@@ -91,9 +90,9 @@ export default class Auth extends Component {
             });
         }
 
-        // if (token) {
-        //     this.props.history.replace('/home');
-        // }
+        if (token) {
+            this.setUserAuth(token);
+        }
     }
 
     render() {

@@ -155,7 +155,11 @@ export default class Transaction extends Component {
         const transactionApi = 'j/ws_orderstatus.ashx';
         const url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
 
-        const client = new ReconnectingWebSocket(url);
+        const options = {
+            maxRetries: 1,
+        };
+
+        const client = new ReconnectingWebSocket(url, [], options);
 
         // 1.建立連接
         client.onopen = () => {
@@ -170,12 +174,12 @@ export default class Transaction extends Component {
             const dataFromServer = JSON.parse(message.data);
             console.log('got reply!');
 
-            // 第一次返回
+            // 第一次返回後設定state
             this.setState({
                 transferData: dataFromServer.data,
             });
 
-            // 配對成功後返回
+            // 配對成功後返回設定狀態
             if (this.state.transferData.Tx_HASH) {
                 this.setState({
                     pair: true,
