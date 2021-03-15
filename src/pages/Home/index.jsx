@@ -1,16 +1,41 @@
 import React, { Component } from 'react';
 import Header from '../../Components/Layout/Header';
+import TheNav from '../../Components/Layout/TheNav';
+
 import MoneyRecord from '../../Components/MoneyRecord';
 import Overview from '../../Components/Overview';
 import Wallet from '../../Components/Wallet';
 import History from '../../Components/History';
 import Transaction from '../../Components/Transaction';
 
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, Link } from 'react-router-dom';
+
+import style from '../../Components/Layout/Header.module.scss';
 
 export default class index extends Component {
     state = {
         token: null,
+    };
+
+    logout = async () => {
+        window.confirm('確定要登出嗎');
+
+        const { token, history } = this.props;
+        localStorage.removeItem('token');
+        history.replace('/login');
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        this.props.setAuth();
+
+        let logoutApi = '/j/logout.aspx';
+        try {
+            fetch(logoutApi, { headers });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     componentDidMount() {
@@ -34,7 +59,12 @@ export default class index extends Component {
         const { token } = this.state;
         return (
             <>
-                <Header history={history} token={token} setAuth={setAuth} />
+                <Header history={history} token={token} setAuth={setAuth}>
+                    <Link to="/home" className={style.logoLink}>
+                        <div className={style.logo}></div>
+                    </Link>
+                    <TheNav logout={this.logout} />
+                </Header>
                 <MoneyRecord history={history} />
                 <Switch>
                     <Route path="/home/overview" component={Overview} />

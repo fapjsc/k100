@@ -27,6 +27,7 @@
     text-align: center;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid #ddd;
+    color: grey;
 
     width: 50%;
     &:link,
@@ -39,4 +40,5 @@
 .isActive {
     border-bottom: 3px solid #3f80fa;
     width: 50%;
+    color: #3f80fa;
 }

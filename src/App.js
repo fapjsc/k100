@@ -10,7 +10,6 @@ function App() {
     const [isAuth, setIsAuth] = useState(false);
 
     const setAuth = token => {
-        console.log('call test', token);
         if (token) {
             setIsAuth(true);
         } else {

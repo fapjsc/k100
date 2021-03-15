@@ -8,10 +8,10 @@ import './index.scss';
 
 export default class LoginForm extends Component {
     state = {
-        Login_countrycode: {
-            val: null,
-            isValid: true,
-        },
+        // Login_countrycode: {
+        //     val: null,
+        //     isValid: true,
+        // },
         phoneNumber: {
             val: '',
             isValid: true,
@@ -31,23 +31,23 @@ export default class LoginForm extends Component {
             formErrors: [],
         });
 
-        const { phoneNumber, password, Login_countrycode: countryCode } = this.state;
+        const { phoneNumber, password } = this.state;
 
         let error = [];
 
         // 驗證區碼
-        if (countryCode.val === null) {
-            error.push('請選擇區碼');
+        // if (countryCode.val === null) {
+        //     error.push('請選擇區碼');
 
-            this.setState({
-                Login_countrycode: {
-                    val: null,
-                    isValid: false,
-                },
-                formIsValid: false,
-                formErrors: [...error],
-            });
-        }
+        //     this.setState({
+        //         Login_countrycode: {
+        //             val: null,
+        //             isValid: false,
+        //         },
+        //         formIsValid: false,
+        //         formErrors: [...error],
+        //     });
+        // }
 
         // 驗證電話號碼
         if (phoneNumber.val === '' || !validator.isMobilePhone(phoneNumber.val)) {
@@ -81,39 +81,39 @@ export default class LoginForm extends Component {
     };
 
     // 保存區碼
-    setCountryCode = event => {
-        const { target } = event;
+    // setCountryCode = event => {
+    //     const { target } = event;
 
-        if (target.value.includes('台灣')) {
-            this.setState({
-                Login_countrycode: {
-                    val: 886,
-                    isValid: true,
-                },
-            });
-        } else if (target.value.includes('中國')) {
-            this.setState({
-                Login_countrycode: {
-                    val: 86,
-                    isValid: true,
-                },
-            });
-        } else if (target.value.includes('香港')) {
-            this.setState({
-                Login_countrycode: {
-                    val: 852,
-                    isValid: true,
-                },
-            });
-        } else {
-            this.setState({
-                Login_countrycode: {
-                    val: null,
-                    isValid: false,
-                },
-            });
-        }
-    };
+    //     if (target.value.includes('台灣')) {
+    //         this.setState({
+    //             Login_countrycode: {
+    //                 val: 886,
+    //                 isValid: true,
+    //             },
+    //         });
+    //     } else if (target.value.includes('中國')) {
+    //         this.setState({
+    //             Login_countrycode: {
+    //                 val: 86,
+    //                 isValid: true,
+    //             },
+    //         });
+    //     } else if (target.value.includes('香港')) {
+    //         this.setState({
+    //             Login_countrycode: {
+    //                 val: 852,
+    //                 isValid: true,
+    //             },
+    //         });
+    //     } else {
+    //         this.setState({
+    //             Login_countrycode: {
+    //                 val: null,
+    //                 isValid: false,
+    //             },
+    //         });
+    //     }
+    // };
     // 保存使用者輸入的密碼到state
     setPassword = event => {
         this.setState({
@@ -138,7 +138,7 @@ export default class LoginForm extends Component {
     handleLoginSubmit = async event => {
         event.preventDefault(); //防止表單提交
         await this.validateForm();
-        const { formIsValid, phoneNumber, password, Login_countrycode: countryCode } = this.state;
+        const { formIsValid, phoneNumber, password } = this.state;
         const { setLoadingState, setHttpError } = this.props;
 
         if (!formIsValid) {
@@ -152,7 +152,7 @@ export default class LoginForm extends Component {
             const res = await fetch(loginApi, {
                 method: 'POST',
                 body: JSON.stringify({
-                    Login_countrycode: countryCode.val,
+                    Login_countrycode: 86,
                     Login_tel: phoneNumber.val,
                     Login_pwd: password.val,
                 }),
@@ -183,11 +183,11 @@ export default class LoginForm extends Component {
     };
 
     render() {
-        const { password, phoneNumber, formErrors, Login_countrycode: countryCode } = this.state;
+        const { password, phoneNumber, formErrors } = this.state;
         return (
             <div className="form-container">
                 <Form>
-                    <Form.Control
+                    {/* <Form.Control
                         isInvalid={!countryCode.isValid}
                         as="select"
                         defaultValue="區號"
@@ -198,7 +198,7 @@ export default class LoginForm extends Component {
                         <option>台灣 ＋886</option>
                         <option>中國 ＋86</option>
                         <option>香港 ＋852</option>
-                    </Form.Control>
+                    </Form.Control> */}
 
                     <Form.Group controlId="formBasicPhoneNumber">
                         <Form.Control
@@ -206,7 +206,7 @@ export default class LoginForm extends Component {
                             className="form-input"
                             size="lg"
                             type="tel"
-                            placeholder="電話號碼"
+                            placeholder="手機號碼"
                             onChange={this.setPhoneNumber}
                         />
                     </Form.Group>
@@ -242,7 +242,7 @@ export default class LoginForm extends Component {
                     <div className="forget_pw-box">
                         <Link to="/forget-pw" className="forget_pw-link">
                             <span className="forget_pw"></span>
-                            忘記密碼
+                            <u>忘記密碼</u>
                         </Link>
                     </div>
                 </Form>

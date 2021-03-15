@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
-import Spinner from 'react-bootstrap/Spinner';
+import Countdown from 'react-countdown';
+
+import Button from 'react-bootstrap/Button';
+
 import './index.scss';
+import BuyCount from './BuyCount';
+import ConfirmBuy from './ConfirmBuy';
 
 export default class Transaction extends Component {
     state = {
@@ -18,6 +23,9 @@ export default class Transaction extends Component {
         transferData: null,
         pair: false,
         isPairing: false,
+        transactionState: 'buy',
+        pairFinish: false,
+        data: {},
     };
 
     // 獲取匯率
@@ -89,6 +97,45 @@ export default class Transaction extends Component {
         });
     };
 
+    payComplete = () => {
+        console.log(this.state.orderToken);
+        // const payCompleteApi = `/j/Req_Buy2.aspx`;
+
+        // const res = await fetch(payCompleteApi, {
+        //     method: "POST",
+        //     headers,
+        //     body: JSON.stringify({
+
+        //     })
+        // })
+    };
+
+    confirmPay = async () => {
+        const token = localStorage.getItem('token');
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        try {
+            console.log('call buy2 api');
+            const reqBuy2Api = `/j/Req_Buy2.aspx`;
+
+            const res = await fetch(reqBuy2Api, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    Token: this.state.orderToken,
+                }),
+            });
+
+            const resData = await res.json();
+
+            console.log(resData, 'buy2');
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     handleConfirm = async () => {
         const { usdtAmt, clientName } = this.state;
 
@@ -98,6 +145,8 @@ export default class Transaction extends Component {
         headers.append('login_session', token);
 
         try {
+            console.log('call buy1 api');
+
             const reqBuyApi = `/j/Req_Buy1.aspx`;
             const res = await fetch(reqBuyApi, {
                 method: 'POST',
@@ -113,6 +162,8 @@ export default class Transaction extends Component {
             const {
                 data: { order_token },
             } = resData;
+
+            console.log(resData, 'buy-1');
 
             this.setState(
                 {
@@ -136,12 +187,14 @@ export default class Transaction extends Component {
     componentDidMount() {
         const token = localStorage.getItem('token');
         if (token) {
-            this.setState({
-                loginSession: token,
-            });
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
             headers.append('login_session', token);
+
+            this.setState({
+                loginSession: token,
+                headers,
+            });
 
             this.getExRate(headers);
         } else {
@@ -155,11 +208,12 @@ export default class Transaction extends Component {
         const transactionApi = 'j/ws_orderstatus.ashx';
         const url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
 
-        const options = {
-            maxRetries: 1,
-        };
+        // 自動重連次數
+        // const options = {
+        //     maxRetries: null,
+        // };
 
-        const client = new ReconnectingWebSocket(url, [], options);
+        const client = new ReconnectingWebSocket(url);
 
         // 1.建立連接
         client.onopen = () => {
@@ -172,7 +226,7 @@ export default class Transaction extends Component {
         // 2.收到server回復
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
-            console.log('got reply!');
+            // console.log('got reply!', dataFromServer);
 
             // 第一次返回後設定state
             this.setState({
@@ -184,6 +238,7 @@ export default class Transaction extends Component {
                 this.setState({
                     pair: true,
                     isPairing: false,
+                    pairFinish: true,
                 });
             }
         };
@@ -195,7 +250,17 @@ export default class Transaction extends Component {
     };
 
     render() {
-        const { exRate, rmbAmt, usdtAmt, confirmPay, transferData, pair, isPairing } = this.state;
+        const {
+            exRate,
+            rmbAmt,
+            usdtAmt,
+            confirmPay,
+            transferData,
+            pair,
+            isPairing,
+            transactionState,
+            pairFinish,
+        } = this.state;
 
         return (
             <section className="overview bg_grey">
@@ -205,94 +270,111 @@ export default class Transaction extends Component {
                             <p className="welcome_txt">歡迎登入</p>
                         </div>
                         <div className="col-12 transaction-card">
-                            {/* <nav>
-                                <Link>購買</Link>
-                                <Link>出售</Link>
-                                <Link>轉帳</Link>
-                            </nav> */}
+                            <div className="history-tab trans-tab">
+                                <Link
+                                    to="/home"
+                                    className={
+                                        transactionState === 'buy'
+                                            ? 'history-link history-link-active'
+                                            : 'history-link'
+                                    }
+                                >
+                                    購買
+                                </Link>
+                                <Link
+                                    to="/home"
+                                    className={
+                                        transactionState === 'sell'
+                                            ? 'history-link history-link-active'
+                                            : 'history-link'
+                                    }
+                                >
+                                    出售
+                                </Link>
 
-                            <div>
-                                <p>購買USDT</p>
+                                <Link
+                                    to="/home"
+                                    className={
+                                        transactionState === 'sell'
+                                            ? 'history-link history-link-active'
+                                            : 'history-link'
+                                    }
+                                >
+                                    轉帳
+                                </Link>
+                            </div>
+
+                            <p>購買USDT</p>
+                            <div className="pay-info">
                                 <p>匯率 : {exRate ? exRate.RMB_BUY : null}</p>
                                 <p>付款窗口 : 30分鐘</p>
                                 <p>限額 : 200 - 1230</p>
                             </div>
 
                             {/* 申請購買 */}
-                            <div>
-                                <div>
-                                    <input
-                                        placeholder={usdtAmt ? usdtAmt : 'USDT'}
-                                        onChange={this.getUsdtAmt}
-                                    />
-                                    <p>手續費: 5.00USDT</p>
-                                </div>
-
-                                <div>
-                                    <input
-                                        placeholder={rmbAmt ? rmbAmt : 'CNY'}
-                                        onChange={this.getRmbAmt}
-                                    />
-                                </div>
-
-                                <div>
-                                    <br />
-
-                                    <div>
-                                        <input
-                                            placeholder="請輸入姓名"
-                                            onChange={this.getClientName}
-                                        />
-                                        <p>請輸入真實姓名</p>
-                                    </div>
-                                    <button onClick={this.showPayDetail}>下一步</button>
-                                </div>
-                            </div>
-
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-
-                            {/* 配對成功 */}
 
                             <div>
                                 {confirmPay ? (
-                                    <>
-                                        <div>
-                                            <p>總價: {rmbAmt}</p>
-                                            <p>數量: {usdtAmt}</p>
-                                            <p>單價: {rmbAmt / usdtAmt}</p>
-                                            <button onClick={this.handleConfirm}>開始配對</button>
-                                            <br />
-                                            <br />
-                                            <br />
-                                            <br />
-                                            <br />
-                                        </div>
-                                    </>
-                                ) : null}
+                                    <ConfirmBuy
+                                        getClientName={this.getClientName}
+                                        handleConfirm={this.handleConfirm}
+                                        usdtAmt={usdtAmt}
+                                        rmbAmt={rmbAmt}
+                                        pairFinish={pairFinish}
+                                        pair={pair}
+                                        isPairing={isPairing}
+                                    />
+                                ) : (
+                                    <BuyCount
+                                        showPayDetail={this.showPayDetail}
+                                        getRmbAmt={this.getRmbAmt}
+                                        getUsdtAmt={this.getUsdtAmt}
+                                        usdtAmt={usdtAmt}
+                                        rmbAmt={rmbAmt}
+                                    />
+                                )}
 
-                                <div>
-                                    {isPairing ? (
-                                        <Spinner animation="grow" variant="danger" />
-                                    ) : pair && transferData.MasterType === 0 ? (
-                                        <>
-                                            <div>
-                                                <p>轉帳資料</p>
-                                                <p>剩餘支付時間: 15分40秒</p>
+                                {/* 配對成功 */}
+                                {
+                                    <div>
+                                        {isPairing ? null : pair &&
+                                          transferData.MasterType === 0 ? (
+                                            <div className="pairBox">
+                                                <div className="pair-titleBox">
+                                                    <p>轉帳資料</p>
+                                                    <p>
+                                                        剩餘支付時間:
+                                                        <span className="payTime">
+                                                            <Countdown
+                                                                date={Date.now() + 5000}
+                                                            ></Countdown>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div className="pair-textBox">
+                                                    <p>
+                                                        付款金額: &emsp;
+                                                        <span>{transferData.D2}</span>
+                                                    </p>
+                                                    <p>收款姓名: {transferData.P2}</p>
+                                                    <p>付款帳號: {transferData.P1}</p>
+                                                    <p>開戶銀行: {transferData.P3}</p>
+                                                    <p>所在省市: {transferData.P4}</p>
+                                                </div>
+                                                <div className="pairFoot">
+                                                    <Button
+                                                        variant="primary"
+                                                        className="pairFoot-btn"
+                                                        onClick={this.confirmPay}
+                                                    >
+                                                        已完成付款，下一步...
+                                                    </Button>
+                                                    <p>取消訂單</p>
+                                                </div>
                                             </div>
-                                            <p>付款金額: {rmbAmt}</p>
-                                            <p>收款姓名: {transferData.P2}</p>
-                                            <p>付款帳號: {transferData.P1}</p>
-                                            <p>開戶銀行: {transferData.P3}</p>
-                                            <p>所在省市: {transferData.P4}</p>
-                                            <button>已完成付款，下一步</button>
-                                            <p>取消訂單</p>
-                                        </>
-                                    ) : null}
-                                </div>
+                                        ) : null}
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

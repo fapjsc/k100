@@ -1,10 +1,9 @@
 header {
-    background-color: #242e47;
-    font-size: 1.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
+    
+   
+
+    
     .logo {
         background-image: url('../../Assets/logo_easy.png');
         background-position: center;
@@ -13,6 +12,10 @@ header {
         height: 2rem;
         width: 13rem;
         margin-left: 3rem;
+
+        @media screen and(max-width: 480px) {
+        }
+
         @media screen and(max-width: 30rem) {
             margin-left: -1rem;
         }
@@ -22,23 +25,34 @@ header {
         }
     }
 
+
     .navBar {
-        width: 100%;
+        max-width: 100%;
         height: 100%;
+        background-color: #242e47 !important;
+        display: flex;
+        justify-content: flex-end;
+        
 
         @media screen and(max-width: 767px) {
-            padding: 2rem;
+            padding: 1rem 2rem;
+            padding-left: 0;
+
+        }
+
+        @media screen and(max-width: 480px) {
+
         }
     }
 
     .navList {
         margin-left: auto;
-        max-width: 95%;
+        max-width: 100%;
         display: flex;
         align-items: center;
 
         @media only screen and(max-width: 767px) {
-            align-items: flex-start;
+            align-items: flex-end;
         }
     }
 
@@ -51,5 +65,26 @@ header {
         &:hover {
             color: #ddd;
         }
+
+        @media only screen and(max-width: 767px) {
+            margin-right: 0;
+            margin-top: 2rem;
+        }
     }
+
+   
+}
+
+
+
+
+
+.header {
+    background-color: #242e47;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0;
+
 }

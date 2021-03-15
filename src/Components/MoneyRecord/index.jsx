@@ -38,10 +38,10 @@ export default class MoneyRecord extends Component {
                 if (resData.code === '91' || resData.code === '90') {
                     console.log('token 過期 => check tick');
                     localStorage.removeItem('token');
-
-                    window.confirm('session過期，請重新登入 get balance');
+                    window.confirm('session過期，請重新登入 get balance !res.ok');
 
                     history.replace('/auth/login');
+                    clearInterval(this.checkTickLoop);
                 }
 
                 return;
@@ -61,16 +61,10 @@ export default class MoneyRecord extends Component {
 
             PubSub.publish('getBalance', balance);
         } catch (error) {
-            const errStr = String(error);
-            this.setState({
-                httpError: {
-                    title: '發生錯誤，from get balance',
-                    body: errStr,
-                },
-            });
+            localStorage.removeItem('token');
             clearInterval(this.checkTickLoop);
-
-            return;
+            window.confirm('session過期，請重新登入 get balance catch');
+            history.replace('/auth/login');
         }
     };
 
@@ -132,7 +126,7 @@ export default class MoneyRecord extends Component {
             });
             clearInterval(this.checkTickLoop);
 
-            return;
+            history.replace('/auth/login');
         }
     };
 

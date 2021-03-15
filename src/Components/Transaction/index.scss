@@ -3,8 +3,64 @@
     height: 200vh;
 }
 
+.trans-tab {
+    margin-bottom: 2rem;
+
+    & > * {
+    }
+}
+
+
 .transaction-card {
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0, 0.5rem, 0.8rem rgba(0, 0, 0, 0.2);
+}
+
+
+.pay-info {
+  background-color: #eee;
+  padding: 1rem;
+  display: flex;
+  font-size: 1.5rem;
+
+  & > p {
+      margin-right: 5rem;
+    }
+} 
+
+.pairBox {
+    padding: 1rem 5rem;
+}
+
+.pair-titleBox {
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.pair-textBox {
+    font-size: 1.5rem;
+
+    span {
+        color: #007bff;
+        font-size: 2.5rem;
+    }
+
+    
+}
+
+.payTime {
+    color: rgb(146, 126, 10);
+}
+
+.pairFoot {
+    text-align: center;
+}
+
+.pairFoot-btn {
+  padding: 1rem 6rem;
+  margin: 2rem;
 }

@@ -3,17 +3,18 @@ import { Link, Route, Switch, Redirect } from 'react-router-dom';
 
 import BaseCard from './../Ui/BaseCard';
 import BaseDialog from './../Ui/BaseDialog';
+import Header from '../Layout/Header';
 
 import LoginForm from './Login';
 import RegisterForm from './Register';
 
 import BaseSpinner from '../Ui/BaseSpinner';
 import './index.scss';
+import style from '../Layout/Header.module.scss';
 
 export default class Auth extends Component {
     state = {
         formState: '登入',
-        isAuthenticated: false,
         token: null,
         isLoading: false,
         httpError: null,
@@ -79,12 +80,14 @@ export default class Auth extends Component {
     componentDidMount() {
         console.log('auth component did mount');
         const token = localStorage.getItem('token');
-        let curPath = window.location.pathname;
-        if (curPath === '/register') {
+        let curPath = window.location.hash;
+        if (curPath === '#/auth/register') {
+            console.log('register');
             this.setState({
                 formState: '註冊',
             });
-        } else if (curPath === '/login') {
+        } else if (curPath === '#/auth/login') {
+            console.log('login');
             this.setState({
                 formState: '登入',
             });
@@ -99,6 +102,9 @@ export default class Auth extends Component {
         const { formState, isLoading, httpError } = this.state;
         return (
             <div className="user-auth">
+                <Header>
+                    <div className={style.logo}></div>
+                </Header>
                 <BaseCard isLoading={isLoading}>
                     {isLoading ? (
                         <div className="mt_120">
