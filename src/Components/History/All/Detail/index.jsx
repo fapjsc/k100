@@ -43,8 +43,6 @@ export default class Detail extends Component {
             });
             const resData = await res.json();
 
-            console.log(resData);
-
             if (!res.ok) {
                 this.setState({
                     isLoading: false,
@@ -128,7 +126,6 @@ export default class Detail extends Component {
 
     render() {
         const { masterType, master, isLoading, error } = this.state;
-        console.log(this.props.detailToken);
 
         return (
             <div className="detail-box">

@@ -15,6 +15,9 @@ export default class MoneyRecord extends Component {
 
     getBalance = async token => {
         if (!token) {
+            const { history } = this.props;
+            history.replace('/auth/login');
+
             return;
         }
         console.log('get balance');
@@ -81,6 +84,9 @@ export default class MoneyRecord extends Component {
 
     getTick = async token => {
         if (!token) {
+            const { history } = this.props;
+            history.replace('/auth/login');
+
             return;
         }
         console.log('get tick');
@@ -125,8 +131,6 @@ export default class MoneyRecord extends Component {
                 },
             });
             clearInterval(this.checkTickLoop);
-
-            history.replace('/auth/login');
         }
     };
 

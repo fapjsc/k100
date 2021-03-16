@@ -20,6 +20,7 @@ const ConfirmBuy = props => {
 
     return (
         <div>
+            {/* 姓名輸入以及submit button */}
             <form className="confirmBuyContent">
                 <Form.Group controlId="formBasicEmail">
                     <Form.Control
@@ -46,18 +47,22 @@ const ConfirmBuy = props => {
                         )}
                     </Button>
                 </Form.Group>
+
+                {/* 購買資訊 */}
                 <div className="confirmBuy-textContent">
                     <div className="confirmBuy-textBox">
                         <div className="confirmBuy-title">
                             總價:
-                            <p className="confirmBuy-text">{props.rmbAmt} CNY</p>
+                            <p className="confirmBuy-text">{props.rmbAmt.toFixed(2)} CNY</p>
                         </div>
                     </div>
 
                     <div className="confirmBuy-textBox">
                         <div>
                             數量:
-                            <p className="confirmBuy-text text-dark">{props.usdtAmt} USDY</p>
+                            <p className="confirmBuy-text text-dark">
+                                {Number(props.usdtAmt).toFixed(2)} USDT
+                            </p>
                         </div>
                     </div>
 
@@ -70,10 +75,6 @@ const ConfirmBuy = props => {
                         </div>
                     </div>
                 </div>
-
-                {/* <Button onClick={props.handleConfirm} variant="primary">
-                開始配對
-            </Button> */}
             </form>
         </div>
     );

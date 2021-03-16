@@ -36,6 +36,7 @@ export default class All extends Component {
         const historyApi = '/j/GetTxHistory.aspx';
 
         try {
+            console.log('call get history');
             const res = await fetch(historyApi, {
                 headers,
             });
@@ -44,7 +45,6 @@ export default class All extends Component {
 
             if (!res.ok) {
                 const error = new Error(resData || 'something wrong');
-                console.log(resData, 'res error');
                 this.setState({
                     isLoading: false,
                 });
@@ -76,7 +76,6 @@ export default class All extends Component {
                 isLoading: false,
             });
         } catch (error) {
-            console.log(error, 'catch');
             this.setState({
                 isLoading: false,
             });

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
+import PayInfo from '../Transaction/PayInfo';
+
 // import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-
-import Countdown from 'react-countdown';
-
-import Button from 'react-bootstrap/Button';
 
 import './index.scss';
 import BuyCount from './BuyCount';
@@ -30,6 +29,11 @@ export default class Transaction extends Component {
 
     // 獲取匯率
     getExRate = async headers => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('token 過期');
+        }
+
         const exRateApi = `/j/ChkExRate.aspx`;
 
         try {
@@ -97,20 +101,20 @@ export default class Transaction extends Component {
         });
     };
 
-    payComplete = () => {
-        console.log(this.state.orderToken);
-        // const payCompleteApi = `/j/Req_Buy2.aspx`;
+    // payComplete = () => {
+    //     console.log(this.state.orderToken);
+    //     const payCompleteApi = `/j/Req_Buy2.aspx`;
 
-        // const res = await fetch(payCompleteApi, {
-        //     method: "POST",
-        //     headers,
-        //     body: JSON.stringify({
+    //     const res = await fetch(payCompleteApi, {
+    //         method: "POST",
+    //         headers,
+    //         body: JSON.stringify({
 
-        //     })
-        // })
-    };
+    //         })
+    //     })
+    // };
 
-    confirmPay = async () => {
+    getConfirmPay = async () => {
         const token = localStorage.getItem('token');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -174,7 +178,7 @@ export default class Transaction extends Component {
                 }
             );
         } catch (error) {
-            alert(error);
+            alert(error, 'transaction');
         }
     };
 
@@ -204,7 +208,7 @@ export default class Transaction extends Component {
 
     // webSocket 連接
     submitTransaction = () => {
-        const { orderToken, loginSession } = this.state;
+        const { orderToken, loginSession, isPairing } = this.state;
         const transactionApi = 'j/ws_orderstatus.ashx';
         const url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
 
@@ -245,7 +249,9 @@ export default class Transaction extends Component {
 
         // 3.錯誤處理
         client.onclose = () => {
-            alert('連線異常，請確認網路狀態');
+            if (!isPairing) {
+                alert('連線異常，請確認網路狀態');
+            }
         };
     };
 
@@ -255,7 +261,6 @@ export default class Transaction extends Component {
             rmbAmt,
             usdtAmt,
             confirmPay,
-            transferData,
             pair,
             isPairing,
             transactionState,
@@ -269,7 +274,9 @@ export default class Transaction extends Component {
                         <div className="col-12 ">
                             <p className="welcome_txt">歡迎登入</p>
                         </div>
+
                         <div className="col-12 transaction-card">
+                            {/* Nav */}
                             <div className="history-tab trans-tab">
                                 <Link
                                     to="/home"
@@ -312,30 +319,61 @@ export default class Transaction extends Component {
                             </div>
 
                             {/* 申請購買 */}
-
                             <div>
-                                {confirmPay ? (
-                                    <ConfirmBuy
-                                        getClientName={this.getClientName}
-                                        handleConfirm={this.handleConfirm}
-                                        usdtAmt={usdtAmt}
-                                        rmbAmt={rmbAmt}
-                                        pairFinish={pairFinish}
-                                        pair={pair}
-                                        isPairing={isPairing}
-                                    />
+                                {confirmPay && !pairFinish ? (
+                                    <>
+                                        <ConfirmBuy
+                                            getClientName={this.getClientName}
+                                            handleConfirm={this.handleConfirm}
+                                            usdtAmt={usdtAmt}
+                                            rmbAmt={rmbAmt}
+                                            pairFinish={pairFinish}
+                                            pair={pair}
+                                            isPairing={isPairing}
+                                        />
+
+                                        <div>
+                                            <hr className="mt_mb" />
+                                            <p className="txt_12_grey">
+                                                信息為幣商的指定收款賬戶，請務必按照規則操作，網銀轉賬到賬戶。
+                                            </p>
+                                        </div>
+                                    </>
+                                ) : pairFinish ? (
+                                    <PayInfo {...this.state} getConfirmPay={this.getConfirmPay} />
                                 ) : (
-                                    <BuyCount
-                                        showPayDetail={this.showPayDetail}
-                                        getRmbAmt={this.getRmbAmt}
-                                        getUsdtAmt={this.getUsdtAmt}
-                                        usdtAmt={usdtAmt}
-                                        rmbAmt={rmbAmt}
-                                    />
+                                    <>
+                                        <BuyCount
+                                            showPayDetail={this.showPayDetail}
+                                            getRmbAmt={this.getRmbAmt}
+                                            getUsdtAmt={this.getUsdtAmt}
+                                            usdtAmt={usdtAmt}
+                                            rmbAmt={rmbAmt}
+                                        />
+
+                                        <div>
+                                            <hr className="mt_mb" />
+                                            <p className="txt_12_grey">
+                                                請注意,透過網上銀行、流動銀行、付款服務、微型電郵或其他第三者付款平臺,直接轉帳予賣方。
+                                                “如果您已經把錢匯給賣方，您絕對不能按賣方的付款方式單擊”取消交易”。
+                                                除非你的付款帳戶已收到退款,否則沒有真正付款,切勿按交易規則所不允許的「付款」鍵。”
+                                                <br />
+                                                <br />
+                                                OTC
+                                                貿易區目前只提供BCTC/USDT/TES/EOS/HT/HUST/XRP/LTC/BCH。
+                                                如果你想用其他數字資產進行交易，請用貨幣進行交易。
+                                                <br />
+                                                <br />
+                                                如你有其他問題或爭議,你可透過網頁聯絡。
+                                            </p>
+                                        </div>
+                                    </>
                                 )}
 
                                 {/* 配對成功 */}
-                                {
+                                {/* <PayInfo {...this.state} /> */}
+
+                                {/* {
                                     <div>
                                         {isPairing ? null : pair &&
                                           transferData.MasterType === 0 ? (
@@ -374,7 +412,7 @@ export default class Transaction extends Component {
                                             </div>
                                         ) : null}
                                     </div>
-                                }
+                                } */}
                             </div>
                         </div>
                     </div>
