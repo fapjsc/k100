@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import PayInfo from '../Transaction/PayInfo';
+import UploadForm from '../Transaction/UploadForm';
 
 // import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -25,6 +26,7 @@ export default class Transaction extends Component {
         transactionState: 'buy',
         pairFinish: false,
         data: {},
+        upload: false,
     };
 
     // 獲取匯率
@@ -60,7 +62,7 @@ export default class Transaction extends Component {
     getUsdtAmt = e => {
         this.setState(
             {
-                usdtAmt: e.target.value,
+                usdtAmt: e.target.value.trim(),
             },
             () => {
                 this.transformRmb();
@@ -71,7 +73,7 @@ export default class Transaction extends Component {
     getRmbAmt = e => {
         this.setState(
             {
-                rmbAmt: e.target.value,
+                rmbAmt: e.target.value.trim(),
             },
             () => {
                 this.transformToUsdt();
@@ -81,14 +83,14 @@ export default class Transaction extends Component {
 
     getClientName = e => {
         this.setState({
-            clientName: e.target.value,
+            clientName: e.target.value.trim(),
         });
     };
 
     transformRmb = () => {
         this.setState(state => {
             return {
-                rmbAmt: state.exRate.RMB_BUY * state.usdtAmt,
+                rmbAmt: (state.exRate.RMB_BUY * state.usdtAmt).toFixed(2),
             };
         });
     };
@@ -96,7 +98,7 @@ export default class Transaction extends Component {
     transformToUsdt = () => {
         this.setState(state => {
             return {
-                usdtAmt: state.rmbAmt / state.exRate.RMB_BUY,
+                usdtAmt: (state.rmbAmt / state.exRate.RMB_BUY).toFixed(2),
             };
         });
     };
@@ -134,7 +136,22 @@ export default class Transaction extends Component {
 
             const resData = await res.json();
 
-            console.log(resData, 'buy2');
+            if (!res.ok) {
+                alert(resData);
+            }
+
+            console.log(resData.code, 'buy2');
+
+            if (resData.code === 200) {
+                this.setState(
+                    {
+                        upload: true,
+                    },
+                    () => {
+                        console.log(this.state.upload);
+                    }
+                );
+            }
         } catch (error) {
             alert(error);
         }
@@ -143,14 +160,17 @@ export default class Transaction extends Component {
     handleConfirm = async () => {
         const { usdtAmt, clientName } = this.state;
 
+        if (!clientName) {
+            alert('請輸入姓名');
+            return;
+        }
+
         const token = localStorage.getItem('token');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
 
         try {
-            console.log('call buy1 api');
-
             const reqBuyApi = `/j/Req_Buy1.aspx`;
             const res = await fetch(reqBuyApi, {
                 method: 'POST',
@@ -167,8 +187,6 @@ export default class Transaction extends Component {
                 data: { order_token },
             } = resData;
 
-            console.log(resData, 'buy-1');
-
             this.setState(
                 {
                     orderToken: order_token,
@@ -183,6 +201,16 @@ export default class Transaction extends Component {
     };
 
     showPayDetail = () => {
+        const { usdtAmt, rmbAmt } = this.state;
+
+        // 有1~2位小数的正數，且不能為0或0開頭
+        let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
+
+        if (!rule.test(usdtAmt) || !rule.test(rmbAmt)) {
+            alert('請輸入有效數量, (不能為0，最多小數第二位)');
+            return;
+        }
+
         this.setState({
             confirmPay: true,
         });
@@ -265,6 +293,7 @@ export default class Transaction extends Component {
             isPairing,
             transactionState,
             pairFinish,
+            upload,
         } = this.state;
 
         return (
@@ -311,15 +340,19 @@ export default class Transaction extends Component {
                                 </Link>
                             </div>
 
-                            <p>購買USDT</p>
-                            <div className="pay-info">
-                                <p>匯率 : {exRate ? exRate.RMB_BUY : null}</p>
-                                <p>付款窗口 : 30分鐘</p>
-                                <p>限額 : 200 - 1230</p>
-                            </div>
-
                             {/* 申請購買 */}
                             <div>
+                                {!upload ? (
+                                    <>
+                                        <p>購買USDT</p>
+                                        <div className="pay-info">
+                                            <p>匯率 : {exRate ? exRate.RMB_BUY : null}</p>
+                                            <p>付款窗口 : 30分鐘</p>
+                                            <p>限額 : 200 - 1230</p>
+                                        </div>
+                                    </>
+                                ) : null}
+
                                 {confirmPay && !pairFinish ? (
                                     <>
                                         <ConfirmBuy
@@ -339,8 +372,15 @@ export default class Transaction extends Component {
                                             </p>
                                         </div>
                                     </>
-                                ) : pairFinish ? (
-                                    <PayInfo {...this.state} getConfirmPay={this.getConfirmPay} />
+                                ) : pairFinish && !upload ? (
+                                    <>
+                                        <PayInfo
+                                            {...this.state}
+                                            getConfirmPay={this.getConfirmPay}
+                                        />
+                                    </>
+                                ) : upload ? (
+                                    <UploadForm />
                                 ) : (
                                     <>
                                         <BuyCount
@@ -369,50 +409,6 @@ export default class Transaction extends Component {
                                         </div>
                                     </>
                                 )}
-
-                                {/* 配對成功 */}
-                                {/* <PayInfo {...this.state} /> */}
-
-                                {/* {
-                                    <div>
-                                        {isPairing ? null : pair &&
-                                          transferData.MasterType === 0 ? (
-                                            <div className="pairBox">
-                                                <div className="pair-titleBox">
-                                                    <p>轉帳資料</p>
-                                                    <p>
-                                                        剩餘支付時間:
-                                                        <span className="payTime">
-                                                            <Countdown
-                                                                date={Date.now() + 5000}
-                                                            ></Countdown>
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                                <div className="pair-textBox">
-                                                    <p>
-                                                        付款金額: &emsp;
-                                                        <span>{transferData.D2}</span>
-                                                    </p>
-                                                    <p>收款姓名: {transferData.P2}</p>
-                                                    <p>付款帳號: {transferData.P1}</p>
-                                                    <p>開戶銀行: {transferData.P3}</p>
-                                                    <p>所在省市: {transferData.P4}</p>
-                                                </div>
-                                                <div className="pairFoot">
-                                                    <Button
-                                                        variant="primary"
-                                                        className="pairFoot-btn"
-                                                        onClick={this.confirmPay}
-                                                    >
-                                                        已完成付款，下一步...
-                                                    </Button>
-                                                    <p>取消訂單</p>
-                                                </div>
-                                            </div>
-                                        ) : null}
-                                    </div>
-                                } */}
                             </div>
                         </div>
                     </div>

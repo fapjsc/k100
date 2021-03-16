@@ -8,15 +8,20 @@ import Spinner from 'react-bootstrap/Spinner';
 const ConfirmBuy = props => {
     const [isLoading, setLoading] = useState(false);
 
+    let handleConfirm = props.handleConfirm;
+
     useEffect(() => {
         if (isLoading) {
-            props.handleConfirm().then(() => {
-                setLoading(false);
-            });
+            setLoading(false);
         }
     }, [isLoading]);
 
-    const handleClick = () => setLoading(true);
+    // const handleClick = () => setLoading(true);
+
+    const handleClick = () => {
+        setLoading(true);
+        handleConfirm();
+    };
 
     return (
         <div>
@@ -53,7 +58,10 @@ const ConfirmBuy = props => {
                     <div className="confirmBuy-textBox">
                         <div className="confirmBuy-title">
                             總價:
-                            <p className="confirmBuy-text">{props.rmbAmt.toFixed(2)} CNY</p>
+                            <p className="confirmBuy-text">
+                                {' '}
+                                {Number(props.rmbAmt).toFixed(2)} CNY
+                            </p>
                         </div>
                     </div>
 
@@ -71,7 +79,9 @@ const ConfirmBuy = props => {
                     <div className="confirmBuy-textBox">
                         <div>
                             單價:
-                            <p className="confirmBuy-text">{props.rmbAmt / props.usdtAmt} CNY</p>
+                            <p className="confirmBuy-text">
+                                {Number(props.rmbAmt / props.usdtAmt).toFixed(2)} CNY
+                            </p>
                         </div>
                     </div>
                 </div>

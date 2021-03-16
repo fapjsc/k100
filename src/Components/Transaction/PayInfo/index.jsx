@@ -10,7 +10,8 @@ import Button from 'react-bootstrap/Button';
 export default class index extends Component {
     state = {
         showInfo: true,
-        timer: 5000,
+        // time: 1000 * 60 * 15, // 15分鐘
+        time: 5000,
     };
 
     setInfo = () => {
@@ -21,30 +22,27 @@ export default class index extends Component {
 
     render() {
         const { transferData, pair, isPairing, getConfirmPay } = this.props;
-        const { showInfo, timer } = this.state;
+        const { showInfo, time } = this.state;
 
         return (
             <div>
                 {isPairing ? null : pair && transferData.MasterType === 0 ? (
                     <div className="pairBox">
-                        <div className="pair-titleBox">
-                            <p>轉帳資料</p>
-                            {showInfo ? (
-                                <p>
-                                    剩餘支付時間:
-                                    <span className="payTime">
-                                        <Countdown
-                                            date={Date.now() + timer}
-                                            renderer={Timer}
-                                            setInfo={this.setInfo}
-                                        ></Countdown>
-                                    </span>
-                                </p>
-                            ) : null}
-                        </div>
-
                         {showInfo ? (
                             <>
+                                <div className="pair-titleBox">
+                                    <p>轉帳資料</p>
+                                    <p>
+                                        剩餘支付時間:
+                                        <span className="payTime">
+                                            <Countdown
+                                                date={Date.now() + time}
+                                                renderer={Timer}
+                                                onComplete={this.setInfo}
+                                            ></Countdown>
+                                        </span>
+                                    </p>
+                                </div>
                                 <InfoDetail transferData={transferData} />
                                 <div className="pairFoot">
                                     <Button
@@ -60,7 +58,7 @@ export default class index extends Component {
                         ) : (
                             <>
                                 <Countdown
-                                    date={Date.now() + timer}
+                                    date={Date.now() + time}
                                     renderer={ButtonTimer}
                                     getConfirmPay={getConfirmPay}
                                 ></Countdown>

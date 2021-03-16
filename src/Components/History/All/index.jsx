@@ -94,6 +94,7 @@ export default class All extends Component {
     }
     render() {
         const { historyList, detailToken, showDetail, isLoading } = this.state;
+        console.log(historyList);
 
         return (
             <>

@@ -1,9 +1,10 @@
 import React from 'react';
 
-const index = ({ key, minutes, seconds, completed, ...props }) => {
-    if (completed) {
-        props.props.setInfo();
-    }
+const Timer = ({ minutes, seconds }) => {
+    // if (completed) {
+    //     props.props.setInfo();
+    // }
+
     return (
         <span>
             {minutes}:{seconds}
@@ -11,4 +12,4 @@ const index = ({ key, minutes, seconds, completed, ...props }) => {
     );
 };
 
-export default index;
+export default Timer;

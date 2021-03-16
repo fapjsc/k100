@@ -53,7 +53,7 @@ export default class Detail extends Component {
             }
 
             const { data } = resData;
-
+            console.log(data);
             this.setState({
                 masterType: data.MasterType,
             });
