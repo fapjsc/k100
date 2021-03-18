@@ -148,13 +148,15 @@ export default class All extends Component {
                                                     : 'txt18_p history-detail-text'
                                             }
                                         >
-                                            {h.UsdtAmt}
+                                            {h.UsdtAmt.toFixed(2)}
                                         </span>
                                     </div>
 
                                     <div className="history-detail">
                                         <h6 className="history-detail-title">結餘（USDT）</h6>
-                                        <span className="history-detail-text">{h.Balance}</span>
+                                        <span className="history-detail-text">
+                                            {h.Balance.toFixed(2)}
+                                        </span>
                                     </div>
                                     {/* <div className="history-detail receiving ">
                                 <h6>收款賬號</h6>2783721947813471

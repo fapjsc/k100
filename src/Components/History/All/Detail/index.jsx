@@ -53,7 +53,6 @@ export default class Detail extends Component {
             }
 
             const { data } = resData;
-            console.log(data);
             this.setState({
                 masterType: data.MasterType,
             });
@@ -133,9 +132,7 @@ export default class Detail extends Component {
                     <div className="detail-spinner">
                         <Spinner animation="grow" variant="info" />
                     </div>
-                ) : !isLoading && error ? (
-                    <h1>test</h1>
-                ) : (
+                ) : !isLoading && error ? null : (
                     <ul>
                         <li className="thead">
                             <ol className="tr">

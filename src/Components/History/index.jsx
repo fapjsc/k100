@@ -19,6 +19,10 @@ export default class History extends Component {
         if (value === 'wait') this.setState({ historyState: 'wait' });
     };
 
+    componentDidMount() {
+        this.props.history.push(`/home/history/${this.state.historyState}`);
+    }
+
     render() {
         const { historyState } = this.state;
         return (

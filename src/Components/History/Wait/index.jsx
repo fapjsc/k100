@@ -3,6 +3,8 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import BaseSpinner from './../../Ui/BaseSpinner';
+import Badge from 'react-bootstrap/Badge';
+import './index.scss';
 
 export default class All extends Component {
     state = {
@@ -89,7 +91,6 @@ export default class All extends Component {
     }
     render() {
         const { historyList, isLoading } = this.state;
-        console.log(historyList);
 
         return (
             <>
@@ -104,7 +105,7 @@ export default class All extends Component {
                                 onClick={() => this.setDetailToken(h.token)}
                                 replace
                             >
-                                <div className="easy_history2">
+                                <div className="history-wait">
                                     <div className="history-detail master-type">
                                         <div
                                             className={
@@ -127,13 +128,14 @@ export default class All extends Component {
                                             {h.MasterType}
                                         </span>
                                     </div>
-                                    <div className="history-detail">
-                                        <h6 className="history-detail-title">日期</h6>
-                                        <span className="history-detail-text history-date">
+                                    <div className="wait-detail">
+                                        <h6 className="history-detail-title wait-title">日期</h6>
+                                        <span className="wait-date history-detail-text history-date ">
                                             {h.Date}
                                         </span>
                                     </div>
-                                    <div className="history-detail">
+
+                                    <div className="wait-detail">
                                         <h6 className="history-detail-title">交易額（USDT）</h6>
                                         <span
                                             className={
@@ -144,25 +146,27 @@ export default class All extends Component {
                                                     : 'txt18_p history-detail-text'
                                             }
                                         >
-                                            {h.UsdtAmt}
+                                            {h.UsdtAmt.toFixed(2)}
                                         </span>
                                     </div>
 
-                                    <div className="history-detail">
+                                    {/* <div className="history-detail">
                                         <h6 className="history-detail-title">結餘（USDT）</h6>
                                         <span className="history-detail-text">{h.Balance}</span>
-                                    </div>
+                                    </div> */}
 
-                                    <div className="history-detail">
-                                        <h6 className="history-detail-title">狀態</h6>
+                                    <div className="wait-detail">
+                                        {/* <h6 className="history-detail-title">狀態</h6> */}
                                         <span className="history-detail-text history-complete">
-                                            {h.Order_StatusID === 34
-                                                ? '收款確認中'
-                                                : h.Order_StatusID === 33
-                                                ? '等待付款'
-                                                : h.Order_StatusID === 0
-                                                ? '執行中'
-                                                : null}
+                                            <Badge pill variant="secondary">
+                                                {h.Order_StatusID === 34
+                                                    ? '收款確認中'
+                                                    : h.Order_StatusID === 33
+                                                    ? '等待付款'
+                                                    : h.Order_StatusID === 0
+                                                    ? '執行中'
+                                                    : null}
+                                            </Badge>
                                         </span>
                                     </div>
                                 </div>

@@ -239,12 +239,23 @@ export default class Transaction extends Component {
     submitTransaction = () => {
         const { orderToken, loginSession } = this.state;
         const transactionApi = 'j/ws_orderstatus.ashx';
-        const url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
+        // const url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
+        // const url2 = `wss:https://k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
+        // let protocol = location.protocol === 'http:' ? url : url2;
+        // console.log(protocol, 'websocket');
 
         // 自動重連次數
         // const options = {
         //     maxRetries: null,
         // };
+
+        let url;
+
+        if (window.location.protocol === 'http:') {
+            url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
+        } else {
+            url = `wss://k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
+        }
 
         const client = new ReconnectingWebSocket(url);
 
