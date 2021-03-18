@@ -243,14 +243,18 @@ export default class MoneyRecord extends Component {
                                 結餘：
                                 <span className="usdt mr_sm"></span>
                                 <span className="c_green mr_sm">USDT</span>
-                                <span className="c_green fs_20">{Real_Balance}</span>
+                                <span className="c_green fs_20">
+                                    {Number(Real_Balance).toFixed(2)}
+                                </span>
                             </div>
 
                             <div className="balance">
                                 可提：
                                 <span className="usdt mr_sm"></span>
                                 <span className="c_green mr_sm">USDT</span>
-                                <span className="c_green fs_20">{Avb_Balance}</span>
+                                <span className="c_green fs_20">
+                                    {Number(Avb_Balance).toFixed(2)}
+                                </span>
                             </div>
                         </div>
                     </div>

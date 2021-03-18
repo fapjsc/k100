@@ -158,7 +158,7 @@ export default class index extends Component {
                                                 <span className="usdt mr_sm"></span>
                                                 <span className="c_green mr_sm">USDT</span>
                                                 <span className="c_green fs_20">
-                                                    {Real_Balance}
+                                                    {Number(Real_Balance).toFixed(2)}
                                                 </span>
                                             </div>
                                         </div>
@@ -167,7 +167,9 @@ export default class index extends Component {
                                                 可提：
                                                 <span className="usdt mr_sm"></span>
                                                 <span className="c_green mr_sm">USDT</span>
-                                                <span className="c_green fs_20">{Avb_Balance}</span>
+                                                <span className="c_green fs_20">
+                                                    {Number(Avb_Balance).toFixed(2)}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

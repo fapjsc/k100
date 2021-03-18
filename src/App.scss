@@ -38,6 +38,10 @@ html {
     font-size: 2rem;
 }
 
+.fs_15 {
+    font-size: 1.5rem;
+}
+
 .fs_40 {
     font-size: 4rem;
 }
@@ -46,8 +50,20 @@ html {
     width: 10rem !important;
 }
 
+.w_400 {
+    width: 40rem !important;
+}
+
 .pt_20 {
     padding-top: 2rem;
+}
+
+.p_sm {
+    padding: 2rem;
+}
+
+.p_md {
+    padding: 3rem;
 }
 
 .mt_120 {
@@ -80,6 +96,10 @@ html {
 
 .mt-big {
     margin-top: 35%;
+}
+
+.mt_sm {
+    margin-top: 20%;
 }
 
 .mr_sm {
@@ -118,6 +138,10 @@ html {
 .center_p20 {
     text-align: center;
     padding: 2rem;
+}
+
+.color-white {
+    color: #fff !important;
 }
 
 // 文字自動換行
@@ -160,3 +184,12 @@ html {
 .mw400 {
     max-width: 400px;display: block;
 }
+
+
+a:link,
+a:visited {
+    text-decoration: none;
+}
+
+
+

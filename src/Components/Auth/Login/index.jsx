@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import validator from 'validator';
 
 import { Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
 
 export default class LoginForm extends Component {
@@ -139,7 +139,7 @@ export default class LoginForm extends Component {
         event.preventDefault(); //防止表單提交
         await this.validateForm();
         const { formIsValid, phoneNumber, password } = this.state;
-        const { setLoadingState, setHttpError } = this.props;
+        const { setLoadingState } = this.props;
 
         if (!formIsValid) {
             return;
@@ -163,7 +163,7 @@ export default class LoginForm extends Component {
             if (!res.ok) {
                 setLoadingState(false);
                 console.log(resData, 'res');
-                setHttpError('驗證失敗', resData.msg);
+                alert('驗證失敗', resData.msg);
                 return;
             }
 
@@ -178,7 +178,7 @@ export default class LoginForm extends Component {
         } catch (error) {
             setLoadingState(false);
             console.log(error, 'catch');
-            setHttpError('無法連接server', error);
+            alert('無法連接server', error);
         }
     };
 

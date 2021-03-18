@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import './index.scss';
 
 const CompletePay = props => {
-    const [isConfirm, setConfirm] = useState(false);
-
-    useEffect(() => {
-        setTimeout(() => {
-            setConfirm(true);
-        }, 7000);
-    }, []);
-
     const backToHome = () => {
         props.history.replace('/home/overview');
     };
 
-    if (!isConfirm) {
+    // console.log(props);
+    if (props.isCompletePay) {
         return (
             <div>
                 <div className="txt_12 pt_20">購買USDT</div>

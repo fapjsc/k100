@@ -5,6 +5,8 @@ import Auth from './Components/Auth';
 import Home from './pages/Home';
 // import { ProtectedRoute } from './router/ProtectedRoute';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './App.scss';
 function App() {
     const [isAuth, setIsAuth] = useState(false);

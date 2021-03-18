@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react';
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
 
 import BaseSpinner from './../../Ui/BaseSpinner';
+import NoData from '../../NoData';
 
 import Detail from './Detail';
 
@@ -97,7 +98,7 @@ export default class All extends Component {
 
         return (
             <>
-                {!isLoading ? (
+                {!isLoading && historyList.length ? (
                     historyList.map(h => (
                         <Fragment key={h.token}>
                             <Link
@@ -187,6 +188,8 @@ export default class All extends Component {
                             ) : null}
                         </Fragment>
                     ))
+                ) : !historyList.length && !isLoading ? (
+                    <NoData />
                 ) : (
                     <div className="all-spinner">
                         <BaseSpinner />

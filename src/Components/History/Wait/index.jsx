@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import BaseSpinner from './../../Ui/BaseSpinner';
 import Badge from 'react-bootstrap/Badge';
+import Nodata from '../../NoData';
 import './index.scss';
 
 export default class All extends Component {
@@ -94,7 +95,7 @@ export default class All extends Component {
 
         return (
             <>
-                {!isLoading ? (
+                {!isLoading && historyList.length ? (
                     historyList.map(h => (
                         <Fragment key={h.token}>
                             <Link
@@ -188,6 +189,8 @@ export default class All extends Component {
                             ) : null} */}
                         </Fragment>
                     ))
+                ) : !isLoading && !historyList.length ? (
+                    <Nodata />
                 ) : (
                     <div className="all-spinner">
                         <BaseSpinner />

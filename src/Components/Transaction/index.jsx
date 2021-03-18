@@ -143,10 +143,17 @@ export default class Transaction extends Component {
 
             const resData = await res.json();
 
-            console.log(resData);
+            console.log(resData, 'buy2');
 
             if (resData.code === 200) {
-                console.log('test');
+                console.log('buy2 return 200');
+                this.setState({
+                    isCompletePay: true,
+                });
+            }
+
+            if (resData.data.Order_StatusID === 1) {
+                console.log('buy2 return 1');
                 this.setState({
                     isCompletePay: true,
                 });
@@ -181,6 +188,8 @@ export default class Transaction extends Component {
             });
 
             const resData = await res.json();
+
+            console.log(resData, 'buy1');
 
             const {
                 data: { order_token },
@@ -235,14 +244,15 @@ export default class Transaction extends Component {
         }
     }
 
+    componentWillUnmount() {
+        console.log('transaction will unmount');
+        // this.closeWebSocket();
+    }
+
     // webSocket 連接
     submitTransaction = () => {
         const { orderToken, loginSession } = this.state;
         const transactionApi = 'j/ws_orderstatus.ashx';
-        // const url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
-        // const url2 = `wss:https://k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
-        // let protocol = location.protocol === 'http:' ? url : url2;
-        // console.log(protocol, 'websocket');
 
         // 自動重連次數
         // const options = {
@@ -276,7 +286,7 @@ export default class Transaction extends Component {
             const dataFromServer = JSON.parse(message.data);
             console.log('got reply!', dataFromServer);
 
-            // 第一次返回後設定state
+            // 返回後設定state
             this.setState({
                 transferData: dataFromServer.data,
             });
@@ -298,6 +308,12 @@ export default class Transaction extends Component {
                     }
                 );
             }
+
+            if (dataFromServer.data.Order_StatusID === 1) {
+                this.setState({
+                    isCompletePay: true,
+                });
+            }
         };
 
         // 3.錯誤處理
@@ -315,6 +331,7 @@ export default class Transaction extends Component {
 
         if (client) {
             client.close();
+            console.log(client.readyState);
         }
     };
 
@@ -352,7 +369,6 @@ export default class Transaction extends Component {
         return (
             <>
                 <section className="overview bg_grey">
-                    <button onClick={this.closeWebSocket}>close webSocket</button>
                     <div className="container h_88">
                         <div className="row">
                             <div className="col-12 ">
@@ -463,6 +479,7 @@ export default class Transaction extends Component {
                                         <CompletePay
                                             history={history}
                                             transferData={transferData}
+                                            isCompletePay={isCompletePay}
                                         />
                                     ) : (
                                         <>
