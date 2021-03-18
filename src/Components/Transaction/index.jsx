@@ -338,6 +338,8 @@ export default class Transaction extends Component {
             isCompletePay,
         } = this.state;
 
+        const { history } = this.props;
+
         // 千分位逗號
         // if (usdtAmt) {
         //     usdtAmt = usdtAmt.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
@@ -458,7 +460,10 @@ export default class Transaction extends Component {
                                             />
                                         </>
                                     ) : isCompletePay ? (
-                                        <CompletePay transferData={transferData} />
+                                        <CompletePay
+                                            history={history}
+                                            transferData={transferData}
+                                        />
                                     ) : (
                                         <>
                                             <BuyCount

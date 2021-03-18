@@ -6,7 +6,7 @@ import ButtonTimer from '../ButtonTimer';
 
 import Countdown from 'react-countdown';
 
-export default class index extends Component {
+export default class PayInfo extends Component {
     state = {
         showInfo: true,
         time: 1000 * 60 * 15, // 15分鐘
@@ -21,7 +21,6 @@ export default class index extends Component {
 
     componentDidMount() {
         console.log('pay info mount');
-        console.log(this.props);
     }
 
     render() {
