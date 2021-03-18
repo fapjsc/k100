@@ -5,13 +5,12 @@ import Timer from '../Timer';
 import ButtonTimer from '../ButtonTimer';
 
 import Countdown from 'react-countdown';
-import Button from 'react-bootstrap/Button';
 
 export default class index extends Component {
     state = {
         showInfo: true,
-        // time: 1000 * 60 * 15, // 15分鐘
-        time: 5000,
+        time: 1000 * 60 * 15, // 15分鐘
+        // time: 1000 * 60 * 60,
     };
 
     setInfo = () => {
@@ -19,6 +18,11 @@ export default class index extends Component {
             showInfo: false,
         });
     };
+
+    componentDidMount() {
+        console.log('pay info mount');
+        console.log(this.props);
+    }
 
     render() {
         const { transferData, pair, isPairing, getConfirmPay } = this.props;
@@ -43,17 +47,11 @@ export default class index extends Component {
                                         </span>
                                     </p>
                                 </div>
-                                <InfoDetail transferData={transferData} />
-                                <div className="pairFoot">
-                                    <Button
-                                        variant="primary"
-                                        className="pairFoot-btn"
-                                        onClick={getConfirmPay}
-                                    >
-                                        已完成付款，下一步...
-                                    </Button>
-                                    <p>取消訂單</p>
-                                </div>
+
+                                <InfoDetail
+                                    transferData={transferData}
+                                    getConfirmPay={getConfirmPay}
+                                />
                             </>
                         ) : (
                             <>

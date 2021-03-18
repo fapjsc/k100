@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Auth from './Components/Auth';
 import Home from './pages/Home';
-import { ProtectedRoute } from './router/ProtectedRoute';
+// import { ProtectedRoute } from './router/ProtectedRoute';
 
 import './App.scss';
 function App() {
@@ -17,17 +17,17 @@ function App() {
         }
     };
     return (
+        // <Switch>
         <Switch>
-            <Switch>
-                <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
-                <ProtectedRoute
-                    isAuth={isAuth}
-                    path="/home"
-                    component={props => <Home {...props} setAuth={setAuth} />}
-                />
-                <Redirect to="/auth/login" />
-            </Switch>
+            <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
+            <Route
+                isAuth={isAuth}
+                path="/home"
+                component={props => <Home {...props} setAuth={setAuth} />}
+            />
+            <Redirect to="/auth/login" />
         </Switch>
+        // </Switch>
     );
 }
 

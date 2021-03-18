@@ -53,12 +53,25 @@
     cursor: pointer;
 }
 
-.qrCodeImg {
-    height: 100%;
-    background-image: url('../../Assets/qr_demo.png');
-}
 
 .walletAddress-box {
     display: flex;
     align-items: center;
 }
+
+// .qrCode-box {
+//     color: #007bff;
+//     fill: red !important;
+//     filter: invert(100%);
+//     background-color: red;
+//     height: 1px;
+// }
+
+// .qrCode-img {
+//     color: #007bff;
+//     fill: red !important;
+//     filter: invert(100%);
+//     background-color: red;
+//     height: 1px;
+
+// }

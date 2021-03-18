@@ -41,11 +41,18 @@
         padding: 2.2rem;
         margin-right: 1rem;
         text-decoration: none;
+
+        @media only screen and(max-width: 311px) {
+            font-size: 1.4rem;
+        }
     }
 
     // &:active {
     //     border-bottom: 1px solid #3f80fa;
     // }
+
+
+   
 }
 
 .history-link-active {

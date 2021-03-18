@@ -1,8 +1,9 @@
 header {
 
-    
-   
-
+    @media screen and(max-width: 480px) {
+        display: flex;
+        justify-content: space-around !important;
+    }
     
     .logo {
         background-image: url('../../Assets/logo_easy.png');
@@ -13,8 +14,11 @@ header {
         width: 13rem;
         margin-left: 3rem;
 
-        @media screen and(max-width: 480px) {
-        }
+        // @media screen and(max-width: 320px) {
+        // background-image: url('../../Assets/mstile-150x150.png');
+        // height: 6rem;
+        // width: 6rem;
+        // }
 
         @media screen and(max-width: 30rem) {
             margin-left: -1rem;
@@ -32,6 +36,10 @@ header {
         background-color: #242e47 !important;
         display: flex;
         justify-content: flex-end;
+
+        @media screen and(max-width: 575px) {
+        }
+
         
 
         @media screen and(max-width: 767px) {
@@ -62,13 +70,20 @@ header {
         color: #fff;
         text-decoration: none;
 
+
         &:hover {
             color: #ddd;
         }
 
         @media only screen and(max-width: 767px) {
+            margin: 0;
+            margin-right: 5rem;
+        }
+
+        @media only screen and(max-width: 575px) {
             margin-right: 0;
-            margin-top: 2rem;
+            margin-top: 3rem;
+            
         }
     }
 

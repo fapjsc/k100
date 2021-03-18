@@ -18,10 +18,25 @@
         border-bottom: 2px solid #ddd;
     }
 
-    @media only screen and(max-width: 450px) {
+    @media only screen and(max-width: 767px) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1rem;
+    }
+
+    @media only screen and(max-width: 500px) {
         grid-template-columns: 35% 35% 10%;
         grid-gap: 1rem;
     }
+
+    // @media only screen and(max-width: 450px) {
+    //     grid-template-columns: 35% 35% 10%;
+    //     grid-gap: 1rem;
+    // }
+
+    
+
+    
+
 }
 
 .tabcontent {
@@ -68,7 +83,7 @@
         }
     }
 
-    @media only screen and(max-width: 450px) {
+    @media only screen and(max-width: 500px) {
         &:last-child {
             grid-row: 2 / 3;
             grid-column: 3 / 4;
@@ -207,3 +222,14 @@
         display: none;
     }
 }
+
+
+
+
+
+.history-complete-all {
+    @media only screen and(max-width: 767px){
+        display: none;
+    }
+}
+

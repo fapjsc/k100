@@ -7,11 +7,11 @@ import style from './Header.module.scss';
 const TheNav = props => {
     return (
         <>
-            <Navbar bg="dark" expand="md" variant="dark" className={style.navBar}>
+            <Navbar bg="dark" expand="sm" variant="dark" className={style.navBar}>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className={style.navList}>
-                        <Link to="/home" className={style.navLink}>
+                        <Link to="/home/transaction" className={style.navLink}>
                             交易
                         </Link>
                         <Link to="/home/history" className={style.navLink}>
@@ -20,9 +20,9 @@ const TheNav = props => {
                         <Link to="/home/wallet" className={style.navLink}>
                             錢包
                         </Link>
-                        <Nav.Link onClick={props.logout} className={style.navLink}>
+                        <Link to="/" onClick={props.logout} className={style.navLink}>
                             登出
-                        </Nav.Link>
+                        </Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

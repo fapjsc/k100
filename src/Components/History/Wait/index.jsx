@@ -89,6 +89,7 @@ export default class All extends Component {
     }
     render() {
         const { historyList, isLoading } = this.state;
+        console.log(historyList);
 
         return (
             <>
@@ -134,7 +135,17 @@ export default class All extends Component {
                                     </div>
                                     <div className="history-detail">
                                         <h6 className="history-detail-title">交易額（USDT）</h6>
-                                        <span className="history-detail-text">{h.UsdtAmt}</span>
+                                        <span
+                                            className={
+                                                h.MasterType === '買入'
+                                                    ? 'txt18 history-detail-text'
+                                                    : h.MasterType === '賣出'
+                                                    ? 'txt18_g history-detail-text'
+                                                    : 'txt18_p history-detail-text'
+                                            }
+                                        >
+                                            {h.UsdtAmt}
+                                        </span>
                                     </div>
 
                                     <div className="history-detail">

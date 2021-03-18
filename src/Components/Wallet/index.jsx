@@ -14,7 +14,8 @@ export default class index extends Component {
 
     getQrCode = async token => {
         if (!token) {
-            return;
+            alert('session過期，請重新登入');
+            this.props.history.replace('/auth/login');
         }
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -57,7 +58,8 @@ export default class index extends Component {
 
     getBalance = async token => {
         if (!token) {
-            return;
+            alert('session過期，請重新登入');
+            this.props.history.replace('/auth/login');
         }
 
         const { history } = this.props;
@@ -136,6 +138,7 @@ export default class index extends Component {
                                 <div className="row">
                                     <div className="col-md-3 col-12 center_p20">
                                         <img
+                                            className="qrCode-img"
                                             src={`data:image/png;base64,${Qr_img}`}
                                             alt="qr code"
                                         ></img>

@@ -26,11 +26,35 @@
 
   & > p {
       margin-right: 5rem;
+
+      @media only screen and(max-width: 500px) {
+          font-size: 1rem;
+    }
+    }
+
+    & > p > span {
+        margin-left: 1rem;
+
+        @media only screen and(max-width: 483px) {
+            display: block; 
+            margin-left: 0;
+
+        }
+    }
+
+    @media only screen and(max-width: 380px){
+        flex-wrap: wrap;
     }
 } 
 
 .pairBox {
     padding: 1rem 5rem;
+
+    @media only screen and(max-width: 500px) {
+        padding: 4rem 1rem;
+    }
+
+   
 }
 
 .pair-titleBox {
@@ -39,10 +63,21 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #ddd;
+
+    @media only screen and(max-width: 360px) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
 }
 
 .pair-textBox {
     font-size: 1.5rem;
+
+    @media only screen and(max-width: 360px) {
+        text-align: center;
+    }
 
     span {
         color: #007bff;
@@ -63,4 +98,8 @@
 .pairFoot-btn {
   padding: 1rem 6rem;
   margin: 2rem;
+
+  @media only screen and(max-width: 308px) {
+      padding: 1rem;
+  }
 }

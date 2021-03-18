@@ -97,12 +97,10 @@ html {
     margin-bottom: 1.7rem;
 }
 
-.txt_12_grey {
-    color: #707070;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    font-weight: normal;
-}
+
+
+.txt_12 {color: #242E47;font-size: 12px;letter-spacing: 1.5px;}
+.txt_12_grey {color: #707070;font-size: 12px;letter-spacing: 1.5px;font-weight: normal;} 
 
 .txt_center {
     text-align: center;
@@ -133,4 +131,24 @@ html {
 }
 
 .navbar-collapse {
+}
+
+
+.easy-btn{
+	background-color: #3E80F9;
+	border-radius: 5px;
+	color: #fff;
+    width: 50%;
+	padding: 15px;
+    margin: 10px auto 15px;
+    border:none;
+    transition: 0.3s;
+    cursor: pointer;}
+
+.easy-btn:hover {
+    background-color: #568EF4;
+}
+
+.mw400 {
+    max-width: 400px;display: block;
 }
