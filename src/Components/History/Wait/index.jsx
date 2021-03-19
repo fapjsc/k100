@@ -13,14 +13,18 @@ export default class All extends Component {
         detailToken: null,
         showDetail: false,
         isLoading: false,
+        token: null,
     };
 
     setDetailToken = detailToken => {
         const { showDetail } = this.state;
-        this.setState({
-            detailToken,
-            showDetail: !showDetail,
-        });
+        this.setState(
+            {
+                detailToken,
+                showDetail: !showDetail,
+            },
+            () => this.props.history.push(`/home/transaction/${this.state.detailToken}`)
+        );
     };
 
     getTransactions = async (token, headers) => {
@@ -89,6 +93,10 @@ export default class All extends Component {
 
             this.getTransactions(token, headers);
         }
+    }
+
+    componentWillUnmount() {
+        console.log('wait unmount');
     }
     render() {
         const { historyList, isLoading } = this.state;

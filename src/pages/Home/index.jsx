@@ -7,7 +7,8 @@ import Overview from '../../Components/Overview';
 import Wallet from '../../Components/Wallet';
 import History from '../../Components/History';
 import Transaction from '../../Components/Transaction';
-import InfoDetail from '../../Components/Transaction/PayInfo/InfoDetail';
+// import InfoDetail from '../../Components/Transaction/PayInfo/InfoDetail';
+import PayInfo from '../../Components/Transaction/PayInfo';
 
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
 
@@ -113,10 +114,10 @@ export default class index extends Component {
                     <Route path="/home/wallet" component={Wallet} />
                     <Route path="/home/history" component={History} />
                     <Route path="/home/transaction" component={Transaction} />
-                    <Route
-                        path="/home/transaction/:id"
-                        component={() => <InfoDetail getConfirmPay={this.getConfirmPay} />}
-                    />
+                    {/* <Route
+                        path="/home/payInfo/:id"
+                        component={() => <PayInfo getConfirmPay={this.getConfirmPay} />}
+                    /> */}
                     <Redirect to="/home/overview" />
                 </Switch>
             </>

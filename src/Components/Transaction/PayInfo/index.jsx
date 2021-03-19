@@ -10,7 +10,7 @@ export default class PayInfo extends Component {
     state = {
         showInfo: true,
         time: 1000 * 60 * 15, // 15分鐘
-        // time: 1000 * 60 * 60,
+        // time: 3000,
     };
 
     setInfo = () => {
@@ -26,9 +26,11 @@ export default class PayInfo extends Component {
     render() {
         const { transferData, pair, isPairing, getConfirmPay } = this.props;
         const { showInfo, time } = this.state;
+        console.log(this.props, 'payInfo render');
 
         return (
             <div>
+                <h1>test</h1>
                 {isPairing ? null : pair && transferData.MasterType === 0 ? (
                     <div className="pairBox">
                         {showInfo ? (

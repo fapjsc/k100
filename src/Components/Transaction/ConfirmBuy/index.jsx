@@ -34,7 +34,7 @@ const ConfirmBuy = props => {
                             placeholder="請輸入銀行卡持有人姓名"
                             onChange={props.getClientName}
                             className="confirmBuyInput"
-                            autocomplete="off"
+                            autoComplete="off"
                         />
                         <Form.Text className="text-muted">請輸入銀行卡持有人姓名</Form.Text>
                         <div className="buyCount-btnBox">

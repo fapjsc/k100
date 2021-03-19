@@ -23,8 +23,12 @@ export default class History extends Component {
         this.props.history.push(`/home/history/${this.state.historyState}`);
     }
 
+    componentWillUnmount() {
+        console.log('history index unmount');
+    }
+
     render() {
-        const { historyState } = this.state;
+        const { location } = this.props;
         return (
             <section className={style.section}>
                 <div className="container h_88">
@@ -36,7 +40,7 @@ export default class History extends Component {
                                     <Link
                                         to="/home/history/all"
                                         className={
-                                            historyState === 'all'
+                                            location.pathname === '/home/history/all'
                                                 ? 'history-link history-link-active'
                                                 : 'history-link'
                                         }
@@ -47,7 +51,7 @@ export default class History extends Component {
                                     <Link
                                         to="/home/history/wait"
                                         className={
-                                            historyState === 'wait'
+                                            location.pathname === '/home/history/wait'
                                                 ? 'history-link history-link-active'
                                                 : 'history-link'
                                         }

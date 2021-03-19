@@ -93,6 +93,10 @@ export default class All extends Component {
             this.getTransactions(token, headers);
         }
     }
+
+    componentWillUnmount() {
+        console.log(' all unmount');
+    }
     render() {
         const { historyList, detailToken, showDetail, isLoading } = this.state;
 

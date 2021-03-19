@@ -27,6 +27,7 @@ function App() {
                 path="/home"
                 component={props => <Home {...props} setAuth={setAuth} />}
             />
+
             <Redirect to="/auth/login" />
         </Switch>
         // </Switch>

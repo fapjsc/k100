@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 import PayInfo from '../Transaction/PayInfo';
 // import UploadForm from '../Transaction/UploadForm';
@@ -30,6 +30,7 @@ export default class Transaction extends Component {
         data: {},
         upload: false,
         isCompletePay: false,
+        transactionDone: false,
     };
 
     // 獲取匯率
@@ -151,13 +152,6 @@ export default class Transaction extends Component {
                     isCompletePay: true,
                 });
             }
-
-            if (resData.data.Order_StatusID === 1) {
-                console.log('buy2 return 1');
-                this.setState({
-                    isCompletePay: true,
-                });
-            }
         } catch (error) {
             alert(error);
         }
@@ -200,6 +194,7 @@ export default class Transaction extends Component {
                     orderToken: order_token,
                 },
                 () => {
+                    localStorage.setItem('order_token', this.state.orderToken);
                     this.submitTransaction();
                 }
             );
@@ -227,6 +222,8 @@ export default class Transaction extends Component {
     };
 
     componentDidMount() {
+        console.log(this.props);
+        console.log(this.state.orderToken);
         const token = localStorage.getItem('token');
         if (token) {
             let headers = new Headers();
@@ -239,6 +236,15 @@ export default class Transaction extends Component {
             });
 
             this.getExRate(headers);
+
+            // const orderToken = localStorage.getItem('order_token');
+
+            // if (orderToken) {
+            //     this.setState({
+            //         isCompletePay: true,
+            //         pairFinish: true,
+            //     });
+            // }
         } else {
             return;
         }
@@ -251,6 +257,7 @@ export default class Transaction extends Component {
 
     // webSocket 連接
     submitTransaction = () => {
+        console.log(this.props);
         const { orderToken, loginSession } = this.state;
         const transactionApi = 'j/ws_orderstatus.ashx';
 
@@ -292,7 +299,16 @@ export default class Transaction extends Component {
             });
 
             // 配對成功後返回設定狀態
-            if (this.state.transferData.Tx_HASH) {
+            // if (this.state.transferData.Tx_HASH) {
+            //     this.setState({
+            //         pair: true,
+            //         isPairing: false,
+            //         pairFinish: true,
+            //     });
+            // }
+
+            // 等待付款
+            if (dataFromServer.data.Order_StatusID === 33) {
                 this.setState(
                     {
                         pair: true,
@@ -300,19 +316,21 @@ export default class Transaction extends Component {
                         pairFinish: true,
                     },
                     () => {
-                        this.props.history.replace(
-                            `/home/transaction/${this.state.transferData.Tx_HASH}`
-                        );
-
-                        localStorage.setItem('pairFinish', true);
+                        this.props.history.push(`/home/transaction/${this.state.orderToken}`);
                     }
                 );
             }
 
+            // 收款確認
             if (dataFromServer.data.Order_StatusID === 1) {
-                this.setState({
-                    isCompletePay: true,
-                });
+                this.setState(
+                    {
+                        transactionDone: true,
+                    },
+                    () => {
+                        client.close();
+                    }
+                );
             }
         };
 
@@ -323,6 +341,7 @@ export default class Transaction extends Component {
 
         client.onclose = function () {
             console.log('關閉連線');
+            localStorage.removeItem('order_token');
         };
     };
 
@@ -332,6 +351,8 @@ export default class Transaction extends Component {
         if (client) {
             client.close();
             console.log(client.readyState);
+        } else {
+            console.log('沒有webSocket Client');
         }
     };
 
@@ -353,6 +374,8 @@ export default class Transaction extends Component {
             upload,
             transferData,
             isCompletePay,
+            transactionDone,
+            orderToken,
         } = this.state;
 
         const { history } = this.props;
@@ -421,6 +444,7 @@ export default class Transaction extends Component {
                                             usdtamt={usdtAmt}
                                         />
                                     ) : null}
+
                                     {!upload && !isCompletePay ? (
                                         <>
                                             <p>購買USDT</p>
@@ -440,7 +464,7 @@ export default class Transaction extends Component {
                                     ) : null}
 
                                     {/* <Route
-                                        path="/home/transaction/1234"
+                                        path="/home/transaction/:id"
                                         component={() => (
                                             <PayInfo
                                                 {...this.state}
@@ -468,19 +492,33 @@ export default class Transaction extends Component {
                                                 </p>
                                             </div>
                                         </>
-                                    ) : pairFinish && !upload && !isCompletePay ? (
+                                    ) : pairFinish && !isCompletePay ? (
+                                        // pairFinish && !isCompletePay
                                         <>
-                                            <PayInfo
+                                            {/* <PayInfo
                                                 {...this.state}
                                                 getConfirmPay={this.getConfirmPay}
+                                            /> */}
+
+                                            <Route
+                                                path="/home/transaction/:id"
+                                                component={props => (
+                                                    <PayInfo
+                                                        {...this.state}
+                                                        {...props}
+                                                        getConfirmPay={this.getConfirmPay}
+                                                    />
+                                                )}
                                             />
                                         </>
                                     ) : isCompletePay ? (
-                                        <CompletePay
-                                            history={history}
-                                            transferData={transferData}
-                                            isCompletePay={isCompletePay}
-                                        />
+                                        <>
+                                            <CompletePay
+                                                history={history}
+                                                transferData={transferData}
+                                                transactionDone={transactionDone}
+                                            />
+                                        </>
                                     ) : (
                                         <>
                                             <BuyCount
