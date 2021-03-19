@@ -208,6 +208,7 @@ export default class LoginForm extends Component {
                             type="tel"
                             placeholder="手機號碼"
                             onChange={this.setPhoneNumber}
+                            autoComplete="off"
                         />
                     </Form.Group>
 
@@ -219,6 +220,7 @@ export default class LoginForm extends Component {
                             type="password"
                             placeholder="密碼"
                             onChange={this.setPassword}
+                            autoComplete="off"
                         />
                     </Form.Group>
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ValidCode from './ValidCode';
+import SliderCaptcha from '@slider-captcha/react';
 
 import { Form, Button, Col } from 'react-bootstrap';
 
@@ -149,6 +150,10 @@ export default class index extends Component {
         });
     };
 
+    verifiedCallback = token => {
+        console.log('Captcha token: ' + token);
+    };
+
     render() {
         const { phoneNumber, password, formErrors, showValidCode, agree } = this.state;
 
@@ -179,7 +184,7 @@ export default class index extends Component {
                                     placeholder="手機號碼"
                                     onChange={this.setPhoneNumber}
                                     isInvalid={!phoneNumber.isValid}
-                                    autocomplete="off"
+                                    autoComplete="off"
                                 />
                             </Form.Group>
                         </Form.Row>
@@ -222,6 +227,13 @@ export default class index extends Component {
                                   </Form.Text>
                               ))
                             : null}
+                        <div className="mt_ssm">
+                            <SliderCaptcha
+                                create="https://example.com/captcha/create"
+                                verify="https://example.com/captcha/verify"
+                                callback={this.verifiedCallback}
+                            />
+                        </div>
 
                         <Button
                             onClick={this.handleRegisterSubmit}

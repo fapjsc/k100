@@ -100,6 +100,7 @@ export default class Auth extends Component {
 
     render() {
         const { formState, isLoading, httpError } = this.state;
+        const { location } = this.props;
         return (
             <div className="user-auth">
                 <Header>
@@ -117,7 +118,9 @@ export default class Auth extends Component {
                             <nav className="form-nav">
                                 <Link
                                     className={
-                                        formState === '登入' ? 'isActive form-link' : 'form-link'
+                                        location.pathname === '/auth/login'
+                                            ? 'isActive form-link'
+                                            : 'form-link'
                                     }
                                     to="/auth/login"
                                     onClick={() => this.toggleForm('登入')}
@@ -127,7 +130,9 @@ export default class Auth extends Component {
 
                                 <Link
                                     className={
-                                        formState === '註冊' ? 'isActive form-link' : 'form-link'
+                                        location.pathname === '/auth/register'
+                                            ? 'isActive form-link'
+                                            : 'form-link'
                                     }
                                     to="/auth/register"
                                     onClick={() => this.toggleForm('註冊')}

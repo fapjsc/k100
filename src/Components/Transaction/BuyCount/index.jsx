@@ -18,6 +18,7 @@ const BuyCount = props => {
                         value={props.usdtAmt ? props.usdtAmt : ''}
                         // onChange={props.getUsdtAmt}
                         onChange={props.getRmbAmt}
+                        autocomplete="off"
                     />
                     {/* <Form.Text className="text-muted">手續費: 5.00USDT</Form.Text> */}
                 </Form.Group>
@@ -34,6 +35,7 @@ const BuyCount = props => {
                         placeholder="CNY"
                         value={props.rmbAmt ? props.rmbAmt : ''}
                         onChange={props.getRmbAmt}
+                        autocomplete="off"
                     />
                 </Form.Group>
 

@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './index.scss';
 
 const CompletePay = props => {
+    const [isComplete, setComplete] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setComplete(true);
+        }, 6000);
+    }, []);
+
     const backToHome = () => {
         props.history.replace('/home/overview');
     };
 
     // console.log(props);
-    if (props.isCompletePay) {
+    if (!isComplete) {
         return (
             <div>
                 <div className="txt_12 pt_20">購買USDT</div>
