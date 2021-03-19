@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import Transaction from '../../pages/Transaction';
+
 import Header from '../../Components/Layout/Header';
 import TheNav from '../../Components/Layout/TheNav';
 
@@ -6,9 +9,8 @@ import MoneyRecord from '../../Components/MoneyRecord';
 import Overview from '../../Components/Overview';
 import Wallet from '../../Components/Wallet';
 import History from '../../Components/History';
-import Transaction from '../../Components/Transaction';
-// import InfoDetail from '../../Components/Transaction/PayInfo/InfoDetail';
-import PayInfo from '../../Components/Transaction/PayInfo';
+
+import Buy from '../../Components/Buy';
 
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
 

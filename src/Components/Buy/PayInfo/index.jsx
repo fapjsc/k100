@@ -30,7 +30,6 @@ export default class PayInfo extends Component {
 
         return (
             <div>
-                <h1>test</h1>
                 {isPairing ? null : pair && transferData.MasterType === 0 ? (
                     <div className="pairBox">
                         {showInfo ? (

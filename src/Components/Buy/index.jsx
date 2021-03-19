@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
 
-import PayInfo from '../Transaction/PayInfo';
-// import UploadForm from '../Transaction/UploadForm';
-import CompletePay from '../Transaction/CompletePay';
+import PayInfo from '../Buy/PayInfo';
+import CompletePay from '../Buy/CompletePay';
 
-// import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import './index.scss';
@@ -25,7 +22,6 @@ export default class Transaction extends Component {
         transferData: null,
         pair: false,
         isPairing: false,
-        transactionState: 'buy',
         pairFinish: false,
         data: {},
         upload: false,
@@ -316,7 +312,7 @@ export default class Transaction extends Component {
                         pairFinish: true,
                     },
                     () => {
-                        this.props.history.push(`/home/transaction/${this.state.orderToken}`);
+                        // this.props.history.push(`/home/transaction/${this.state.orderToken}`);
                     }
                 );
             }
@@ -369,7 +365,6 @@ export default class Transaction extends Component {
             confirmPay,
             pair,
             isPairing,
-            transactionState,
             pairFinish,
             upload,
             transferData,
@@ -391,79 +386,34 @@ export default class Transaction extends Component {
 
         return (
             <>
-                <section className="overview bg_grey">
-                    <div className="container h_88">
-                        <div className="row">
-                            <div className="col-12 ">
-                                <p className="welcome_txt">歡迎登入</p>
+                <div>
+                    {isPairing && !isCompletePay ? (
+                        <Paring
+                            show={isPairing}
+                            onHide={() => this.setState({ isPairing: false })}
+                            rmbamt={rmbAmt}
+                            usdtamt={usdtAmt}
+                        />
+                    ) : null}
+
+                    {!upload && !isCompletePay ? (
+                        <>
+                            <p>購買USDT</p>
+                            <div className="pay-info">
+                                <p>
+                                    匯率 :<span>{exRate ? exRate.RMB_BUY : null}</span>
+                                </p>
+                                <p>
+                                    付款窗口 :<span>30分鐘</span>
+                                </p>
+                                <p>
+                                    限額 :<span>100 - 10000</span>
+                                </p>
                             </div>
+                        </>
+                    ) : null}
 
-                            <div className="col-12 transaction-card">
-                                {/* Nav */}
-                                <div className="history-tab trans-tab">
-                                    <Link
-                                        to="/home"
-                                        className={
-                                            transactionState === 'buy'
-                                                ? 'history-link history-link-active'
-                                                : 'history-link'
-                                        }
-                                    >
-                                        購買
-                                    </Link>
-                                    <Link
-                                        to="/home"
-                                        className={
-                                            transactionState === 'sell'
-                                                ? 'history-link history-link-active'
-                                                : 'history-link'
-                                        }
-                                    >
-                                        出售
-                                    </Link>
-
-                                    <Link
-                                        to="/home"
-                                        className={
-                                            transactionState === 'sell'
-                                                ? 'history-link history-link-active'
-                                                : 'history-link'
-                                        }
-                                    >
-                                        轉帳
-                                    </Link>
-                                </div>
-
-                                {/* 申請購買 */}
-                                <div>
-                                    {isPairing && !isCompletePay ? (
-                                        <Paring
-                                            show={isPairing}
-                                            onHide={() => this.setState({ isPairing: false })}
-                                            rmbamt={rmbAmt}
-                                            usdtamt={usdtAmt}
-                                        />
-                                    ) : null}
-
-                                    {!upload && !isCompletePay ? (
-                                        <>
-                                            <p>購買USDT</p>
-                                            <div className="pay-info">
-                                                <p>
-                                                    匯率 :
-                                                    <span>{exRate ? exRate.RMB_BUY : null}</span>
-                                                </p>
-                                                <p>
-                                                    付款窗口 :<span>30分鐘</span>
-                                                </p>
-                                                <p>
-                                                    限額 :<span>100 - 10000</span>
-                                                </p>
-                                            </div>
-                                        </>
-                                    ) : null}
-
-                                    {/* <Route
+                    {/* <Route
                                         path="/home/transaction/:id"
                                         component={() => (
                                             <PayInfo
@@ -473,34 +423,31 @@ export default class Transaction extends Component {
                                         )}
                                     /> */}
 
-                                    {confirmPay && !pairFinish && !isCompletePay ? (
-                                        <>
-                                            <ConfirmBuy
-                                                getClientName={this.getClientName}
-                                                handleConfirm={this.handleConfirm}
-                                                usdtAmt={usdtAmt}
-                                                rmbAmt={rmbAmt}
-                                                pairFinish={pairFinish}
-                                                pair={pair}
-                                                isPairing={isPairing}
-                                            />
+                    {confirmPay && !pairFinish && !isCompletePay ? (
+                        <>
+                            <ConfirmBuy
+                                getClientName={this.getClientName}
+                                handleConfirm={this.handleConfirm}
+                                usdtAmt={usdtAmt}
+                                rmbAmt={rmbAmt}
+                                pairFinish={pairFinish}
+                                pair={pair}
+                                isPairing={isPairing}
+                            />
 
-                                            <div>
-                                                <hr className="mt_mb" />
-                                                <p className="txt_12_grey">
-                                                    信息為幣商的指定收款賬戶，請務必按照規則操作，網銀轉賬到賬戶。
-                                                </p>
-                                            </div>
-                                        </>
-                                    ) : pairFinish && !isCompletePay ? (
-                                        // pairFinish && !isCompletePay
-                                        <>
-                                            {/* <PayInfo
-                                                {...this.state}
-                                                getConfirmPay={this.getConfirmPay}
-                                            /> */}
+                            <div>
+                                <hr className="mt_mb" />
+                                <p className="txt_12_grey">
+                                    信息為幣商的指定收款賬戶，請務必按照規則操作，網銀轉賬到賬戶。
+                                </p>
+                            </div>
+                        </>
+                    ) : pairFinish && !isCompletePay ? (
+                        // pairFinish && !isCompletePay
+                        <>
+                            <PayInfo {...this.state} getConfirmPay={this.getConfirmPay} />
 
-                                            <Route
+                            {/* <Route
                                                 path="/home/transaction/:id"
                                                 component={props => (
                                                     <PayInfo
@@ -509,49 +456,44 @@ export default class Transaction extends Component {
                                                         getConfirmPay={this.getConfirmPay}
                                                     />
                                                 )}
-                                            />
-                                        </>
-                                    ) : isCompletePay ? (
-                                        <>
-                                            <CompletePay
-                                                history={history}
-                                                transferData={transferData}
-                                                transactionDone={transactionDone}
-                                            />
-                                        </>
-                                    ) : (
-                                        <>
-                                            <BuyCount
-                                                showPayDetail={this.showPayDetail}
-                                                getRmbAmt={this.getRmbAmt}
-                                                getUsdtAmt={this.getUsdtAmt}
-                                                usdtAmt={usdtAmt}
-                                                rmbAmt={rmbAmt}
-                                            />
+                                            /> */}
+                        </>
+                    ) : isCompletePay ? (
+                        <>
+                            <CompletePay
+                                history={history}
+                                transferData={transferData}
+                                transactionDone={transactionDone}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <BuyCount
+                                showPayDetail={this.showPayDetail}
+                                getRmbAmt={this.getRmbAmt}
+                                getUsdtAmt={this.getUsdtAmt}
+                                usdtAmt={usdtAmt}
+                                rmbAmt={rmbAmt}
+                            />
 
-                                            <div>
-                                                <hr className="mt_mb" />
-                                                <p className="txt_12_grey">
-                                                    請注意,透過網上銀行、流動銀行、付款服務、微型電郵或其他第三者付款平臺,直接轉帳予賣方。
-                                                    “如果您已經把錢匯給賣方，您絕對不能按賣方的付款方式單擊”取消交易”。
-                                                    除非你的付款帳戶已收到退款,否則沒有真正付款,切勿按交易規則所不允許的「付款」鍵。”
-                                                    <br />
-                                                    <br />
-                                                    OTC
-                                                    貿易區目前只提供BCTC/USDT/TES/EOS/HT/HUST/XRP/LTC/BCH。
-                                                    如果你想用其他數字資產進行交易，請用貨幣進行交易。
-                                                    <br />
-                                                    <br />
-                                                    如你有其他問題或爭議,你可透過網頁聯絡。
-                                                </p>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
+                            <div>
+                                <hr className="mt_mb" />
+                                <p className="txt_12_grey">
+                                    請注意,透過網上銀行、流動銀行、付款服務、微型電郵或其他第三者付款平臺,直接轉帳予賣方。
+                                    “如果您已經把錢匯給賣方，您絕對不能按賣方的付款方式單擊”取消交易”。
+                                    除非你的付款帳戶已收到退款,否則沒有真正付款,切勿按交易規則所不允許的「付款」鍵。”
+                                    <br />
+                                    <br />
+                                    OTC 貿易區目前只提供BCTC/USDT/TES/EOS/HT/HUST/XRP/LTC/BCH。
+                                    如果你想用其他數字資產進行交易，請用貨幣進行交易。
+                                    <br />
+                                    <br />
+                                    如你有其他問題或爭議,你可透過網頁聯絡。
+                                </p>
                             </div>
-                        </div>
-                    </div>
-                </section>
+                        </>
+                    )}
+                </div>
             </>
         );
     }
