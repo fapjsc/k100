@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-
-import PayInfo from '../Buy/PayInfo';
-import CompletePay from '../Buy/CompletePay';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
-import './index.scss';
+import PayInfo from '../Buy/PayInfo';
+
 import BuyCount from './BuyCount';
 import ConfirmBuy from './ConfirmBuy';
 import Paring from './Pairing';
 
+import './index.scss';
+
 export default class Transaction extends Component {
     state = {
-        orderToken: null,
+        orderToken: '',
         loginSession: '',
         clientName: '',
         exRate: null,
@@ -24,9 +25,8 @@ export default class Transaction extends Component {
         isPairing: false,
         pairFinish: false,
         data: {},
-        upload: false,
-        isCompletePay: false,
         transactionDone: false,
+        isCompletePay: false,
     };
 
     // 獲取匯率
@@ -120,39 +120,6 @@ export default class Transaction extends Component {
     //     })
     // };
 
-    getConfirmPay = async () => {
-        const token = localStorage.getItem('token');
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('login_session', token);
-
-        try {
-            console.log('call buy2 api');
-            const reqBuy2Api = `/j/Req_Buy2.aspx`;
-
-            const res = await fetch(reqBuy2Api, {
-                method: 'POST',
-                headers,
-                body: JSON.stringify({
-                    Token: this.state.orderToken,
-                }),
-            });
-
-            const resData = await res.json();
-
-            console.log(resData, 'buy2');
-
-            if (resData.code === 200) {
-                console.log('buy2 return 200');
-                this.setState({
-                    isCompletePay: true,
-                });
-            }
-        } catch (error) {
-            alert(error);
-        }
-    };
-
     handleConfirm = async () => {
         const { usdtAmt, clientName } = this.state;
 
@@ -218,8 +185,6 @@ export default class Transaction extends Component {
     };
 
     componentDidMount() {
-        console.log(this.props);
-        console.log(this.state.orderToken);
         const token = localStorage.getItem('token');
         if (token) {
             let headers = new Headers();
@@ -248,7 +213,7 @@ export default class Transaction extends Component {
 
     componentWillUnmount() {
         console.log('transaction will unmount');
-        // this.closeWebSocket();
+        this.closeWebSocket();
     }
 
     // webSocket 連接
@@ -312,12 +277,19 @@ export default class Transaction extends Component {
                         pairFinish: true,
                     },
                     () => {
-                        // this.props.history.push(`/home/transaction/${this.state.orderToken}`);
+                        this.props.history.push(`/home/transaction/buy/${this.state.orderToken}`);
                     }
                 );
             }
 
             // 收款確認
+            if (dataFromServer.data.Order_StatusID === 34) {
+                this.setState({
+                    isCompletePay: true,
+                });
+            }
+
+            // 交易完成
             if (dataFromServer.data.Order_StatusID === 1) {
                 this.setState(
                     {
@@ -357,23 +329,18 @@ export default class Transaction extends Component {
     // };
 
     render() {
-        console.log('transaction render');
+        console.log('buy render');
         const {
-            exRate,
             rmbAmt,
             usdtAmt,
             confirmPay,
             pair,
             isPairing,
             pairFinish,
-            upload,
-            transferData,
-            isCompletePay,
             transactionDone,
             orderToken,
+            isCompletePay,
         } = this.state;
-
-        const { history } = this.props;
 
         // 千分位逗號
         // if (usdtAmt) {
@@ -386,114 +353,55 @@ export default class Transaction extends Component {
 
         return (
             <>
-                <div>
-                    {isPairing && !isCompletePay ? (
-                        <Paring
-                            show={isPairing}
-                            onHide={() => this.setState({ isPairing: false })}
-                            rmbamt={rmbAmt}
-                            usdtamt={usdtAmt}
-                        />
-                    ) : null}
+                <Switch>
+                    <Route exact path="/home/transaction/buy">
+                        <div>
+                            {!confirmPay ? (
+                                <BuyCount
+                                    showPayDetail={this.showPayDetail}
+                                    getRmbAmt={this.getRmbAmt}
+                                    getUsdtAmt={this.getUsdtAmt}
+                                    usdtAmt={usdtAmt}
+                                    rmbAmt={rmbAmt}
+                                />
+                            ) : (
+                                <ConfirmBuy
+                                    getClientName={this.getClientName}
+                                    handleConfirm={this.handleConfirm}
+                                    usdtAmt={usdtAmt}
+                                    rmbAmt={rmbAmt}
+                                    pairFinish={pairFinish}
+                                    pair={pair}
+                                    isPairing={isPairing}
+                                />
+                            )}
 
-                    {!upload && !isCompletePay ? (
-                        <>
-                            <p>購買USDT</p>
-                            <div className="pay-info">
-                                <p>
-                                    匯率 :<span>{exRate ? exRate.RMB_BUY : null}</span>
-                                </p>
-                                <p>
-                                    付款窗口 :<span>30分鐘</span>
-                                </p>
-                                <p>
-                                    限額 :<span>100 - 10000</span>
-                                </p>
-                            </div>
-                        </>
-                    ) : null}
+                            {isPairing ? (
+                                <Paring
+                                    show={isPairing}
+                                    onHide={() => this.setState({ isPairing: false })}
+                                    rmbamt={rmbAmt}
+                                    usdtamt={usdtAmt}
+                                />
+                            ) : null}
+                        </div>
+                    </Route>
 
-                    {/* <Route
-                                        path="/home/transaction/:id"
-                                        component={() => (
-                                            <PayInfo
-                                                {...this.state}
-                                                getConfirmPay={this.getConfirmPay}
-                                            />
-                                        )}
-                                    /> */}
-
-                    {confirmPay && !pairFinish && !isCompletePay ? (
-                        <>
-                            <ConfirmBuy
-                                getClientName={this.getClientName}
+                    <Route
+                        path="/home/transaction/buy/:id"
+                        component={props => (
+                            <PayInfo
+                                {...this.state}
+                                {...props}
                                 handleConfirm={this.handleConfirm}
-                                usdtAmt={usdtAmt}
-                                rmbAmt={rmbAmt}
-                                pairFinish={pairFinish}
-                                pair={pair}
-                                isPairing={isPairing}
-                            />
-
-                            <div>
-                                <hr className="mt_mb" />
-                                <p className="txt_12_grey">
-                                    信息為幣商的指定收款賬戶，請務必按照規則操作，網銀轉賬到賬戶。
-                                </p>
-                            </div>
-                        </>
-                    ) : pairFinish && !isCompletePay ? (
-                        // pairFinish && !isCompletePay
-                        <>
-                            <PayInfo {...this.state} getConfirmPay={this.getConfirmPay} />
-
-                            {/* <Route
-                                                path="/home/transaction/:id"
-                                                component={props => (
-                                                    <PayInfo
-                                                        {...this.state}
-                                                        {...props}
-                                                        getConfirmPay={this.getConfirmPay}
-                                                    />
-                                                )}
-                                            /> */}
-                        </>
-                    ) : isCompletePay ? (
-                        <>
-                            <CompletePay
-                                history={history}
-                                transferData={transferData}
                                 transactionDone={transactionDone}
+                                orderToken={orderToken ? orderToken : ''}
+                                isCompletePay={isCompletePay}
+                                submitTransaction={this.submitTransaction}
                             />
-                        </>
-                    ) : (
-                        <>
-                            <BuyCount
-                                showPayDetail={this.showPayDetail}
-                                getRmbAmt={this.getRmbAmt}
-                                getUsdtAmt={this.getUsdtAmt}
-                                usdtAmt={usdtAmt}
-                                rmbAmt={rmbAmt}
-                            />
-
-                            <div>
-                                <hr className="mt_mb" />
-                                <p className="txt_12_grey">
-                                    請注意,透過網上銀行、流動銀行、付款服務、微型電郵或其他第三者付款平臺,直接轉帳予賣方。
-                                    “如果您已經把錢匯給賣方，您絕對不能按賣方的付款方式單擊”取消交易”。
-                                    除非你的付款帳戶已收到退款,否則沒有真正付款,切勿按交易規則所不允許的「付款」鍵。”
-                                    <br />
-                                    <br />
-                                    OTC 貿易區目前只提供BCTC/USDT/TES/EOS/HT/HUST/XRP/LTC/BCH。
-                                    如果你想用其他數字資產進行交易，請用貨幣進行交易。
-                                    <br />
-                                    <br />
-                                    如你有其他問題或爭議,你可透過網頁聯絡。
-                                </p>
-                            </div>
-                        </>
-                    )}
-                </div>
+                        )}
+                    />
+                </Switch>
             </>
         );
     }

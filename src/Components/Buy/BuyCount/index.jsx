@@ -52,6 +52,21 @@ const BuyCount = props => {
 
                 {/* <button onClick={props.showPayDetail}>下一步</button> */}
             </form>
+            <div>
+                <hr className="mt_mb" />
+                <p className="txt_12_grey">
+                    請注意,透過網上銀行、流動銀行、付款服務、微型電郵或其他第三者付款平臺,直接轉帳予賣方。
+                    “如果您已經把錢匯給賣方，您絕對不能按賣方的付款方式單擊”取消交易”。
+                    除非你的付款帳戶已收到退款,否則沒有真正付款,切勿按交易規則所不允許的「付款」鍵。”
+                    <br />
+                    <br />
+                    OTC 貿易區目前只提供BCTC/USDT/TES/EOS/HT/HUST/XRP/LTC/BCH。
+                    如果你想用其他數字資產進行交易，請用貨幣進行交易。
+                    <br />
+                    <br />
+                    如你有其他問題或爭議,你可透過網頁聯絡。
+                </p>
+            </div>
         </>
     );
 };

@@ -91,7 +91,7 @@ export default class index extends Component {
             token,
         });
         if (!token) {
-            history.replace('/auth/login');
+            // history.replace('/auth/login');
         } else {
             if (location.pathname === '/home' || location.pathname === '/home/') {
                 history.replace('/home/overview');

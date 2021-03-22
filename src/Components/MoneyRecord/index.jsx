@@ -6,9 +6,9 @@ import './index.scss';
 
 export default class MoneyRecord extends Component {
     state = {
-        Avb_Balance: 0,
-        Real_Balance: 0,
-        tick: null,
+        Avb_Balance: 0, // 可提
+        Real_Balance: 0, // 結餘
+        tick: null, // 每分鐘檢查一次，tick如果不同，代表balance有變動，需重新再 get balance
         token: null,
         httpError: null,
     };
@@ -68,7 +68,7 @@ export default class MoneyRecord extends Component {
             localStorage.removeItem('token');
             clearInterval(this.checkTickLoop);
             alert('session過期，請重新登入 get balance catch');
-            history.replace('/auth/login');
+            // history.replace('/auth/login');
         }
     };
 
@@ -222,7 +222,7 @@ export default class MoneyRecord extends Component {
             }, timer);
         } else {
             alert('請重新登入');
-            history.replace('/auth/login');
+            // history.replace('/auth/login');
         }
     }
 
