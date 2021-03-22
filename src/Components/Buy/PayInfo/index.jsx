@@ -52,9 +52,14 @@ export default class PayInfo extends Component {
     componentDidMount() {}
 
     render() {
-        const { transactionDone, history, isCompletePay, transferData } = this.props;
+        const {
+            transactionDone,
+            history,
+            isCompletePay,
+            transferData,
+            location: { state },
+        } = this.props;
         const { showInfo, time } = this.state;
-        console.log('payinfo');
 
         return (
             <div>
@@ -75,10 +80,7 @@ export default class PayInfo extends Component {
                                 </p>
                             </div>
 
-                            <InfoDetail
-                                transferData={transferData}
-                                getConfirmPay={this.getConfirmPay}
-                            />
+                            <InfoDetail transferData={state} getConfirmPay={this.getConfirmPay} />
                         </>
                     ) : showInfo === false && !isCompletePay ? (
                         <>
@@ -91,7 +93,7 @@ export default class PayInfo extends Component {
                     ) : isCompletePay ? (
                         <CompletePay
                             history={history}
-                            transferData={transferData}
+                            transferData={state}
                             transactionDone={transactionDone}
                         />
                     ) : null}

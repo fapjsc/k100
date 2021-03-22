@@ -5,33 +5,103 @@ import OnLoading from './OnLoading';
 import { Form, Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
+import validator from 'validator';
+
 export default class Transfer extends Component {
     state = {
-        transferCount: null,
-        transferAddress: '',
+        transferCount: {
+            val: '',
+            isValid: true,
+        },
+        transferAddress: {
+            val: '',
+            isValid: true,
+        },
+        formIsValid: true,
         isLoading: false,
+        Avb_Balance: null, // 可提
+        error: '',
+        headers: null,
     };
 
     setTransferCount = e => {
         this.setState(
             {
-                transferCount: e.target.value,
+                transferCount: {
+                    val: e.target.value.trim(),
+                    isValid: true,
+                },
             },
-            () => {
-                console.log(this.state.transferCount);
-            }
+            () => {}
         );
     };
 
     setTransferAddress = e => {
         this.setState(
             {
-                transferAddress: e.target.value,
+                transferAddress: {
+                    val: e.target.value.trim(),
+                    isValid: true,
+                },
             },
-            () => {
-                console.log(this.state.transferAddress);
-            }
+            () => {}
         );
+    };
+
+    setShow = value => {
+        this.setState({
+            error: value,
+        });
+    };
+
+    valid = () => {
+        const { transferCount, transferAddress } = this.state;
+        const { Avb_Balance } = this.props;
+
+        // 錢包地址小於40位
+        if (transferAddress.val.length < 40) {
+            this.setState({
+                transferAddress: {
+                    val: '',
+                    isValid: false,
+                },
+                formIsValid: false,
+            });
+        }
+
+        // 輸入數量大於可提加上手續費
+        if (transferCount.val > Avb_Balance + Number(this.props.exRate.TransferHandle)) {
+            this.setState({
+                transferCount: {
+                    val: '',
+                    isValid: false,
+                },
+                formIsValid: false,
+                error: '超出最大可提',
+            });
+        }
+
+        if (!validator.isDecimal(transferCount.val)) {
+            console.log('hi');
+            this.setState({
+                transferCount: {
+                    val: '',
+                    isValid: false,
+                },
+                formIsValid: false,
+            });
+        }
+    };
+
+    getAll = () => {
+        const all = this.props.Avb_Balance - Number(this.props.exRate.TransferHandle);
+        console.log(all);
+        this.setState({
+            transferCount: {
+                val: String(all),
+                isValid: true,
+            },
+        });
     };
 
     onLoading = value => {
@@ -40,8 +110,60 @@ export default class Transfer extends Component {
         });
     };
 
+    handleSubmit = async () => {
+        this.setState({
+            formIsValid: true,
+        });
+        await this.valid();
+
+        if (!this.state.formIsValid) {
+            console.log('fail submit');
+            return;
+        }
+
+        const { transferAddress, transferCount, headers } = this.state;
+        const transferApi = '/j/Req_Transfer1.aspx';
+        console.log(headers);
+
+        console.log(transferAddress);
+        console.log(transferCount);
+
+        const res = await fetch(transferApi, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                ToAddress: transferAddress.val,
+                UsdtAmt: transferCount.val,
+            }),
+        });
+
+        const resData = await res.json();
+
+        console.log(resData);
+
+        console.log('submit success');
+    };
+
+    componentDidMount() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            headers.append('login_session', token);
+
+            this.setState({
+                loginSession: token,
+                headers,
+            });
+        } else {
+            return;
+        }
+    }
+
     render() {
-        const { isLoading } = this.state;
+        const { isLoading, transferAddress, transferCount } = this.state;
+        const { exRate } = this.props;
+
         return (
             <div>
                 {isLoading ? (
@@ -55,7 +177,11 @@ export default class Transfer extends Component {
                                 <Form.Group controlId="transferUsdt" className="my-4">
                                     <div className="mb_sm d-flex justify-content-between">
                                         <Form.Label className="h_100">轉賬USDT </Form.Label>
-                                        <Button variant="outline-primary" size="sm">
+                                        <Button
+                                            variant="outline-primary"
+                                            size="sm"
+                                            onClick={this.getAll}
+                                        >
                                             提取所有
                                         </Button>
                                     </div>
@@ -65,10 +191,15 @@ export default class Transfer extends Component {
                                         className="p_sm-2"
                                         onChange={this.setTransferCount}
                                         autoComplete="off"
+                                        value={transferCount.val}
+                                        isInvalid={!transferCount.isValid}
                                     />
-                                    <Form.Text className="text-muted my-3">
-                                        手續費: 5.00USDT
-                                    </Form.Text>
+
+                                    {exRate !== null ? (
+                                        <Form.Text className="text-muted my-3">
+                                            手續費: {exRate.TransferHandle} USDT
+                                        </Form.Text>
+                                    ) : null}
 
                                     {/* <Form.Text className="text-muted">
                             We'll never share your email with anyone else.
@@ -87,16 +218,27 @@ export default class Transfer extends Component {
                                         type="text"
                                         placeholder="請輸入收款地址"
                                         className="p_sm-2"
-                                        onChange={this.setTransferAddress}
                                         autoComplete="off"
+                                        onChange={this.setTransferAddress}
+                                        isInvalid={!transferAddress.isValid}
                                     />
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button
+                        {/* <Button
                             variant="primary"
                             className="easy-btn mw400"
                             onClick={() => this.onLoading(true)}
+                            disabled={formIsValid}
+                        >
+                            下一步
+                        </Button> */}
+
+                        <Button
+                            // variant={formIsValid ? 'primary' : 'secondary'}
+                            variant="primary"
+                            className="w-50 mx-auto mw400 cus-btn"
+                            onClick={this.handleSubmit}
                         >
                             下一步
                         </Button>

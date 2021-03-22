@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BaseDialog from './../Ui/BaseDialog';
-// import PubSub from 'pubsub-js';
+import PubSub from 'pubsub-js';
 
 import './index.scss';
 
@@ -14,23 +14,25 @@ export default class MoneyRecord extends Component {
     };
 
     getBalance = async () => {
-        const { token } = this.state;
-        if (!token) {
-            const { history } = this.props;
+        // if (!token) {
+        //     const { history } = this.props;
 
-            alert('請重新登入, get balance');
-            localStorage.removeItem('token');
-            history.replace('/auth/login');
+        //     alert('請重新登入, get balance');
+        //     localStorage.removeItem('token');
+        //     history.replace('/auth/login');
 
-            return;
-        }
+        //     return;
+        // }
         console.log('get balance');
 
         const { history } = this.props;
 
+        const token = localStorage.getItem('token');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
+
+        console.log(token);
 
         const balanceApi = '/j/ChkBalance.aspx';
 
@@ -40,6 +42,7 @@ export default class MoneyRecord extends Component {
             });
 
             const resData = await res.json();
+            console.log(resData);
 
             if (resData.code === '91' || resData.code === '90') {
                 console.log('token 過期 => check tick');
@@ -53,17 +56,13 @@ export default class MoneyRecord extends Component {
 
             const { Avb_Balance, Real_Balance } = resData.data;
 
-            this.setState({
-                Avb_Balance,
-                Real_Balance,
-            });
-
-            // const balance = {
-            //     Avb_Balance,
-            //     Real_Balance,
-            // };
-
-            // PubSub.publish('getBalance', balance);
+            this.setState(
+                {
+                    Avb_Balance,
+                    Real_Balance,
+                },
+                () => {}
+            );
         } catch (error) {
             localStorage.removeItem('token');
             clearInterval(this.checkTickLoop);
@@ -72,16 +71,9 @@ export default class MoneyRecord extends Component {
         }
     };
 
-    // pubBalance = () => {
-    //     const { Avb_Balance, Real_Balance } = this.state;
-
-    //     const balance = {
-    //         Avb_Balance,
-    //         Real_Balance,
-    //     };
-
-    //     PubSub.publish('getBalance', balance);
-    // };
+    pubBalance = value => {
+        PubSub.publish('pubBalance', value);
+    };
 
     getTick = async token => {
         if (!token) {
@@ -202,16 +194,16 @@ export default class MoneyRecord extends Component {
     };
 
     componentDidMount() {
-        const { history } = this.props;
         const token = localStorage.getItem('token');
+        const { history } = this.props;
         if (token) {
             this.setState(
                 {
                     token,
                 },
                 () => {
+                    this.getBalance(token);
                     this.getTick(token);
-                    this.getBalance();
                 }
             );
 
@@ -221,8 +213,8 @@ export default class MoneyRecord extends Component {
                 this.checkTick(token);
             }, timer);
         } else {
-            alert('請重新登入');
-            // history.replace('/auth/login');
+            alert('請重新登入, money record did mount');
+            history.replace('/auth/login');
         }
     }
 

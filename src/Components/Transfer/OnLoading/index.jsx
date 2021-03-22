@@ -23,7 +23,7 @@ const OnLoading = props => {
         <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Body className="text-center">
-                    <img src={trans} />
+                    <img src={trans} alt="transfer" />
                     <h3 style={{ color: '#3F80FA' }}>執行中，請稍等</h3>
                     <p>轉賬1500.00 USDT</p>
                 </Modal.Body>

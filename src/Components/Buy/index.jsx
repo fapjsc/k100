@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
@@ -20,43 +20,13 @@ export default class Transaction extends Component {
         rmbAmt: null,
         usdtAmt: null,
         confirmPay: false,
-        transferData: null,
+        transferData: {},
         pair: false,
         isPairing: false,
         pairFinish: false,
         data: {},
         transactionDone: false,
         isCompletePay: false,
-    };
-
-    // 獲取匯率
-    getExRate = async headers => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('token 過期');
-        }
-
-        const exRateApi = `/j/ChkExRate.aspx`;
-
-        try {
-            const res = await fetch(exRateApi, {
-                headers,
-            });
-
-            const resData = await res.json();
-
-            if (!res.ok) {
-                console.log(resData, '!res.ok');
-            }
-
-            const { data } = resData;
-
-            this.setState({
-                exRate: data,
-            });
-        } catch (error) {
-            console.log(error, 'getExRate');
-        }
     };
 
     getRmbAmt = e => {
@@ -94,7 +64,7 @@ export default class Transaction extends Component {
     transformRmb = () => {
         this.setState(state => {
             return {
-                rmbAmt: (state.exRate.RMB_BUY * state.usdtAmt).toFixed(2),
+                rmbAmt: (this.props.exRate.RMB_BUY * state.usdtAmt).toFixed(2),
             };
         });
     };
@@ -102,7 +72,7 @@ export default class Transaction extends Component {
     transformToUsdt = () => {
         this.setState(state => {
             return {
-                usdtAmt: (state.rmbAmt / state.exRate.RMB_BUY).toFixed(2),
+                usdtAmt: (state.rmbAmt / this.props.exRate.RMB_BUY).toFixed(2),
             };
         });
     };
@@ -157,7 +127,6 @@ export default class Transaction extends Component {
                     orderToken: order_token,
                 },
                 () => {
-                    localStorage.setItem('order_token', this.state.orderToken);
                     this.submitTransaction();
                 }
             );
@@ -195,30 +164,17 @@ export default class Transaction extends Component {
                 loginSession: token,
                 headers,
             });
-
-            this.getExRate(headers);
-
-            // const orderToken = localStorage.getItem('order_token');
-
-            // if (orderToken) {
-            //     this.setState({
-            //         isCompletePay: true,
-            //         pairFinish: true,
-            //     });
-            // }
         } else {
             return;
         }
     }
 
     componentWillUnmount() {
-        console.log('transaction will unmount');
-        this.closeWebSocket();
+        // this.closeWebSocket();
     }
 
     // webSocket 連接
     submitTransaction = () => {
-        console.log(this.props);
         const { orderToken, loginSession } = this.state;
         const transactionApi = 'j/ws_orderstatus.ashx';
 
@@ -253,19 +209,25 @@ export default class Transaction extends Component {
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
             console.log('got reply!', dataFromServer);
+            this.setState(
+                {
+                    transferData: dataFromServer.data,
+                },
+                () => {
+                    console.log('set state============');
+                }
+            );
 
-            // 返回後設定state
-            this.setState({
-                transferData: dataFromServer.data,
-            });
-
-            // 配對成功後返回設定狀態
-            // if (this.state.transferData.Tx_HASH) {
-            //     this.setState({
-            //         pair: true,
-            //         isPairing: false,
-            //         pairFinish: true,
-            //     });
+            // 配對中
+            // if (dataFromServer.data.Order_StatusID === 31) {
+            //     this.setState(
+            //         {
+            //             transferData: dataFromServer.data,
+            //         },
+            //         () => {
+            //             console.log(this.state);
+            //         }
+            //     );
             // }
 
             // 等待付款
@@ -277,7 +239,12 @@ export default class Transaction extends Component {
                         pairFinish: true,
                     },
                     () => {
-                        this.props.history.push(`/home/transaction/buy/${this.state.orderToken}`);
+                        const data = this.state.transferData;
+                        const path = {
+                            pathname: `/home/transaction/buy/${this.state.orderToken}`,
+                            state: data,
+                        };
+                        this.props.history.replace(path);
                     }
                 );
             }
@@ -340,8 +307,10 @@ export default class Transaction extends Component {
             transactionDone,
             orderToken,
             isCompletePay,
+            transferData,
         } = this.state;
 
+        console.log(transferData, 'buy');
         // 千分位逗號
         // if (usdtAmt) {
         //     usdtAmt = usdtAmt.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
@@ -350,7 +319,6 @@ export default class Transaction extends Component {
         // if (rmbAmt) {
         //     rmbAmt = usdtAmt.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
         // }
-
         return (
             <>
                 <Switch>
@@ -363,6 +331,7 @@ export default class Transaction extends Component {
                                     getUsdtAmt={this.getUsdtAmt}
                                     usdtAmt={usdtAmt}
                                     rmbAmt={rmbAmt}
+                                    exRate={this.props.exRate}
                                 />
                             ) : (
                                 <ConfirmBuy
@@ -391,8 +360,8 @@ export default class Transaction extends Component {
                         path="/home/transaction/buy/:id"
                         component={props => (
                             <PayInfo
-                                {...this.state}
                                 {...props}
+                                transferData={transferData}
                                 handleConfirm={this.handleConfirm}
                                 transactionDone={transactionDone}
                                 orderToken={orderToken ? orderToken : ''}

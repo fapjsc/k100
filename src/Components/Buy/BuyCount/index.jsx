@@ -9,6 +9,18 @@ const BuyCount = props => {
     console.log('buy count mount');
     return (
         <>
+            <p>購買USDT</p>
+            <div className="pay-info">
+                <p>
+                    匯率 :<span>{props.exRate ? props.exRate.RMB_BUY : null}</span>
+                </p>
+                <p>
+                    付款窗口 :<span>30分鐘</span>
+                </p>
+                <p>
+                    限額 :<span>100 - 10000</span>
+                </p>
+            </div>
             <form className="buyCountForm">
                 <Form.Group controlId="usdt">
                     <Form.Control

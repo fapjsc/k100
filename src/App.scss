@@ -204,6 +204,11 @@ html {
     cursor: pointer;
 }
 
+.cus-btn {
+    border-radius: 5px;
+    padding: 15px;
+}
+
 .easy-btn:hover {
     background-color: #568ef4;
 }
@@ -230,4 +235,8 @@ a:visited {
 
 .easy-border {
     border: 1px solid #d7e2f3 !important;
+}
+
+input {
+    font-size: 2rem !important;
 }

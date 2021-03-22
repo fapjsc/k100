@@ -10,8 +10,6 @@ import Overview from '../../Components/Overview';
 import Wallet from '../../Components/Wallet';
 import History from '../../Components/History';
 
-import Buy from '../../Components/Buy';
-
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
 
 import style from '../../Components/Layout/Header.module.scss';
