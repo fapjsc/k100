@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import InfoDetail from './InfoDetail';
 import Timer from '../Timer';
 import ButtonTimer from '../ButtonTimer';
-import CompletePay from '../CompletePay';
+import BaseSpinner from '../../Ui/BaseSpinner';
 
 import Countdown from 'react-countdown';
 import PubSub from 'pubsub-js';
+
+import './index.scss';
 
 export default class PayInfo extends Component {
     state = {
@@ -16,8 +18,6 @@ export default class PayInfo extends Component {
         data: null,
         masterType: null,
         isCompletePay: false,
-        time: 1000 * 60 * 15, // 15分鐘
-        // time: 3000,
     };
 
     setInfo = () => {
@@ -70,15 +70,15 @@ export default class PayInfo extends Component {
             },
             () => {
                 this.detailReq();
+                const { orderToken } = this.state;
+                this.props.submitTransaction(orderToken);
             }
         );
 
         PubSub.subscribe('statId', this.getStatId);
     }
 
-    componentWillUnmount() {
-        console.log('=======   unmount ===========');
-    }
+    componentWillUnmount() {}
 
     // stateId = value => {
     //     console.log(value, '====== call stateI  =====');
@@ -97,7 +97,7 @@ export default class PayInfo extends Component {
         }
 
         const { orderToken } = this.state;
-        this.props.submitTransaction(orderToken);
+        // this.props.submitTransaction(orderToken);
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -186,7 +186,6 @@ export default class PayInfo extends Component {
         } = this.props;
         const {
             showInfo,
-            time,
             isCompletePay,
             // transactionDone,
             master,
@@ -195,10 +194,20 @@ export default class PayInfo extends Component {
             DeltaTime,
         } = this.state;
 
+        let totalTime = 1800; //  一次 15分鐘，共計算兩次所以是 30分鐘
+        let upperLimit = (totalTime / 2) * 1000;
+        let lowerLimit = upperLimit / 2;
+
+        let timer = ((totalTime - DeltaTime) * 1000) / 2;
+
         return (
             <div>
                 <div className="pairBox">
-                    {showInfo && !isCompletePay && stateId === 33 ? (
+                    {showInfo &&
+                    !isCompletePay &&
+                    stateId === 33 &&
+                    timer <= upperLimit &&
+                    timer > lowerLimit ? (
                         <>
                             <div className="pair-titleBox">
                                 <p>轉帳資料</p>
@@ -206,7 +215,7 @@ export default class PayInfo extends Component {
                                     剩餘支付時間:
                                     <span className="payTime">
                                         <Countdown
-                                            date={Date.now() + DeltaTime}
+                                            date={Date.now() + timer}
                                             renderer={Timer}
                                             onComplete={() => this.setInfo(false)}
                                         ></Countdown>
@@ -216,14 +225,13 @@ export default class PayInfo extends Component {
 
                             <InfoDetail transferData={master} getConfirmPay={this.getConfirmPay} />
                         </>
-                    ) : !showInfo && !isCompletePay && stateId === 33 ? (
-                        <>
-                            <Countdown
-                                date={Date.now() + time}
-                                renderer={ButtonTimer}
-                                getConfirmPay={this.getConfirmPay}
-                            ></Countdown>
-                        </>
+                    ) : (!showInfo && !isCompletePay && stateId === 33) ||
+                      (timer < lowerLimit && stateId === 33) ? (
+                        <Countdown
+                            date={Date.now() + timer}
+                            renderer={ButtonTimer}
+                            getConfirmPay={this.getConfirmPay}
+                        ></Countdown>
                     ) : stateId === 34 || isCompletePay ? (
                         <div>
                             <div className="txt_12 pt_20">購買USDT</div>
@@ -261,7 +269,9 @@ export default class PayInfo extends Component {
                                 <p>詳細購買紀錄</p>
                             </div>
                         </div>
-                    ) : null}
+                    ) : (
+                        <BaseSpinner />
+                    )}
                 </div>
             </div>
         );
