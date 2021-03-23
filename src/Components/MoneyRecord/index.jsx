@@ -32,8 +32,6 @@ export default class MoneyRecord extends Component {
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
 
-        console.log(token);
-
         const balanceApi = '/j/ChkBalance.aspx';
 
         try {
@@ -42,7 +40,6 @@ export default class MoneyRecord extends Component {
             });
 
             const resData = await res.json();
-            console.log(resData);
 
             if (resData.code === '91' || resData.code === '90') {
                 console.log('token 過期 => check tick');

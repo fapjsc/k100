@@ -12,6 +12,7 @@ export default class PayInfo extends Component {
         headers: {},
         showInfo: true,
         data: null,
+        isCompletePay: false,
         time: 1000 * 60 * 15, // 15分鐘
         // time: 3000,
     };
@@ -23,7 +24,6 @@ export default class PayInfo extends Component {
     };
 
     getConfirmPay = async () => {
-        console.log('pay info mount');
         const token = localStorage.getItem('token');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -32,18 +32,20 @@ export default class PayInfo extends Component {
         try {
             console.log('call buy2 api');
             const reqBuy2Api = `/j/Req_Buy2.aspx`;
-
             const res = await fetch(reqBuy2Api, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({
-                    Token: this.props.orderToken,
+                    Token: this.props.location.state.orderToken,
                 }),
             });
 
             const resData = await res.json();
 
             console.log(resData, 'buy2');
+            this.setState({
+                isCompletePay: true,
+            });
         } catch (error) {
             alert(error);
         }
@@ -55,11 +57,10 @@ export default class PayInfo extends Component {
         const {
             transactionDone,
             history,
-            isCompletePay,
-            transferData,
             location: { state },
         } = this.props;
-        const { showInfo, time } = this.state;
+        const { showInfo, time, isCompletePay } = this.state;
+        console.log(this.props, '====pay info');
 
         return (
             <div>

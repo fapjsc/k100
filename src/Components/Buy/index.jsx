@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import PubSub from 'pubsub-js';
 
 import PayInfo from '../Buy/PayInfo';
+import CompletePay from '../Buy/CompletePay';
 
 import BuyCount from './BuyCount';
 import ConfirmBuy from './ConfirmBuy';
@@ -209,14 +211,9 @@ export default class Transaction extends Component {
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
             console.log('got reply!', dataFromServer);
-            this.setState(
-                {
-                    transferData: dataFromServer.data,
-                },
-                () => {
-                    console.log('set state============');
-                }
-            );
+            this.setState({
+                transferData: dataFromServer.data,
+            });
 
             // 配對中
             // if (dataFromServer.data.Order_StatusID === 31) {
@@ -240,32 +237,41 @@ export default class Transaction extends Component {
                     },
                     () => {
                         const data = this.state.transferData;
+
                         const path = {
                             pathname: `/home/transaction/buy/${this.state.orderToken}`,
                             state: data,
                         };
+                        path.state.orderToken = this.state.orderToken;
+
                         this.props.history.replace(path);
                     }
                 );
             }
 
             // 收款確認
-            if (dataFromServer.data.Order_StatusID === 34) {
-                this.setState({
-                    isCompletePay: true,
-                });
-            }
+            // if (dataFromServer.data.Order_StatusID === 34) {
+            //     this.setState({
+            //         isCompletePay: true,
+            //     });
+            // }
 
             // 交易完成
             if (dataFromServer.data.Order_StatusID === 1) {
+                console.log('hi');
                 this.setState(
                     {
                         transactionDone: true,
                     },
                     () => {
-                        client.close();
+                        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                        // Publish some topics 发布主题
+                        PubSub.publish('updateTransaction', true);
+                        // client.close();
                     }
                 );
+
+                // const data = this.state.transactionDone;
             }
         };
 
@@ -307,10 +313,10 @@ export default class Transaction extends Component {
             transactionDone,
             orderToken,
             isCompletePay,
-            transferData,
         } = this.state;
 
-        console.log(transferData, 'buy');
+        console.log(transactionDone);
+
         // 千分位逗號
         // if (usdtAmt) {
         //     usdtAmt = usdtAmt.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
@@ -358,10 +364,20 @@ export default class Transaction extends Component {
 
                     <Route
                         path="/home/transaction/buy/:id"
-                        component={props => (
+                        // component={props => (
+                        //     <PayInfo
+                        //         {...props}
+                        //         handleConfirm={this.handleConfirm}
+                        //         transactionDone={transactionDone}
+                        //         orderToken={orderToken ? orderToken : ''}
+                        //         isCompletePay={isCompletePay}
+                        //         submitTransaction={this.submitTransaction}
+                        //     />
+                        // )}
+
+                        render={props => (
                             <PayInfo
                                 {...props}
-                                transferData={transferData}
                                 handleConfirm={this.handleConfirm}
                                 transactionDone={transactionDone}
                                 orderToken={orderToken ? orderToken : ''}
