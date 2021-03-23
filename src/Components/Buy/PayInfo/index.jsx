@@ -6,12 +6,15 @@ import ButtonTimer from '../ButtonTimer';
 import CompletePay from '../CompletePay';
 
 import Countdown from 'react-countdown';
+import PubSub from 'pubsub-js';
 
 export default class PayInfo extends Component {
     state = {
         headers: {},
         showInfo: true,
+        // transactionDone: false,
         data: null,
+        masterType: null,
         isCompletePay: false,
         time: 1000 * 60 * 15, // 15分鐘
         // time: 3000,
@@ -36,7 +39,7 @@ export default class PayInfo extends Component {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({
-                    Token: this.props.location.state.orderToken,
+                    Token: this.state.orderToken,
                 }),
             });
 
@@ -51,21 +54,151 @@ export default class PayInfo extends Component {
         }
     };
 
-    componentDidMount() {}
+    getStatId = (_, data) => {
+        this.setState({
+            stateId: data,
+        });
+    };
+
+    getTransData = (_, data) => {};
+
+    componentDidMount() {
+        console.log('pay info render');
+        this.setState(
+            {
+                orderToken: this.props.match.params.id,
+            },
+            () => {
+                this.detailReq();
+            }
+        );
+
+        PubSub.subscribe('statId', this.getStatId);
+    }
+
+    componentWillUnmount() {
+        console.log('=======   unmount ===========');
+    }
+
+    // stateId = value => {
+    //     console.log(value, '====== call stateI  =====');
+    //     this.setState({
+    //         stateId: value,
+    //     });
+    // };
+
+    detailReq = async () => {
+        console.log('call detail req ====');
+        // PubSub.subscribe('getData', this.getTransData);
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return;
+        }
+
+        const { orderToken } = this.state;
+        this.props.submitTransaction(orderToken);
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        const detailApi = '/j/GetTxDetail.aspx';
+
+        try {
+            const res = await fetch(detailApi, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    Token: orderToken,
+                }),
+            });
+            const resData = await res.json();
+
+            const { data } = resData;
+            console.log(data);
+
+            this.setState({
+                masterType: data.MasterType,
+                stateId: data.Order_StatusID,
+                Tx_HASH: data.Tx_HASH,
+                DeltaTime: data.DeltaTime,
+            });
+
+            if (data.MasterType === 1 || data.MasterType === 0) {
+                this.setState({
+                    master: {
+                        date: data.Date,
+                        txHASH: data.Tx_HASH,
+                        usdtAmt: data.UsdtAmt,
+                        account: data.P1,
+                        payee: data.P2,
+                        bank: data.P3,
+                        branch: data.P4,
+                        exchangePrice: data.D1,
+                        rmb: data.D2,
+                        charge: data.D3,
+                        orderState: data.Order_StatusID,
+                        type: data.MasterType,
+                    },
+                });
+            }
+
+            if (data.MasterType === 2) {
+                this.setState({
+                    master: {
+                        date: data.Date,
+                        txHASH: data.Tx_HASH,
+                        usdtAmt: data.UsdtAmt,
+                        receivingAddress: data.P1,
+                        charge: data.D1,
+                        orderState: data.Order_StatusID,
+                        type: data.MasterType,
+                    },
+                });
+            }
+
+            if (data.MasterType === 3) {
+                this.setState({
+                    master: {
+                        date: data.Date,
+                        txHASH: data.Tx_HASH,
+                        usdtAmt: data.UsdtAmt,
+                        orderState: data.Order_StatusID,
+                        type: data.MasterType,
+                    },
+                });
+            }
+        } catch (error) {
+            alert(error);
+            return;
+        }
+    };
+
+    backToHome = () => {
+        this.props.history.replace('/home/overview');
+    };
 
     render() {
         const {
-            transactionDone,
             history,
-            location: { state },
+            // location: { state },
         } = this.props;
-        const { showInfo, time, isCompletePay } = this.state;
-        console.log(this.props, '====pay info');
+        const {
+            showInfo,
+            time,
+            isCompletePay,
+            // transactionDone,
+            master,
+            stateId,
+            Tx_HASH,
+            DeltaTime,
+        } = this.state;
 
         return (
             <div>
                 <div className="pairBox">
-                    {showInfo === true && !isCompletePay ? (
+                    {showInfo && !isCompletePay && stateId === 33 ? (
                         <>
                             <div className="pair-titleBox">
                                 <p>轉帳資料</p>
@@ -73,7 +206,7 @@ export default class PayInfo extends Component {
                                     剩餘支付時間:
                                     <span className="payTime">
                                         <Countdown
-                                            date={Date.now() + time}
+                                            date={Date.now() + DeltaTime}
                                             renderer={Timer}
                                             onComplete={() => this.setInfo(false)}
                                         ></Countdown>
@@ -81,9 +214,9 @@ export default class PayInfo extends Component {
                                 </p>
                             </div>
 
-                            <InfoDetail transferData={state} getConfirmPay={this.getConfirmPay} />
+                            <InfoDetail transferData={master} getConfirmPay={this.getConfirmPay} />
                         </>
-                    ) : showInfo === false && !isCompletePay ? (
+                    ) : !showInfo && !isCompletePay && stateId === 33 ? (
                         <>
                             <Countdown
                                 date={Date.now() + time}
@@ -91,12 +224,43 @@ export default class PayInfo extends Component {
                                 getConfirmPay={this.getConfirmPay}
                             ></Countdown>
                         </>
-                    ) : isCompletePay ? (
-                        <CompletePay
-                            history={history}
-                            transferData={state}
-                            transactionDone={transactionDone}
-                        />
+                    ) : stateId === 34 || isCompletePay ? (
+                        <div>
+                            <div className="txt_12 pt_20">購買USDT</div>
+                            <div className="text-center">
+                                <div className="i_notyet" />
+                                <h4 className="c_blue">已提交，等待確認中</h4>
+                                <p className="txt_12_grey">
+                                    交易回執：
+                                    {/* {props.transferData.Tx_HASH ? props.transferData.Tx_HASH : props.hash} */}
+                                    {Tx_HASH}
+                                    <br />
+                                    購買成功後，數字貨幣將全額充值到您要付款的商戶，完成付款。訂單已開始處理，預計到賬時間：15分鐘內
+                                </p>
+                                <button onClick={this.backToHome} className="easy-btn mw400">
+                                    返回主頁
+                                </button>
+                            </div>
+                        </div>
+                    ) : stateId === 1 || isCompletePay ? (
+                        <div>
+                            <div className="txt_12 pt_20">購買USDT</div>
+                            <div className="text-center">
+                                <div className="i_done" />
+                                <h4 className="c_blue">交易完成</h4>
+                                <p className="txt_12_grey">
+                                    交易回執：
+                                    {Tx_HASH}
+                                    <br />
+                                    購買成功後，數字貨幣將全額充值到您要付款的商戶，完成付款。訂單已開始處理，預計到賬時間：15分鐘內
+                                </p>
+                                <button onClick={this.backToHome} className="easy-btn mw400">
+                                    返回主頁
+                                </button>
+                                <br />
+                                <p>詳細購買紀錄</p>
+                            </div>
+                        </div>
                     ) : null}
                 </div>
             </div>

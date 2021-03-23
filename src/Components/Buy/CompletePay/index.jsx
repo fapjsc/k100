@@ -1,29 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import PubSub from 'pubsub-js';
-
 import './index.scss';
 
 const CompletePay = props => {
-    const [transactionDone, setTransaction] = useState(false);
-
-    useEffect(() => {
-        //订阅主题
-        console.log('completepay =======================');
-
-        const mySpecificSubscriber = function (msg, data) {
-            console.log('specific: ', msg, data);
-            setTransaction(data);
-        };
-
-        PubSub.subscribe('updateTransaction', mySpecificSubscriber);
-    }, []);
-
     const backToHome = () => {
         props.history.replace('/home/overview');
     };
 
-    if (!transactionDone) {
+    if (!props.transactionDone) {
         return (
             <div>
                 <div className="txt_12 pt_20">購買USDT</div>

@@ -9,7 +9,7 @@ export default class TransactionNav extends Component {
                 <Link
                     to="/home/transaction/buy"
                     className={
-                        location.pathname === '/home/transaction/buy'
+                        location.pathname.includes(`/home/transaction/buy`)
                             ? 'history-link history-link-active'
                             : 'history-link'
                     }
@@ -19,7 +19,7 @@ export default class TransactionNav extends Component {
                 <Link
                     to="/home/transaction/sell"
                     className={
-                        location.pathname === '/home/transaction/sell'
+                        location.pathname.includes('/home/transaction/sell')
                             ? 'history-link history-link-active'
                             : 'history-link'
                     }
@@ -30,7 +30,7 @@ export default class TransactionNav extends Component {
                 <Link
                     to="/home/transaction/transfer"
                     className={
-                        location.pathname === '/home/transaction/transfer'
+                        location.pathname.includes('/home/transaction/transfer')
                             ? 'history-link history-link-active'
                             : 'history-link'
                     }

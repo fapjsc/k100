@@ -5,7 +5,6 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import PubSub from 'pubsub-js';
 
 import PayInfo from '../Buy/PayInfo';
-import CompletePay from '../Buy/CompletePay';
 
 import BuyCount from './BuyCount';
 import ConfirmBuy from './ConfirmBuy';
@@ -27,8 +26,6 @@ export default class Transaction extends Component {
         isPairing: false,
         pairFinish: false,
         data: {},
-        transactionDone: false,
-        isCompletePay: false,
     };
 
     getRmbAmt = e => {
@@ -140,8 +137,6 @@ export default class Transaction extends Component {
     showPayDetail = () => {
         const { usdtAmt, rmbAmt } = this.state;
 
-        console.log(typeof usdtAmt, typeof rmbAmt);
-
         // 有1~2位小数的正數，且不能為0或0開頭
         let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
 
@@ -172,13 +167,21 @@ export default class Transaction extends Component {
     }
 
     componentWillUnmount() {
-        // this.closeWebSocket();
+        this.closeWebSocket();
     }
 
     // webSocket 連接
-    submitTransaction = () => {
+    submitTransaction = value => {
         const { orderToken, loginSession } = this.state;
         const transactionApi = 'j/ws_orderstatus.ashx';
+
+        let token;
+
+        if (orderToken) {
+            token = orderToken;
+        } else {
+            token = value;
+        }
 
         // 自動重連次數
         // const options = {
@@ -188,9 +191,9 @@ export default class Transaction extends Component {
         let url;
 
         if (window.location.protocol === 'http:') {
-            url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
+            url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
         } else {
-            url = `wss://k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${orderToken}`;
+            url = `wss://k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
         }
 
         const client = new ReconnectingWebSocket(url);
@@ -229,6 +232,16 @@ export default class Transaction extends Component {
 
             // 等待付款
             if (dataFromServer.data.Order_StatusID === 33) {
+                // console.log('33');
+                // this.setState({
+                //     pair: true,
+                //     isPairing: false,
+                //     pairFinish: true,
+                // });
+
+                // console.log(this.state.transferData);
+                // console.log(object)
+
                 this.setState(
                     {
                         pair: true,
@@ -236,42 +249,37 @@ export default class Transaction extends Component {
                         pairFinish: true,
                     },
                     () => {
-                        const data = this.state.transferData;
-
-                        const path = {
-                            pathname: `/home/transaction/buy/${this.state.orderToken}`,
-                            state: data,
-                        };
-                        path.state.orderToken = this.state.orderToken;
-
-                        this.props.history.replace(path);
+                        console.log(token);
+                        // const data = this.state.transferData;
+                        // const path = {
+                        //     pathname: `/home/transaction/buy/${token}`,
+                        //     state: data,
+                        // };
+                        // path.state.orderToken = token;
+                        // this.props.history.replace(path);
+                        if (this.props.location.pathname !== `/home/transaction/buy/${token}`) {
+                            this.props.history.replace(`/home/transaction/buy/${token}`);
+                        } else {
+                            return;
+                        }
                     }
                 );
+                // PubSub.publish('updateTransaction', 33);
             }
 
             // 收款確認
-            // if (dataFromServer.data.Order_StatusID === 34) {
-            //     this.setState({
-            //         isCompletePay: true,
-            //     });
-            // }
+            if (dataFromServer.data.Order_StatusID === 34) {
+                PubSub.publish('statId', 34);
+                const data = this.state.transferData;
+                PubSub.publish('getData', data);
+                // console.log(data);
+            }
 
             // 交易完成
             if (dataFromServer.data.Order_StatusID === 1) {
-                console.log('hi');
-                this.setState(
-                    {
-                        transactionDone: true,
-                    },
-                    () => {
-                        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-                        // Publish some topics 发布主题
-                        PubSub.publish('updateTransaction', true);
-                        // client.close();
-                    }
-                );
-
-                // const data = this.state.transactionDone;
+                // PubSub.publish('updateTransaction', true);
+                PubSub.publish('statId', 1);
+                client.close();
             }
         };
 
@@ -280,8 +288,9 @@ export default class Transaction extends Component {
         //     console.log('關閉連線');
         // };
 
-        client.onclose = function () {
-            console.log('關閉連線');
+        client.onclose = function (message) {
+            // console.log('關閉連線', message);
+            // console.log('關閉連線', message.target.url);
             localStorage.removeItem('order_token');
         };
     };
@@ -291,7 +300,6 @@ export default class Transaction extends Component {
 
         if (client) {
             client.close();
-            console.log(client.readyState);
         } else {
             console.log('沒有webSocket Client');
         }
@@ -303,19 +311,7 @@ export default class Transaction extends Component {
 
     render() {
         console.log('buy render');
-        const {
-            rmbAmt,
-            usdtAmt,
-            confirmPay,
-            pair,
-            isPairing,
-            pairFinish,
-            transactionDone,
-            orderToken,
-            isCompletePay,
-        } = this.state;
-
-        console.log(transactionDone);
+        const { rmbAmt, usdtAmt, confirmPay, pair, isPairing, pairFinish, orderToken } = this.state;
 
         // 千分位逗號
         // if (usdtAmt) {
@@ -368,9 +364,7 @@ export default class Transaction extends Component {
                         //     <PayInfo
                         //         {...props}
                         //         handleConfirm={this.handleConfirm}
-                        //         transactionDone={transactionDone}
                         //         orderToken={orderToken ? orderToken : ''}
-                        //         isCompletePay={isCompletePay}
                         //         submitTransaction={this.submitTransaction}
                         //     />
                         // )}
@@ -379,9 +373,7 @@ export default class Transaction extends Component {
                             <PayInfo
                                 {...props}
                                 handleConfirm={this.handleConfirm}
-                                transactionDone={transactionDone}
                                 orderToken={orderToken ? orderToken : ''}
-                                isCompletePay={isCompletePay}
                                 submitTransaction={this.submitTransaction}
                             />
                         )}

@@ -18,12 +18,13 @@ export default class All extends Component {
 
     setDetailToken = detailToken => {
         const { showDetail } = this.state;
+        console.log(detailToken);
         this.setState(
             {
                 detailToken,
                 showDetail: !showDetail,
             },
-            () => this.props.history.push(`/home/transaction/${this.state.detailToken}`)
+            () => this.props.history.push(`/home/transaction/buy/${detailToken}`)
         );
     };
 
