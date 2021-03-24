@@ -26,7 +26,7 @@ export default class index extends Component {
                                 </Link>
                             </div>
                             <div className="col-md-3 col-sm-6 col-12 d-inline-block">
-                                <Link className="home_btn" to="#">
+                                <Link className="home_btn" to="/home/transaction/transfer">
                                     <div className="i_01"></div>
                                     <p>轉賬</p>
                                 </Link>

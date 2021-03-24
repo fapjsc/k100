@@ -8,7 +8,6 @@ import Chat from '../../Chat';
 
 import Countdown from 'react-countdown';
 import PubSub from 'pubsub-js';
-import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import Button from 'react-bootstrap/Button';
 import './index.scss';
@@ -61,6 +60,7 @@ export default class PayInfo extends Component {
     };
 
     getStatId = (_, data) => {
+        console.log('set id ======================');
         this.setState({
             stateId: data,
         });

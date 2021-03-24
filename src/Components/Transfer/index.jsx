@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
 
 import OnLoading from './OnLoading';
+import validator from 'validator';
 
 import { Form, Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
-import validator from 'validator';
-
 export default class Transfer extends Component {
     state = {
-        transferCount: {
+        transfercount: {
             val: '',
             isValid: true,
+            error: '',
         },
         transferAddress: {
             val: '',
             isValid: true,
+            error: '',
         },
         formIsValid: true,
         isLoading: false,
         Avb_Balance: null, // 可提
-        error: '',
         headers: null,
+        isComplete: false,
     };
 
     setTransferCount = e => {
         this.setState(
             {
-                transferCount: {
+                transfercount: {
                     val: e.target.value.trim(),
                     isValid: true,
                 },
@@ -48,14 +49,8 @@ export default class Transfer extends Component {
         );
     };
 
-    setShow = value => {
-        this.setState({
-            error: value,
-        });
-    };
-
     valid = () => {
-        const { transferCount, transferAddress } = this.state;
+        const { transfercount, transferAddress } = this.state;
         const { Avb_Balance } = this.props;
 
         // 錢包地址小於40位
@@ -64,29 +59,31 @@ export default class Transfer extends Component {
                 transferAddress: {
                     val: '',
                     isValid: false,
+                    error: '錢包地址錯誤',
                 },
                 formIsValid: false,
             });
         }
 
         // 輸入數量大於可提加上手續費
-        if (transferCount.val > Avb_Balance + Number(this.props.exRate.TransferHandle)) {
+        if (transfercount.val > Avb_Balance + Number(this.props.exRate.TransferHandle)) {
             this.setState({
-                transferCount: {
+                transfercount: {
                     val: '',
                     isValid: false,
+                    error: '超出最大可提',
                 },
                 formIsValid: false,
-                error: '超出最大可提',
             });
         }
 
-        if (!validator.isDecimal(transferCount.val)) {
+        if (!validator.isDecimal(transfercount.val) || transfercount.val <= 0) {
             console.log('hi');
             this.setState({
-                transferCount: {
+                transfercount: {
                     val: '',
                     isValid: false,
+                    error: '請輸入有效的數量',
                 },
                 formIsValid: false,
             });
@@ -97,16 +94,10 @@ export default class Transfer extends Component {
         const all = this.props.Avb_Balance - Number(this.props.exRate.TransferHandle);
         console.log(all);
         this.setState({
-            transferCount: {
+            transfercount: {
                 val: String(all),
                 isValid: true,
             },
-        });
-    };
-
-    onLoading = value => {
-        this.setState({
-            isLoading: value,
         });
     };
 
@@ -121,27 +112,45 @@ export default class Transfer extends Component {
             return;
         }
 
-        const { transferAddress, transferCount, headers } = this.state;
-        const transferApi = '/j/Req_Transfer1.aspx';
-        console.log(headers);
-
-        console.log(transferAddress);
-        console.log(transferCount);
-
-        const res = await fetch(transferApi, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-                ToAddress: transferAddress.val,
-                UsdtAmt: transferCount.val,
-            }),
+        this.setState({
+            isLoading: true,
         });
 
-        const resData = await res.json();
+        const { transferAddress, transfercount, headers } = this.state;
+        const transferApi = '/j/Req_Transfer1.aspx';
 
-        console.log(resData);
+        console.log(transferAddress);
+        console.log(transfercount);
 
-        console.log('submit success');
+        try {
+            const res = await fetch(transferApi, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    ToAddress: transferAddress.val,
+                    UsdtAmt: transfercount.val,
+                }),
+            });
+
+            const resData = await res.json();
+
+            // this.onLoading(false);
+
+            console.log(resData);
+
+            this.setState({
+                isLoading: false,
+                isComplete: true,
+            });
+
+            console.log('submit success');
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    backToHome = () => {
+        this.props.replace('/home/overview');
     };
 
     componentDidMount() {
@@ -161,71 +170,100 @@ export default class Transfer extends Component {
     }
 
     render() {
-        const { isLoading, transferAddress, transferCount } = this.state;
+        const { isLoading, transferAddress, transfercount, isComplete, error } = this.state;
         const { exRate } = this.props;
+
+        console.log(transfercount);
 
         return (
             <div>
                 {isLoading ? (
-                    <OnLoading show={isLoading} onHide={() => this.onLoading(false)} />
+                    <OnLoading show={isLoading} transfercount={transfercount.val} />
                 ) : null}
 
-                <>
-                    <Form>
-                        <Row>
-                            <Col sm={12} md={6} lg={6} xl={6}>
-                                <Form.Group controlId="transferUsdt" className="my-4">
-                                    <div className="mb_sm d-flex justify-content-between">
-                                        <Form.Label className="h_100">轉賬USDT </Form.Label>
-                                        <Button
-                                            variant="outline-primary"
-                                            size="sm"
-                                            onClick={this.getAll}
-                                        >
-                                            提取所有
-                                        </Button>
-                                    </div>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="請輸入數量"
-                                        className="p_sm-2"
-                                        onChange={this.setTransferCount}
-                                        autoComplete="off"
-                                        value={transferCount.val}
-                                        isInvalid={!transferCount.isValid}
-                                    />
+                {isComplete ? (
+                    <div>
+                        <div className="txt_12 pt_20">購買USDT</div>
+                        <div className="text-center">
+                            <div className="i_done" />
+                            <h4 className="c_blue">交易完成</h4>
+                            <p className="txt_12_grey">
+                                交易回執：
+                                {/* {Tx_HASH} */}
+                                <br />
+                                購買成功後，數字貨幣將全額充值到您要付款的商戶，完成付款。訂單已開始處理，預計到賬時間：15分鐘內
+                            </p>
+                            <button onClick={this.backToHome} className="easy-btn mw400">
+                                返回主頁
+                            </button>
+                            <br />
+                            <p>詳細購買紀錄</p>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <Form>
+                            <Row>
+                                <Col sm={12} md={6} lg={6} xl={6}>
+                                    <Form.Group controlId="transferUsdt" className="my-4">
+                                        <div className="mb_sm d-flex justify-content-between">
+                                            <Form.Label className="h_100">轉賬USDT </Form.Label>
+                                            <Button
+                                                variant="outline-primary"
+                                                size="sm"
+                                                onClick={this.getAll}
+                                            >
+                                                提取所有
+                                            </Button>
+                                        </div>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="請輸入數量"
+                                            className="p_sm-2"
+                                            onChange={this.setTransferCount}
+                                            autoComplete="off"
+                                            value={transfercount.val}
+                                            isInvalid={!transfercount.isValid}
+                                        />
 
-                                    {exRate !== null ? (
-                                        <Form.Text className="text-muted my-3">
-                                            手續費: {exRate.TransferHandle} USDT
-                                        </Form.Text>
-                                    ) : null}
+                                        {transfercount.error ? (
+                                            <Form.Text className="text-muted">
+                                                {transfercount.error}
+                                            </Form.Text>
+                                        ) : null}
 
-                                    {/* <Form.Text className="text-muted">
-                            We'll never share your email with anyone else.
-                        </Form.Text> */}
-                                </Form.Group>
-                            </Col>
-                            <Col sm={12} md={6} lg={6} xl={6}>
-                                <Form.Group controlId="transferAddress" className="my-4">
-                                    <div className="mb_sm ">
-                                        <Form.Label className="h_100">USDT</Form.Label>
-                                        {/* <Button as="a" variant="outline-primary" className="" size="sm">
-                                        提取所有
-                                    </Button> */}
-                                    </div>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="請輸入收款地址"
-                                        className="p_sm-2"
-                                        autoComplete="off"
-                                        onChange={this.setTransferAddress}
-                                        isInvalid={!transferAddress.isValid}
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        {/* <Button
+                                        {exRate !== null ? (
+                                            <Form.Text className="text-muted my-3">
+                                                <span className="text-dark">
+                                                    手續費: {exRate.TransferHandle} USDT
+                                                </span>
+                                            </Form.Text>
+                                        ) : null}
+                                    </Form.Group>
+                                </Col>
+                                <Col sm={12} md={6} lg={6} xl={6}>
+                                    <Form.Group controlId="transferAddress" className="my-4">
+                                        <div className="mb_sm ">
+                                            <Form.Label className="h_100">USDT</Form.Label>
+                                        </div>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="請輸入收款地址"
+                                            className="p_sm-2"
+                                            autoComplete="off"
+                                            onChange={this.setTransferAddress}
+                                            isInvalid={!transferAddress.isValid}
+                                        />
+
+                                        {transferAddress.error ? (
+                                            <Form.Text className="text-muted">
+                                                {transferAddress.error}
+                                            </Form.Text>
+                                        ) : null}
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            {/* <Button
                             variant="primary"
                             className="easy-btn mw400"
                             onClick={() => this.onLoading(true)}
@@ -234,27 +272,28 @@ export default class Transfer extends Component {
                             下一步
                         </Button> */}
 
-                        <Button
-                            // variant={formIsValid ? 'primary' : 'secondary'}
-                            variant="primary"
-                            className="w-50 mx-auto mw400 cus-btn"
-                            onClick={this.handleSubmit}
-                        >
-                            下一步
-                        </Button>
-                    </Form>
+                            <Button
+                                // variant={formIsValid ? 'primary' : 'secondary'}
+                                variant="primary"
+                                className="w-50 mx-auto mw400 cus-btn"
+                                onClick={this.handleSubmit}
+                            >
+                                下一步
+                            </Button>
+                        </Form>
 
-                    <hr className="mt_mb" />
-                    <p className="txt_12_grey">
-                        由于数字资产价格随时存在较大波动，第二步交易报价的有效期为20分钟（即：您下单付款到广告方放币的时间需控制在20分钟内）。
-                        <br />
-                        <br />
-                        如果您对新的报价不予接受的，将直接获得第一步交易购入的USDT。
-                        <br />
-                        <br />
-                        USDT是系统根据您所需购买金额（或数量）和付款方式匹配出的最低价格，并且您可随时使用USDT在币币交易兑换其他数字资产。
-                    </p>
-                </>
+                        <hr className="mt_mb" />
+                        <p className="txt_12_grey">
+                            由于数字资产价格随时存在较大波动，第二步交易报价的有效期为20分钟（即：您下单付款到广告方放币的时间需控制在20分钟内）。
+                            <br />
+                            <br />
+                            如果您对新的报价不予接受的，将直接获得第一步交易购入的USDT。
+                            <br />
+                            <br />
+                            USDT是系统根据您所需购买金额（或数量）和付款方式匹配出的最低价格，并且您可随时使用USDT在币币交易兑换其他数字资产。
+                        </p>
+                    </>
+                )}
             </div>
         );
     }

@@ -275,7 +275,6 @@ export default class Transaction extends Component {
 
             // 交易完成
             if (dataFromServer.data.Order_StatusID === 1) {
-                // PubSub.publish('updateTransaction', true);
                 console.log('1***********************');
                 PubSub.publish('statId', 1);
                 const data = this.state.transferData;

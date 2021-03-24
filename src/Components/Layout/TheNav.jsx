@@ -7,7 +7,7 @@ import style from './Header.module.scss';
 const TheNav = props => {
     return (
         <>
-            <Navbar bg="dark" expand="sm" variant="dark" className={style.navBar}>
+            <Navbar bg="dark" expand="sm" variant="dark" className={style.navBar} collapseOnSelect>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className={style.navList}>
