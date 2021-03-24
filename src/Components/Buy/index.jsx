@@ -5,7 +5,6 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import PubSub from 'pubsub-js';
 
 import PayInfo from '../Buy/PayInfo';
-
 import BuyCount from './BuyCount';
 import ConfirmBuy from './ConfirmBuy';
 import Paring from './Pairing';
@@ -114,8 +113,6 @@ export default class Transaction extends Component {
             });
 
             const resData = await res.json();
-
-            console.log(resData, 'buy1');
 
             const {
                 data: { order_token },
@@ -249,7 +246,6 @@ export default class Transaction extends Component {
                         pairFinish: true,
                     },
                     () => {
-                        console.log(token);
                         // const data = this.state.transferData;
                         // const path = {
                         //     pathname: `/home/transaction/buy/${token}`,

@@ -1,0 +1,24 @@
+.mainChat {
+    height: 50vh;
+    width: 40vw;
+    background-color: #bae7ff;
+    margin: 0 auto;
+    padding: 3rem 0;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    right: 2rem;
+    margin-bottom: 5rem;
+
+    // position: relative;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+}
+
+.chatBlock {
+    height: 80%;
+    overflow: auto;
+}

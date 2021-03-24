@@ -4,10 +4,13 @@ import InfoDetail from './InfoDetail';
 import Timer from '../Timer';
 import ButtonTimer from '../ButtonTimer';
 import BaseSpinner from '../../Ui/BaseSpinner';
+import Chat from '../../Chat';
 
 import Countdown from 'react-countdown';
 import PubSub from 'pubsub-js';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
+import Button from 'react-bootstrap/Button';
 import './index.scss';
 
 export default class PayInfo extends Component {
@@ -18,6 +21,9 @@ export default class PayInfo extends Component {
         data: null,
         masterType: null,
         isCompletePay: false,
+        client: {},
+        isChat: true,
+        message: [],
     };
 
     setInfo = () => {
@@ -62,6 +68,12 @@ export default class PayInfo extends Component {
 
     getTransData = (_, data) => {};
 
+    openChat = () => {
+        this.setState({
+            isChat: !this.state.isChat,
+        });
+    };
+
     componentDidMount() {
         console.log('pay info render');
         this.setState(
@@ -88,7 +100,6 @@ export default class PayInfo extends Component {
     // };
 
     detailReq = async () => {
-        console.log('call detail req ====');
         // PubSub.subscribe('getData', this.getTransData);
 
         const token = localStorage.getItem('token');
@@ -116,7 +127,6 @@ export default class PayInfo extends Component {
             const resData = await res.json();
 
             const { data } = resData;
-            console.log(data);
 
             this.setState({
                 masterType: data.MasterType,
@@ -181,10 +191,6 @@ export default class PayInfo extends Component {
 
     render() {
         const {
-            history,
-            // location: { state },
-        } = this.props;
-        const {
             showInfo,
             isCompletePay,
             // transactionDone,
@@ -192,9 +198,10 @@ export default class PayInfo extends Component {
             stateId,
             Tx_HASH,
             DeltaTime,
+            isChat,
         } = this.state;
 
-        let totalTime = 1800; //  一次 15分鐘，共計算兩次所以是 30分鐘
+        let totalTime = 18000000; //  一次 15分鐘，共計算兩次所以是 30分鐘
         let upperLimit = (totalTime / 2) * 1000;
         let lowerLimit = upperLimit / 2;
 
@@ -272,6 +279,10 @@ export default class PayInfo extends Component {
                     ) : (
                         <BaseSpinner />
                     )}
+                    <Button onClick={this.openChat} variant="primary">
+                        幫助
+                    </Button>
+                    {isChat ? <Chat {...this.props} /> : null}
                 </div>
             </div>
         );
