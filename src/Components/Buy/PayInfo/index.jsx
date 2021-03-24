@@ -22,7 +22,7 @@ export default class PayInfo extends Component {
         masterType: null,
         isCompletePay: false,
         client: {},
-        isChat: true,
+        isChat: false,
         message: [],
     };
 
@@ -201,7 +201,7 @@ export default class PayInfo extends Component {
             isChat,
         } = this.state;
 
-        let totalTime = 18000000; //  一次 15分鐘，共計算兩次所以是 30分鐘
+        let totalTime = 1800; //  一次 15分鐘，共計算兩次所以是 30分鐘
         let upperLimit = (totalTime / 2) * 1000;
         let lowerLimit = upperLimit / 2;
 

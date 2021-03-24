@@ -265,6 +265,8 @@ export default class Transaction extends Component {
 
             // 收款確認
             if (dataFromServer.data.Order_StatusID === 34) {
+                console.log('34***********************');
+
                 PubSub.publish('statId', 34);
                 const data = this.state.transferData;
                 PubSub.publish('getData', data);
@@ -274,7 +276,10 @@ export default class Transaction extends Component {
             // 交易完成
             if (dataFromServer.data.Order_StatusID === 1) {
                 // PubSub.publish('updateTransaction', true);
+                console.log('1***********************');
                 PubSub.publish('statId', 1);
+                const data = this.state.transferData;
+                PubSub.publish('getData', data);
                 client.close();
             }
         };
