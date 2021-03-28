@@ -1,24 +1,94 @@
 .mainChat {
-    height: 50vh;
-    width: 40vw;
-    background-color: #bae7ff;
-    margin: 0 auto;
-    padding: 3rem 0;
-    position: fixed;
-    z-index: 9999;
-    bottom: 0;
-    right: 2rem;
-    margin-bottom: 5rem;
+    height: 60rem;
+    width: 45rem;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
 
-    // position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    position: fixed;
+    top: 17rem;
+    right: 5rem;
+
+    @media only screen and(max-width: 1700px) {
+        width: 40rem;
+    }
+
+    @media only screen and(max-width: 1462px) {
+        width: 38rem;
+    }
+
+    @media only screen and(max-width: 1201px) {
+        display: block;
+    }
+
+    @media only screen and(max-width: 1200px) {
+        display: none;
+    }
+}
+
+.chatTitle {
+    background-color: #3f80fa;
+    color: #fff;
+    font-size: 1rem;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .bottom {
-    position: absolute;
-    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    transform: translateY(10rem);
+    border-top: 1px solid #ddd;
+}
+
+.userInput {
+    border: none;
+    margin-right: auto;
+    max-width: 80%;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.attach-iconBox {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.attach-icon {
+    height: 20px;
+    width: 11px;
+    margin: 0 1rem;
+    cursor: pointer;
+}
+
+.send-icon {
+    height: 22px;
+    width: 20px;
+    cursor: pointer;
 }
 
 .chatBlock {
-    height: 80%;
+    height: 90%;
     overflow: auto;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type='number'] {
+    -moz-appearance: textfield;
 }

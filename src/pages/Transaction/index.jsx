@@ -6,6 +6,8 @@ import Buy from '../../Components/Buy';
 import Sell from '../../Components/Sell';
 import Transfer from '../../Components/Transfer';
 
+import './index.scss';
+
 export default class Transaction extends Component {
     state = {
         Avb_Balance: null,
@@ -118,14 +120,14 @@ export default class Transaction extends Component {
         const { Avb_Balance, exRate } = this.state;
         return (
             <>
-                <section className="overview bg_grey">
-                    <div className="container h_88">
+                <section className="transaction bg_grey">
+                    <div className="h_88">
                         <div className="row">
-                            <div className="col-12 ">
+                            <div className="col-12">
                                 <p className="welcome_txt">歡迎登入</p>
                             </div>
 
-                            <div className="col-12 transaction-card">
+                            <div className="col-10 transaction-card">
                                 {/* Nav */}
                                 <TransactionNav location={location} />
 
@@ -142,11 +144,12 @@ export default class Transaction extends Component {
                                     {/* Transfer */}
                                     <Route
                                         path="/home/transaction/transfer"
-                                        component={() => (
+                                        component={props => (
                                             <Transfer
                                                 Avb_Balance={Avb_Balance}
                                                 exRate={exRate}
                                                 getExRate={this.getExRate}
+                                                {...props}
                                             />
                                         )}
                                     />

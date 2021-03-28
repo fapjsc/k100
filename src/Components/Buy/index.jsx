@@ -118,6 +118,8 @@ export default class Transaction extends Component {
                 data: { order_token },
             } = resData;
 
+            console.log(order_token);
+
             this.setState(
                 {
                     orderToken: order_token,
@@ -350,7 +352,7 @@ export default class Transaction extends Component {
                             {isPairing ? (
                                 <Paring
                                     show={isPairing}
-                                    onHide={() => this.setState({ isPairing: false })}
+                                    onHide={() => this.setState({ isPairing: true })}
                                     rmbamt={rmbAmt}
                                     usdtamt={usdtAmt}
                                 />

@@ -9,19 +9,20 @@ import Chat from '../../Chat';
 import Countdown from 'react-countdown';
 import PubSub from 'pubsub-js';
 
-import Button from 'react-bootstrap/Button';
+import TalkIcon from '../../../Assets/i_talk.png';
 import './index.scss';
+import Button from 'react-bootstrap/Button';
 
 export default class PayInfo extends Component {
     state = {
         headers: {},
         showInfo: true,
-        // transactionDone: false,
+        transactionDone: false,
         data: null,
         masterType: null,
         isCompletePay: false,
         client: {},
-        isChat: false,
+        isChat: true,
         message: [],
     };
 
@@ -60,10 +61,18 @@ export default class PayInfo extends Component {
     };
 
     getStatId = (_, data) => {
+        console.log(data);
         console.log('set id ======================');
         this.setState({
             stateId: data,
+            isCompletePay: true,
         });
+
+        if (data === 1) {
+            this.setState({
+                transactionDone: true,
+            });
+        }
     };
 
     getTransData = (_, data) => {};
@@ -193,7 +202,7 @@ export default class PayInfo extends Component {
         const {
             showInfo,
             isCompletePay,
-            // transactionDone,
+            transactionDone,
             master,
             stateId,
             Tx_HASH,
@@ -206,6 +215,8 @@ export default class PayInfo extends Component {
         let lowerLimit = upperLimit / 2;
 
         let timer = ((totalTime - DeltaTime) * 1000) / 2;
+
+        console.log(timer);
 
         return (
             <div>
@@ -231,6 +242,26 @@ export default class PayInfo extends Component {
                             </div>
 
                             <InfoDetail transferData={master} getConfirmPay={this.getConfirmPay} />
+                            <ul className="txt_12_grey">
+                                <li>請勿向上述地址充值任何非USDT資産，否則資産將不可找回。</li>
+                                <br />
+                                <li>
+                                    您充值至上述地址後，需要整個網絡節點的確認，12次網絡確認後到賬，12次網絡確認後可提幣。
+                                </li>
+                                <br />
+                                <li>
+                                    最小充值金額：1 USDT，小于最小金額的充值將不會上賬且無法退回。
+                                </li>
+                                <br />
+                                <li>
+                                    您的充值地址不會經常改變，可以重複充值；如有更改，我們會盡量通過網站公告或郵件通知您。
+                                </li>
+                                <br />
+                                <li>請務必確認電腦及浏覽器安全，防止信息被篡改或泄露。</li>
+                                <li>
+                                    USDT充幣僅支持以太坊transfer和transferFrom方法，使用其他方法的充幣暫時無法上賬，請您諒解。
+                                </li>
+                            </ul>
                         </>
                     ) : (!showInfo && !isCompletePay && stateId === 33) ||
                       (timer < lowerLimit && stateId === 33) ? (
@@ -239,7 +270,7 @@ export default class PayInfo extends Component {
                             renderer={ButtonTimer}
                             getConfirmPay={this.getConfirmPay}
                         ></Countdown>
-                    ) : stateId === 34 || isCompletePay ? (
+                    ) : stateId === 34 && isCompletePay && !transactionDone ? (
                         <div>
                             <div className="txt_12 pt_20">購買USDT</div>
                             <div className="text-center">
@@ -257,7 +288,7 @@ export default class PayInfo extends Component {
                                 </button>
                             </div>
                         </div>
-                    ) : stateId === 1 || isCompletePay ? (
+                    ) : stateId === 1 || (isCompletePay && transactionDone) ? (
                         <div>
                             <div className="txt_12 pt_20">購買USDT</div>
                             <div className="text-center">
@@ -279,10 +310,14 @@ export default class PayInfo extends Component {
                     ) : (
                         <BaseSpinner />
                     )}
-                    <Button onClick={this.openChat} variant="primary">
+                    {/* <Button onClick={this.openChat} variant="primary">
                         幫助
+                    </Button> */}
+                    <Chat {...this.props} isChat={isChat} />
+                    <Button variant="primary" className="talk-iconBox" onClick={this.openChat}>
+                        <img src={TalkIcon} alt="talk icon" className="mr-2" />
+                        <span>對話</span>
                     </Button>
-                    {isChat ? <Chat {...this.props} /> : null}
                 </div>
             </div>
         );

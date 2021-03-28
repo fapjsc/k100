@@ -130,7 +130,8 @@ export default class Auth extends Component {
 
                                 <Link
                                     className={
-                                        location.pathname === '/auth/register'
+                                        location.pathname === '/auth/register' ||
+                                        location.pathname === '/auth/register/valid'
                                             ? 'isActive form-link'
                                             : 'form-link'
                                     }
@@ -160,6 +161,7 @@ export default class Auth extends Component {
                                     )}
                                 />
                                 <Route path="/auth/register" component={RegisterForm} />
+
                                 <Redirect to="/auth/login" />
                             </Switch>
                         </div>

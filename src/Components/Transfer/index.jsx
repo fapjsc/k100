@@ -19,10 +19,13 @@ export default class Transfer extends Component {
             error: '',
         },
         formIsValid: true,
-        isLoading: false,
         Avb_Balance: null, // 可提
         headers: null,
         isComplete: false,
+        isloading: false,
+        isfailed: false,
+        token: '',
+        data: {},
     };
 
     setTransferCount = e => {
@@ -77,7 +80,12 @@ export default class Transfer extends Component {
             });
         }
 
-        if (!validator.isDecimal(transfercount.val) || transfercount.val <= 0) {
+        // 是否為有效的數字
+        if (
+            !validator.isNumeric(transfercount.val) ||
+            transfercount.val <= 0 ||
+            transfercount.val === ''
+        ) {
             console.log('hi');
             this.setState({
                 transfercount: {
@@ -113,14 +121,11 @@ export default class Transfer extends Component {
         }
 
         this.setState({
-            isLoading: true,
+            isloading: true,
         });
 
         const { transferAddress, transfercount, headers } = this.state;
         const transferApi = '/j/Req_Transfer1.aspx';
-
-        console.log(transferAddress);
-        console.log(transfercount);
 
         try {
             const res = await fetch(transferApi, {
@@ -134,24 +139,74 @@ export default class Transfer extends Component {
 
             const resData = await res.json();
 
-            // this.onLoading(false);
+            if (resData.code === 200) {
+                this.setState({
+                    isloading: false,
+                    isComplete: true,
+                    token: resData.data.order_token,
+                });
 
-            console.log(resData);
-
+                this.getDetail(resData.data.order_token);
+            } else {
+                this.setState({
+                    isfailed: true,
+                });
+            }
+        } catch (error) {
             this.setState({
-                isLoading: false,
-                isComplete: true,
+                isfailed: true,
+            });
+        }
+    };
+
+    getDetail = async token => {
+        const detailApi = `/j/GetTxDetail.aspx`;
+        const { headers } = this.state;
+
+        if (!headers) {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            headers.append('login_session', token);
+        }
+
+        try {
+            const res = await fetch(detailApi, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    Token: token,
+                }),
             });
 
-            console.log('submit success');
+            const resData = await res.json();
+            console.log(resData);
+
+            if (resData.code === 200) {
+                this.setState({
+                    data: resData.data,
+                });
+            }
         } catch (error) {
             alert(error);
         }
     };
 
     backToHome = () => {
-        this.props.replace('/home/overview');
+        this.props.history.replace('/home/overview');
     };
+
+    closeModal = () => {
+        this.setState({
+            isloading: false,
+            isfailed: false,
+        });
+    };
+
+    // countryInput = () => {
+    //     if (!/^[0-9]+(.[0-9]{2})?$/.test(this.state.transfercount.val)) {
+    //         alert('只能输入数字，小数点后只能保留两位');
+    //     }
+    // };
 
     componentDidMount() {
         const token = localStorage.getItem('token');
@@ -170,15 +225,26 @@ export default class Transfer extends Component {
     }
 
     render() {
-        const { isLoading, transferAddress, transfercount, isComplete, error } = this.state;
+        const {
+            isloading,
+            transferAddress,
+            transfercount,
+            isComplete,
+            isfailed,
+            data,
+        } = this.state;
         const { exRate } = this.props;
-
-        console.log(transfercount);
 
         return (
             <div>
-                {isLoading ? (
-                    <OnLoading show={isLoading} transfercount={transfercount.val} />
+                {isloading ? (
+                    <OnLoading
+                        show={isloading}
+                        transfercount={transfercount.val}
+                        isfailed={isfailed ? 1 : 0}
+                        isloading={isloading ? 1 : 0}
+                        onHide={this.closeModal}
+                    />
                 ) : null}
 
                 {isComplete ? (
@@ -189,7 +255,7 @@ export default class Transfer extends Component {
                             <h4 className="c_blue">交易完成</h4>
                             <p className="txt_12_grey">
                                 交易回執：
-                                {/* {Tx_HASH} */}
+                                {data.Tx_HASH}
                                 <br />
                                 購買成功後，數字貨幣將全額充值到您要付款的商戶，完成付款。訂單已開始處理，預計到賬時間：15分鐘內
                             </p>
@@ -217,21 +283,20 @@ export default class Transfer extends Component {
                                             </Button>
                                         </div>
                                         <Form.Control
-                                            type="text"
+                                            type="number"
                                             placeholder="請輸入數量"
                                             className="p_sm-2"
                                             onChange={this.setTransferCount}
                                             autoComplete="off"
                                             value={transfercount.val}
                                             isInvalid={!transfercount.isValid}
+                                            // onKeyUp={this.countryInput}
                                         />
-
                                         {transfercount.error ? (
                                             <Form.Text className="text-muted">
                                                 {transfercount.error}
                                             </Form.Text>
                                         ) : null}
-
                                         {exRate !== null ? (
                                             <Form.Text className="text-muted my-3">
                                                 <span className="text-dark">

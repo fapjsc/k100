@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ValidCode from './ValidCode';
-import SliderCaptcha from '@slider-captcha/react';
-
-import { Form, Button, Col } from 'react-bootstrap';
-
+import { Switch, Route } from 'react-router-dom';
 import validator from 'validator';
 
+import ValidCode from './ValidCode';
+import BaseSpinner from '../../Ui/BaseSpinner';
+
+import { Form, Button, Col } from 'react-bootstrap';
 import './index.scss';
 
 export default class index extends Component {
@@ -19,6 +19,10 @@ export default class index extends Component {
             isValid: true,
         },
         confirmPassword: {
+            val: '',
+            isValid: true,
+        },
+        countryCode: {
             val: '',
             isValid: true,
         },
@@ -56,6 +60,34 @@ export default class index extends Component {
         });
     };
 
+    setCountryCode = e => {
+        if (e.target.value.includes('中國')) {
+            this.setState({
+                countryCode: {
+                    val: 86,
+                    isValid: true,
+                },
+            });
+        }
+
+        if (e.target.value.includes('台灣')) {
+            this.setState({
+                countryCode: {
+                    val: 886,
+                    isValid: true,
+                },
+            });
+        }
+        if (e.target.value.includes('香港')) {
+            this.setState({
+                countryCode: {
+                    val: 852,
+                    isValid: true,
+                },
+            });
+        }
+    };
+
     handleAgree = event => {
         this.setState({
             agree: event.target.checked,
@@ -69,7 +101,20 @@ export default class index extends Component {
         });
 
         let error = [];
-        const { phoneNumber, password, confirmPassword, agree } = this.state;
+        const { phoneNumber, password, confirmPassword, agree, countryCode } = this.state;
+
+        //驗證區碼
+        if (countryCode.val === '' || countryCode.val === null) {
+            error.push('請選擇區碼');
+            this.setState({
+                countryCode: {
+                    val: null,
+                    isValid: false,
+                },
+                formIsValid: false,
+                formErrors: [...error],
+            });
+        }
 
         // 驗證電話號碼
         if (phoneNumber.val === '' || !validator.isMobilePhone(phoneNumber.val)) {
@@ -129,128 +174,198 @@ export default class index extends Component {
     handleRegisterSubmit = async event => {
         event.preventDefault(); //防止表單提交
 
+        this.setState({
+            isLoading: true,
+        });
+
         await this.validRegister();
 
         const { formIsValid } = this.state;
 
-        // console.log(formIsValid, 'formIsValid');
-        // console.log(phoneNumber, 'phoneNumber');
-        // console.log(password, 'password');
-        // console.log(confirmPassword, 'confirm password');
-        // console.log(agree, 'agree');
-        // console.log(formErrors, 'form errors');
-
         if (!formIsValid) {
+            this.setState({
+                isLoading: false,
+            });
             return;
         }
 
-        console.log('success register');
-        this.setState({
-            showValidCode: true,
-        });
+        this.setState(
+            {
+                showValidCode: true,
+            },
+            () => {
+                this.props.history.replace('/auth/register/valid');
+            }
+        );
+
+        const { password, phoneNumber, countryCode } = this.state;
+
+        const registerApi = `/j/Req_oneTimePwd.aspx`;
+
+        console.log(countryCode.val, phoneNumber.val.substr(1));
+
+        try {
+            const res = await fetch(registerApi, {
+                method: 'POST',
+                body: JSON.stringify({
+                    reg_countrycode: countryCode.val,
+                    reg_tel: phoneNumber.val.substr(1),
+                }),
+            });
+
+            const resData = await res.json();
+
+            if (resData.code === 200) {
+                this.setState(
+                    {
+                        showValidCode: true,
+                    },
+                    () => {
+                        this.props.history.replace('/auth/register/valid');
+                    }
+                );
+            } else {
+                alert(resData);
+            }
+
+            console.log(resData, '=======');
+            this.setState({
+                isLoading: false,
+            });
+        } catch (error) {
+            this.setState({
+                isLoading: false,
+            });
+            alert(error);
+        }
     };
 
-    verifiedCallback = token => {
-        console.log('Captcha token: ' + token);
-    };
+    componentDidMount() {
+        if (!this.state.showValidCode) {
+            this.props.history.replace('/auth/register');
+        }
+    }
 
     render() {
-        const { phoneNumber, password, formErrors, showValidCode, agree } = this.state;
+        const {
+            phoneNumber,
+            password,
+            formErrors,
+            showValidCode,
+            agree,
+            countryCode,
+            isLoading,
+        } = this.state;
 
         return (
-            <div className="form-container">
-                {!showValidCode ? (
-                    <Form>
-                        <Form.Row>
-                            <Form.Group as={Col} md="3" controlId="CountryCode">
-                                <Form.Control
-                                    disabled
-                                    // as="select"
-                                    value="86"
-                                    className="form-input"
-                                >
-                                    {/* <option>區號</option> */}
-                                    {/* <option>台灣 ＋886</option> */}
-                                    {/* <option>86</option> */}
-                                    {/* <option>香港 ＋852</option> */}
-                                </Form.Control>
-                            </Form.Group>
-
-                            <Form.Group as={Col} md="9" controlId="formBasicPhoneNumber">
-                                <Form.Control
-                                    className="form-input"
-                                    size="lg"
-                                    type="tel"
-                                    placeholder="手機號碼"
-                                    onChange={this.setPhoneNumber}
-                                    isInvalid={!phoneNumber.isValid}
-                                    autoComplete="off"
-                                />
-                            </Form.Group>
-                        </Form.Row>
-
-                        <Form.Group controlId="formBasicPassword">
-                            <Form.Control
-                                className="form-input"
-                                size="lg"
-                                type="password"
-                                placeholder="設置密碼"
-                                onChange={this.setPassword}
-                                isInvalid={!password.isValid}
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="formConfirmPassword">
-                            <Form.Control
-                                className="form-input"
-                                size="lg"
-                                type="password"
-                                placeholder="確認密碼"
-                                onChange={this.setConfirmPassword}
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="formBasicCheckbox" className="user-agreement">
-                            <Form.Check
-                                className="user-agreement__check"
-                                type="checkbox"
-                                label="我已閱讀並同意"
-                                onChange={this.handleAgree}
-                            />
-                            <span>{`《用戶協議》`}</span>
-                        </Form.Group>
-
-                        {formErrors.length
-                            ? formErrors.map((err, index) => (
-                                  <Form.Text key={index} className="text-muted form-text">
-                                      {err}
-                                  </Form.Text>
-                              ))
-                            : null}
-                        <div className="mt_ssm">
-                            <SliderCaptcha
-                                create="https://example.com/captcha/create"
-                                verify="https://example.com/captcha/verify"
-                                callback={this.verifiedCallback}
-                            />
-                        </div>
-
-                        <Button
-                            onClick={this.handleRegisterSubmit}
-                            className="form-btn"
-                            // variant="primary"
-                            variant={!agree ? 'secondary' : 'primary'}
-                            block
-                            type="submit"
-                            disabled={!agree}
-                        >
-                            下一步
-                        </Button>
-                    </Form>
+            <>
+                {isLoading ? (
+                    <BaseSpinner />
                 ) : (
-                    <ValidCode />
+                    <div className="form-container">
+                        {!showValidCode ? (
+                            <Form>
+                                <Form.Row>
+                                    <Form.Group as={Col} md="3" controlId="CountryCode">
+                                        <Form.Control
+                                            as="select"
+                                            defaultValue="區號"
+                                            className="form-select"
+                                            onChange={this.setCountryCode}
+                                            isInvalid={!countryCode.isValid}
+                                        >
+                                            <option>區號</option>
+                                            <option>中國＋86</option>
+                                            <option>台灣＋886</option>
+                                            <option>香港＋852</option>
+                                        </Form.Control>
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} md="9" controlId="formBasicPhoneNumber">
+                                        <Form.Control
+                                            className="form-input"
+                                            size="lg"
+                                            type="tel"
+                                            placeholder="手機號碼"
+                                            onChange={this.setPhoneNumber}
+                                            isInvalid={!phoneNumber.isValid}
+                                            autoComplete="off"
+                                        />
+                                    </Form.Group>
+                                </Form.Row>
+
+                                <Form.Group controlId="formBasicPassword">
+                                    <Form.Control
+                                        className="form-input"
+                                        size="lg"
+                                        type="password"
+                                        placeholder="設置密碼"
+                                        onChange={this.setPassword}
+                                        isInvalid={!password.isValid}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group controlId="formConfirmPassword">
+                                    <Form.Control
+                                        className="form-input"
+                                        size="lg"
+                                        type="password"
+                                        placeholder="確認密碼"
+                                        onChange={this.setConfirmPassword}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group
+                                    controlId="formBasicCheckbox"
+                                    className="user-agreement"
+                                >
+                                    <Form.Check
+                                        className="user-agreement__check"
+                                        type="checkbox"
+                                        label="我已閱讀並同意"
+                                        onChange={this.handleAgree}
+                                    />
+                                    <span>{`《用戶協議》`}</span>
+                                </Form.Group>
+
+                                {formErrors.length
+                                    ? formErrors.map((err, index) => (
+                                          <Form.Text key={index} className="text-muted form-text">
+                                              {err}
+                                          </Form.Text>
+                                      ))
+                                    : null}
+
+                                <Button
+                                    onClick={this.handleRegisterSubmit}
+                                    className="form-btn"
+                                    // variant="primary"
+                                    variant={!agree ? 'secondary' : 'primary'}
+                                    block
+                                    type="submit"
+                                    disabled={!agree}
+                                >
+                                    下一步
+                                </Button>
+                            </Form>
+                        ) : null}
+
+                        <Switch>
+                            <Route
+                                path="/auth/register/valid"
+                                component={props => (
+                                    <ValidCode
+                                        phoneNumber={phoneNumber.val}
+                                        countryCode={countryCode.val}
+                                        password={password.val}
+                                        {...props}
+                                    />
+                                )}
+                            />
+                        </Switch>
+                    </div>
                 )}
-            </div>
+            </>
         );
     }
 }

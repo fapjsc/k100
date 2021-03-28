@@ -1,0 +1,27 @@
+.transaction {
+    width: 100vw;
+    height: 100vh;
+    padding: 0 20rem;
+
+    @media only screen and(max-width: 760px) {
+        padding: 0 5rem;
+    }
+}
+
+.transaction-card {
+}
+
+.trans-tab {
+    margin-bottom: 2rem;
+}
+
+.transaction-card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0, 0.5rem, 0.8rem rgba(0, 0, 0, 0.2);
+    margin-left: -12rem;
+
+    @media only screen and(max-width: 760px) {
+        margin-left: 0;
+    }
+}

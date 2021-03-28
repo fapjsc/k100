@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
 
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
 
 export default class LoginForm extends Component {
     state = {
-        // Login_countrycode: {
-        //     val: null,
-        //     isValid: true,
-        // },
+        countryCode: {
+            val: null,
+            isValid: true,
+        },
         phoneNumber: {
             val: '',
             isValid: true,
@@ -31,23 +31,23 @@ export default class LoginForm extends Component {
             formErrors: [],
         });
 
-        const { phoneNumber, password } = this.state;
+        const { phoneNumber, password, countryCode } = this.state;
 
         let error = [];
 
         // 驗證區碼
-        // if (countryCode.val === null) {
-        //     error.push('請選擇區碼');
+        if (countryCode.val === null) {
+            error.push('請選擇區碼');
 
-        //     this.setState({
-        //         Login_countrycode: {
-        //             val: null,
-        //             isValid: false,
-        //         },
-        //         formIsValid: false,
-        //         formErrors: [...error],
-        //     });
-        // }
+            this.setState({
+                countryCode: {
+                    val: null,
+                    isValid: false,
+                },
+                formIsValid: false,
+                formErrors: [...error],
+            });
+        }
 
         // 驗證電話號碼
         if (phoneNumber.val === '' || !validator.isMobilePhone(phoneNumber.val)) {
@@ -81,39 +81,39 @@ export default class LoginForm extends Component {
     };
 
     // 保存區碼
-    // setCountryCode = event => {
-    //     const { target } = event;
+    setCountryCode = event => {
+        const { target } = event;
 
-    //     if (target.value.includes('台灣')) {
-    //         this.setState({
-    //             Login_countrycode: {
-    //                 val: 886,
-    //                 isValid: true,
-    //             },
-    //         });
-    //     } else if (target.value.includes('中國')) {
-    //         this.setState({
-    //             Login_countrycode: {
-    //                 val: 86,
-    //                 isValid: true,
-    //             },
-    //         });
-    //     } else if (target.value.includes('香港')) {
-    //         this.setState({
-    //             Login_countrycode: {
-    //                 val: 852,
-    //                 isValid: true,
-    //             },
-    //         });
-    //     } else {
-    //         this.setState({
-    //             Login_countrycode: {
-    //                 val: null,
-    //                 isValid: false,
-    //             },
-    //         });
-    //     }
-    // };
+        if (target.value.includes('台灣')) {
+            this.setState({
+                countryCode: {
+                    val: 886,
+                    isValid: true,
+                },
+            });
+        } else if (target.value.includes('中國')) {
+            this.setState({
+                countryCode: {
+                    val: 86,
+                    isValid: true,
+                },
+            });
+        } else if (target.value.includes('香港')) {
+            this.setState({
+                countryCode: {
+                    val: 852,
+                    isValid: true,
+                },
+            });
+        } else {
+            this.setState({
+                countryCode: {
+                    val: null,
+                    isValid: false,
+                },
+            });
+        }
+    };
     // 保存使用者輸入的密碼到state
     setPassword = event => {
         this.setState({
@@ -183,34 +183,38 @@ export default class LoginForm extends Component {
     };
 
     render() {
-        const { password, phoneNumber, formErrors } = this.state;
+        const { password, phoneNumber, formErrors, countryCode } = this.state;
         return (
             <div className="form-container">
                 <Form>
-                    {/* <Form.Control
-                        isInvalid={!countryCode.isValid}
-                        as="select"
-                        defaultValue="區號"
-                        className="form-input"
-                        onChange={this.setCountryCode}
-                    >
-                        <option>區號</option>
-                        <option>台灣 ＋886</option>
-                        <option>中國 ＋86</option>
-                        <option>香港 ＋852</option>
-                    </Form.Control> */}
+                    <Form.Row>
+                        <Form.Group as={Col} md="3" controlId="CountryCode">
+                            <Form.Control
+                                as="select"
+                                defaultValue="區號"
+                                className="form-select"
+                                onChange={this.setCountryCode}
+                                isInvalid={!countryCode.isValid}
+                            >
+                                <option>區號</option>
+                                <option>中國＋86</option>
+                                <option>台灣＋886</option>
+                                <option>香港＋852</option>
+                            </Form.Control>
+                        </Form.Group>
 
-                    <Form.Group controlId="formBasicPhoneNumber">
-                        <Form.Control
-                            isInvalid={!phoneNumber.isValid}
-                            className="form-input"
-                            size="lg"
-                            type="tel"
-                            placeholder="手機號碼"
-                            onChange={this.setPhoneNumber}
-                            autoComplete="off"
-                        />
-                    </Form.Group>
+                        <Form.Group as={Col} md="9" controlId="formBasicPhoneNumber">
+                            <Form.Control
+                                isInvalid={!phoneNumber.isValid}
+                                className="form-input"
+                                size="lg"
+                                type="tel"
+                                placeholder="手機號碼"
+                                onChange={this.setPhoneNumber}
+                                autoComplete="off"
+                            />
+                        </Form.Group>
+                    </Form.Row>
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Control

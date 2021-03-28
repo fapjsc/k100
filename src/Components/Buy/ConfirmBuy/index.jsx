@@ -84,6 +84,7 @@ const ConfirmBuy = props => {
                             <div>
                                 數量:
                                 <p className="confirmBuy-text text-dark font-weight-bold">
+                                    {/* 小數第二位，千分逗號 */}
                                     {Number(props.usdtAmt)
                                         .toFixed(2)
                                         .toString()

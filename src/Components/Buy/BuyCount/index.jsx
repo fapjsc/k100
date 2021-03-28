@@ -31,8 +31,11 @@ const BuyCount = props => {
                         // onChange={props.getUsdtAmt}
                         onChange={props.getRmbAmt}
                         autoComplete="off"
+                        type="number"
                     />
-                    {/* <Form.Text className="text-muted">手續費: 5.00USDT</Form.Text> */}
+                    {/* <Form.Text className="text-muted">
+                        <span className="text-dark">手續費: 5.00USDT</span>
+                    </Form.Text> */}
                 </Form.Group>
 
                 <div className="transaction-twoWay">
@@ -49,6 +52,7 @@ const BuyCount = props => {
                         onChange={props.getRmbAmt}
                         autoComplete="off"
                     />
+                    {/* <Form.Text>adf</Form.Text> */}
                 </Form.Group>
 
                 <div className="btn-box">
