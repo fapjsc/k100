@@ -22,12 +22,17 @@
         width: 38rem;
     }
 
-    @media only screen and(max-width: 1201px) {
-        display: block;
+    @media only screen and(max-width: 1100px) {
+        width: 30rem;
     }
 
-    @media only screen and(max-width: 1200px) {
-        display: none;
+    @media only screen and(max-width: 500px) {
+        width: 25rem;
+        height: 48rem;
+    }
+
+    @media only screen and(max-width: 770px) {
+        opacity: 0;
     }
 }
 
@@ -49,6 +54,10 @@
     padding: 1rem;
     transform: translateY(10rem);
     border-top: 1px solid #ddd;
+
+    @media only screen and(max-width: 500px) {
+        transform: translateY(0);
+    }
 }
 
 .userInput {

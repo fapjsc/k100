@@ -192,52 +192,58 @@ export default class index extends Component {
         this.setState(
             {
                 showValidCode: true,
+                isLoading: false,
             },
             () => {
                 this.props.history.replace('/auth/register/valid');
             }
         );
 
-        const { password, phoneNumber, countryCode } = this.state;
+        // const { phoneNumber, countryCode } = this.state;
 
-        const registerApi = `/j/Req_oneTimePwd.aspx`;
+        // const registerApi = `/j/Req_oneTimePwd.aspx`;
 
-        console.log(countryCode.val, phoneNumber.val.substr(1));
+        // if (countryCode.val === 886) {
+        //     phoneNumber.val = phoneNumber.val.substr(1);
+        // }
 
-        try {
-            const res = await fetch(registerApi, {
-                method: 'POST',
-                body: JSON.stringify({
-                    reg_countrycode: countryCode.val,
-                    reg_tel: phoneNumber.val.substr(1),
-                }),
-            });
+        // console.log(countryCode.val, phoneNumber.val);
 
-            const resData = await res.json();
+        // try {
+        //     const res = await fetch(registerApi, {
+        //         method: 'POST',
+        //         body: JSON.stringify({
+        //             reg_countrycode: countryCode.val,
+        //             reg_tel: phoneNumber.val,
+        //         }),
+        //     });
 
-            if (resData.code === 200) {
-                this.setState(
-                    {
-                        showValidCode: true,
-                    },
-                    () => {
-                        this.props.history.replace('/auth/register/valid');
-                    }
-                );
-            } else {
-                alert(resData);
-            }
+        //     const resData = await res.json();
 
-            console.log(resData, '=======');
-            this.setState({
-                isLoading: false,
-            });
-        } catch (error) {
-            this.setState({
-                isLoading: false,
-            });
-            alert(error);
-        }
+        //     if (resData.code === 200) {
+        //         this.setState(
+        //             {
+        //                 showValidCode: true,
+        //             },
+        //             () => {
+        //                 this.props.history.replace('/auth/register/valid');
+        //             }
+        //         );
+        //     } else {
+        //         this.props.history.replace('/auth/register');
+        //         alert(resData);
+        //     }
+
+        //     console.log(resData, '=======');
+        //     this.setState({
+        //         isLoading: false,
+        //     });
+        // } catch (error) {
+        //     this.setState({
+        //         isLoading: false,
+        //     });
+        //     alert(error);
+        // }
     };
 
     componentDidMount() {

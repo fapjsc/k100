@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 
-import OnLoading from './OnLoading';
+// import OnLoading from './OnLoading';
+import TransferInfo from './TransferInfo';
+
 import validator from 'validator';
+
+// import PubSub from 'pubsub-js';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import { Form, Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -29,15 +35,12 @@ export default class Transfer extends Component {
     };
 
     setTransferCount = e => {
-        this.setState(
-            {
-                transfercount: {
-                    val: e.target.value.trim(),
-                    isValid: true,
-                },
+        this.setState({
+            transfercount: {
+                val: e.target.value.trim(),
+                isValid: true,
             },
-            () => {}
-        );
+        });
     };
 
     setTransferAddress = e => {
@@ -139,14 +142,36 @@ export default class Transfer extends Component {
 
             const resData = await res.json();
 
-            if (resData.code === 200) {
-                this.setState({
-                    isloading: false,
-                    isComplete: true,
-                    token: resData.data.order_token,
-                });
+            console.log(resData);
 
-                this.getDetail(resData.data.order_token);
+            if (resData.code === 200) {
+                const loginToken = localStorage.getItem('token');
+                this.setState(
+                    {
+                        // isloading: false,
+                        // isComplete: true,
+                        loginSession: loginToken,
+                        token: resData.data.order_token,
+                    },
+                    () => {
+                        this.submitTransaction(loginToken);
+                        this.getDetail(resData.data.order_token);
+                    }
+                );
+
+                // this.props.history.replace(
+
+                // );
+
+                this.props.history.replace({
+                    pathname: `/home/transaction/transfer/${resData.data.order_token}`,
+                    state: {
+                        item: {
+                            UsdtAmt: transfercount.val,
+                        },
+                    },
+                });
+                return;
             } else {
                 this.setState({
                     isfailed: true,
@@ -157,6 +182,119 @@ export default class Transfer extends Component {
                 isfailed: true,
             });
         }
+    };
+
+    detailReq = async () => {
+        // PubSub.subscribe('getData', this.getTransData);
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return;
+        }
+
+        const { orderToken } = this.state;
+        // this.props.submitTransaction(orderToken);
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        const detailApi = '/j/GetTxDetail.aspx';
+
+        try {
+            const res = await fetch(detailApi, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    Token: orderToken,
+                }),
+            });
+            const resData = await res.json();
+
+            const { data } = resData;
+
+            this.setState({
+                masterType: data.MasterType,
+                stateId: data.Order_StatusID,
+                Tx_HASH: data.Tx_HASH,
+                DeltaTime: data.DeltaTime,
+            });
+        } catch (error) {
+            alert(error);
+            return;
+        }
+    };
+
+    // webSocket 連接
+    submitTransaction = value => {
+        let { token, loginSession } = this.state;
+
+        const transactionApi = 'j/ws_orderstatus.ashx';
+
+        if (!loginSession) {
+            loginSession = localStorage.getItem('token');
+        }
+
+        if (!token) {
+            token = value;
+        }
+
+        // 自動重連次數
+        // const options = {
+        //     maxRetries: null,
+        // };
+
+        let url;
+
+        if (window.location.protocol === 'http:') {
+            url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+        } else {
+            url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+        }
+
+        const client = new ReconnectingWebSocket(url);
+
+        this.setState({
+            client,
+        });
+
+        // 1.建立連接
+        client.onopen = () => {
+            console.log('websocket client connected');
+            this.setState({
+                isPairing: true,
+            });
+        };
+
+        // 2.收到server回復
+        client.onmessage = message => {
+            const dataFromServer = JSON.parse(message.data);
+            // console.log('got reply!', dataFromServer);
+
+            // 轉帳中
+            if (dataFromServer.data.Order_StatusID === 0) {
+                this.setState({
+                    isloading: true,
+                    isComplete: false,
+                });
+            } else {
+                this.setState({
+                    isloading: false,
+                    isComplete: true,
+                });
+            }
+        };
+
+        // 3.錯誤處理
+        // client.onclose = () => {
+        //     console.log('關閉連線');
+        // };
+
+        client.onclose = function (message) {
+            // console.log('關閉連線', message);
+            // console.log('關閉連線', message.target.url);
+            localStorage.removeItem('order_token');
+        };
     };
 
     getDetail = async token => {
@@ -179,7 +317,7 @@ export default class Transfer extends Component {
             });
 
             const resData = await res.json();
-            console.log(resData);
+            console.log(resData, '22222222222222222');
 
             if (resData.code === 200) {
                 this.setState({
@@ -200,6 +338,8 @@ export default class Transfer extends Component {
             isloading: false,
             isfailed: false,
         });
+
+        this.props.history.replace('/home/transaction/transfer');
     };
 
     // countryInput = () => {
@@ -231,42 +371,13 @@ export default class Transfer extends Component {
             transfercount,
             isComplete,
             isfailed,
-            data,
+            token,
         } = this.state;
         const { exRate } = this.props;
 
         return (
             <div>
-                {isloading ? (
-                    <OnLoading
-                        show={isloading}
-                        transfercount={transfercount.val}
-                        isfailed={isfailed ? 1 : 0}
-                        isloading={isloading ? 1 : 0}
-                        onHide={this.closeModal}
-                    />
-                ) : null}
-
-                {isComplete ? (
-                    <div>
-                        <div className="txt_12 pt_20">購買USDT</div>
-                        <div className="text-center">
-                            <div className="i_done" />
-                            <h4 className="c_blue">交易完成</h4>
-                            <p className="txt_12_grey">
-                                交易回執：
-                                {data.Tx_HASH}
-                                <br />
-                                購買成功後，數字貨幣將全額充值到您要付款的商戶，完成付款。訂單已開始處理，預計到賬時間：15分鐘內
-                            </p>
-                            <button onClick={this.backToHome} className="easy-btn mw400">
-                                返回主頁
-                            </button>
-                            <br />
-                            <p>詳細購買紀錄</p>
-                        </div>
-                    </div>
-                ) : (
+                <Route exact path="/home/transaction/transfer">
                     <>
                         <Form>
                             <Row>
@@ -358,7 +469,25 @@ export default class Transfer extends Component {
                             USDT是系统根据您所需购买金额（或数量）和付款方式匹配出的最低价格，并且您可随时使用USDT在币币交易兑换其他数字资产。
                         </p>
                     </>
-                )}
+                </Route>
+
+                <Route
+                    path="/home/transaction/transfer/:id"
+                    render={props => (
+                        <TransferInfo
+                            {...props}
+                            show={isloading}
+                            transfercount={transfercount.val}
+                            submitTransaction={this.submitTransaction}
+                            token={token}
+                            backToHome={this.backToHome}
+                            isfailed={isfailed ? 1 : 0}
+                            isloading={isloading ? 1 : 0}
+                            isComplete={isComplete ? 1 : 0}
+                            onHide={this.closeModal}
+                        />
+                    )}
+                />
             </div>
         );
     }

@@ -7,7 +7,7 @@ import Badge from 'react-bootstrap/Badge';
 import Nodata from '../../NoData';
 import './index.scss';
 
-export default class All extends Component {
+export default class Wait extends Component {
     state = {
         historyList: [],
         detailToken: null,
@@ -17,15 +17,42 @@ export default class All extends Component {
     };
 
     setDetailToken = detailToken => {
-        const { showDetail } = this.state;
-        console.log(detailToken);
+        console.log(detailToken, '-------------');
         this.setState(
             {
                 detailToken,
-                showDetail: !showDetail,
             },
-            () => this.props.history.push(`/home/transaction/buy/${detailToken}`)
+            () => {
+                const { historyList } = this.state;
+                const item = historyList.find(el => el.token === detailToken);
+
+                if (item.MasterType === '買入') {
+                    console.log(this.props);
+                    this.props.history.push(`/home/transaction/buy/${detailToken}`);
+                }
+
+                if (item.MasterType === '轉出') {
+                    console.log(this.props);
+                    console.log(item);
+                    // this.props.history.push(`/home/transaction/transfer/${detailToken}`);
+                    this.props.history.push({
+                        pathname: `/home/transaction/transfer/${detailToken}`,
+                        state: { item },
+                    });
+                }
+                // this.props.history.push(`/home/transaction/buy/${detailToken}`);
+            }
+            // () => this.props.history.push(`/home/transaction/buy/${detailToken}`)
         );
+
+        // const { historyList } = this.state;
+        // const item = historyList.find(el => el.token === detailToken);
+        // console.log(item);
+        // if (item.MasterType === '買入') {
+        //     console.log(detailToken);
+        //     console.log(this.props);
+        //     this.props.history.push(`/home/transaction/buy/${detailToken}`);
+        // }
     };
 
     getTransactions = async (token, headers) => {
@@ -45,14 +72,6 @@ export default class All extends Component {
             });
 
             const resData = await res.json();
-
-            if (!res.ok) {
-                const error = new Error(resData || 'something wrong');
-                this.setState({
-                    isLoading: false,
-                });
-                throw error;
-            }
 
             const { data } = resData;
 

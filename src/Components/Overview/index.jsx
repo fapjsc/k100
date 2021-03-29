@@ -8,7 +8,7 @@ export default class index extends Component {
         const token = localStorage.getItem('token');
         if (!token) {
             alert('請重新登入');
-            // this.props.history.replace('/auth/login');
+            this.props.history.replace('/auth/login');
         }
     }
 

@@ -78,6 +78,8 @@ export default class PayInfo extends Component {
     getTransData = (_, data) => {};
 
     openChat = () => {
+        const { orderToken } = this.state;
+        this.props.submitTransaction(orderToken);
         this.setState({
             isChat: !this.state.isChat,
         });
@@ -85,6 +87,7 @@ export default class PayInfo extends Component {
 
     componentDidMount() {
         console.log('pay info render');
+
         this.setState(
             {
                 orderToken: this.props.match.params.id,
@@ -206,26 +209,15 @@ export default class PayInfo extends Component {
             master,
             stateId,
             Tx_HASH,
-            DeltaTime,
             isChat,
         } = this.state;
 
-        let totalTime = 1800; //  一次 15分鐘，共計算兩次所以是 30分鐘
-        let upperLimit = (totalTime / 2) * 1000;
-        let lowerLimit = upperLimit / 2;
-
-        let timer = ((totalTime - DeltaTime) * 1000) / 2;
-
-        console.log(timer);
+        const { timer, timer2 } = this.props;
 
         return (
             <div>
                 <div className="pairBox">
-                    {showInfo &&
-                    !isCompletePay &&
-                    stateId === 33 &&
-                    timer <= upperLimit &&
-                    timer > lowerLimit ? (
+                    {showInfo && !isCompletePay && stateId === 33 ? (
                         <>
                             <div className="pair-titleBox">
                                 <p>轉帳資料</p>
@@ -262,14 +254,25 @@ export default class PayInfo extends Component {
                                     USDT充幣僅支持以太坊transfer和transferFrom方法，使用其他方法的充幣暫時無法上賬，請您諒解。
                                 </li>
                             </ul>
+                            <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
+                            <Button
+                                variant="primary"
+                                className="talk-iconBox"
+                                onClick={this.openChat}
+                            >
+                                <img src={TalkIcon} alt="talk icon" className="mr-2" />
+                                <span>對話</span>
+                            </Button>
                         </>
-                    ) : (!showInfo && !isCompletePay && stateId === 33) ||
-                      (timer < lowerLimit && stateId === 33) ? (
-                        <Countdown
-                            date={Date.now() + timer}
-                            renderer={ButtonTimer}
-                            getConfirmPay={this.getConfirmPay}
-                        ></Countdown>
+                    ) : !showInfo && !isCompletePay && stateId === 33 ? (
+                        <>
+                            <Countdown
+                                date={Date.now() + timer2}
+                                renderer={ButtonTimer}
+                                getConfirmPay={this.getConfirmPay}
+                            ></Countdown>
+                            <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
+                        </>
                     ) : stateId === 34 && isCompletePay && !transactionDone ? (
                         <div>
                             <div className="txt_12 pt_20">購買USDT</div>
@@ -287,6 +290,15 @@ export default class PayInfo extends Component {
                                     返回主頁
                                 </button>
                             </div>
+                            <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
+                            <Button
+                                variant="primary"
+                                className="talk-iconBox"
+                                onClick={this.openChat}
+                            >
+                                <img src={TalkIcon} alt="talk icon" className="mr-2" />
+                                <span>對話</span>
+                            </Button>
                         </div>
                     ) : stateId === 1 || (isCompletePay && transactionDone) ? (
                         <div>
@@ -306,6 +318,15 @@ export default class PayInfo extends Component {
                                 <br />
                                 <p>詳細購買紀錄</p>
                             </div>
+                            <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
+                            <Button
+                                variant="primary"
+                                className="talk-iconBox"
+                                onClick={this.openChat}
+                            >
+                                <img src={TalkIcon} alt="talk icon" className="mr-2" />
+                                <span>對話</span>
+                            </Button>
                         </div>
                     ) : (
                         <BaseSpinner />
@@ -313,11 +334,6 @@ export default class PayInfo extends Component {
                     {/* <Button onClick={this.openChat} variant="primary">
                         幫助
                     </Button> */}
-                    <Chat {...this.props} isChat={isChat} />
-                    <Button variant="primary" className="talk-iconBox" onClick={this.openChat}>
-                        <img src={TalkIcon} alt="talk icon" className="mr-2" />
-                        <span>對話</span>
-                    </Button>
                 </div>
             </div>
         );

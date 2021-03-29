@@ -25,6 +25,9 @@ export default class Transaction extends Component {
         isPairing: false,
         pairFinish: false,
         data: {},
+        timer: null,
+        upperLimit: null,
+        lowerLimit: null,
     };
 
     getRmbAmt = e => {
@@ -190,9 +193,9 @@ export default class Transaction extends Component {
         let url;
 
         if (window.location.protocol === 'http:') {
-            url = `ws://10.168.192.1/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+            url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
         } else {
-            url = `wss://k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+            url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
         }
 
         const client = new ReconnectingWebSocket(url);
@@ -213,8 +216,26 @@ export default class Transaction extends Component {
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
             console.log('got reply!', dataFromServer);
+            const DeltaTime = dataFromServer.data.DeltaTime;
+
+            let totalTime = 1800; //  一次 15分鐘，共計算兩次所以是 30分鐘
+
+            let upperLimit = (totalTime / 2) * 1000;
+            let lowerLimit = upperLimit / 2;
+
+            let timer = ((totalTime - DeltaTime) * 1000) / 2;
+
+            let timer2 = ((totalTime - DeltaTime) * 1000) / 2;
+
+            console.log(DeltaTime);
+            console.log(timer);
+
             this.setState({
                 transferData: dataFromServer.data,
+                timer,
+                timer2,
+                upperLimit,
+                lowerLimit,
             });
 
             // 配對中
@@ -313,7 +334,19 @@ export default class Transaction extends Component {
 
     render() {
         console.log('buy render');
-        const { rmbAmt, usdtAmt, confirmPay, pair, isPairing, pairFinish, orderToken } = this.state;
+        const {
+            rmbAmt,
+            usdtAmt,
+            confirmPay,
+            pair,
+            isPairing,
+            pairFinish,
+            orderToken,
+            timer,
+            timer2,
+            upperLimit,
+            lowerLimit,
+        } = this.state;
 
         // 千分位逗號
         // if (usdtAmt) {
@@ -377,6 +410,10 @@ export default class Transaction extends Component {
                                 handleConfirm={this.handleConfirm}
                                 orderToken={orderToken ? orderToken : ''}
                                 submitTransaction={this.submitTransaction}
+                                timer={timer}
+                                timer2={timer2}
+                                upperLimit={upperLimit}
+                                lowerLimit={lowerLimit}
                             />
                         )}
                     />

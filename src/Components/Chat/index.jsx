@@ -50,7 +50,7 @@ class Chat extends React.Component {
     };
 
     sendImg = e => {
-        console.log(e.target.files[0]);
+        // console.log(e.target.files[0]);
         const file = e.target.files[0];
         const fileReader = new FileReader(); // FileReader為瀏覽器內建類別，用途為讀取瀏覽器選中的檔案
         fileReader.addEventListener('load', this.fileLoad);
@@ -105,9 +105,9 @@ class Chat extends React.Component {
         let url;
 
         if (window.location.protocol === 'http:') {
-            url = `ws://10.168.192.1/${chatApi}?login_session=${loginSession}&order_token=${token}`;
+            url = `${process.env.REACT_APP_WEBSOCKET_URL}/${chatApi}?login_session=${loginSession}&order_token=${token}`;
         } else {
-            url = `wss://k100u.com/${chatApi}?login_session=${loginSession}&order_token=${token}`;
+            url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${chatApi}?login_session=${loginSession}&order_token=${token}`;
         }
 
         const client = new W3CWebsocket(url);
@@ -122,6 +122,7 @@ class Chat extends React.Component {
 
         // 2.收到server回復
         client.onmessage = message => {
+            console.log(typeof message.data);
             const dataFromServer = JSON.parse(message.data);
             console.log('got Chat reply!', dataFromServer);
 
@@ -153,8 +154,6 @@ class Chat extends React.Component {
         client.onclose = () => {
             console.log('關閉連線');
         };
-
-        client.onclose = function (message) {};
     };
 
     // 關閉連線
@@ -171,9 +170,9 @@ class Chat extends React.Component {
         let url;
 
         if (window.location.protocol === 'http:') {
-            url = `ws://10.168.192.1/${chatApi}?login_session=${loginSession}&order_token=${token}`;
+            url = `${process.env.REACT_APP_WEBSOCKET_URL}/${chatApi}?login_session=${loginSession}&order_token=${token}`;
         } else {
-            url = `wss://k100u.com/${chatApi}?login_session=${loginSession}&order_token=${token}`;
+            url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${chatApi}?login_session=${loginSession}&order_token=${token}`;
         }
 
         const client = new W3CWebsocket(url);
@@ -190,20 +189,20 @@ class Chat extends React.Component {
     };
 
     render() {
-        const { messages, userInput, orderToken } = this.state;
+        const { messages, userInput } = this.state;
         return (
             <>
                 <div
                     className="mainChat"
                     style={{
-                        display: this.props.isChat ? 'none' : 'block',
-                        // display: 'none',
+                        display: this.props.isChat ? 'block' : 'none',
+                        opacity: this.props.isChat ? 1 : 0,
                     }}
                 >
                     {/* title */}
                     <div className="mb-3 chatTitle">
                         <span>訂單號：</span>
-                        <span>{orderToken}</span>
+                        <span>{this.props.Tx_HASH}</span>
                     </div>
 
                     {/* message block */}

@@ -138,8 +138,9 @@ export default class LoginForm extends Component {
     handleLoginSubmit = async event => {
         event.preventDefault(); //防止表單提交
         await this.validateForm();
-        const { formIsValid, phoneNumber, password } = this.state;
+        const { formIsValid, phoneNumber, password, countryCode } = this.state;
         const { setLoadingState } = this.props;
+        console.log(countryCode.val);
 
         if (!formIsValid) {
             return;
@@ -152,7 +153,7 @@ export default class LoginForm extends Component {
             const res = await fetch(loginApi, {
                 method: 'POST',
                 body: JSON.stringify({
-                    Login_countrycode: 86,
+                    Login_countrycode: countryCode.val,
                     Login_tel: phoneNumber.val,
                     Login_pwd: password.val,
                 }),
