@@ -14,6 +14,8 @@ const TransferInfo = ({
 }) => {
     useEffect(() => {
         submitTransaction(match.params.id);
+
+        // eslint-disable-next-line
     }, []);
 
     if (!isloading && isComplete) {

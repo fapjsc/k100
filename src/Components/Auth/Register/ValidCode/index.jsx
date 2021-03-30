@@ -68,8 +68,6 @@ export default class ValidCode extends Component {
 
             const resData = await res.json();
 
-            console.log(resData);
-
             if (resData.code !== 200) {
                 this.setState({
                     isLoading: false,
@@ -136,7 +134,6 @@ export default class ValidCode extends Component {
     };
 
     registerClient = async (token, countryCode, phoneNumber, password) => {
-        console.log('hi');
         this.setState({
             isLoading: true,
         });
@@ -154,8 +151,6 @@ export default class ValidCode extends Component {
         });
 
         const resData = await res.json();
-
-        console.log(resData);
 
         if (resData.code !== 200) {
             this.setState(

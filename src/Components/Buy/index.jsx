@@ -227,9 +227,6 @@ export default class Transaction extends Component {
 
             let timer2 = ((totalTime - DeltaTime) * 1000) / 2;
 
-            console.log(DeltaTime);
-            console.log(timer);
-
             this.setState({
                 transferData: dataFromServer.data,
                 timer,

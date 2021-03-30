@@ -140,7 +140,6 @@ export default class LoginForm extends Component {
         await this.validateForm();
         const { formIsValid, phoneNumber, password, countryCode } = this.state;
         const { setLoadingState } = this.props;
-        console.log(countryCode.val);
 
         if (!formIsValid) {
             return;
@@ -161,25 +160,16 @@ export default class LoginForm extends Component {
 
             const resData = await res.json();
 
-            if (!res.ok) {
-                setLoadingState(false);
-                console.log(resData, 'res');
-                alert('驗證失敗', resData.msg);
-                return;
-            }
-
             const {
                 data: { login_session },
             } = resData;
 
             setLoadingState(false);
             localStorage.setItem('token', login_session);
-            console.log('調用 setUserAuth');
             this.props.setUserAuth(login_session);
         } catch (error) {
             setLoadingState(false);
-            console.log(error, 'catch');
-            alert('無法連接server', error);
+            alert(error);
         }
     };
 

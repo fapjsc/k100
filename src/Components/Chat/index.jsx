@@ -1,7 +1,12 @@
 import React from 'react';
 import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import { v4 as uuidv4 } from 'uuid';
+
+// 滾動條自動滾到最下方
 import Zmage from 'react-zmage';
+
+// 圖片壓縮
+import Resizer from 'react-image-file-resizer';
 
 import SendIcon from '../../Assets/send_icon.png';
 import AttachIcon from '../../Assets/attach_icon.png';
@@ -9,6 +14,7 @@ import AttachIcon from '../../Assets/attach_icon.png';
 import Card from 'react-bootstrap/Card';
 
 import './index.scss';
+import { Fragment } from 'react';
 
 class Chat extends React.Component {
     state = {
@@ -25,9 +31,8 @@ class Chat extends React.Component {
         });
     };
 
-    // 2.點擊後發送訊息到server
+    //點擊後發送訊息到server
     sendMessage = (value, e) => {
-        console.log(value, typeof e.keyCode);
         if (value === '') {
             return;
         }
@@ -49,31 +54,42 @@ class Chat extends React.Component {
         }
     };
 
-    sendImg = e => {
-        // console.log(e.target.files[0]);
-        const file = e.target.files[0];
-        const fileReader = new FileReader(); // FileReader為瀏覽器內建類別，用途為讀取瀏覽器選中的檔案
-        fileReader.addEventListener('load', this.fileLoad);
-        fileReader.readAsDataURL(file); // 讀取完檔案後，變成URL
+    resizeFile = file =>
+        new Promise(resolve => {
+            Resizer.imageFileResizer(
+                file,
+                300,
+                300,
+                'JPEG',
+                100,
+                0,
+                uri => {
+                    resolve(uri);
+                },
+                'base64'
+            );
+        });
 
-        e.target.value = '';
-    };
+    sendImg = async e => {
+        try {
+            const file = e.target.files[0]; // get image
 
-    fileLoad = e => {
-        this.setState(
-            {
-                img: e.target.result, // 讀取到DataURL後，儲存在result裡面，指定為img
-            },
-            () => {
-                // send img to server
-                this.state.client.send(
-                    JSON.stringify({
-                        Message_Type: 2,
-                        Message: e.target.result,
-                    })
-                );
+            if (!file) {
+                return;
             }
-        );
+
+            const image = await this.resizeFile(file);
+            console.log(image);
+
+            this.state.client.send(
+                JSON.stringify({
+                    Message_Type: 2,
+                    Message: image,
+                })
+            );
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     componentDidMount() {
@@ -124,7 +140,7 @@ class Chat extends React.Component {
         client.onmessage = message => {
             console.log(typeof message.data);
             const dataFromServer = JSON.parse(message.data);
-            console.log('got Chat reply!', dataFromServer);
+            // console.log('got Chat reply!', dataFromServer);
 
             if (Array.isArray(dataFromServer)) {
                 let newArr = dataFromServer.reverse();
@@ -214,9 +230,8 @@ class Chat extends React.Component {
                         className="chatBlock  pre-scrollable"
                     >
                         {messages.map(message => (
-                            <>
+                            <Fragment key={uuidv4()}>
                                 <Card
-                                    key={uuidv4()}
                                     className="text-center"
                                     style={{
                                         width: 100,
@@ -254,7 +269,7 @@ class Chat extends React.Component {
                                         .splice(0, 2)
                                         .join(':')}
                                 </p>
-                            </>
+                            </Fragment>
                         ))}
                         <div
                             style={{ float: 'left', clear: 'both' }}
