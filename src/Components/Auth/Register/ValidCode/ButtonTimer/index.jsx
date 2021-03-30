@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 
 const index = ({ resendValidCode, getValidCode, minutes, seconds, completed }) => {
     if (completed || !resendValidCode) {
-        localStorage.removeItem('expiresDate');
+        localStorage.removeItem('expiresIn');
         return (
             <Button className="" variant="primary" onClick={getValidCode}>
                 發送驗證碼

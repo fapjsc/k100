@@ -21,6 +21,7 @@ export default class ValidCode extends Component {
         resendValidCode: false,
         isLoading: false,
         isRegister: false,
+        inputValid: false,
     };
 
     setValidNum = event => {
@@ -31,6 +32,7 @@ export default class ValidCode extends Component {
                         val: event.target.value.trim(),
                     },
                     error: '',
+                    inputValid: true,
                 },
                 () => {
                     this.handleSubmit();
@@ -43,57 +45,59 @@ export default class ValidCode extends Component {
                 },
                 formIsValid: false,
                 error: '',
+                inputValid: true,
             });
         }
     };
 
     getValidCode = async () => {
-        let expiresStamp = 5000;
-        let expiresDate = new Date().getTime() + expiresStamp;
-        localStorage.setItem('expiresDate', expiresDate);
-        const expiresIn = localStorage.getItem('expiresDate');
-        console.log(expiresIn);
-
         this.setState({
             resendValidCode: true,
             isLoading: true,
         });
 
-        // let { phoneNumber, countryCode } = this.props;
-        // const registerApi = `/j/Req_oneTimePwd.aspx`;
-        // if (countryCode === 886) {
-        //     phoneNumber = phoneNumber.substr(1);
-        // }
-        // try {
-        //     const res = await fetch(registerApi, {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //             reg_countrycode: countryCode,
-        //             reg_tel: phoneNumber,
-        //         }),
-        //     });
-        //     const resData = await res.json();
-        //     console.log(resData);
-        //     if (resData.code !== 200) {
-        //         this.setState({
-        //             isLoading: false,
-        //             error: resData.msg,
-        //         });
-        //         return;
-        //     }
+        // setTimeout(() => {
         //     this.setState({
         //         isLoading: false,
         //     });
-        // } catch (error) {
-        //     this.setState({
-        //         isLoading: false,
-        //     });
-        //     alert(error);
-        // }
+        // }, 0);
 
-        this.setState({
-            isLoading: false,
-        });
+        const expiresStamp = 120000;
+        const expiresDate = Date.now() + expiresStamp;
+
+        localStorage.setItem('expiresIn', expiresDate);
+
+        let { phoneNumber, countryCode } = this.props;
+        const registerApi = `/j/Req_oneTimePwd.aspx`;
+        if (countryCode === 886) {
+            phoneNumber = phoneNumber.substr(1);
+        }
+        try {
+            const res = await fetch(registerApi, {
+                method: 'POST',
+                body: JSON.stringify({
+                    reg_countrycode: countryCode,
+                    reg_tel: phoneNumber,
+                }),
+            });
+            const resData = await res.json();
+            console.log(resData);
+            if (resData.code !== 200) {
+                this.setState({
+                    isLoading: false,
+                    error: resData.msg,
+                });
+                return;
+            }
+            this.setState({
+                isLoading: false,
+            });
+        } catch (error) {
+            this.setState({
+                isLoading: false,
+            });
+            alert(error);
+        }
     };
 
     handleSubmit = async () => {
@@ -194,9 +198,7 @@ export default class ValidCode extends Component {
         }
     };
 
-    componentWillUnmount() {
-        localStorage.removeItem('expiresDate');
-    }
+    componentWillUnmount() {}
 
     render() {
         const {
@@ -207,10 +209,13 @@ export default class ValidCode extends Component {
             isRegister,
             token,
             formIsValid,
+            inputValid,
         } = this.state;
         let { phoneNumber, countryCode, password } = this.props;
 
-        let timer = localStorage.getItem('expiresDate') - new Date().getTime();
+        let timer;
+
+        timer = localStorage.getItem('expiresIn') - Date.now();
 
         return (
             <Fragment>
@@ -252,7 +257,11 @@ export default class ValidCode extends Component {
                             </Button> */}
 
                                 <Countdown
-                                    date={Date.now() + 5000}
+                                    date={
+                                        timer <= 0 && !inputValid
+                                            ? Date.now() + 120000
+                                            : Date.now() + timer
+                                    }
                                     renderer={props => (
                                         <ButtonTimer
                                             resendValidCode={resendValidCode}
