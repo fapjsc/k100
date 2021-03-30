@@ -72,7 +72,20 @@ export default class Transfer extends Component {
         }
 
         // 輸入數量大於可提加上手續費
-        if (transfercount.val > Avb_Balance + Number(this.props.exRate.TransferHandle)) {
+        if (Number(transfercount.val) > Avb_Balance + Number(this.props.exRate.TransferHandle)) {
+            console.log('hi');
+            this.setState({
+                transfercount: {
+                    val: '',
+                    isValid: false,
+                    error: '超出最大可提',
+                },
+                formIsValid: false,
+            });
+        }
+
+        // 可提為0
+        if (Number(Avb_Balance <= 0)) {
             this.setState({
                 transfercount: {
                     val: '',
@@ -104,6 +117,16 @@ export default class Transfer extends Component {
     getAll = () => {
         const all = this.props.Avb_Balance - Number(this.props.exRate.TransferHandle);
         console.log(all);
+        if (all <= 0) {
+            this.setState({
+                transfercount: {
+                    val: '0',
+                    isValid: true,
+                },
+            });
+
+            return;
+        }
         this.setState({
             transfercount: {
                 val: String(all),
@@ -142,8 +165,6 @@ export default class Transfer extends Component {
 
             const resData = await res.json();
 
-            console.log(resData);
-
             if (resData.code === 200) {
                 const loginToken = localStorage.getItem('token');
                 this.setState(
@@ -158,10 +179,6 @@ export default class Transfer extends Component {
                         this.getDetail(resData.data.order_token);
                     }
                 );
-
-                // this.props.history.replace(
-
-                // );
 
                 this.props.history.replace({
                     pathname: `/home/transaction/transfer/${resData.data.order_token}`,
@@ -184,16 +201,22 @@ export default class Transfer extends Component {
         }
     };
 
-    detailReq = async () => {
+    detailReq = async value => {
         // PubSub.subscribe('getData', this.getTransData);
 
-        const token = localStorage.getItem('token');
+        let token = localStorage.getItem('token');
         if (!token) {
             return;
         }
 
-        const { orderToken } = this.state;
+        let { orderToken } = this.state;
         // this.props.submitTransaction(orderToken);
+
+        if (!orderToken) {
+            orderToken = value;
+        }
+
+        console.log(orderToken);
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -212,6 +235,8 @@ export default class Transfer extends Component {
             const resData = await res.json();
 
             const { data } = resData;
+
+            console.log(data, 'detail req');
 
             this.setState({
                 masterType: data.MasterType,
@@ -317,7 +342,11 @@ export default class Transfer extends Component {
             });
 
             const resData = await res.json();
-            console.log(resData, '22222222222222222');
+
+            if (resData.code !== 200) {
+                alert(resData.msg);
+                return;
+            }
 
             if (resData.code === 200) {
                 this.setState({
@@ -339,14 +368,8 @@ export default class Transfer extends Component {
             isfailed: false,
         });
 
-        this.props.history.replace('/home/transaction/transfer');
+        this.props.history.replace('/home/overview');
     };
-
-    // countryInput = () => {
-    //     if (!/^[0-9]+(.[0-9]{2})?$/.test(this.state.transfercount.val)) {
-    //         alert('只能输入数字，小数点后只能保留两位');
-    //     }
-    // };
 
     componentDidMount() {
         const token = localStorage.getItem('token');
@@ -482,9 +505,10 @@ export default class Transfer extends Component {
                             token={token}
                             backToHome={this.backToHome}
                             isfailed={isfailed ? 1 : 0}
-                            isloading={isloading ? 1 : 0}
+                            isloading={isloading}
                             isComplete={isComplete ? 1 : 0}
                             onHide={this.closeModal}
+                            detailReq={this.detailReq}
                         />
                     )}
                 />

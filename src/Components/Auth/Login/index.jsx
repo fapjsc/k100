@@ -160,6 +160,12 @@ export default class LoginForm extends Component {
 
             const resData = await res.json();
 
+            if (resData.code !== 0) {
+                setLoadingState(false);
+                alert(resData.msg);
+                return;
+            }
+
             const {
                 data: { login_session },
             } = resData;

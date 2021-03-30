@@ -9,12 +9,12 @@ import Spinner from '../../../Ui/BaseSpinner';
 import { Form, Button, Col } from 'react-bootstrap';
 // import iAsk from '../../../../Assets/i_ask.png';
 import './index.scss';
+import { Fragment } from 'react';
 
 export default class ValidCode extends Component {
     state = {
         validNum: {
-            val: null,
-            isValid: false,
+            val: '',
         },
         formIsValid: false,
         error: '',
@@ -25,74 +25,79 @@ export default class ValidCode extends Component {
 
     setValidNum = event => {
         if (event.target.value.length === 6) {
-            this.setState({
-                validNum: {
-                    val: event.target.value.trim(),
-                    isValid: true,
+            this.setState(
+                {
+                    validNum: {
+                        val: event.target.value.trim(),
+                    },
+                    error: '',
                 },
-                error: '',
-            });
+                () => {
+                    this.handleSubmit();
+                }
+            );
         } else {
             this.setState({
                 validNum: {
                     val: event.target.value.trim(),
-                    isValid: false,
                 },
                 formIsValid: false,
+                error: '',
             });
         }
     };
 
     getValidCode = async () => {
+        let expiresStamp = 5000;
+        let expiresDate = new Date().getTime() + expiresStamp;
+        localStorage.setItem('expiresDate', expiresDate);
+        const expiresIn = localStorage.getItem('expiresDate');
+        console.log(expiresIn);
+
         this.setState({
             resendValidCode: true,
             isLoading: true,
         });
 
-        let { phoneNumber, countryCode } = this.props;
+        // let { phoneNumber, countryCode } = this.props;
+        // const registerApi = `/j/Req_oneTimePwd.aspx`;
+        // if (countryCode === 886) {
+        //     phoneNumber = phoneNumber.substr(1);
+        // }
+        // try {
+        //     const res = await fetch(registerApi, {
+        //         method: 'POST',
+        //         body: JSON.stringify({
+        //             reg_countrycode: countryCode,
+        //             reg_tel: phoneNumber,
+        //         }),
+        //     });
+        //     const resData = await res.json();
+        //     console.log(resData);
+        //     if (resData.code !== 200) {
+        //         this.setState({
+        //             isLoading: false,
+        //             error: resData.msg,
+        //         });
+        //         return;
+        //     }
+        //     this.setState({
+        //         isLoading: false,
+        //     });
+        // } catch (error) {
+        //     this.setState({
+        //         isLoading: false,
+        //     });
+        //     alert(error);
+        // }
 
-        const registerApi = `/j/Req_oneTimePwd.aspx`;
-
-        if (countryCode === 886) {
-            phoneNumber = phoneNumber.substr(1);
-        }
-
-        try {
-            const res = await fetch(registerApi, {
-                method: 'POST',
-                body: JSON.stringify({
-                    reg_countrycode: countryCode,
-                    reg_tel: phoneNumber,
-                }),
-            });
-
-            const resData = await res.json();
-
-            if (resData.code !== 200) {
-                this.setState({
-                    isLoading: false,
-                });
-                alert(resData.msg);
-                return;
-            }
-
-            if (resData.code === 200) {
-                alert('驗證碼已經發送');
-            }
-
-            this.setState({
-                isLoading: false,
-            });
-        } catch (error) {
-            this.setState({
-                isLoading: false,
-            });
-            alert(error);
-        }
+        this.setState({
+            isLoading: false,
+        });
     };
 
-    handleSubmit = async event => {
-        event.preventDefault(); //防止表單提交
+    handleSubmit = async () => {
+        // event.preventDefault(); //防止表單提交
 
         const { validNum } = this.state;
         let { phoneNumber, countryCode, password } = this.props;
@@ -102,6 +107,8 @@ export default class ValidCode extends Component {
         }
 
         const timePwdApi = `/j/ChkoneTimePwd.aspx`;
+
+        console.log(countryCode, phoneNumber, password, validNum);
 
         try {
             const res = await fetch(timePwdApi, {
@@ -121,15 +128,30 @@ export default class ValidCode extends Component {
 
             if (resData.code === 200) {
                 const token = resData.data;
-                this.registerClient(token, countryCode, phoneNumber, password);
+
+                this.setState({
+                    validNum: {
+                        val: validNum.val,
+                    },
+                    error: '',
+                    token,
+                    formIsValid: true,
+                });
+
+                // this.registerClient(token, countryCode, phoneNumber, password);
             } else {
-                alert(resData.msg);
+                this.setState({
+                    validNum: {
+                        val: '',
+                    },
+                    error: '驗證碼錯誤',
+                });
             }
         } catch (error) {
             this.setState({
                 isLoading: false,
+                error: error,
             });
-            alert(error);
         }
     };
 
@@ -157,9 +179,8 @@ export default class ValidCode extends Component {
                 {
                     isLoading: false,
                 },
-                () => {
-                    alert(resData.msg);
-                }
+
+                alert(resData.msg)
             );
             this.props.history.replace('/auth/login');
             return;
@@ -173,11 +194,26 @@ export default class ValidCode extends Component {
         }
     };
 
+    componentWillUnmount() {
+        localStorage.removeItem('expiresDate');
+    }
+
     render() {
-        const { validNum, error, resendValidCode, isLoading, isRegister } = this.state;
+        const {
+            validNum,
+            error,
+            resendValidCode,
+            isLoading,
+            isRegister,
+            token,
+            formIsValid,
+        } = this.state;
+        let { phoneNumber, countryCode, password } = this.props;
+
+        let timer = localStorage.getItem('expiresDate') - new Date().getTime();
 
         return (
-            <>
+            <Fragment>
                 {isLoading ? (
                     <Spinner />
                 ) : isRegister && !isLoading ? (
@@ -194,8 +230,10 @@ export default class ValidCode extends Component {
                                         placeholder="一次性驗證碼"
                                         className="form-input"
                                         onChange={this.setValidNum}
+                                        value={validNum.val}
                                         autoComplete="off"
                                         type="number"
+                                        isValid={formIsValid}
                                     />
                                     {error ? (
                                         <Form.Text className="text-muted">{error}</Form.Text>
@@ -212,8 +250,9 @@ export default class ValidCode extends Component {
                             >
                                 發送驗證碼
                             </Button> */}
+
                                 <Countdown
-                                    date={Date.now() + 10000}
+                                    date={Date.now() + 5000}
                                     renderer={props => (
                                         <ButtonTimer
                                             resendValidCode={resendValidCode}
@@ -227,20 +266,22 @@ export default class ValidCode extends Component {
                         </Form.Row>
 
                         <Button
-                            onClick={this.handleSubmit}
+                            onClick={() =>
+                                this.registerClient(token, countryCode, phoneNumber, password)
+                            }
                             // variant="primary"
-                            variant={!validNum.isValid ? 'secondary' : 'primary'}
+                            variant={!formIsValid ? 'secondary' : 'primary'}
                             type="submit"
                             size="lg"
                             block
                             className="fs_20"
-                            disabled={!validNum.isValid}
+                            disabled={!formIsValid}
                         >
                             確定
                         </Button>
                     </Form>
                 )}
-            </>
+            </Fragment>
         );
     }
 }

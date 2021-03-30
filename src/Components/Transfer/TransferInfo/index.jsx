@@ -11,9 +11,11 @@ const TransferInfo = ({
     match,
     location,
     onHide,
+    detailReq,
 }) => {
     useEffect(() => {
         submitTransaction(match.params.id);
+        detailReq(match.params.id);
 
         // eslint-disable-next-line
     }, []);
@@ -45,7 +47,7 @@ const TransferInfo = ({
                 isfailed={isfailed ? 1 : 0}
                 isloading={isloading ? 1 : 0}
                 onHide={onHide}
-                usdtCount={location.state ? location.state.item.UsdtAmt : null}
+                usdtcount={location.state ? location.state.item.UsdtAmt : null}
             />
         );
     }
