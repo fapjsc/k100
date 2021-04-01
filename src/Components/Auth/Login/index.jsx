@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
-
 import { Form, Button, Col } from 'react-bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
+import { Fragment } from 'react';
 
 export default class LoginForm extends Component {
     state = {
@@ -137,9 +136,10 @@ export default class LoginForm extends Component {
     // 表單提交
     handleLoginSubmit = async event => {
         event.preventDefault(); //防止表單提交
+
         await this.validateForm();
         const { formIsValid, phoneNumber, password, countryCode } = this.state;
-        const { setLoadingState } = this.props;
+        const { setLoadingState, setLoginErr } = this.props;
 
         if (!formIsValid) {
             return;
@@ -160,96 +160,106 @@ export default class LoginForm extends Component {
 
             const resData = await res.json();
 
-            if (resData.code !== 0) {
+            // console.log(resData);
+
+            if (resData.code === '10') {
+                setLoginErr(true, '帳號或密碼錯誤');
                 setLoadingState(false);
-                alert(resData.msg);
                 return;
             }
 
-            const {
-                data: { login_session },
-            } = resData;
+            if (resData.code === 200) {
+                const {
+                    data: { login_session },
+                } = resData;
 
-            setLoadingState(false);
-            localStorage.setItem('token', login_session);
-            this.props.setUserAuth(login_session);
+                setLoadingState(false);
+                localStorage.setItem('token', login_session);
+                this.props.setUserAuth(login_session);
+            } else {
+                setLoginErr(true, resData.msg);
+                setLoadingState(false);
+            }
         } catch (error) {
             setLoadingState(false);
-            alert(error);
+            setLoginErr(true, error);
         }
     };
 
     render() {
         const { password, phoneNumber, formErrors, countryCode } = this.state;
-        return (
-            <div className="form-container">
-                <Form>
-                    <Form.Row>
-                        <Form.Group as={Col} md="3" controlId="CountryCode">
-                            <Form.Control
-                                as="select"
-                                defaultValue="區號"
-                                className="form-select"
-                                onChange={this.setCountryCode}
-                                isInvalid={!countryCode.isValid}
-                            >
-                                <option>區號</option>
-                                <option>中國＋86</option>
-                                <option>台灣＋886</option>
-                                <option>香港＋852</option>
-                            </Form.Control>
-                        </Form.Group>
 
-                        <Form.Group as={Col} md="9" controlId="formBasicPhoneNumber">
+        return (
+            <Fragment>
+                <div className="form-container">
+                    <Form>
+                        <Form.Row>
+                            <Form.Group as={Col} md="3" controlId="CountryCode">
+                                <Form.Control
+                                    as="select"
+                                    defaultValue="區號"
+                                    className="form-select"
+                                    onChange={this.setCountryCode}
+                                    isInvalid={!countryCode.isValid}
+                                >
+                                    <option>區號</option>
+                                    <option>中國＋86</option>
+                                    <option>台灣＋886</option>
+                                    <option>香港＋852</option>
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group as={Col} md="9" controlId="formBasicPhoneNumber">
+                                <Form.Control
+                                    isInvalid={!phoneNumber.isValid}
+                                    className="form-input"
+                                    size="lg"
+                                    type="tel"
+                                    placeholder="手機號碼"
+                                    onChange={this.setPhoneNumber}
+                                    autoComplete="off"
+                                />
+                            </Form.Group>
+                        </Form.Row>
+
+                        <Form.Group controlId="formBasicPassword">
                             <Form.Control
-                                isInvalid={!phoneNumber.isValid}
+                                isInvalid={!password.isValid}
                                 className="form-input"
                                 size="lg"
-                                type="tel"
-                                placeholder="手機號碼"
-                                onChange={this.setPhoneNumber}
+                                type="password"
+                                placeholder="密碼"
+                                onChange={this.setPassword}
                                 autoComplete="off"
                             />
                         </Form.Group>
-                    </Form.Row>
 
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Control
-                            isInvalid={!password.isValid}
-                            className="form-input"
-                            size="lg"
-                            type="password"
-                            placeholder="密碼"
-                            onChange={this.setPassword}
-                            autoComplete="off"
-                        />
-                    </Form.Group>
+                        {formErrors.length
+                            ? formErrors.map((err, index) => (
+                                  <Form.Text key={index} className="text-muted form-text">
+                                      {err}
+                                  </Form.Text>
+                              ))
+                            : null}
 
-                    {formErrors.length
-                        ? formErrors.map((err, index) => (
-                              <Form.Text key={index} className="text-muted form-text">
-                                  {err}
-                              </Form.Text>
-                          ))
-                        : null}
-
-                    <Button
-                        onClick={this.handleLoginSubmit}
-                        className="form-btn"
-                        variant="primary"
-                        block
-                        type="submit"
-                    >
-                        登入
-                    </Button>
-                    <div className="forget_pw-box">
-                        <Link to="/forget-pw" className="forget_pw-link">
-                            <span className="forget_pw"></span>
-                            <u>忘記密碼</u>
-                        </Link>
-                    </div>
-                </Form>
-            </div>
+                        <Button
+                            onClick={this.handleLoginSubmit}
+                            className="form-btn"
+                            variant="primary"
+                            block
+                            type="submit"
+                        >
+                            登入
+                        </Button>
+                        <div className="forget_pw-box">
+                            <Link to="/forget-pw" className="forget_pw-link">
+                                <span className="forget_pw"></span>
+                                <u>忘記密碼</u>
+                            </Link>
+                        </div>
+                    </Form>
+                </div>
+            </Fragment>
         );
     }
 }

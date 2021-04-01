@@ -95,7 +95,6 @@ export default class index extends Component {
     };
 
     validRegister = () => {
-        console.log('valid');
         this.setState({
             formIsValid: true,
         });

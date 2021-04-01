@@ -39,7 +39,6 @@ export default class PayInfo extends Component {
         headers.append('login_session', token);
 
         try {
-            console.log('call buy2 api');
             const reqBuy2Api = `/j/Req_Buy2.aspx`;
             const res = await fetch(reqBuy2Api, {
                 method: 'POST',
@@ -51,7 +50,6 @@ export default class PayInfo extends Component {
 
             const resData = await res.json();
 
-            console.log(resData, 'buy2');
             this.setState({
                 isCompletePay: true,
             });
@@ -61,8 +59,6 @@ export default class PayInfo extends Component {
     };
 
     getStatId = (_, data) => {
-        console.log(data);
-        console.log('set id ======================');
         this.setState({
             stateId: data,
             isCompletePay: true,

@@ -28,6 +28,7 @@ export default class Transaction extends Component {
         timer: null,
         upperLimit: null,
         lowerLimit: null,
+        error: '',
     };
 
     getRmbAmt = e => {
@@ -36,6 +37,7 @@ export default class Transaction extends Component {
                 {
                     rmbAmt: e.target.value.trim(),
                     clearInput: 'usdt',
+                    error: '',
                 },
                 () => {
                     this.transformToUsdt();
@@ -48,6 +50,7 @@ export default class Transaction extends Component {
                 {
                     usdtAmt: e.target.value.trim(),
                     clearInput: 'cny',
+                    error: '',
                 },
                 () => {
                     this.transformRmb();
@@ -59,6 +62,7 @@ export default class Transaction extends Component {
     getClientName = e => {
         this.setState({
             clientName: e.target.value.trim(),
+            error: '',
         });
     };
 
@@ -95,7 +99,10 @@ export default class Transaction extends Component {
         const { usdtAmt, clientName } = this.state;
 
         if (!clientName) {
-            alert('請輸入姓名');
+            this.setState({
+                error: '請輸入姓名',
+            });
+            // alert('請輸入姓名');
             return;
         }
 
@@ -121,8 +128,6 @@ export default class Transaction extends Component {
                 data: { order_token },
             } = resData;
 
-            console.log(order_token);
-
             this.setState(
                 {
                     orderToken: order_token,
@@ -143,12 +148,16 @@ export default class Transaction extends Component {
         let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
 
         if (!rule.test(usdtAmt) || !rule.test(rmbAmt)) {
-            alert('請輸入有效數量, (不能為0，最多小數第二位)');
+            this.setState({
+                error: '請輸入有效數量, (不能為0，最多小數第二位)',
+            });
+            // alert('請輸入有效數量, (不能為0，最多小數第二位)');
             return;
         }
 
         this.setState({
             confirmPay: true,
+            error: '',
         });
     };
 
@@ -215,7 +224,7 @@ export default class Transaction extends Component {
         // 2.收到server回復
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
-            console.log('got reply!', dataFromServer);
+            // console.log('got reply!', dataFromServer);
             const DeltaTime = dataFromServer.data.DeltaTime;
 
             let totalTime = 1800; //  一次 15分鐘，共計算兩次所以是 30分鐘
@@ -285,8 +294,6 @@ export default class Transaction extends Component {
 
             // 收款確認
             if (dataFromServer.data.Order_StatusID === 34) {
-                console.log('34***********************');
-
                 PubSub.publish('statId', 34);
                 const data = this.state.transferData;
                 PubSub.publish('getData', data);
@@ -295,7 +302,6 @@ export default class Transaction extends Component {
 
             // 交易完成
             if (dataFromServer.data.Order_StatusID === 1) {
-                console.log('1***********************');
                 PubSub.publish('statId', 1);
                 const data = this.state.transferData;
                 PubSub.publish('getData', data);
@@ -343,6 +349,7 @@ export default class Transaction extends Component {
             timer2,
             upperLimit,
             lowerLimit,
+            error,
         } = this.state;
 
         // 千分位逗號
@@ -366,6 +373,7 @@ export default class Transaction extends Component {
                                     usdtAmt={usdtAmt}
                                     rmbAmt={rmbAmt}
                                     exRate={this.props.exRate}
+                                    error={error}
                                 />
                             ) : (
                                 <ConfirmBuy
@@ -376,6 +384,7 @@ export default class Transaction extends Component {
                                     pairFinish={pairFinish}
                                     pair={pair}
                                     isPairing={isPairing}
+                                    error={error}
                                 />
                             )}
 

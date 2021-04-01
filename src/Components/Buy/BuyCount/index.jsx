@@ -33,9 +33,11 @@ const BuyCount = props => {
                         autoComplete="off"
                         type="number"
                     />
-                    {/* <Form.Text className="text-muted">
-                        <span className="text-dark">手續費: 5.00USDT</span>
-                    </Form.Text> */}
+                    {props.error && (
+                        <Form.Text className="text-muted">
+                            <span className="">{props.error}</span>
+                        </Form.Text>
+                    )}
                 </Form.Group>
 
                 <div className="transaction-twoWay">

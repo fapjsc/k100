@@ -17,7 +17,6 @@ export default class Wait extends Component {
     };
 
     setDetailToken = detailToken => {
-        console.log(detailToken, '-------------');
         this.setState(
             {
                 detailToken,
@@ -27,13 +26,10 @@ export default class Wait extends Component {
                 const item = historyList.find(el => el.token === detailToken);
 
                 if (item.MasterType === '買入') {
-                    console.log(this.props);
                     this.props.history.push(`/home/transaction/buy/${detailToken}`);
                 }
 
                 if (item.MasterType === '轉出') {
-                    console.log(this.props);
-                    console.log(item);
                     // this.props.history.push(`/home/transaction/transfer/${detailToken}`);
                     this.props.history.push({
                         pathname: `/home/transaction/transfer/${detailToken}`,
@@ -115,9 +111,7 @@ export default class Wait extends Component {
         }
     }
 
-    componentWillUnmount() {
-        console.log('wait unmount');
-    }
+    componentWillUnmount() {}
     render() {
         const { historyList, isLoading } = this.state;
 

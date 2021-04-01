@@ -13,7 +13,6 @@ export default class Detail extends Component {
 
     getDetail = () => {
         const { detailToken, historyList } = this.props;
-        console.log(detailToken, historyList);
         const detailItem = historyList.find(h => h.token === detailToken);
         this.setState({
             detailItem,

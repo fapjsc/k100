@@ -31,10 +31,6 @@ export default class Transaction extends Component {
 
             const resData = await res.json();
 
-            if (!res.ok) {
-                console.log(resData, '!res.ok');
-            }
-
             const { data } = resData;
 
             this.setState({
@@ -73,7 +69,6 @@ export default class Transaction extends Component {
             const resData = await res.json();
 
             if (resData.code === '91' || resData.code === '90') {
-                console.log('token 過期 => check tick');
                 localStorage.removeItem('token');
                 window.confirm('session過期，請重新登入 get balance !res.ok');
 

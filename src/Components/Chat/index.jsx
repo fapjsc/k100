@@ -2,7 +2,7 @@ import React from 'react';
 import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import { v4 as uuidv4 } from 'uuid';
 
-// 滾動條自動滾到最下方
+// 圖片縮放
 import Zmage from 'react-zmage';
 
 // 圖片壓縮

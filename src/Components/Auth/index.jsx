@@ -8,6 +8,8 @@ import Header from '../Layout/Header';
 import LoginForm from './Login';
 import RegisterForm from './Register';
 
+import Modal from 'react-bootstrap/Modal';
+
 import BaseSpinner from '../Ui/BaseSpinner';
 import './index.scss';
 import style from '../Layout/Header.module.scss';
@@ -18,6 +20,8 @@ export default class Auth extends Component {
         token: null,
         isLoading: false,
         httpError: null,
+        showModal: false,
+        loginErr: '',
     };
 
     toggleForm = mode => {
@@ -49,9 +53,21 @@ export default class Auth extends Component {
         }
     };
 
-    setLoadingState = isLoading => {
-        console.log('setLoadingState');
+    setLoginErr = (showModal, err) => {
+        this.setState({
+            showModal: showModal,
+            loginErr: err,
+        });
+    };
 
+    setShow = value => {
+        this.setState({
+            showModal: value,
+            loginErr: '',
+        });
+    };
+
+    setLoadingState = isLoading => {
         this.setState({
             isLoading,
         });
@@ -99,7 +115,7 @@ export default class Auth extends Component {
     }
 
     render() {
-        const { formState, isLoading, httpError } = this.state;
+        const { formState, isLoading, httpError, showModal, loginErr } = this.state;
         const { location } = this.props;
         return (
             <div className="user-auth">
@@ -111,6 +127,19 @@ export default class Auth extends Component {
                         <div className="mt_120">
                             <BaseSpinner />
                         </div>
+                    ) : !isLoading && showModal ? (
+                        <Modal
+                            size="sm"
+                            show={showModal}
+                            onHide={() => this.setShow(false)}
+                            aria-labelledby="example-modal-sizes-title-sm"
+                        >
+                            <Modal.Header closeButton>
+                                <Modal.Title id="example-modal-sizes-title-sm">
+                                    {loginErr}
+                                </Modal.Title>
+                            </Modal.Header>
+                        </Modal>
                     ) : (
                         <div>
                             <h4 className="text-center p-4 font-weight-bold">{formState}帳號</h4>
@@ -157,6 +186,7 @@ export default class Auth extends Component {
                                             setUserAuth={this.setUserAuth}
                                             setLoadingState={this.setLoadingState}
                                             setHttpError={this.setHttpError}
+                                            setLoginErr={this.setLoginErr}
                                         />
                                     )}
                                 />

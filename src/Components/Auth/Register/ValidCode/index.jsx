@@ -22,6 +22,7 @@ export default class ValidCode extends Component {
         isLoading: false,
         isRegister: false,
         inputValid: false,
+        alreadyRegister: false,
     };
 
     setValidNum = event => {
@@ -49,6 +50,10 @@ export default class ValidCode extends Component {
             });
         }
     };
+
+    componentWillUnmount() {
+        localStorage.removeItem('expiresIn');
+    }
 
     getValidCode = async () => {
         this.setState({
@@ -81,7 +86,11 @@ export default class ValidCode extends Component {
                 }),
             });
             const resData = await res.json();
-            console.log(resData);
+
+            this.setState({
+                isLoading: false,
+            });
+
             if (resData.code !== 200) {
                 this.setState({
                     isLoading: false,
@@ -89,9 +98,6 @@ export default class ValidCode extends Component {
                 });
                 return;
             }
-            this.setState({
-                isLoading: false,
-            });
         } catch (error) {
             this.setState({
                 isLoading: false,
@@ -178,15 +184,22 @@ export default class ValidCode extends Component {
 
         const resData = await res.json();
 
-        if (resData.code !== 200) {
-            this.setState(
-                {
-                    isLoading: false,
-                },
+        console.log(resData);
 
-                alert(resData.msg)
-            );
-            this.props.history.replace('/auth/login');
+        // 已經註冊過了
+        if (resData.code === '11') {
+            this.setState({
+                isRegister: true,
+                alreadyRegister: true,
+                isLoading: false,
+            });
+        }
+
+        if (resData.code !== 200) {
+            this.setState({
+                isLoading: false,
+                error: resData.msg,
+            });
             return;
         }
 
@@ -198,8 +211,6 @@ export default class ValidCode extends Component {
         }
     };
 
-    componentWillUnmount() {}
-
     render() {
         const {
             validNum,
@@ -210,6 +221,7 @@ export default class ValidCode extends Component {
             token,
             formIsValid,
             inputValid,
+            alreadyRegister,
         } = this.state;
         let { phoneNumber, countryCode, password } = this.props;
 
@@ -222,7 +234,7 @@ export default class ValidCode extends Component {
                 {isLoading ? (
                     <Spinner />
                 ) : isRegister && !isLoading ? (
-                    <SuccessRegister />
+                    <SuccessRegister alreadyRegister={alreadyRegister} />
                 ) : (
                     <Form className="w_400 mx-auto">
                         <Form.Row className="align-items-center">

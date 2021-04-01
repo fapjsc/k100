@@ -71,9 +71,24 @@ export default class Transfer extends Component {
             });
         }
 
+        // 輸入的數量小數點超過兩位數
+        let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
+
+        if (!rule.test(transfercount.val)) {
+            this.setState({
+                transfercount: {
+                    val: '',
+                    isValid: false,
+                    error: '請輸入有效數量, (不能為0或是負數，最多小數第二位)',
+                },
+                formIsValid: false,
+            });
+            // alert('請輸入有效數量, (不能為0，最多小數第二位)');
+            return;
+        }
+
         // 輸入數量大於可提加上手續費
         if (Number(transfercount.val) > Avb_Balance + Number(this.props.exRate.TransferHandle)) {
-            console.log('hi');
             this.setState({
                 transfercount: {
                     val: '',
@@ -102,7 +117,6 @@ export default class Transfer extends Component {
             transfercount.val <= 0 ||
             transfercount.val === ''
         ) {
-            console.log('hi');
             this.setState({
                 transfercount: {
                     val: '',
@@ -116,7 +130,6 @@ export default class Transfer extends Component {
 
     getAll = () => {
         const all = this.props.Avb_Balance - Number(this.props.exRate.TransferHandle);
-        console.log(all);
         if (all <= 0) {
             this.setState({
                 transfercount: {
@@ -142,7 +155,6 @@ export default class Transfer extends Component {
         await this.valid();
 
         if (!this.state.formIsValid) {
-            console.log('fail submit');
             return;
         }
 
@@ -216,8 +228,6 @@ export default class Transfer extends Component {
             orderToken = value;
         }
 
-        console.log(orderToken);
-
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('login_session', token);
@@ -235,8 +245,6 @@ export default class Transfer extends Component {
             const resData = await res.json();
 
             const { data } = resData;
-
-            console.log(data, 'detail req');
 
             this.setState({
                 masterType: data.MasterType,
@@ -294,7 +302,7 @@ export default class Transfer extends Component {
         // 2.收到server回復
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
-            // console.log('got reply!', dataFromServer);
+            console.log('got reply!', dataFromServer);
 
             // 轉帳中
             if (dataFromServer.data.Order_StatusID === 0) {
@@ -397,6 +405,8 @@ export default class Transfer extends Component {
             token,
         } = this.state;
         const { exRate } = this.props;
+
+        console.log('render', isloading);
 
         return (
             <div>

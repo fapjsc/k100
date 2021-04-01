@@ -36,8 +36,14 @@ const ConfirmBuy = props => {
                                 onChange={props.getClientName}
                                 className="confirmBuyInput"
                                 autoComplete="off"
+                                isInvalid={props.error}
                             />
-                            <Form.Text className="text-muted">請輸入銀行卡持有人姓名</Form.Text>
+                            <Form.Text className="text-muted ">
+                                <span className="text-dark">請輸入銀行卡持有人姓名</span>
+                            </Form.Text>
+                            {props.error && (
+                                <Form.Text className="text-muted">{props.error}</Form.Text>
+                            )}
                             <div className="buyCount-btnBox">
                                 <Button
                                     className="buyCount-btn"
