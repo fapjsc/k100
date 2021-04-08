@@ -50,9 +50,13 @@ export default class PayInfo extends Component {
 
             const resData = await res.json();
 
-            this.setState({
-                isCompletePay: true,
-            });
+            if (resData.code === 200) {
+                this.setState({
+                    isCompletePay: true,
+                });
+            } else {
+                alert(resData.msg);
+            }
         } catch (error) {
             alert(error);
         }
@@ -71,8 +75,6 @@ export default class PayInfo extends Component {
         }
     };
 
-    getTransData = (_, data) => {};
-
     openChat = () => {
         const { orderToken } = this.state;
         this.props.submitTransaction(orderToken);
@@ -82,8 +84,6 @@ export default class PayInfo extends Component {
     };
 
     componentDidMount() {
-        console.log('pay info render');
-
         this.setState(
             {
                 orderToken: this.props.match.params.id,
@@ -107,6 +107,38 @@ export default class PayInfo extends Component {
     //     });
     // };
 
+    getDeltaTime = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return;
+        }
+
+        const { orderToken } = this.state;
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        const detailApi = '/j/GetTxDetail.aspx';
+
+        const res = await fetch(detailApi, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                Token: orderToken,
+            }),
+        });
+        const resData = await res.json();
+
+        const { data } = resData;
+
+        let timer = 20000 - data.DeltaTime;
+
+        this.setState({
+            timer,
+        });
+    };
+
     detailReq = async () => {
         // PubSub.subscribe('getData', this.getTransData);
 
@@ -116,6 +148,7 @@ export default class PayInfo extends Component {
         }
 
         const { orderToken } = this.state;
+
         // this.props.submitTransaction(orderToken);
 
         let headers = new Headers();
@@ -136,11 +169,18 @@ export default class PayInfo extends Component {
 
             const { data } = resData;
 
+            console.log(data);
+
+            let timer = 20000 - data.DeltaTime;
+
+            console.log(data.DeltaTime);
+
             this.setState({
                 masterType: data.MasterType,
                 stateId: data.Order_StatusID,
                 Tx_HASH: data.Tx_HASH,
                 DeltaTime: data.DeltaTime,
+                timer,
             });
 
             if (data.MasterType === 1 || data.MasterType === 0) {
@@ -206,9 +246,8 @@ export default class PayInfo extends Component {
             stateId,
             Tx_HASH,
             isChat,
+            timer,
         } = this.state;
-
-        const { timer, timer2 } = this.props;
 
         return (
             <div>
@@ -263,11 +302,19 @@ export default class PayInfo extends Component {
                     ) : !showInfo && !isCompletePay && stateId === 33 ? (
                         <>
                             <Countdown
-                                date={Date.now() + timer2}
+                                date={Date.now() + timer}
                                 renderer={ButtonTimer}
                                 getConfirmPay={this.getConfirmPay}
                             ></Countdown>
                             <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
+                            <Button
+                                variant="primary"
+                                className="talk-iconBox"
+                                onClick={this.openChat}
+                            >
+                                <img src={TalkIcon} alt="talk icon" className="mr-2" />
+                                <span>對話</span>
+                            </Button>
                         </>
                     ) : stateId === 34 && isCompletePay && !transactionDone ? (
                         <div>

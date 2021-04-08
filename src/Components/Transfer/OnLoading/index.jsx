@@ -7,7 +7,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 const OnLoading = props => {
-    console.log(props.isloading);
     return (
         <Modal
             animation={false}

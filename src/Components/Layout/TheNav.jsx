@@ -14,7 +14,7 @@ const TheNav = props => {
                         <Link to="/home/transaction" className={style.navLink}>
                             交易
                         </Link>
-                        <Link to="/home/history" className={style.navLink}>
+                        <Link to="/home/history/all" className={style.navLink}>
                             紀錄
                         </Link>
                         <Link to="/home/wallet" className={style.navLink}>

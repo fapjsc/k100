@@ -37,20 +37,11 @@ export default class All extends Component {
         const historyApi = '/j/GetTxHistory.aspx';
 
         try {
-            console.log('call get history');
             const res = await fetch(historyApi, {
                 headers,
             });
 
             const resData = await res.json();
-
-            if (!res.ok) {
-                const error = new Error(resData || 'something wrong');
-                this.setState({
-                    isLoading: false,
-                });
-                throw error;
-            }
 
             const { data } = resData;
 
@@ -94,9 +85,7 @@ export default class All extends Component {
         }
     }
 
-    componentWillUnmount() {
-        console.log(' all unmount');
-    }
+    componentWillUnmount() {}
     render() {
         const { historyList, detailToken, showDetail, isLoading } = this.state;
 

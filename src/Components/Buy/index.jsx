@@ -227,21 +227,24 @@ export default class Transaction extends Component {
             // console.log('got reply!', dataFromServer);
             const DeltaTime = dataFromServer.data.DeltaTime;
 
-            let totalTime = 1800; //  一次 15分鐘，共計算兩次所以是 30分鐘
+            // let totalTime = 10000; //  一次 15分鐘，共計算兩次所以是 30分鐘
 
-            let upperLimit = (totalTime / 2) * 1000;
-            let lowerLimit = upperLimit / 2;
+            // let upperLimit = (totalTime / 2) * 1000;
+            // let lowerLimit = upperLimit / 2;
 
-            let timer = ((totalTime - DeltaTime) * 1000) / 2;
+            // let timer = ((totalTime - DeltaTime) * 1000) / 2;
 
-            let timer2 = ((totalTime - DeltaTime) * 1000) / 2;
+            // let timer2 = ((totalTime - DeltaTime) * 1000) / 2;
+
+            // console.log(timer / 1000);
 
             this.setState({
                 transferData: dataFromServer.data,
-                timer,
-                timer2,
-                upperLimit,
-                lowerLimit,
+                DeltaTime,
+                // timer,
+                // timer2,
+                // upperLimit,
+                // lowerLimit,
             });
 
             // 配對中
@@ -336,7 +339,6 @@ export default class Transaction extends Component {
     // };
 
     render() {
-        console.log('buy render');
         const {
             rmbAmt,
             usdtAmt,

@@ -79,7 +79,6 @@ class Chat extends React.Component {
             }
 
             const image = await this.resizeFile(file);
-            console.log(image);
 
             this.state.client.send(
                 JSON.stringify({
@@ -88,7 +87,7 @@ class Chat extends React.Component {
                 })
             );
         } catch (error) {
-            console.log(error);
+            alert(error);
         }
     };
 
@@ -138,7 +137,6 @@ class Chat extends React.Component {
 
         // 2.收到server回復
         client.onmessage = message => {
-            console.log(typeof message.data);
             const dataFromServer = JSON.parse(message.data);
             // console.log('got Chat reply!', dataFromServer);
 

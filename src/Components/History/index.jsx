@@ -40,7 +40,7 @@ export default class History extends Component {
                                     <Link
                                         to="/home/history/all"
                                         className={
-                                            location.pathname === '/home/history/all'
+                                            location.pathname.includes('/home/history/all')
                                                 ? 'history-link history-link-active'
                                                 : 'history-link'
                                         }
@@ -51,7 +51,7 @@ export default class History extends Component {
                                     <Link
                                         to="/home/history/wait"
                                         className={
-                                            location.pathname === '/home/history/wait'
+                                            location.pathname.includes('/home/history/wait')
                                                 ? 'history-link history-link-active'
                                                 : 'history-link'
                                         }

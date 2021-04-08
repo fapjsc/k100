@@ -3,8 +3,6 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 const infoDetail = props => {
-    console.log('infoDetail mount');
-
     return (
         <>
             {!props.transferData ? null : (

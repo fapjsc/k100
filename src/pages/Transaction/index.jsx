@@ -37,7 +37,7 @@ export default class Transaction extends Component {
                 exRate: data,
             });
         } catch (error) {
-            console.log(error, 'getExRate');
+            alert(error, 'getExRate');
         }
     };
 
@@ -51,7 +51,6 @@ export default class Transaction extends Component {
 
             return;
         }
-        console.log('get balance');
 
         const { history } = this.props;
 
