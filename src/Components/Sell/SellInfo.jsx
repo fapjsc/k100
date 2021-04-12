@@ -1,22 +1,22 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
+import { Fragment, useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
-import SellContext from '../../context/sell/SellContext';
-import SellHeaders from './SellHeader';
+import SellContext from "../../context/sell/SellContext";
+import SellHeaders from "./SellHeader";
 
-import SellCompleted from './SellCompleted';
-import SellCountDown from './SellCountDown';
-import Chat from '../Chat';
+import SellCompleted from "./SellCompleted";
+import SellCountDown from "./SellCountDown";
+import Chat from "../Chat";
 
-import helpIcon from '../../Assets/i_ask2.png';
-import btnWait from '../../Assets/btn_wait.png';
-import Button from 'react-bootstrap/Button';
+import helpIcon from "../../Assets/i_ask2.png";
+import btnWait from "../../Assets/btn_wait.png";
+import Button from "react-bootstrap/Button";
 
 const SellInfo = () => {
     // Break Points
-    const isLaptopFloor = useMediaQuery({ query: '(max-width: 1100px)' });
-    const mobileApp = useMediaQuery({ query: '(max-width: 450px)' });
+    const isLaptopFloor = useMediaQuery({ query: "(max-width: 1100px)" });
+    const mobileApp = useMediaQuery({ query: "(max-width: 450px)" });
 
     let { id } = useParams();
     const sellContext = useContext(SellContext);
@@ -103,7 +103,7 @@ const SellInfo = () => {
                                 剩餘時間：
                                 <span
                                     style={{
-                                        color: !overTime ? '#DAA520' : 'red',
+                                        color: !overTime ? "#DAA520" : "red",
                                     }}
                                 >
                                     {/* 12分12秒 */}
@@ -114,7 +114,7 @@ const SellInfo = () => {
                                             setOverTime={setOverTime}
                                         />
                                     ) : overTime ? (
-                                        '逾時'
+                                        "逾時"
                                     ) : null}
                                 </span>
                             </p>
@@ -125,9 +125,9 @@ const SellInfo = () => {
                                 收款金額：
                                 <span
                                     style={{
-                                        color: '#007bff',
+                                        color: "#007bff",
                                         fontSize: 30,
-                                        fontWeight: '600',
+                                        fontWeight: "600",
                                     }}
                                 >
                                     {wsData && wsData.D2 + ` CNY`}
@@ -158,8 +158,8 @@ const SellInfo = () => {
                                 <span
                                     style={{
                                         fontSize: 28,
-                                        color: '#007bff',
-                                        fontWeight: 'bold',
+                                        color: "#007bff",
+                                        fontWeight: "bold",
                                     }}
                                 >
                                     {wsData && wsData.D2.toFixed(2) + ` CNY`}
@@ -175,8 +175,8 @@ const SellInfo = () => {
                                 <span
                                     style={{
                                         fontSize: 28,
-                                        color: 'black',
-                                        fontWeight: 'bold',
+                                        color: "black",
+                                        fontWeight: "bold",
                                     }}
                                 >
                                     {wsData && wsData.UsdtAmt.toFixed(2) + ` USDT`}
@@ -200,7 +200,7 @@ const SellInfo = () => {
                             block
                             style={infoBtn}
                             variant="secondary"
-                            variant={payment ? 'primary' : 'secondary'}
+                            variant={payment ? "primary" : "secondary"}
                             disabled={!payment}
                         >
                             {!payment && (
@@ -215,7 +215,7 @@ const SellInfo = () => {
                             )}
 
                             <span style={{}}>
-                                {payment ? ' 買家已付款，確認收款' : '對方準備中'}
+                                {payment ? " 買家已付款，確認收款" : "對方準備中"}
                             </span>
                         </Button>
 
@@ -230,7 +230,7 @@ const SellInfo = () => {
                     {/* Footer */}
                     <footer
                         style={{
-                            borderTop: '2px solid #ddd',
+                            borderTop: "2px solid #ddd",
                             marginTop: 20,
                         }}
                     >
@@ -297,62 +297,62 @@ const SellInfo = () => {
 };
 
 const infoBox = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gridTemplateRows: 'repeat(3, min-content)',
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gridTemplateRows: "repeat(3, min-content)",
     gridColumnGap: 30,
     fontSize: 20,
     marginTop: 25,
 };
 
 const infoHeader = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 10,
 };
 
 const infoBody = {
-    gridRow: '2 / 3',
-    gridColumn: '1 / 2',
-    backgroundColor: '#f2f2f2',
+    gridRow: "2 / 3",
+    gridColumn: "1 / 2",
+    backgroundColor: "#f2f2f2",
     padding: 10,
 };
 
 const infoCount = {
-    gridRow: '1 / 3',
-    gridColumn: '2 / 3',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    gridRow: "1 / 3",
+    gridColumn: "2 / 3",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 20,
     height: 200,
-    border: '3px solid #007bff',
+    border: "3px solid #007bff",
     borderRadius: 7,
 };
 
 const infoBtnBox = {
-    textAlign: 'center',
-    maxWidth: '40%',
-    margin: 'auto',
+    textAlign: "center",
+    maxWidth: "40%",
+    margin: "auto",
     marginTop: 30,
 };
 
 const infoBtn = {
     padding: 10,
     fontSize: 20,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
 };
 
 const cancelLink = {
     fontSize: 15,
-    fontWeight: 'bold',
-    borderBottom: '1px solid grey',
-    display: 'inline-block',
+    fontWeight: "bold",
+    borderBottom: "1px solid grey",
+    display: "inline-block",
     marginTop: 20,
-    cursor: 'pointer',
+    cursor: "pointer",
 };
 
 const helpBtn = {
@@ -361,11 +361,11 @@ const helpBtn = {
     paddingRight: 15,
     paddingTop: 5,
     paddingBottom: 5,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderRadius: 40,
-    position: 'fixed',
+    position: "fixed",
     bottom: 50,
     right: 50,
 };
@@ -374,40 +374,40 @@ const helpBtn = {
 const infoBoxLabTop = {};
 
 const infoBodyLabTop = {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: "#f2f2f2",
     padding: 10,
     fontSize: 20,
 };
 
 const infoCountLabTop = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 20,
     height: 200,
-    border: '3px solid #007bff',
+    border: "3px solid #007bff",
     borderRadius: 7,
     marginTop: 20,
 };
 
 // Mobile App
 const infoHeaderMobileApp = {
-    display: 'flex',
-    flexDirection: 'column-reverse',
+    display: "flex",
+    flexDirection: "column-reverse",
     padding: 10,
 };
 
 const infoCountMobileApp = {
-    border: '3px solid #007bff',
+    border: "3px solid #007bff",
     borderRadius: 7,
     marginTop: 20,
     padding: 20,
 };
 
 const infoBtnBoxMobileApp = {
-    textAlign: 'center',
-    maxWidth: '100%',
-    margin: 'auto',
+    textAlign: "center",
+    maxWidth: "100%",
+    margin: "auto",
     marginTop: 30,
 };
 

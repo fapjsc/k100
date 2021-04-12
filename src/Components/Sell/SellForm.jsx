@@ -1,16 +1,16 @@
-import { Fragment, useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Fragment, useState, useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
-import SellContext from '../../context/sell/SellContext';
-import BalanceContext from '../../context/balance/BalanceContext';
+import SellContext from "../../context/sell/SellContext";
+import BalanceContext from "../../context/balance/BalanceContext";
 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
-import changeMoney from '../../Assets/i_twoways.png';
+import changeMoney from "../../Assets/i_twoways.png";
 
 const SellForm = () => {
     const history = useHistory();
@@ -31,39 +31,39 @@ const SellForm = () => {
     } = sellContext;
 
     const [usdt, setUsdt] = useState({
-        val: '',
+        val: "",
         isValid: true,
-        error: '',
+        error: "",
     });
 
     const [cny, setCny] = useState({
-        val: '',
+        val: "",
         isValid: true,
-        error: '',
+        error: "",
     });
 
     const [name, setName] = useState({
-        val: '',
+        val: "",
         isValid: true,
-        error: '',
+        error: "",
     });
 
     const [bank, setBank] = useState({
-        val: '',
+        val: "",
         isValid: true,
-        error: '',
+        error: "",
     });
 
     const [account, setAccount] = useState({
-        val: '',
+        val: "",
         isValid: true,
-        error: '',
+        error: "",
     });
 
     const [city, setCity] = useState({
-        val: '',
+        val: "",
         isValid: true,
-        error: '',
+        error: "",
     });
 
     const [formValid, setFormValid] = useState(false);
@@ -77,8 +77,10 @@ const SellForm = () => {
 
     // 連接WebSocket
     useEffect(() => {
+        closeWebSocket();
+
         if (orderToken) {
-            console.log('call ws connect');
+            console.log("call ws connect");
             sellWebSocket(orderToken);
             // history.replace(`/home/transaction/sell/${orderToken}`);
         }
@@ -102,7 +104,6 @@ const SellForm = () => {
             };
 
             getOrderToken(data);
-
             setFormValid(false);
         }
 
@@ -110,63 +111,63 @@ const SellForm = () => {
     }, [formValid]);
 
     const onChange = e => {
-        if (e.target.name === 'usdt') {
+        if (e.target.name === "usdt") {
             let counter = (e.target.value * exRate).toFixed(2);
             setCny({
                 val: counter,
                 isValid: true,
-                error: '',
+                error: "",
             });
             setUsdt({
                 val: e.target.value.trim(),
                 isValid: true,
-                error: '',
+                error: "",
             });
         }
 
-        if (e.target.name === 'cny') {
+        if (e.target.name === "cny") {
             let counter = (e.target.value / exRate).toFixed(2);
             setUsdt({
                 val: counter,
                 isValid: true,
-                error: '',
+                error: "",
             });
             setCny({
                 val: e.target.value.trim(),
                 isValid: true,
-                error: '',
+                error: "",
             });
         }
 
-        if (e.target.name === 'name') {
+        if (e.target.name === "name") {
             setName({
                 val: e.target.value.trim(),
                 isValid: true,
-                error: '',
+                error: "",
             });
         }
 
-        if (e.target.name === 'bank') {
+        if (e.target.name === "bank") {
             setBank({
                 val: e.target.value.trim(),
                 isValid: true,
-                error: '',
+                error: "",
             });
         }
 
-        if (e.target.name === 'account') {
+        if (e.target.name === "account") {
             setAccount({
                 val: e.target.value.trim(),
                 isValid: true,
-                error: '',
+                error: "",
             });
         }
 
-        if (e.target.name === 'city') {
+        if (e.target.name === "city") {
             setCity({
                 val: e.target.value.trim(),
                 isValid: true,
-                error: '',
+                error: "",
             });
         }
     };
@@ -182,13 +183,13 @@ const SellForm = () => {
         setUsdt({
             val: usdtCount,
             isValid: true,
-            error: '',
+            error: "",
         });
 
         setCny({
             val: cnyCount,
             isValid: true,
-            error: '',
+            error: "",
         });
 
         setFetchLoading(false);
@@ -198,61 +199,61 @@ const SellForm = () => {
     const validForm = () => {
         setFormValid(true);
 
-        if (usdt.val === '') {
+        if (usdt.val === "") {
             setUsdt({
-                val: '',
+                val: "",
                 isValid: false,
-                error: '請輸入數量',
+                error: "請輸入數量",
             });
 
             setFormValid(false);
         }
 
-        if (cny.val === '') {
+        if (cny.val === "") {
             setCny({
-                val: '',
+                val: "",
                 isValid: false,
-                error: '請輸入數量',
+                error: "請輸入數量",
             });
 
             setFormValid(false);
         }
 
-        if (name.val === '') {
+        if (name.val === "") {
             setName({
-                val: '',
+                val: "",
                 isValid: false,
-                error: '請輸入收款人姓名',
+                error: "請輸入收款人姓名",
             });
 
             setFormValid(false);
         }
 
-        if (bank.val === '') {
+        if (bank.val === "") {
             setBank({
-                val: '',
+                val: "",
                 isValid: false,
-                error: '請輸入開戶銀行',
+                error: "請輸入開戶銀行",
             });
 
             setFormValid(false);
         }
 
-        if (account.val === '') {
+        if (account.val === "") {
             setAccount({
-                val: '',
+                val: "",
                 isValid: false,
-                error: '請輸入收款帳號',
+                error: "請輸入收款帳號",
             });
 
             setFormValid(false);
         }
 
-        if (city.val === '') {
+        if (city.val === "") {
             setCity({
-                val: '',
+                val: "",
                 isValid: false,
-                error: '請輸入所在省市',
+                error: "請輸入所在省市",
             });
 
             setFormValid(false);
@@ -470,7 +471,7 @@ const SellForm = () => {
                     disabled={wsPairing}
                     block
                     className="m-auto"
-                    variant={!wsPairing ? 'primary' : 'secondary'}
+                    variant={!wsPairing ? "primary" : "secondary"}
                     style={{
                         height: 50,
                         fontSize: 18,

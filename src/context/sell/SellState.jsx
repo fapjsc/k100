@@ -1,8 +1,8 @@
-import { useReducer } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useReducer } from "react";
+import { useHistory } from "react-router-dom";
 
-import SellContext from './SellContext';
-import SellReducer from './SellReducer';
+import SellContext from "./SellContext";
+import SellReducer from "./SellReducer";
 import {
     SET_SELL_COMPLETED,
     SET_RMB_SELL_RATE,
@@ -12,9 +12,9 @@ import {
     CLOSE_WS,
     SET_PAYMENT,
     CLEAN_ORDER_TOKEN,
-} from '../type';
+} from "../type";
 
-import ReconnectingWebSocket from 'reconnecting-websocket';
+import ReconnectingWebSocket from "reconnecting-websocket";
 
 const SellState = props => {
     const initialState = {
@@ -34,11 +34,11 @@ const SellState = props => {
 
     // Get Header
     const getHeader = () => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (token) {
             let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-            headers.append('login_session', token);
+            headers.append("Content-Type", "application/json");
+            headers.append("login_session", token);
 
             return headers;
         } else {
@@ -72,7 +72,7 @@ const SellState = props => {
 
             dispatch({ type: SET_RMB_SELL_RATE, payload: data });
         } catch (error) {
-            alert(error, 'getExRate');
+            alert(error, "getExRate");
         }
     };
 
@@ -90,7 +90,7 @@ const SellState = props => {
 
         try {
             const res = await fetch(getOrderApi, {
-                method: 'POST',
+                method: "POST",
                 headers,
                 body: JSON.stringify({
                     AccountNumber: data.account,
@@ -108,8 +108,9 @@ const SellState = props => {
             } = resData;
 
             dispatch({ type: SET_ORDER_TOKEN, payload: order_token });
+            dispatch({ type: SET_WS_PAIRING, payload: false });
         } catch (error) {
-            alert('error');
+            alert("error");
         }
     };
 
@@ -120,7 +121,7 @@ const SellState = props => {
 
         try {
             const res = await fetch(cancelApi, {
-                method: 'POST',
+                method: "POST",
                 headers,
                 body: JSON.stringify({
                     Token: orderToken,
@@ -143,14 +144,14 @@ const SellState = props => {
         console.log(orderToken);
         if (!orderToken) return;
 
-        const loginSession = localStorage.getItem('token');
+        const loginSession = localStorage.getItem("token");
         if (!loginSession) return;
 
-        const connectWs = 'j/ws_orderstatus.ashx';
+        const connectWs = "j/ws_orderstatus.ashx";
 
         let url;
 
-        if (window.location.protocol === 'http:') {
+        if (window.location.protocol === "http:") {
             url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
         } else {
             url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
@@ -158,47 +159,31 @@ const SellState = props => {
 
         const client = new ReconnectingWebSocket(url);
 
-        if (state.closeWs) {
-            client.close();
-            return;
-        }
-
         // 1.建立連接
         client.onopen = () => {
-            console.log('websocket client connected');
+            console.log("websocket client connected");
         };
 
         // 2.收到server回復
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
-            console.log('got reply!', dataFromServer);
+            console.log("got reply!", dataFromServer);
 
             // 配對中 Order_StatusID：31 or 32
             if (dataFromServer.data.Order_StatusID === 31) {
-                dispatch({ type: SET_WS_PAIRING, payload: true });
                 dispatch({ type: SET_WS_DATA, payload: dataFromServer.data });
+                history.replace(`/home/transaction/sell/${orderToken}`);
             }
 
             // 等待付款  Order_StatusID：33
             if (dataFromServer.data.Order_StatusID === 33) {
                 dispatch({ type: SET_WS_DATA, payload: dataFromServer.data });
-                dispatch({ type: SET_PAYMENT, payload: false });
-                if (state.wsPairing) {
-                    history.replace(`/home/transaction/sell/${orderToken}`);
-                }
-
-                dispatch({ type: SET_WS_PAIRING, payload: false });
             }
 
             // 等待收款 Order_StatusID：34
             if (dataFromServer.data.Order_StatusID === 34) {
                 dispatch({ type: SET_WS_DATA, payload: dataFromServer.data });
                 dispatch({ type: SET_PAYMENT, payload: true });
-
-                // if (state.wsPairing) {
-                //     history.replace(`/home/transaction/sell/${orderToken}`);
-                // }
-
                 dispatch({ type: SET_WS_PAIRING, payload: false });
             }
 
@@ -210,13 +195,13 @@ const SellState = props => {
 
         // 3.錯誤處理
         client.onclose = function (message) {
-            console.log('關閉連線');
+            console.log("關閉連線");
         };
     };
 
     // 關閉webSocket
     const closeWebSocket = () => {
-        console.log('close web socket');
+        console.log("close web socket");
         dispatch({ type: CLOSE_WS });
     };
 
