@@ -26,7 +26,6 @@ export default class index extends Component {
         headers.append('login_session', token);
 
         try {
-            console.log('call buy2 api');
             const reqBuy2Api = `/j/Req_Buy2.aspx`;
 
             const res = await fetch(reqBuy2Api, {
@@ -43,17 +42,10 @@ export default class index extends Component {
                 alert(resData);
             }
 
-            console.log(resData.code, 'buy2');
-
             if (resData.code === 200) {
-                this.setState(
-                    {
-                        upload: true,
-                    },
-                    () => {
-                        console.log(this.state.upload);
-                    }
-                );
+                this.setState({
+                    upload: true,
+                });
             }
         } catch (error) {
             alert(error);
@@ -82,7 +74,6 @@ export default class index extends Component {
     };
 
     componentDidMount() {
-        console.log('home mount');
         const token = localStorage.getItem('token');
         const { history, location } = this.props;
         this.setState({

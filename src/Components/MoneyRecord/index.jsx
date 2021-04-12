@@ -23,7 +23,6 @@ export default class MoneyRecord extends Component {
 
         //     return;
         // }
-        console.log('get balance');
 
         const { history } = this.props;
 
@@ -42,7 +41,6 @@ export default class MoneyRecord extends Component {
             const resData = await res.json();
 
             if (resData.code === '91' || resData.code === '90') {
-                console.log('token 過期 => check tick');
                 localStorage.removeItem('token');
                 window.confirm('session過期，請重新登入 get balance !res.ok');
 
@@ -80,7 +78,6 @@ export default class MoneyRecord extends Component {
             localStorage.removeItem('token');
             history.replace('/auth/login');
         }
-        console.log('get tick');
 
         const { history } = this.props;
 
@@ -97,7 +94,6 @@ export default class MoneyRecord extends Component {
             const resData = await res.json();
 
             if (resData.code === '91' || resData.code === '90') {
-                console.log('token 過期 => check tick');
                 localStorage.removeItem('token');
 
                 alert('session過期，請重新登入 get tick');
@@ -135,8 +131,6 @@ export default class MoneyRecord extends Component {
             history.replace('/auth/login');
         }
 
-        console.log('check tick');
-
         const { tick } = this.state;
         const { history } = this.props;
 
@@ -154,7 +148,6 @@ export default class MoneyRecord extends Component {
             const resData = await res.json();
 
             if (resData.code === '91' || resData.code === '90') {
-                console.log('token 過期 => check tick');
                 localStorage.removeItem('token');
 
                 alert('session過期，請重新登入 check tick');
@@ -222,7 +215,6 @@ export default class MoneyRecord extends Component {
 
     render() {
         const { Avb_Balance, Real_Balance, httpError } = this.state;
-        console.log('money record mount');
         return (
             <section>
                 <div className="container">

@@ -3,7 +3,8 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 
 import TransactionNav from '../../Components/TransactionNav';
 import Buy from '../../Components/Buy';
-import Sell from '../../Components/Sell';
+import Sell from '../../Components/Sell/Sell';
+import SellInfo from '../../Components/Sell/SellInfo';
 import Transfer from '../../Components/Transfer';
 
 import './index.scss';
@@ -86,7 +87,7 @@ export default class Transaction extends Component {
             localStorage.removeItem('token');
             clearInterval(this.checkTickLoop);
             alert('session過期，請重新登入 get balance catch');
-            // history.replace('/auth/login');
+            history.replace('/auth/login');
         }
     };
 
@@ -133,7 +134,12 @@ export default class Transaction extends Component {
                                     />
 
                                     {/* SELL */}
-                                    <Route path="/home/transaction/sell" component={Sell} />
+                                    <Route exact path="/home/transaction/sell" component={Sell} />
+                                    <Route
+                                        exact
+                                        path="/home/transaction/sell/:id"
+                                        component={SellInfo}
+                                    />
 
                                     {/* Transfer */}
                                     <Route

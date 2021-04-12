@@ -1,25 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
+import CountDownUnreset from '../CountDownUnreset';
 
-const index = ({ key, minutes, seconds, completed, ...props }) => {
+const Index = ({ minutes, seconds, getDeltaTime2, getConfirmPay, isCompleted }) => {
     console.log('button timer mount');
+
+    const [completed, setCompleted] = useState(false);
+    useEffect(() => {
+        getDeltaTime2();
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <div className="pairFoot">
             <Button
-                disabled={completed}
-                variant={completed ? 'secondary' : 'primary'}
+                disabled={completed || isCompleted}
+                variant={completed || isCompleted ? 'secondary' : 'primary'}
                 className="pairFoot-btn"
-                onClick={props.props.getConfirmPay}
+                onClick={getConfirmPay}
             >
-                {completed ? (
+                {completed || isCompleted ? (
                     '逾時'
                 ) : (
                     <>
                         <p>已完成付款，下一步..</p>
                         <p>
                             剩餘時間:
-                            {minutes}:{seconds}
+                            {minutes && (
+                                <CountDownUnreset
+                                    setCompleted={setCompleted}
+                                    minutes={minutes}
+                                    seconds={seconds}
+                                />
+                            )}
                         </p>
                     </>
                 )}
@@ -63,4 +76,4 @@ const index = ({ key, minutes, seconds, completed, ...props }) => {
     // }
 };
 
-export default index;
+export default Index;

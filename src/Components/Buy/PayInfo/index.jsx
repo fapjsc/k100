@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
 import InfoDetail from './InfoDetail';
-import Timer from '../Timer';
+// import Timer from '../Timer';
 import ButtonTimer from '../ButtonTimer';
 import BaseSpinner from '../../Ui/BaseSpinner';
 import Chat from '../../Chat';
+import CountDownUnreset from '../CountDownUnreset';
 
-import Countdown from 'react-countdown';
+// import Countdown from 'react-countdown';
 import PubSub from 'pubsub-js';
 
 import TalkIcon from '../../../Assets/i_talk.png';
@@ -24,6 +25,14 @@ export default class PayInfo extends Component {
         client: {},
         isChat: true,
         message: [],
+        timer: 900,
+        timer2: 1800,
+        minutes: null,
+        seconds: null,
+        minutes2: null,
+        seconds2: null,
+        completed: false,
+        overTime: false,
     };
 
     setInfo = () => {
@@ -92,20 +101,63 @@ export default class PayInfo extends Component {
                 this.detailReq();
                 const { orderToken } = this.state;
                 this.props.submitTransaction(orderToken);
+                this.getDeltaTime();
             }
         );
 
         PubSub.subscribe('statId', this.getStatId);
     }
 
-    componentWillUnmount() {}
+    getDeltaTime2 = async () => {
+        console.log('call 2');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return;
+        }
 
-    // stateId = value => {
-    //     console.log(value, '====== call stateI  =====');
-    //     this.setState({
-    //         stateId: value,
-    //     });
-    // };
+        const { orderToken } = this.state;
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('login_session', token);
+
+        const detailApi = '/j/GetTxDetail.aspx';
+
+        const res = await fetch(detailApi, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                Token: orderToken,
+            }),
+        });
+        const resData = await res.json();
+
+        const { data } = resData;
+
+        const { timer2 } = this.state;
+        let countTimer = timer2 - data.DeltaTime;
+
+        if (countTimer <= 0) {
+            this.setState({
+                completed: true,
+            });
+        }
+
+        let minutesTime;
+
+        if (data.DeltaTime === 900) {
+            minutesTime = countTimer / 60 + 1;
+        } else {
+            minutesTime = countTimer / 60;
+        }
+
+        let secondsTime = (minutesTime - Math.trunc(minutesTime)) * 60;
+
+        this.setState({
+            minutes2: minutesTime,
+            seconds2: secondsTime,
+        });
+    };
 
     getDeltaTime = async () => {
         const token = localStorage.getItem('token');
@@ -131,11 +183,34 @@ export default class PayInfo extends Component {
         const resData = await res.json();
 
         const { data } = resData;
+        const { timer } = this.state;
+        let countTimer = timer - data.DeltaTime;
 
-        let timer = 20000 - data.DeltaTime;
+        if (countTimer <= 0) {
+            this.getDeltaTime2();
+            this.setState({
+                overTime: true,
+                showInfo: false,
+            });
+            return;
+        }
+
+        // console.log(7600 / 60);
+        // console.log((7600 / 60 - Math.trunc(7600 / 60)) * 60);
+
+        let minutesTime;
+
+        if (data.DeltaTime === 0) {
+            minutesTime = countTimer / 60 + 1;
+        } else {
+            minutesTime = countTimer / 60;
+        }
+
+        let secondsTime = (minutesTime - Math.trunc(minutesTime)) * 60;
 
         this.setState({
-            timer,
+            minutes: minutesTime,
+            seconds: secondsTime,
         });
     };
 
@@ -169,18 +244,11 @@ export default class PayInfo extends Component {
 
             const { data } = resData;
 
-            console.log(data);
-
-            let timer = 20000 - data.DeltaTime;
-
-            console.log(data.DeltaTime);
-
             this.setState({
                 masterType: data.MasterType,
                 stateId: data.Order_StatusID,
                 Tx_HASH: data.Tx_HASH,
                 DeltaTime: data.DeltaTime,
-                timer,
             });
 
             if (data.MasterType === 1 || data.MasterType === 0) {
@@ -246,24 +314,36 @@ export default class PayInfo extends Component {
             stateId,
             Tx_HASH,
             isChat,
-            timer,
+            minutes,
+            seconds,
+            minutes2,
+            seconds2,
+            overTime,
+            completed,
         } = this.state;
 
         return (
             <div>
                 <div className="pairBox">
-                    {showInfo && !isCompletePay && stateId === 33 ? (
+                    {showInfo && !isCompletePay && !overTime && stateId === 33 ? (
                         <>
                             <div className="pair-titleBox">
                                 <p>轉帳資料</p>
                                 <p>
                                     剩餘支付時間:
                                     <span className="payTime">
-                                        <Countdown
+                                        {minutes && (
+                                            <CountDownUnreset
+                                                minutes={minutes}
+                                                seconds={seconds}
+                                                setInfo={this.setInfo}
+                                            />
+                                        )}
+                                        {/* <Countdown
                                             date={Date.now() + timer}
                                             renderer={Timer}
                                             onComplete={() => this.setInfo(false)}
-                                        ></Countdown>
+                                        ></Countdown> */}
                                     </span>
                                 </p>
                             </div>
@@ -301,11 +381,20 @@ export default class PayInfo extends Component {
                         </>
                     ) : !showInfo && !isCompletePay && stateId === 33 ? (
                         <>
-                            <Countdown
-                                date={Date.now() + timer}
+                            {/* <Countdown
+                                date={Date.now() + 10000}
                                 renderer={ButtonTimer}
                                 getConfirmPay={this.getConfirmPay}
-                            ></Countdown>
+                            ></Countdown> */}
+
+                            <ButtonTimer
+                                minutes={minutes2}
+                                seconds={seconds2}
+                                isCompleted={completed}
+                                getConfirmPay={this.getConfirmPay}
+                                getDeltaTime2={this.getDeltaTime2}
+                            />
+
                             <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
                             <Button
                                 variant="primary"

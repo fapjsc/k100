@@ -6,7 +6,6 @@ import changeMoney from '../../../Assets/i_twoways.png';
 import './index.scss';
 
 const BuyCount = props => {
-    console.log('buy count mount');
     return (
         <>
             <p>購買USDT</p>

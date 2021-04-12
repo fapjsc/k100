@@ -36,6 +36,14 @@ export default class Wait extends Component {
                         state: { item },
                     });
                 }
+
+                if (item.MasterType === '賣出') {
+                    // this.props.history.push(`/home/transaction/transfer/${detailToken}`);
+                    this.props.history.push({
+                        pathname: `/home/transaction/sell/${detailToken}`,
+                        state: { item },
+                    });
+                }
                 // this.props.history.push(`/home/transaction/buy/${detailToken}`);
             }
             // () => this.props.history.push(`/home/transaction/buy/${detailToken}`)

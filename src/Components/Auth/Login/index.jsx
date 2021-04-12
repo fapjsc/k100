@@ -182,7 +182,7 @@ export default class LoginForm extends Component {
             }
         } catch (error) {
             setLoadingState(false);
-            setLoginErr(true, error);
+            alert('無法連接server');
         }
     };
 

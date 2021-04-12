@@ -11,7 +11,7 @@ import Paring from './Pairing';
 
 import './index.scss';
 
-export default class Transaction extends Component {
+export default class Buy extends Component {
     state = {
         orderToken: '',
         loginSession: '',
@@ -81,19 +81,6 @@ export default class Transaction extends Component {
             };
         });
     };
-
-    // payComplete = () => {
-    //     console.log(this.state.orderToken);
-    //     const payCompleteApi = `/j/Req_Buy2.aspx`;
-
-    //     const res = await fetch(payCompleteApi, {
-    //         method: "POST",
-    //         headers,
-    //         body: JSON.stringify({
-
-    //         })
-    //     })
-    // };
 
     handleConfirm = async () => {
         const { usdtAmt, clientName } = this.state;
@@ -224,53 +211,16 @@ export default class Transaction extends Component {
         // 2.收到server回復
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
-            // console.log('got reply!', dataFromServer);
+            console.log('got reply!', dataFromServer);
             const DeltaTime = dataFromServer.data.DeltaTime;
-
-            // let totalTime = 10000; //  一次 15分鐘，共計算兩次所以是 30分鐘
-
-            // let upperLimit = (totalTime / 2) * 1000;
-            // let lowerLimit = upperLimit / 2;
-
-            // let timer = ((totalTime - DeltaTime) * 1000) / 2;
-
-            // let timer2 = ((totalTime - DeltaTime) * 1000) / 2;
-
-            // console.log(timer / 1000);
 
             this.setState({
                 transferData: dataFromServer.data,
                 DeltaTime,
-                // timer,
-                // timer2,
-                // upperLimit,
-                // lowerLimit,
             });
-
-            // 配對中
-            // if (dataFromServer.data.Order_StatusID === 31) {
-            //     this.setState(
-            //         {
-            //             transferData: dataFromServer.data,
-            //         },
-            //         () => {
-            //             console.log(this.state);
-            //         }
-            //     );
-            // }
 
             // 等待付款
             if (dataFromServer.data.Order_StatusID === 33) {
-                // console.log('33');
-                // this.setState({
-                //     pair: true,
-                //     isPairing: false,
-                //     pairFinish: true,
-                // });
-
-                // console.log(this.state.transferData);
-                // console.log(object)
-
                 this.setState(
                     {
                         pair: true,
@@ -278,13 +228,6 @@ export default class Transaction extends Component {
                         pairFinish: true,
                     },
                     () => {
-                        // const data = this.state.transferData;
-                        // const path = {
-                        //     pathname: `/home/transaction/buy/${token}`,
-                        //     state: data,
-                        // };
-                        // path.state.orderToken = token;
-                        // this.props.history.replace(path);
                         if (this.props.location.pathname !== `/home/transaction/buy/${token}`) {
                             this.props.history.replace(`/home/transaction/buy/${token}`);
                         } else {
@@ -292,7 +235,6 @@ export default class Transaction extends Component {
                         }
                     }
                 );
-                // PubSub.publish('updateTransaction', 33);
             }
 
             // 收款確認

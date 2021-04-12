@@ -92,10 +92,18 @@ class Chat extends React.Component {
     };
 
     componentDidMount() {
-        this.setState({
-            orderToken: this.props.match.params.id,
-        });
-        this.chatConnect(this.props.match.params.id);
+        if (this.props.orderToken) {
+            this.setState({
+                orderToken: this.props.orderToken,
+            });
+            this.chatConnect(this.props.orderToken);
+        } else {
+            this.setState({
+                orderToken: this.props.match.params.id,
+            });
+            this.chatConnect(this.props.match.params.id);
+        }
+
         this.scrollToBottom();
     }
 
@@ -110,6 +118,7 @@ class Chat extends React.Component {
     // Chat WebSocket
     chatConnect = token => {
         const loginSession = localStorage.getItem('token');
+
         const chatApi = `chat/WS_ChatOrder.ashx`;
 
         // 自動重連次數
