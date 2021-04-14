@@ -23,9 +23,7 @@ export default class History extends Component {
         this.props.history.push(`/home/history/${this.state.historyState}`);
     }
 
-    componentWillUnmount() {
-        console.log('history index unmount');
-    }
+    componentWillUnmount() {}
 
     render() {
         const { location } = this.props;

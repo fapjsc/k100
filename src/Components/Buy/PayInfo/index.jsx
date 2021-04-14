@@ -6,6 +6,7 @@ import ButtonTimer from '../ButtonTimer';
 import BaseSpinner from '../../Ui/BaseSpinner';
 import Chat from '../../Chat';
 import CountDownUnreset from '../CountDownUnreset';
+import MediaQuery from 'react-responsive';
 
 // import Countdown from 'react-countdown';
 import PubSub from 'pubsub-js';
@@ -23,7 +24,7 @@ export default class PayInfo extends Component {
         masterType: null,
         isCompletePay: false,
         client: {},
-        isChat: true,
+        isChat: false,
         message: [],
         timer: 900,
         timer2: 1800,
@@ -33,6 +34,7 @@ export default class PayInfo extends Component {
         seconds2: null,
         completed: false,
         overTime: false,
+        bigScreenChat: true,
     };
 
     setInfo = () => {
@@ -109,7 +111,6 @@ export default class PayInfo extends Component {
     }
 
     getDeltaTime2 = async () => {
-        console.log('call 2');
         const token = localStorage.getItem('token');
         if (!token) {
             return;
@@ -146,7 +147,7 @@ export default class PayInfo extends Component {
         let minutesTime;
 
         if (data.DeltaTime === 900) {
-            minutesTime = countTimer / 60 + 1;
+            minutesTime = countTimer / 60;
         } else {
             minutesTime = countTimer / 60;
         }
@@ -201,7 +202,7 @@ export default class PayInfo extends Component {
         let minutesTime;
 
         if (data.DeltaTime === 0) {
-            minutesTime = countTimer / 60 + 1;
+            minutesTime = countTimer / 60;
         } else {
             minutesTime = countTimer / 60;
         }
@@ -211,6 +212,12 @@ export default class PayInfo extends Component {
         this.setState({
             minutes: minutesTime,
             seconds: secondsTime,
+        });
+    };
+
+    mediaOnChange = () => {
+        this.setState({
+            bigScreenChat: !this.state.bigScreenChat,
         });
     };
 
@@ -320,6 +327,7 @@ export default class PayInfo extends Component {
             seconds2,
             overTime,
             completed,
+            bigScreenChat,
         } = this.state;
 
         return (
@@ -369,6 +377,13 @@ export default class PayInfo extends Component {
                                     USDT充幣僅支持以太坊transfer和transferFrom方法，使用其他方法的充幣暫時無法上賬，請您諒解。
                                 </li>
                             </ul>
+                            {/* <MediaQuery minDeviceWidth={1200}>
+                                <Chat {...this.props} isChat={true} Tx_HASH={Tx_HASH} />
+                            </MediaQuery> */}
+                            <MediaQuery minDeviceWidth={1200} onChange={this.mediaOnChange}>
+                                <Chat {...this.props} isChat={bigScreenChat} Tx_HASH={Tx_HASH} />
+                            </MediaQuery>
+
                             <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
                             <Button
                                 variant="primary"
@@ -395,7 +410,11 @@ export default class PayInfo extends Component {
                                 getDeltaTime2={this.getDeltaTime2}
                             />
 
+                            <MediaQuery minDeviceWidth={1200} onChange={this.mediaOnChange}>
+                                <Chat {...this.props} isChat={bigScreenChat} Tx_HASH={Tx_HASH} />
+                            </MediaQuery>
                             <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
+
                             <Button
                                 variant="primary"
                                 className="talk-iconBox"
@@ -422,6 +441,9 @@ export default class PayInfo extends Component {
                                     返回主頁
                                 </button>
                             </div>
+                            <MediaQuery minDeviceWidth={1200} onChange={this.mediaOnChange}>
+                                <Chat {...this.props} isChat={bigScreenChat} Tx_HASH={Tx_HASH} />
+                            </MediaQuery>
                             <Chat {...this.props} isChat={isChat} Tx_HASH={Tx_HASH} />
                             <Button
                                 variant="primary"

@@ -9,9 +9,11 @@ import {
     SET_ORDER_TOKEN,
     SET_WS_PAIRING,
     SET_WS_DATA,
-    CLOSE_WS,
     SET_PAYMENT,
     CLEAN_ORDER_TOKEN,
+    SET_WS_CLIENT,
+    SET_CANCEL_ORDER_DATA,
+    SET_CONFIRM_SELL,
 } from '../type';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -27,7 +29,10 @@ const SellState = props => {
         closeWs: false,
         loading: false,
         payment: false,
+        wsClient: null,
         sellIsCompleted: false,
+        cancelData: null,
+        confirmSell: false,
     };
 
     const history = useHistory();
@@ -126,19 +131,57 @@ const SellState = props => {
             });
 
             const resData = await res.json();
-            console.log(resData);
+            dispatch({ type: SET_CANCEL_ORDER_DATA, payload: resData });
+
+            // console.log(resData);
+
+            if (resData.code === 200) {
+                alert('訂單已經取消');
+                history.replace('/home/transaction/sell');
+            } else {
+                alert(`${resData.msg}, 訂單取消失敗`);
+            }
         } catch (error) {
             alert(error);
         }
     };
 
+    // 清除Order Token
     const cleanOrderToken = () => {
         dispatch({ type: CLEAN_ORDER_TOKEN });
     };
 
+    // 確認收款 (sell 2)
+    const confirmSellAction = async orderToken => {
+        if (!orderToken) return;
+
+        const headers = getHeader();
+
+        const sell2Api = `/j/Req_Sell2.aspx`;
+
+        try {
+            const res = await fetch(sell2Api, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    Token: orderToken,
+                }),
+            });
+
+            const resData = await res.json();
+
+            if (resData.code === 200) {
+                dispatch({ type: SET_CONFIRM_SELL, payload: true });
+            } else {
+                alert('error', resData.msg);
+            }
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     // webSocket連接
     const sellWebSocket = orderToken => {
-        console.log(orderToken);
         if (!orderToken) return;
 
         const loginSession = localStorage.getItem('token');
@@ -156,9 +199,11 @@ const SellState = props => {
 
         const client = new ReconnectingWebSocket(url);
 
+        dispatch({ type: SET_WS_CLIENT, payload: client });
+
         // 1.建立連接
         client.onopen = () => {
-            console.log('websocket client connected');
+            console.log('websocket client connected sell');
         };
 
         // 2.收到server回復
@@ -169,44 +214,41 @@ const SellState = props => {
             // 配對中 Order_StatusID：31 or 32
             if (dataFromServer.data.Order_StatusID === 31) {
                 dispatch({ type: SET_WS_DATA, payload: dataFromServer.data });
+                console.log(dataFromServer);
             }
 
             // 等待付款  Order_StatusID：33
             if (dataFromServer.data.Order_StatusID === 33) {
                 dispatch({ type: SET_WS_DATA, payload: dataFromServer.data });
+                dispatch({ type: SET_WS_PAIRING, payload: false });
 
-                console.log(state.wsPairing);
-
-                if (state.wsPairing) {
-                    dispatch({ type: SET_WS_PAIRING, payload: false });
-                    history.replace(`/home/transaction/sell/${orderToken}`);
-                }
+                history.replace(`/home/transaction/sell/${orderToken}`);
             }
 
             // 等待收款 Order_StatusID：34
             if (dataFromServer.data.Order_StatusID === 34) {
                 dispatch({ type: SET_WS_DATA, payload: dataFromServer.data });
                 dispatch({ type: SET_PAYMENT, payload: true });
-                dispatch({ type: SET_WS_PAIRING, payload: false });
             }
 
             // 交易成功 Order_StatusID：1
             if (dataFromServer.data.Order_StatusID === 1) {
-                dispatch({ type: SET_SELL_COMPLETED });
+                dispatch({ type: SET_SELL_COMPLETED, payload: true });
             }
         };
 
         // 3.錯誤處理
         client.onclose = function (message) {
-            console.log(message);
-            console.log('關閉連線.....');
+            // console.log('關閉連線.....');
         };
     };
 
     // 關閉webSocket
     const closeWebSocket = () => {
-        console.log('close web socket');
-        dispatch({ type: CLOSE_WS });
+        if (state.wsClient) {
+            state.wsClient.close();
+        } else {
+        }
     };
 
     // useReducer
@@ -224,6 +266,8 @@ const SellState = props => {
                 payment: state.payment, // 買方是否完成付款
                 sellIsCompleted: state.sellIsCompleted,
                 closeWs: state.closeWs,
+                cancelData: state.cancelData, // 取消的訂單數據
+                confirmSell: state.confirmSell, // 判斷是否應該進入 "提交確認/交易完成" 組件
 
                 getExRate,
                 getOrderToken,
@@ -232,6 +276,7 @@ const SellState = props => {
                 cancelOrder,
                 cleanOrderToken,
                 setWsPairing,
+                confirmSellAction,
             }}
         >
             {props.children}

@@ -3,12 +3,22 @@
     height: 100vh;
     padding: 0 20rem;
 
+    @media only screen and(max-width: 1200px) {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    @media only screen and(max-width: 1000px) {
+        padding: 0 10rem;
+    }
+
     @media only screen and(max-width: 760px) {
         padding: 0 5rem;
     }
-}
 
-.transaction-card {
+    @media only screen and(max-width: 480px) {
+        padding: 0 2.5rem;
+    }
 }
 
 .trans-tab {
@@ -20,6 +30,10 @@
     border-radius: 5px;
     box-shadow: 0, 0.5rem, 0.8rem rgba(0, 0, 0, 0.2);
     margin-left: -12rem;
+
+    @media only screen and(max-width: 1200px) {
+        margin-left: 0;
+    }
 
     @media only screen and(max-width: 760px) {
         margin-left: 0;

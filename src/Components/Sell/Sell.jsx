@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import SellContext from '../../context/sell/SellContext';
@@ -10,7 +10,16 @@ import Pairing from './Pairing';
 const Sell = () => {
     const history = useHistory();
     const sellContext = useContext(SellContext);
-    const { wsPairing, wsData } = sellContext;
+    const { wsPairing, wsData, closeWebSocket } = sellContext;
+
+    useEffect(() => {
+        closeWebSocket();
+        return () => {
+            closeWebSocket();
+        };
+
+        // eslint-disable-next-line
+    }, []);
 
     const backHome = () => {
         history.replace('/home/overview');
@@ -23,7 +32,7 @@ const Sell = () => {
                 show={wsPairing}
                 onHide={backHome}
                 title="請稍等，現正整合交易者資料"
-                text={wsData && `出售訂單：${wsData.UsdtAmt} USDT @ ${wsData.D2} CNY`}
+                text={wsData && `出售訂單：${Math.abs(wsData.UsdtAmt)} USDT @ ${wsData.D2} CNY`}
             />
             <SellForm />
         </Fragment>

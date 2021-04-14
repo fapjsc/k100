@@ -160,8 +160,6 @@ export default class LoginForm extends Component {
 
             const resData = await res.json();
 
-            // console.log(resData);
-
             if (resData.code === '10') {
                 setLoginErr(true, '帳號或密碼錯誤');
                 setLoadingState(false);

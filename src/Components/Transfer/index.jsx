@@ -150,6 +150,10 @@ export default class Transfer extends Component {
 
     handleSubmit = async () => {
         this.setState({
+            isloading: true,
+        });
+
+        this.setState({
             formIsValid: true,
         });
         await this.valid();
@@ -157,10 +161,6 @@ export default class Transfer extends Component {
         if (!this.state.formIsValid) {
             return;
         }
-
-        this.setState({
-            isloading: true,
-        });
 
         const { transferAddress, transfercount, headers } = this.state;
         const transferApi = '/j/Req_Transfer1.aspx';
@@ -176,6 +176,10 @@ export default class Transfer extends Component {
             });
 
             const resData = await res.json();
+
+            if (resData.code === '31') {
+                alert('不能轉帳給自己');
+            }
 
             if (resData.code === 200) {
                 const loginToken = localStorage.getItem('token');
@@ -204,11 +208,13 @@ export default class Transfer extends Component {
             } else {
                 this.setState({
                     isfailed: true,
+                    isloading: false,
                 });
             }
         } catch (error) {
             this.setState({
                 isfailed: true,
+                isloading: false,
             });
         }
     };
@@ -351,6 +357,10 @@ export default class Transfer extends Component {
 
             const resData = await res.json();
 
+            this.setState({
+                isloading: false,
+            });
+
             if (resData.code !== 200) {
                 alert(resData.msg);
                 return;
@@ -376,7 +386,7 @@ export default class Transfer extends Component {
             isfailed: false,
         });
 
-        this.props.history.replace('/home/overview');
+        this.props.history.replace('/home/history/wait');
     };
 
     componentDidMount() {

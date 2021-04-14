@@ -26,7 +26,6 @@ export default class Auth extends Component {
 
     toggleForm = mode => {
         let { formState } = this.state;
-        console.log('toggleForm');
 
         if (mode === '登入') {
             formState = '登入';
@@ -39,7 +38,6 @@ export default class Auth extends Component {
     };
 
     setUserAuth = token => {
-        console.log('set user auth');
         if (token) {
             this.setState(
                 {
@@ -74,8 +72,6 @@ export default class Auth extends Component {
     };
 
     setHttpError = (errTitle, errBody) => {
-        console.log('setHttpError');
-
         const err = String(errBody);
         this.setState({
             httpError: {
@@ -86,24 +82,19 @@ export default class Auth extends Component {
     };
 
     closeDialog = () => {
-        console.log('closeDialog');
-
         this.setState({
             httpError: null,
         });
     };
 
     componentDidMount() {
-        console.log('auth component did mount');
         const token = localStorage.getItem('token');
         let curPath = window.location.hash;
         if (curPath === '#/auth/register') {
-            console.log('register');
             this.setState({
                 formState: '註冊',
             });
         } else if (curPath === '#/auth/login') {
-            console.log('login');
             this.setState({
                 formState: '登入',
             });

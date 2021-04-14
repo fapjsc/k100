@@ -28,7 +28,7 @@ const OnLoading = props => {
                     <Modal.Body className="text-center">
                         <img src={trans} alt="transfer" />
                         <h3 style={{ color: '#3F80FA' }}>執行中，請稍等</h3>
-                        <p>轉賬 {Number(props.usdtcount).toFixed(2)}USDT</p>
+                        <p>轉賬 {Math.abs(Number(props.usdtcount).toFixed(2))} USDT</p>
                         <Modal.Footer>
                             <Button onClick={props.onHide}>Back</Button>
                         </Modal.Footer>

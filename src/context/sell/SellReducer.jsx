@@ -4,9 +4,11 @@ import {
     SET_ORDER_TOKEN,
     SET_WS_PAIRING,
     SET_WS_DATA,
-    CLOSE_WS,
     SET_PAYMENT,
     CLEAN_ORDER_TOKEN,
+    SET_WS_CLIENT,
+    SET_CANCEL_ORDER_DATA,
+    SET_CONFIRM_SELL,
 } from '../type';
 
 const SellReducer = (state, action) => {
@@ -40,10 +42,11 @@ const SellReducer = (state, action) => {
             };
         }
 
-        case CLOSE_WS: {
+        // 判斷是否應該進入 "提交確認/交易完成" 組件
+        case SET_CONFIRM_SELL: {
             return {
                 ...state,
-                closeWs: true,
+                confirmSell: action.payload,
             };
         }
 
@@ -51,11 +54,11 @@ const SellReducer = (state, action) => {
         case SET_SELL_COMPLETED: {
             return {
                 ...state,
-                sellIsCompleted: true,
+                sellIsCompleted: action.payload,
             };
         }
 
-        // 買方完成付款
+        // 買方完成付款 (出現call sell 2 btn)
         case SET_PAYMENT: {
             return {
                 ...state,
@@ -68,6 +71,22 @@ const SellReducer = (state, action) => {
             return {
                 ...state,
                 orderToken: null,
+            };
+        }
+
+        // 清除 web socket 連接
+        case SET_WS_CLIENT: {
+            return {
+                ...state,
+                wsClient: action.payload,
+            };
+        }
+
+        // 取消訂單的數據
+        case SET_CANCEL_ORDER_DATA: {
+            return {
+                ...state,
+                cancelData: action.payload,
             };
         }
 

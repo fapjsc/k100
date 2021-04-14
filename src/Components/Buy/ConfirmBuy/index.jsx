@@ -6,7 +6,6 @@ import './index.scss';
 import Spinner from 'react-bootstrap/Spinner';
 
 const ConfirmBuy = props => {
-    console.log('confirm buy mount');
     const [isLoading, setLoading] = useState(false);
 
     let handleConfirm = props.handleConfirm;

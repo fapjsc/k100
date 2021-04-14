@@ -119,7 +119,6 @@ export default class Wait extends Component {
         }
     }
 
-    componentWillUnmount() {}
     render() {
         const { historyList, isLoading } = this.state;
 

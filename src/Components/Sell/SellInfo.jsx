@@ -8,6 +8,7 @@ import SellHeaders from './SellHeader';
 import SellCompleted from './SellCompleted';
 import SellCountDown from './SellCountDown';
 import Chat from '../Chat';
+import CancelSell from './CancelSell';
 
 import helpIcon from '../../Assets/i_ask2.png';
 import btnWait from '../../Assets/btn_wait.png';
@@ -16,7 +17,8 @@ import Button from 'react-bootstrap/Button';
 const SellInfo = () => {
     // Break Points
     const isLaptopFloor = useMediaQuery({ query: '(max-width: 1100px)' });
-    const mobileApp = useMediaQuery({ query: '(max-width: 450px)' });
+    const lapTopBig = useMediaQuery({ query: '(max-width: 1200px)' });
+    const mobileApp = useMediaQuery({ query: '(max-width: 520px)' });
 
     let { id } = useParams();
     const sellContext = useContext(SellContext);
@@ -27,17 +29,22 @@ const SellInfo = () => {
         payment,
         sellIsCompleted,
         cancelOrder,
+        confirmSellAction,
+        confirmSell,
     } = sellContext;
 
     const [timer, setTimer] = useState(null);
     const [minutes, setMinutes] = useState(null);
     const [seconds, setSeconds] = useState(null);
     const [overTime, setOverTime] = useState(false);
-    const [isChat, setIsChat] = useState(true);
-    const [confirmSell, setConfirmSell] = useState(false);
+    const [isChat, setIsChat] = useState(false);
+    const [showCancel, setShowCancel] = useState(false);
 
     useEffect(() => {
-        // sellWebSocket(id);
+        sellWebSocket(id);
+        return () => {
+            closeWebSocket();
+        };
         // eslint-disable-next-line
     }, []);
 
@@ -76,13 +83,20 @@ const SellInfo = () => {
 
     // 確認收款
     const handleSubmit = () => {
-        setConfirmSell(true);
+        confirmSellAction(id);
     };
 
     // confirmSell 判斷要render sell info 還是 提交確認/交易完成組件
     if (!confirmSell) {
         return (
             <Fragment>
+                <CancelSell
+                    handleClose={setShowCancel}
+                    show={showCancel}
+                    cancelOrder={cancelOrder}
+                    orderToken={id && id}
+                    hash={wsData && wsData.Tx_HASH}
+                />
                 <SellHeaders />
                 <main>
                     <section style={isLaptopFloor ? infoBoxLabTop : infoBox}>
@@ -94,7 +108,8 @@ const SellInfo = () => {
                             >
                                 提交資料
                             </p>
-                            <p
+
+                            {/* <p
                                 style={{
                                     fontSize: 18,
                                 }}
@@ -105,7 +120,6 @@ const SellInfo = () => {
                                         color: !overTime ? '#DAA520' : 'red',
                                     }}
                                 >
-                                    {/* 12分12秒 */}
                                     {timer && minutes && seconds && !overTime ? (
                                         <SellCountDown
                                             minutes={minutes}
@@ -116,7 +130,7 @@ const SellInfo = () => {
                                         '逾時'
                                     ) : null}
                                 </span>
-                            </p>
+                            </p> */}
                         </div>
 
                         <div style={isLaptopFloor ? infoBodyLabTop : infoBody}>
@@ -178,7 +192,7 @@ const SellInfo = () => {
                                         fontWeight: 'bold',
                                     }}
                                 >
-                                    {wsData && wsData.UsdtAmt.toFixed(2) + ` USDT`}
+                                    {wsData && Math.abs(wsData.UsdtAmt.toFixed(2)) + ` USDT`}
                                 </span>
                             </p>
                         </div>
@@ -198,7 +212,6 @@ const SellInfo = () => {
                             onClick={handleSubmit}
                             block
                             style={infoBtn}
-                            variant="secondary"
                             variant={payment ? 'primary' : 'secondary'}
                             disabled={!payment}
                         >
@@ -213,18 +226,19 @@ const SellInfo = () => {
                                 />
                             )}
 
-                            <span style={{}}>
-                                {payment ? ' 買家已付款，確認收款' : '對方準備中'}
-                            </span>
+                            <span>{payment ? ' 買家已付款，確認收款' : '對方準備中'}</span>
                         </Button>
 
-                        <span
-                            onClick={() => cancelOrder(id)}
-                            className="txt_12_grey"
-                            style={cancelLink}
-                        >
-                            取消訂單
-                        </span>
+                        {!payment && (
+                            <span
+                                // onClick={() => cancelOrder(id)}
+                                onClick={() => setShowCancel(true)}
+                                className="txt_12_grey"
+                                style={cancelLink}
+                            >
+                                取消訂單
+                            </span>
+                        )}
                     </div>
                     {/* Footer */}
                     <footer
@@ -255,20 +269,28 @@ const SellInfo = () => {
                     </footer>
                 </main>
 
-                <Button style={helpBtn} variant="primary" onClick={handleChat}>
-                    <img
-                        style={{
-                            width: 15,
-                            height: 20,
-                            marginRight: 8,
-                        }}
-                        src={helpIcon}
-                        alt="help icon"
-                    />
-                    幫助
-                </Button>
+                {lapTopBig && wsData ? (
+                    <Fragment>
+                        <Button style={helpBtn} variant="primary" onClick={handleChat}>
+                            <img
+                                style={{
+                                    width: 15,
+                                    height: 20,
+                                    marginRight: 8,
+                                }}
+                                src={helpIcon}
+                                alt="help icon"
+                            />
+                            幫助
+                        </Button>
+                        <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={isChat} />
+                    </Fragment>
+                ) : null}
 
-                {wsData ? <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={isChat} /> : null}
+                {/* 1200px */}
+                {wsData && !lapTopBig ? (
+                    <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={true} />
+                ) : null}
             </Fragment>
         );
     } else {
@@ -365,7 +387,7 @@ const helpBtn = {
     justifyContent: 'space-between',
     borderRadius: 40,
     position: 'fixed',
-    bottom: 50,
+    bottom: 10,
     right: 50,
 };
 

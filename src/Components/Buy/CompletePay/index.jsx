@@ -9,10 +9,10 @@ const CompletePay = props => {
         return (
             <div>
                 <div className="txt_12 pt_20">購買USDT</div>
-                <div className="text-center">
+                <div className="text-center ">
                     <div className="i_notyet" />
-                    <h4 className="c_blue">已提交，等待確認中</h4>
-                    <p className="txt_12_grey">
+                    <h4 className="c_blue">已提交，等待確認中...</h4>
+                    <p className="txt_12_grey text-break">
                         交易回執：
                         {/* {props.transferData.Tx_HASH ? props.transferData.Tx_HASH : props.hash} */}
                         {props.transferData.Tx_HASH}

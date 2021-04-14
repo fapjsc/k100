@@ -122,7 +122,7 @@ export default class Transaction extends Component {
                                 <p className="welcome_txt">歡迎登入</p>
                             </div>
 
-                            <div className="col-10 transaction-card">
+                            <div className="col-xl-10 transaction-card">
                                 {/* Nav */}
                                 <TransactionNav location={location} />
 

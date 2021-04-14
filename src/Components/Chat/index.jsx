@@ -112,7 +112,7 @@ class Chat extends React.Component {
     }
 
     componentWillUnmount() {
-        // this.closeWebSocket(this.state.client);
+        // this.closeWebSocket();
     }
 
     // Chat WebSocket
@@ -140,9 +140,7 @@ class Chat extends React.Component {
         });
 
         // 1.建立連接
-        client.onopen = message => {
-            console.log('Chat room client connected');
-        };
+        client.onopen = message => {};
 
         // 2.收到server回復
         client.onmessage = message => {
@@ -175,12 +173,14 @@ class Chat extends React.Component {
 
         // 3.錯誤處理
         client.onclose = () => {
-            console.log('關閉連線');
+            console.log('聊天室關閉');
+            client.onopen();
         };
     };
 
     // 關閉連線
     closeWebSocket = () => {
+        console.log('close chart');
         const { orderToken: token } = this.state;
         const loginSession = localStorage.getItem('token');
         const chatApi = `chat/WS_ChatOrder.ashx`;
@@ -203,7 +203,7 @@ class Chat extends React.Component {
         if (client) {
             client.close();
         } else {
-            console.log('沒有webSocket Client');
+            // console.log('沒有webSocket Client');
         }
     };
 
@@ -214,7 +214,7 @@ class Chat extends React.Component {
     render() {
         const { messages, userInput } = this.state;
         return (
-            <>
+            <div className="chatContainer">
                 <div
                     className="mainChat"
                     style={{
@@ -314,7 +314,7 @@ class Chat extends React.Component {
                         />
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 }

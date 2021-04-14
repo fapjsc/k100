@@ -149,6 +149,8 @@ export default class Buy extends Component {
     };
 
     componentDidMount() {
+        this.closeWebSocket();
+
         const token = localStorage.getItem('token');
         if (token) {
             let headers = new Headers();
@@ -170,6 +172,7 @@ export default class Buy extends Component {
 
     // webSocket 連接
     submitTransaction = value => {
+        console.log('call buy');
         const { orderToken, loginSession } = this.state;
         const transactionApi = 'j/ws_orderstatus.ashx';
 
@@ -202,7 +205,7 @@ export default class Buy extends Component {
 
         // 1.建立連接
         client.onopen = () => {
-            console.log('websocket client connected');
+            console.log('websocket client connected buy');
             this.setState({
                 isPairing: true,
             });
@@ -211,7 +214,7 @@ export default class Buy extends Component {
         // 2.收到server回復
         client.onmessage = message => {
             const dataFromServer = JSON.parse(message.data);
-            console.log('got reply!', dataFromServer);
+            // console.log('got reply!', dataFromServer);
             const DeltaTime = dataFromServer.data.DeltaTime;
 
             this.setState({
@@ -272,7 +275,7 @@ export default class Buy extends Component {
         if (client) {
             client.close();
         } else {
-            console.log('沒有webSocket Client');
+            // console.log('沒有webSocket Client');
         }
     };
 

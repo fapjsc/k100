@@ -110,15 +110,13 @@ export default class ValidCode extends Component {
         // event.preventDefault(); //防止表單提交
 
         const { validNum } = this.state;
-        let { phoneNumber, countryCode, password } = this.props;
+        let { phoneNumber, countryCode } = this.props;
 
         if (countryCode === 886) {
             phoneNumber = phoneNumber.substr(1);
         }
 
         const timePwdApi = `/j/ChkoneTimePwd.aspx`;
-
-        console.log(countryCode, phoneNumber, password, validNum);
 
         try {
             const res = await fetch(timePwdApi, {
