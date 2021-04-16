@@ -31,6 +31,7 @@ const SellInfo = () => {
         cancelOrder,
         confirmSellAction,
         confirmSell,
+        getOrderDetail,
     } = sellContext;
 
     const [timer, setTimer] = useState(null);
@@ -41,7 +42,8 @@ const SellInfo = () => {
     const [showCancel, setShowCancel] = useState(false);
 
     useEffect(() => {
-        sellWebSocket(id);
+        // sellWebSocket(id);
+        getOrderDetail(id);
         return () => {
             closeWebSocket();
         };

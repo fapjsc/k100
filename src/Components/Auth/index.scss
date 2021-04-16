@@ -1,44 +1,42 @@
 .user-auth {
-    background-image: url(../../Assets//easy_bg.png);
-    background-color: #242e47;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: left;
-    background-position: center;
-    background-size: cover;
-    object-fit: cover;
+  background-image: url(../../Assets//easy_bg.png);
+  background-color: #242e47;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-position: center;
+  background-size: cover;
+  object-fit: cover;
+  padding: 10rem 0;
 
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    h4 {
-        font-size: 2.5rem;
-    }
+  width: 100vw;
+  height: 120vh;
+  h4 {
+    font-size: 2.5rem;
+  }
+
+  @media only screen and(max-width: 500px) {
+    padding: 5rem 15px;
+  }
 }
 
 .form-nav {
-    margin: 2rem 0 2rem 0;
-    padding: 2rem;
+  margin: 2rem 0 2rem 0;
+  padding: 2rem;
 }
 
 .form-link {
-    display: inline-block;
-    text-align: center;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #ddd;
-    color: grey;
-
-    width: 50%;
-    &:link,
-    &:visited {
-        font-size: 2.3rem;
-        text-decoration: none;
-    }
+  display: inline-block;
+  text-align: center;
+  padding-bottom: 17px;
+  font-size: 17px;
+  color: #707070;
+  border-bottom: 1px solid rgb(206, 201, 201);
+  width: 50%;
 }
 
 .isActive {
-    border-bottom: 3px solid #3f80fa;
-    width: 50%;
-    color: #3f80fa;
+  border-bottom: 2px solid #3f80fa;
+  width: 50%;
+  color: #3f80fa;
 }

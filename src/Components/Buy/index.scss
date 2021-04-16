@@ -1,92 +1,75 @@
 .pay-info {
-    background-color: #eee;
-    padding: 1rem;
-    display: flex;
-    font-size: 1.5rem;
+  background-color: rgba(215, 226, 243, 0.2);
+  padding: 10px;
+  display: flex;
+  align-items: center;
 
-    @media only screen and(max-width: 872px) {
-        flex-direction: column;
+  @media only screen and(max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  & > p {
+    margin-right: 5rem;
+    @media only screen and(max-width: 600px) {
+      margin-right: 0;
+      margin-top: 1rem;
     }
+  }
 
-    & > p {
-        margin-right: 5rem;
-
-        @media only screen and(max-width: 1200px) {
-            margin-right: 4rem;
-        }
-
-        @media only screen and(max-width: 500px) {
-            font-size: 1rem;
-        }
-    }
-
-    & > p > span {
-        margin-left: 1rem;
-
-        @media only screen and(max-width: 1060px) {
-            display: block;
-            margin-left: 0;
-        }
-
-        @media only screen and(max-width: 872px) {
-            display: inline-block;
-            margin-left: 1rem;
-        }
-    }
-
-    @media only screen and(max-width: 380px) {
-        flex-wrap: wrap;
-    }
+  & > p > span {
+    margin-left: 1rem;
+  }
 }
 
 .pairBox {
-    padding: 1rem 5rem;
+  padding: 1rem 5rem;
 
-    @media only screen and(max-width: 500px) {
-        padding: 4rem 1rem;
-    }
+  @media only screen and(max-width: 500px) {
+    padding: 4rem 1rem;
+  }
 }
 
 .pair-titleBox {
-    font-size: 1.8rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
+  font-size: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
 
-    @media only screen and(max-width: 360px) {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-bottom: 2rem;
-    }
+  @media only screen and(max-width: 360px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
 }
 
 .pair-textBox {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 
-    @media only screen and(max-width: 360px) {
-    }
+  @media only screen and(max-width: 360px) {
+  }
 
-    span {
-        color: #007bff;
-        font-size: 2.5rem;
-    }
+  span {
+    color: #007bff;
+    font-size: 2.5rem;
+  }
 }
 
 .payTime {
-    color: rgb(146, 126, 10);
+  color: rgb(146, 126, 10);
 }
 
 .pairFoot {
-    text-align: center;
+  text-align: center;
 }
 
 .pairFoot-btn {
-    padding: 1rem 6rem;
-    margin: 2rem;
+  padding: 1rem 6rem;
+  margin: 2rem;
 
-    @media only screen and(max-width: 308px) {
-        padding: 1rem;
-    }
+  @media only screen and(max-width: 308px) {
+    padding: 1rem;
+  }
 }

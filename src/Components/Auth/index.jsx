@@ -15,180 +15,178 @@ import './index.scss';
 import style from '../Layout/Header.module.scss';
 
 export default class Auth extends Component {
-    state = {
+  state = {
+    formState: '登入',
+    token: null,
+    isLoading: false,
+    httpError: null,
+    showModal: false,
+    loginErr: '',
+  };
+
+  toggleForm = mode => {
+    let { formState } = this.state;
+
+    if (mode === '登入') {
+      formState = '登入';
+    } else if (mode === '註冊') {
+      formState = '註冊';
+    }
+    this.setState({
+      formState,
+    });
+  };
+
+  setUserAuth = token => {
+    if (token) {
+      this.setState(
+        {
+          token,
+        },
+        () => {
+          this.props.setAuth(token);
+          this.props.history.replace('/home');
+        }
+      );
+    }
+  };
+
+  setLoginErr = (showModal, err) => {
+    this.setState({
+      showModal: showModal,
+      loginErr: err,
+    });
+  };
+
+  setShow = value => {
+    this.setState({
+      showModal: value,
+      loginErr: '',
+    });
+  };
+
+  setLoadingState = isLoading => {
+    this.setState({
+      isLoading,
+    });
+  };
+
+  setHttpError = (errTitle, errBody) => {
+    const err = String(errBody);
+    this.setState({
+      httpError: {
+        title: errTitle,
+        body: err,
+      },
+    });
+  };
+
+  closeDialog = () => {
+    this.setState({
+      httpError: null,
+    });
+  };
+
+  componentDidMount() {
+    const token = localStorage.getItem('token');
+    let curPath = window.location.hash;
+    if (curPath === '#/auth/register') {
+      this.setState({
+        formState: '註冊',
+      });
+    } else if (curPath === '#/auth/login') {
+      this.setState({
         formState: '登入',
-        token: null,
-        isLoading: false,
-        httpError: null,
-        showModal: false,
-        loginErr: '',
-    };
-
-    toggleForm = mode => {
-        let { formState } = this.state;
-
-        if (mode === '登入') {
-            formState = '登入';
-        } else if (mode === '註冊') {
-            formState = '註冊';
-        }
-        this.setState({
-            formState,
-        });
-    };
-
-    setUserAuth = token => {
-        if (token) {
-            this.setState(
-                {
-                    token,
-                },
-                () => {
-                    this.props.setAuth(token);
-                    this.props.history.replace('/home');
-                }
-            );
-        }
-    };
-
-    setLoginErr = (showModal, err) => {
-        this.setState({
-            showModal: showModal,
-            loginErr: err,
-        });
-    };
-
-    setShow = value => {
-        this.setState({
-            showModal: value,
-            loginErr: '',
-        });
-    };
-
-    setLoadingState = isLoading => {
-        this.setState({
-            isLoading,
-        });
-    };
-
-    setHttpError = (errTitle, errBody) => {
-        const err = String(errBody);
-        this.setState({
-            httpError: {
-                title: errTitle,
-                body: err,
-            },
-        });
-    };
-
-    closeDialog = () => {
-        this.setState({
-            httpError: null,
-        });
-    };
-
-    componentDidMount() {
-        const token = localStorage.getItem('token');
-        let curPath = window.location.hash;
-        if (curPath === '#/auth/register') {
-            this.setState({
-                formState: '註冊',
-            });
-        } else if (curPath === '#/auth/login') {
-            this.setState({
-                formState: '登入',
-            });
-        }
-
-        if (token) {
-            this.setUserAuth(token);
-        }
+      });
     }
 
-    render() {
-        const { formState, isLoading, httpError, showModal, loginErr } = this.state;
-        const { location } = this.props;
-        return (
-            <div className="user-auth">
-                <Header>
-                    <div className={style.logo}></div>
-                </Header>
-                <BaseCard isLoading={isLoading}>
-                    {isLoading ? (
-                        <div className="mt_120">
-                            <BaseSpinner />
-                        </div>
-                    ) : !isLoading && showModal ? (
-                        <Modal
-                            size="sm"
-                            show={showModal}
-                            onHide={() => this.setShow(false)}
-                            aria-labelledby="example-modal-sizes-title-sm"
-                        >
-                            <Modal.Header closeButton>
-                                <Modal.Title id="example-modal-sizes-title-sm">
-                                    {loginErr}
-                                </Modal.Title>
-                            </Modal.Header>
-                        </Modal>
-                    ) : (
-                        <div>
-                            <h4 className="text-center p-4 font-weight-bold">{formState}帳號</h4>
+    if (token) {
+      this.setUserAuth(token);
+    }
+  }
 
-                            <nav className="form-nav">
-                                <Link
-                                    className={
-                                        location.pathname === '/auth/login'
-                                            ? 'isActive form-link'
-                                            : 'form-link'
-                                    }
-                                    to="/auth/login"
-                                    onClick={() => this.toggleForm('登入')}
-                                >
-                                    登入
-                                </Link>
+  render() {
+    const { formState, isLoading, httpError, showModal, loginErr } = this.state;
+    const { location } = this.props;
+    return (
+      <div>
+        <Header>
+          <div className={style.logo}></div>
+        </Header>
+        <div className="user-auth">
+          <BaseCard isLoading={isLoading}>
+            {isLoading ? (
+              <div className="mt_120">
+                <BaseSpinner />
+              </div>
+            ) : !isLoading && showModal ? (
+              <Modal
+                size="sm"
+                show={showModal}
+                onHide={() => this.setShow(false)}
+                aria-labelledby="example-modal-sizes-title-sm"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="example-modal-sizes-title-sm">{loginErr}</Modal.Title>
+                </Modal.Header>
+              </Modal>
+            ) : (
+              <div>
+                <h4 className="text-center p-4 font-weight-bold">{formState}帳號</h4>
 
-                                <Link
-                                    className={
-                                        location.pathname === '/auth/register' ||
-                                        location.pathname === '/auth/register/valid'
-                                            ? 'isActive form-link'
-                                            : 'form-link'
-                                    }
-                                    to="/auth/register"
-                                    onClick={() => this.toggleForm('註冊')}
-                                >
-                                    註冊
-                                </Link>
-                            </nav>
+                <nav className="form-nav">
+                  <Link
+                    className={
+                      location.pathname === '/auth/login' ? 'isActive form-link' : 'form-link'
+                    }
+                    to="/auth/login"
+                    onClick={() => this.toggleForm('登入')}
+                  >
+                    登入
+                  </Link>
 
-                            {!!httpError ? (
-                                <BaseDialog httpError={httpError} closeDialog={this.closeDialog} />
-                            ) : null}
+                  <Link
+                    className={
+                      location.pathname === '/auth/register' ||
+                      location.pathname === '/auth/register/valid'
+                        ? 'isActive form-link'
+                        : 'form-link'
+                    }
+                    to="/auth/register"
+                    onClick={() => this.toggleForm('註冊')}
+                  >
+                    註冊
+                  </Link>
+                </nav>
 
-                            {/* 註冊路由 */}
-                            <Switch>
-                                {/* <Route path="/auth/login" component={LoginForm} /> */}
-                                <Route
-                                    path="/auth/login"
-                                    component={props => (
-                                        <LoginForm
-                                            {...props}
-                                            setUserAuth={this.setUserAuth}
-                                            setLoadingState={this.setLoadingState}
-                                            setHttpError={this.setHttpError}
-                                            setLoginErr={this.setLoginErr}
-                                        />
-                                    )}
-                                />
-                                <Route path="/auth/register" component={RegisterForm} />
+                {!!httpError ? (
+                  <BaseDialog httpError={httpError} closeDialog={this.closeDialog} />
+                ) : null}
 
-                                <Redirect to="/auth/login" />
-                            </Switch>
-                        </div>
+                {/* 註冊路由 */}
+                <Switch>
+                  {/* <Route path="/auth/login" component={LoginForm} /> */}
+                  <Route
+                    path="/auth/login"
+                    component={props => (
+                      <LoginForm
+                        {...props}
+                        setUserAuth={this.setUserAuth}
+                        setLoadingState={this.setLoadingState}
+                        setHttpError={this.setHttpError}
+                        setLoginErr={this.setLoginErr}
+                      />
                     )}
-                </BaseCard>
-            </div>
-        );
-    }
+                  />
+                  <Route path="/auth/register" component={RegisterForm} />
+
+                  <Redirect to="/auth/login" />
+                </Switch>
+              </div>
+            )}
+          </BaseCard>
+        </div>
+      </div>
+    );
+  }
 }

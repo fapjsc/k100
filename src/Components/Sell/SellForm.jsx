@@ -14,582 +14,571 @@ import Spinner from 'react-bootstrap/Spinner';
 import changeMoney from '../../Assets/i_twoways.png';
 
 const SellForm = () => {
-    const mobileApp = useMediaQuery({ query: '(max-width: 991px)' });
-    const smPoint = useMediaQuery({ query: '(max-width: 500px)' });
+  const mobileApp = useMediaQuery({ query: '(max-width: 991px)' });
+  const smPoint = useMediaQuery({ query: '(max-width: 500px)' });
 
-    const balanceContext = useContext(BalanceContext);
-    const { getBalance, wsPairing, avb } = balanceContext;
+  const balanceContext = useContext(BalanceContext);
+  const { getBalance, wsPairing, avb } = balanceContext;
 
-    const sellContext = useContext(SellContext);
-    const {
-        sellWebSocket,
-        closeWebSocket,
-        getExRate,
-        getOrderToken,
-        transferHandle,
-        exRate,
-        orderToken,
-        cleanOrderToken,
-        setWsPairing,
-    } = sellContext;
+  const sellContext = useContext(SellContext);
+  const {
+    sellWebSocket,
+    closeWebSocket,
+    getExRate,
+    getOrderToken,
+    transferHandle,
+    exRate,
+    orderToken,
+    cleanOrderToken,
+    setWsPairing,
+  } = sellContext;
 
-    const [usdt, setUsdt] = useState({
-        val: '',
-        isValid: true,
-        error: '',
-    });
+  const [usdt, setUsdt] = useState({
+    val: '',
+    isValid: true,
+    error: '',
+  });
 
-    const [cny, setCny] = useState({
-        val: '',
-        isValid: true,
-        error: '',
-    });
+  const [cny, setCny] = useState({
+    val: '',
+    isValid: true,
+    error: '',
+  });
 
-    const [name, setName] = useState({
-        val: '',
-        isValid: true,
-        error: '',
-    });
+  const [name, setName] = useState({
+    val: '',
+    isValid: true,
+    error: '',
+  });
 
-    const [bank, setBank] = useState({
-        val: '',
-        isValid: true,
-        error: '',
-    });
+  const [bank, setBank] = useState({
+    val: '',
+    isValid: true,
+    error: '',
+  });
 
-    const [account, setAccount] = useState({
-        val: '',
-        isValid: true,
-        error: '',
-    });
+  const [account, setAccount] = useState({
+    val: '',
+    isValid: true,
+    error: '',
+  });
 
-    const [city, setCity] = useState({
-        val: '',
-        isValid: true,
-        error: '',
-    });
+  const [city, setCity] = useState({
+    val: '',
+    isValid: true,
+    error: '',
+  });
 
-    const [formValid, setFormValid] = useState(false);
-    const [fetchLoading, setFetchLoading] = useState(false);
-    const [showForm, setShowForm] = useState(false);
+  const [formValid, setFormValid] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
-    // 獲取匯率
-    // useEffect(() => {
-    //     getExRate();
-    //     // eslint-disable-next-line
-    // }, []);
+  // 獲取匯率
+  // useEffect(() => {
+  //     getExRate();
+  //     // eslint-disable-next-line
+  // }, []);
 
-    useEffect(() => {
-        closeWebSocket();
-        getExRate();
-        getBalance();
+  useEffect(() => {
+    closeWebSocket();
+    getExRate();
+    getBalance();
 
-        return () => {
-            closeWebSocket();
-        };
-
-        // eslint-disable-next-line
-    }, []);
-
-    useEffect(() => {}, [wsPairing]);
-
-    // 連接WebSocket
-    useEffect(() => {
-        if (orderToken) {
-            sellWebSocket(orderToken);
-            // history.replace(`/home/transaction/sell/${orderToken}`);
-        }
-
-        return cleanOrderToken();
-        // eslint-disable-next-line
-    }, [orderToken]);
-
-    // 表單驗證後發送請求
-    useEffect(() => {
-        if (!formValid) {
-            return;
-        } else {
-            const data = {
-                usdt: usdt.val,
-                name: name.val,
-                bank: bank.val,
-                account: account.val,
-                city: city.val,
-            };
-
-            setWsPairing(true);
-            getOrderToken(data);
-            setFormValid(false);
-        }
-
-        //eslint-disable-next-line
-    }, [formValid]);
-
-    const onChange = e => {
-        if (e.target.name === 'usdt') {
-            if (e.target.value < 0 || e.target.value === 'e') {
-                setUsdt({
-                    val: '',
-                    isValid: true,
-                    error: '',
-                });
-                return;
-            }
-
-            let counter = (e.target.value * exRate).toFixed(2);
-            setCny({
-                val: counter,
-                isValid: true,
-                error: '',
-            });
-            setUsdt({
-                val: e.target.value.replace(/^((-\d+(\.\d+)?)|((\.0+)?))$/).trim(),
-                isValid: true,
-                error: '',
-            });
-        }
-
-        if (e.target.name === 'cny') {
-            if (e.target.value < 0 || e.target.value === 'e') {
-                setCny({
-                    val: '',
-                    isValid: true,
-                    error: '',
-                });
-                return;
-            }
-            let counter = (e.target.value / exRate).toFixed(2);
-            setUsdt({
-                val: counter,
-                isValid: true,
-                error: '',
-            });
-            setCny({
-                val: e.target.value.replace(/^((-\d+)|(0+))$/).trim(),
-                isValid: true,
-                error: '',
-            });
-        }
-
-        if (e.target.name === 'name') {
-            setName({
-                val: e.target.value.trim(),
-                isValid: true,
-                error: '',
-            });
-        }
-
-        if (e.target.name === 'bank') {
-            setBank({
-                val: e.target.value.trim(),
-                isValid: true,
-                error: '',
-            });
-        }
-
-        if (e.target.name === 'account') {
-            setAccount({
-                val: e.target.value.trim(),
-                isValid: true,
-                error: '',
-            });
-        }
-
-        if (e.target.name === 'city') {
-            setCity({
-                val: e.target.value.trim(),
-                isValid: true,
-                error: '',
-            });
-        }
+    return () => {
+      closeWebSocket();
     };
 
-    // 提取所有
-    const fetchAll = async () => {
-        setFetchLoading(true);
-        const balance = await getBalance();
+    // eslint-disable-next-line
+  }, []);
 
-        let usdtCount = (balance.Avb_Balance - Number(transferHandle)).toFixed(2);
-        let cnyCount = (usdtCount * Number(exRate)).toFixed(2);
+  useEffect(() => {}, [wsPairing]);
 
+  // 連接WebSocket
+  useEffect(() => {
+    if (orderToken) {
+      sellWebSocket(orderToken);
+      // history.replace(`/home/transaction/sell/${orderToken}`);
+    }
+
+    return cleanOrderToken();
+    // eslint-disable-next-line
+  }, [orderToken]);
+
+  // 表單驗證後發送請求
+  useEffect(() => {
+    if (!formValid) {
+      return;
+    } else {
+      const data = {
+        usdt: usdt.val,
+        name: name.val,
+        bank: bank.val,
+        account: account.val,
+        city: city.val,
+      };
+
+      setWsPairing(true);
+      getOrderToken(data);
+      setFormValid(false);
+    }
+
+    //eslint-disable-next-line
+  }, [formValid]);
+
+  const onChange = e => {
+    if (e.target.name === 'usdt') {
+      if (e.target.value < 0 || e.target.value === 'e') {
         setUsdt({
-            val: usdtCount,
-            isValid: true,
-            error: '',
+          val: '',
+          isValid: true,
+          error: '',
         });
+        return;
+      }
 
+      let counter = (e.target.value * exRate).toFixed(2);
+      setCny({
+        val: counter,
+        isValid: true,
+        error: '',
+      });
+      setUsdt({
+        val: e.target.value.replace(/^((-\d+(\.\d+)?)|((\.0+)?))$/).trim(),
+        isValid: true,
+        error: '',
+      });
+    }
+
+    if (e.target.name === 'cny') {
+      if (e.target.value < 0 || e.target.value === 'e') {
         setCny({
-            val: cnyCount,
-            isValid: true,
-            error: '',
+          val: '',
+          isValid: true,
+          error: '',
         });
+        return;
+      }
+      let counter = (e.target.value / exRate).toFixed(2);
+      setUsdt({
+        val: counter,
+        isValid: true,
+        error: '',
+      });
+      setCny({
+        val: e.target.value.replace(/^((-\d+)|(0+))$/).trim(),
+        isValid: true,
+        error: '',
+      });
+    }
 
-        setFetchLoading(false);
-    };
+    if (e.target.name === 'name') {
+      setName({
+        val: e.target.value.trim(),
+        isValid: true,
+        error: '',
+      });
+    }
 
-    // 表單驗證
-    const validForm = () => {
-        setFormValid(true);
+    if (e.target.name === 'bank') {
+      setBank({
+        val: e.target.value.trim(),
+        isValid: true,
+        error: '',
+      });
+    }
 
-        // 有1~2位小数的正數，且不能為0或0開頭
-        // let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
-        // if (!rule.test(usdt.val) || !rule.test(cny.val)) {
-        //     setUsdt({
-        //         val: usdt.val,
-        //         isValid: false,
-        //         error: '請輸入有效數量, (不能為0，最多小數第二位)',
-        //     });
+    if (e.target.name === 'account') {
+      setAccount({
+        val: e.target.value.trim(),
+        isValid: true,
+        error: '',
+      });
+    }
 
-        //     setFormValid(false);
-        // }
+    if (e.target.name === 'city') {
+      setCity({
+        val: e.target.value.trim(),
+        isValid: true,
+        error: '',
+      });
+    }
+  };
 
-        if (usdt.val > avb - Number(transferHandle)) {
-            setUsdt({
-                val: usdt.val,
-                isValid: false,
-                error: '超過最大可提',
-            });
+  // 提取所有
+  const fetchAll = async () => {
+    setFetchLoading(true);
+    const balance = await getBalance();
 
-            setFormValid(false);
-        }
+    let usdtCount = (balance.Avb_Balance - Number(transferHandle)).toFixed(2);
+    let cnyCount = (usdtCount * Number(exRate)).toFixed(2);
 
-        if (usdt.val === '' || usdt.val <= 0) {
-            setUsdt({
-                val: '',
-                isValid: false,
-                error: '請輸入有效數量',
-            });
+    setUsdt({
+      val: usdtCount,
+      isValid: true,
+      error: '',
+    });
 
-            setFormValid(false);
-        }
+    setCny({
+      val: cnyCount,
+      isValid: true,
+      error: '',
+    });
 
-        if (cny.val === '' || cny.val <= 0) {
-            setCny({
-                val: '',
-                isValid: false,
-                error: '請輸入有效數量',
-            });
+    setFetchLoading(false);
+  };
 
-            setFormValid(false);
-        }
+  // 表單驗證
+  const validForm = () => {
+    setFormValid(true);
 
-        if (name.val === '') {
-            setName({
-                val: '',
-                isValid: false,
-                error: '請輸入收款人姓名',
-            });
+    // 有1~2位小数的正數，且不能為0或0開頭
+    // let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
+    // if (!rule.test(usdt.val) || !rule.test(cny.val)) {
+    //     setUsdt({
+    //         val: usdt.val,
+    //         isValid: false,
+    //         error: '請輸入有效數量, (不能為0，最多小數第二位)',
+    //     });
 
-            setFormValid(false);
-        }
+    //     setFormValid(false);
+    // }
 
-        if (bank.val === '') {
-            setBank({
-                val: '',
-                isValid: false,
-                error: '請輸入開戶銀行',
-            });
+    if (usdt.val > avb - Number(transferHandle)) {
+      setUsdt({
+        val: usdt.val,
+        isValid: false,
+        error: '超過最大可提',
+      });
 
-            setFormValid(false);
-        }
+      setFormValid(false);
+    }
 
-        if (account.val === '') {
-            setAccount({
-                val: '',
-                isValid: false,
-                error: '請輸入收款帳號',
-            });
+    if (usdt.val === '' || usdt.val <= 0) {
+      setUsdt({
+        val: '',
+        isValid: false,
+        error: '請輸入有效數量',
+      });
 
-            setFormValid(false);
-        }
+      setFormValid(false);
+    }
 
-        if (city.val === '') {
-            setCity({
-                val: '',
-                isValid: false,
-                error: '請輸入所在省市',
-            });
+    if (cny.val === '' || cny.val <= 0) {
+      setCny({
+        val: '',
+        isValid: false,
+        error: '請輸入有效數量',
+      });
 
-            setFormValid(false);
-        }
-    };
+      setFormValid(false);
+    }
 
-    const onSubmit = e => {
-        e.preventDefault();
-        validForm();
-    };
+    if (name.val === '') {
+      setName({
+        val: '',
+        isValid: false,
+        error: '請輸入收款人姓名',
+      });
 
-    return (
-        <Fragment>
-            <form onSubmit={onSubmit}>
-                {/* sell count */}
-                <Row className="d-flex align-items-center ">
-                    <Col lg={5} md={12} sm={12}>
-                        <Form.Group controlId="usdt" className="text-right">
-                            {fetchLoading ? (
-                                <Button
-                                    variant="secondary"
-                                    disabled
-                                    style={{
-                                        marginBottom: -30,
-                                    }}
-                                >
-                                    <Spinner
-                                        as="span"
-                                        animation="grow"
-                                        size="sm"
-                                        role="status"
-                                        aria-hidden="true"
-                                    />
-                                    Loading...
-                                </Button>
-                            ) : (
-                                <Button
-                                    disabled={fetchLoading}
-                                    variant="outline-primary"
-                                    size="sm"
-                                    className=""
-                                    onClick={fetchAll}
-                                    style={{
-                                        marginBottom: -30,
-                                    }}
-                                >
-                                    提取所有
-                                </Button>
-                            )}
-                            <Form.Control
-                                className=""
-                                placeholder="USDT"
-                                autoComplete="off"
-                                type="number"
-                                isInvalid={!usdt.isValid}
-                                value={usdt.val}
-                                name="usdt"
-                                onChange={onChange}
-                                style={{
-                                    padding: 25,
-                                    marginTop: 30,
-                                    fontSize: 20,
-                                }}
-                            />
-                            <div className="d-flex justify-content-between">
-                                {usdt && (
-                                    <Form.Text className="text-left my-2 h4">
-                                        {usdt.error}
-                                    </Form.Text>
-                                )}
-                                <Form.Text className="text-left my-2">
-                                    <span className="text-dark">手續費: {transferHandle}</span>
-                                </Form.Text>
-                            </div>
-                        </Form.Group>
-                    </Col>
+      setFormValid(false);
+    }
 
-                    {/* img */}
-                    <Col className="text-center">
-                        <img
-                            className=""
-                            src={changeMoney}
-                            alt="change money"
-                            style={mobileApp ? changeMoneyIconMobile : changeMoneyIcon}
-                        />
-                    </Col>
+    if (bank.val === '') {
+      setBank({
+        val: '',
+        isValid: false,
+        error: '請輸入開戶銀行',
+      });
 
-                    <Col lg={5} md={12} sm={12}>
-                        <Form.Group controlId="cny">
-                            <Form.Control
-                                className=""
-                                placeholder="CNY"
-                                autoComplete="off"
-                                type="number"
-                                name="cny"
-                                isInvalid={!cny.isValid}
-                                value={cny.val}
-                                onChange={onChange}
-                                style={{
-                                    padding: 25,
-                                    marginTop: 19,
-                                    fontSize: 20,
-                                }}
-                            />
+      setFormValid(false);
+    }
 
-                            {/* {cny && (
+    if (account.val === '') {
+      setAccount({
+        val: '',
+        isValid: false,
+        error: '請輸入收款帳號',
+      });
+
+      setFormValid(false);
+    }
+
+    if (city.val === '') {
+      setCity({
+        val: '',
+        isValid: false,
+        error: '請輸入所在省市',
+      });
+
+      setFormValid(false);
+    }
+  };
+
+  const onSubmit = e => {
+    e.preventDefault();
+    validForm();
+  };
+
+  return (
+    <Fragment>
+      <Form onSubmit={onSubmit}>
+        {/* sell count */}
+        <Row
+          className="mt-4"
+          style={{
+            marginBottom: '-12px',
+          }}
+        >
+          <Col className="">
+            <Form.Group className="mb-0">
+              {fetchLoading ? (
+                <Button variant="secondary" disabled style={{}}>
+                  <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
+                  Loading...
+                </Button>
+              ) : (
+                <Button
+                  disabled={fetchLoading}
+                  variant="outline-primary"
+                  size="sm"
+                  className=""
+                  onClick={fetchAll}
+                  style={{}}
+                >
+                  提取所有
+                </Button>
+              )}
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Form.Row className="mt-4">
+          <Form.Group as={Col} xl={5} controlId="usdt" className="p-0 m-0">
+            <Form.Control
+              className=""
+              placeholder="請輸入出售數量"
+              autoComplete="off"
+              type="number"
+              isInvalid={!usdt.isValid}
+              value={usdt.val}
+              name="usdt"
+              onChange={onChange}
+              style={{
+                padding: 25,
+                fontSize: 20,
+              }}
+            />
+
+            {/* 錯誤提示 */}
+            {usdt && <Form.Text className="text-left my-2 h4">{usdt.error}</Form.Text>}
+
+            {/* 手續費顯示 */}
+
+            <span style={inputText}>USDT</span>
+          </Form.Group>
+
+          {/* img */}
+          <Form.Group as={Col} className=" my-3 d-flex align-items-start justify-content-center">
+            <img
+              className=""
+              src={changeMoney}
+              alt="change money"
+              style={mobileApp ? changeMoneyIconMobile : changeMoneyIcon}
+            />
+          </Form.Group>
+
+          <Form.Group as={Col} xl={5} controlId="cny" className="m-0 p-0">
+            <Form.Control
+              className=""
+              autoComplete="off"
+              type="number"
+              name="cny"
+              isInvalid={!cny.isValid}
+              value={cny.val}
+              onChange={onChange}
+              style={{
+                padding: 25,
+                fontSize: 20,
+              }}
+            />
+
+            {/* {cny && (
                                 <Form.Text className="text-left my-2 h4">{cny.error}</Form.Text>
                             )} */}
-                        </Form.Group>
-                    </Col>
-                </Row>
+            <span style={inputText}>CNY</span>
+          </Form.Group>
+        </Form.Row>
+        <div className="d-flex justify-content-between">
+          <Form.Text className="text-left my-2">
+            <span className="text-dark">手續費: {transferHandle}</span>
+          </Form.Text>
+        </div>
 
-                <div className="mt-4">
-                    <p
-                        style={{
-                            fontSize: 16,
-                        }}
-                    >
-                        電子錢包
-                    </p>
-                    <Button
-                        variant="outline-primary"
-                        size="sm"
-                        className=""
-                        onClick={() => setShowForm(!showForm)}
-                        style={{
-                            fontSize: 20,
-                            paddingLeft: 30,
-                            paddingRight: 30,
-                            paddingTop: 10,
-                            paddingBottom: 10,
-                            borderRadius: 6,
-                        }}
-                    >
-                        銀行卡
-                    </Button>
-                </div>
+        <div className="mt-4">
+          <p
+            style={{
+              fontSize: 16,
+            }}
+          >
+            電子錢包
+          </p>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            className=""
+            onClick={() => setShowForm(!showForm)}
+            style={{
+              fontSize: 20,
+              paddingLeft: 30,
+              paddingRight: 30,
+              paddingTop: 10,
+              paddingBottom: 10,
+              borderRadius: 6,
+            }}
+          >
+            銀行卡
+          </Button>
+        </div>
 
-                {/* info */}
-                {showForm && (
-                    <section>
-                        <Row>
-                            <Col sm={12} md={6} lg={6}>
-                                <Form.Group controlId="name">
-                                    <Form.Control
-                                        className="buyCount-input"
-                                        placeholder="收款姓名"
-                                        name="name"
-                                        isInvalid={!name.isValid}
-                                        value={name.val}
-                                        onChange={onChange}
-                                        autoComplete="off"
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                    />
-                                </Form.Group>
-                                {name.error && (
-                                    <Form.Text className="text-left my-2 h4">
-                                        {name.error}
-                                    </Form.Text>
-                                )}
-                            </Col>
-                            <Col sm={12} md={6} lg={6}>
-                                <Form.Group controlId="bank">
-                                    <Form.Control
-                                        className="buyCount-input"
-                                        placeholder="開戶銀行"
-                                        name="bank"
-                                        isInvalid={!bank.isValid}
-                                        value={bank.val}
-                                        onChange={onChange}
-                                        autoComplete="off"
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                    />
-                                </Form.Group>
-                                {bank.error && (
-                                    <Form.Text className="text-left my-2 h4">
-                                        {bank.error}
-                                    </Form.Text>
-                                )}
-                            </Col>
-                        </Row>
+        {/* info */}
+        {showForm && (
+          <section>
+            <Row>
+              <Col sm={12} md={6} lg={6}>
+                <Form.Group controlId="name">
+                  <Form.Control
+                    className="buyCount-input"
+                    placeholder="收款姓名"
+                    name="name"
+                    isInvalid={!name.isValid}
+                    value={name.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </Form.Group>
+                {name.error && <Form.Text className="text-left my-2 h4">{name.error}</Form.Text>}
+              </Col>
+              <Col sm={12} md={6} lg={6}>
+                <Form.Group controlId="bank">
+                  <Form.Control
+                    className="buyCount-input"
+                    placeholder="開戶銀行"
+                    name="bank"
+                    isInvalid={!bank.isValid}
+                    value={bank.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </Form.Group>
+                {bank.error && <Form.Text className="text-left my-2 h4">{bank.error}</Form.Text>}
+              </Col>
+            </Row>
 
-                        <Row>
-                            <Col sm={12} md={6} lg={6}>
-                                <Form.Group controlId="account">
-                                    <Form.Control
-                                        className="buyCount-input"
-                                        placeholder="收款帳號"
-                                        name="account"
-                                        isInvalid={!account.isValid}
-                                        value={account.val}
-                                        onChange={onChange}
-                                        autoComplete="off"
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                    />
-                                </Form.Group>
-                                {account.error && (
-                                    <Form.Text className="text-left my-2 h4">
-                                        {account.error}
-                                    </Form.Text>
-                                )}
-                            </Col>
-                            <Col sm={12} md={6} lg={6}>
-                                <Form.Group controlId="city">
-                                    <Form.Control
-                                        className="buyCount-input"
-                                        placeholder="所在省市"
-                                        name="city"
-                                        isInvalid={!city.isValid}
-                                        value={city.val}
-                                        onChange={onChange}
-                                        autoComplete="off"
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                    />
-                                </Form.Group>
-                                {city.error && (
-                                    <Form.Text className="text-left my-2 h4">
-                                        {city.error}
-                                    </Form.Text>
-                                )}
-                            </Col>
-                        </Row>
-                        <br />
-                        <br />
-                        <Button
-                            type="submit"
-                            disabled={wsPairing}
-                            block
-                            className="m-auto"
-                            variant={!wsPairing ? 'primary' : 'secondary'}
-                            style={smPoint ? sellFormBtnSmPoint : sellFormBtn}
-                        >
-                            下一步
-                        </Button>
-                    </section>
+            <Row>
+              <Col sm={12} md={6} lg={6}>
+                <Form.Group controlId="account">
+                  <Form.Control
+                    className="buyCount-input"
+                    placeholder="收款帳號"
+                    name="account"
+                    isInvalid={!account.isValid}
+                    value={account.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </Form.Group>
+                {account.error && (
+                  <Form.Text className="text-left my-2 h4">{account.error}</Form.Text>
                 )}
+              </Col>
+              <Col sm={12} md={6} lg={6}>
+                <Form.Group controlId="city">
+                  <Form.Control
+                    className="buyCount-input"
+                    placeholder="所在省市"
+                    name="city"
+                    isInvalid={!city.isValid}
+                    value={city.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </Form.Group>
+                {city.error && <Form.Text className="text-left my-2 h4">{city.error}</Form.Text>}
+              </Col>
+            </Row>
+            <br />
+            <br />
+            <Button
+              type="submit"
+              disabled={wsPairing}
+              block
+              className="m-auto"
+              variant={!wsPairing ? 'primary' : 'secondary'}
+              style={smPoint ? sellFormBtnSmPoint : sellFormBtn}
+            >
+              下一步
+            </Button>
+          </section>
+        )}
 
-                {/* <button onClick={props.showPayDetail}>下一步</button> */}
-            </form>
-            <hr className="mt_mb" />
-            <p className="txt_12_grey">
-                由于数字资产价格随时存在较⼤波动，第⼆步交易报价的有效期为20分钟（即：您下单付款到⼴告⽅放币的时间需控制在20分钟内）。
-                <br />
-                <br />
-                如果您对新的报价不予接受的，将直接获得第⼀步交易购入的USDT。
-                <br />
-                <br />
-                USDT是系统根据您所需购买⾦额（或数量）和付款⽅式匹配出的最低价格，并且您可随时使⽤USDT在币币交易兑换其他数字资产。
-            </p>
-        </Fragment>
-    );
+        {/* <button onClick={props.showPayDetail}>下一步</button> */}
+      </Form>
+      <hr className="mt_mb" />
+      <p className="txt_12_grey">
+        由于数字资产价格随时存在较⼤波动，第⼆步交易报价的有效期为20分钟（即：您下单付款到⼴告⽅放币的时间需控制在20分钟内）。
+        <br />
+        <br />
+        如果您对新的报价不予接受的，将直接获得第⼀步交易购入的USDT。
+        <br />
+        <br />
+        USDT是系统根据您所需购买⾦额（或数量）和付款⽅式匹配出的最低价格，并且您可随时使⽤USDT在币币交易兑换其他数字资产。
+      </p>
+    </Fragment>
+  );
 };
 
 const changeMoneyIcon = {
-    width: 45,
+  width: 45,
 };
 
 const changeMoneyIconMobile = {
-    transform: 'rotate(90deg)',
-    width: 45,
+  transform: 'rotate(90deg)',
+  width: 45,
 };
 
 const sellFormBtn = {
-    height: 50,
-    fontSize: 18,
-    borderRadius: 5,
-    maxWidth: '50%',
+  height: 50,
+  fontSize: 18,
+  borderRadius: 5,
+  maxWidth: '50%',
 };
 
 const sellFormBtnSmPoint = {
-    height: 50,
-    fontSize: 18,
-    borderRadius: 5,
-    width: '100%',
+  height: 50,
+  fontSize: 18,
+  borderRadius: 5,
+  width: '100%',
+};
+
+const inputText = {
+  color: '#D7E2F3',
+  position: 'absolute',
+  top: 0,
+  transform: 'translateY(50%)',
+  right: 30,
+  fontSize: 17,
 };
 
 export default SellForm;

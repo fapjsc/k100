@@ -1,105 +1,105 @@
 header {
+  height: 20px;
 
-    @media screen and(max-width: 480px) {
-        display: flex;
-        justify-content: space-around !important;
-    }
-    
-    .logo {
-        background-image: url('../../Assets/logo_easy.png');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        height: 2rem;
-        width: 13rem;
-        margin-left: 3rem;
+  @media screen and(max-width: 480px) {
+    display: flex;
+    justify-content: flex-start;
+  }
 
-        // @media screen and(max-width: 320px) {
-        // background-image: url('../../Assets/mstile-150x150.png');
-        // height: 6rem;
-        // width: 6rem;
-        // }
+  .logo {
+    background-image: url('../../Assets/logo_easy.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 2rem;
+    width: 13rem;
+    margin-left: 3rem;
 
-        @media screen and(max-width: 30rem) {
-            margin-left: -1rem;
-        }
-
-        @media screen and(max-width: 13rem) {
-            display: none;
-        }
+    @media only screen and(max-width: 600px) {
+      background-image: url('../../Assets//mstile-150x150.png');
+      width: 4rem;
+      margin-left: 0;
     }
 
+    @media only screen and(max-width: 330px) {
+      display: none;
+    }
+  }
 
-    .navBar {
-        max-width: 100%;
-        height: 100%;
-        background-color: #242e47 !important;
-        display: flex;
-        justify-content: flex-end;
+  .navBar {
+    max-width: 100%;
+    height: 100%;
+    background-color: #242e47 !important;
+    display: flex;
+    justify-content: flex-end;
 
-        @media screen and(max-width: 575px) {
-        }
-
-        
-
-        @media screen and(max-width: 767px) {
-            padding: 1rem 2rem;
-            padding-left: 0;
-
-        }
-
-        @media screen and(max-width: 480px) {
-
-        }
+    @media screen and(max-width: 575px) {
     }
 
-    .navList {
-        margin-left: auto;
-        max-width: 100%;
-        display: flex;
-        align-items: center;
-
-        @media only screen and(max-width: 767px) {
-            align-items: flex-end;
-        }
+    @media screen and(max-width: 767px) {
+      padding: 1rem 2rem;
+      padding-left: 0;
     }
 
-    .navLink:visited,
-    .navLink:link {
-        margin: 1rem 6rem 1rem 0;
-        color: #fff;
-        text-decoration: none;
-
-
-        &:hover {
-            color: #ddd;
-        }
-
-        @media only screen and(max-width: 767px) {
-            margin: 0;
-            margin-right: 5rem;
-        }
-
-        @media only screen and(max-width: 575px) {
-            margin-right: 0;
-            margin-top: 3rem;
-            
-        }
+    @media only screen and(max-width: 330px) {
     }
+  }
 
-   
-}
-
-
-
-
-
-.header {
-    background-color: #242e47;
-    font-size: 1.8rem;
+  .navList {
+    margin-left: auto;
+    max-width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 2rem 0;
 
+    @media only screen and(max-width: 767px) {
+      align-items: flex-end;
+    }
+
+    @media only screen and(max-width: 767px) {
+      align-items: flex-end;
+    }
+
+    @media only screen and(max-width: 330px) {
+      margin-left: 0;
+    }
+  }
+
+  .navLink:visited,
+  .navLink:link {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 4rem;
+
+    @media only screen and(max-width: 900px) {
+      margin: 0 3rem;
+    }
+
+    @media only screen and(max-width: 450px) {
+      margin: 0 2rem;
+    }
+
+    @media only screen and(max-width: 300px) {
+      margin: 0 1rem;
+    }
+
+    &:hover {
+      color: #ddd;
+    }
+  }
+}
+
+.header {
+  background-color: #242e47;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0;
+
+  @media only screen and(max-width: 600px) {
+    padding: 0 1rem;
+    text-align: left;
+    height: 4rem;
+    font-size: 1rem;
+  }
 }
