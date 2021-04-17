@@ -108,7 +108,7 @@ export default class index extends Component {
       formIsValid: true,
     });
 
-    const { phoneNumber, password, confirmPassword, agree, countryCode } = this.state;
+    const { phoneNumber, password, confirmPassword, countryCode } = this.state;
 
     //驗證區碼
     if (countryCode.val === '' || countryCode.val === null) {
@@ -243,7 +243,6 @@ export default class index extends Component {
     const {
       phoneNumber,
       password,
-      formErrors,
       showValidCode,
       confirmPassword,
       agree,

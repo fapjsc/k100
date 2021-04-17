@@ -1,31 +1,37 @@
 .i_notyet {
-    background-image: url('../../../Assets/icon_load02.gif');
-    background-size: inherit;
-    background-repeat: no-repeat;
-    height: 110px;
-    width: 115px;
-    margin: auto;
+  background-image: url('../../../Assets/icon_load02.gif');
+  background-size: inherit;
+  background-repeat: no-repeat;
+  height: 110px;
+  width: 115px;
+  margin: auto;
 }
 
 .i_done {
-    background-image: url('../../../Assets/i_complete.png');
-    background-size: inherit;
-    background-repeat: no-repeat;
-    height: 110px;
-    width: 115px;
-    margin: auto;
+  background-image: url('../../../Assets/i_complete.png');
+  background-size: inherit;
+  background-repeat: no-repeat;
+  height: 110px;
+  width: 115px;
+  margin: auto;
 }
 
 .talk-iconBox {
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    font-weight: 300;
-    border-radius: 10rem;
-    position: fixed;
-    bottom: 5%;
-    left: 5%;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  border-radius: 10rem;
+  position: fixed;
+  bottom: 5%;
+  left: 5%;
 
-    @media only screen and(min-width: 1200px) {
-        display: none;
-    }
+  @media only screen and(min-width: 1200px) {
+    display: none;
+  }
+}
+
+.titleBoxSm {
+  @media only screen and(max-width: 700px) {
+    width: 100% !important;
+  }
 }

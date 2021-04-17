@@ -8,12 +8,20 @@ const Paring = props => {
   return (
     <Modal {...props} size="sm" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Body className="text-right">
-        <img src={closeBtn} alt="close btn" />
+        <img
+          src={closeBtn}
+          alt="close btn"
+          style={{
+            cursor: 'pointer',
+          }}
+          onClick={props.backToHome}
+        />
         <div className="text-center">
           <img src={searchIcon} alt="icon" className="" />
           <h3 style={{ color: '#3F80FA' }}>請稍等，現正整合交易者資料</h3>
           <p>
-            購買訂單：{props.usdtamt} USDT @ {props.rmbamt} CNY
+            購買訂單：{Number(props.usdtamt).toFixed(2)} USDT @ {Number(props.rmbamt).toFixed(2)}{' '}
+            CNY
           </p>
         </div>
       </Modal.Body>

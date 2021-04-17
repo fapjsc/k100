@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
-import { Form, Button, Col } from 'react-bootstrap';
+import { Form, Col } from 'react-bootstrap';
 import './index.scss';
 import { Fragment } from 'react';
 

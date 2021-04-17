@@ -1,10 +1,11 @@
 import TransferHandle from '../TransferHandle';
 import ExRate from '../ExRate';
 
+import Spinner from '../../Ui/BaseSpinner';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
 
 import changeMoney from '../../../Assets/i_twoways.png';
 
@@ -34,48 +35,57 @@ const BuyCount = props => {
           限額 :<span>100 - 10000</span>
         </p>
       </div> */}
-      <Form style={formStyle}>
-        <Form.Row className="align-items-center">
-          <Form.Group as={Col} xl={5} controlId="usdt" className="">
-            <Form.Control
-              style={formInput}
-              className="align-self-center"
-              // placeholder={props.usdtAmt ? props.usdtAmt : 'USDT'}
-              placeholder="請輸入購買數量"
-              value={props.usdtAmt ? props.usdtAmt : ''}
-              // onChange={props.getUsdtAmt}
-              onChange={props.getRmbAmt}
-              autoComplete="off"
-              type="number"
-            />
+      {props.exRate ? (
+        <Form style={formStyle}>
+          <Form.Row className="align-items-center">
+            <Form.Group as={Col} xl={5} controlId="usdt" className="">
+              <Form.Control
+                style={formInput}
+                className="align-self-center"
+                // placeholder={props.usdtAmt ? props.usdtAmt : 'USDT'}
+                placeholder="請輸入購買數量"
+                value={props.usdtAmt ? props.usdtAmt : ''}
+                // onChange={props.getUsdtAmt}
+                onChange={props.getRmbAmt}
+                autoComplete="off"
+                type="number"
+                isInvalid={props.error}
+              />
 
+              <span style={inputText}>USDT</span>
+            </Form.Group>
             {props.error && (
-              <Form.Text className="text-muted">
-                <span className="">{props.error}</span>
-              </Form.Text>
+              <Form.Group
+                as={Col}
+                style={{
+                  marginTop: '-20px',
+                }}
+              >
+                <Form.Text className="text-muted">
+                  <span className="">{props.error}</span>
+                </Form.Text>
+              </Form.Group>
             )}
-            <span style={inputText}>USDT</span>
-          </Form.Group>
 
-          <Form.Group as={Col} className="transaction-twoWay">
-            {/* <span className="twoWay-icon "></span> */}
-            <img className="twoWay-icon" src={changeMoney} alt="change money" />
-          </Form.Group>
+            <Form.Group as={Col} className="transaction-twoWay">
+              {/* <span className="twoWay-icon "></span> */}
+              <img className="twoWay-icon" src={changeMoney} alt="change money" />
+            </Form.Group>
 
-          <Form.Group className="" as={Col} xl={5} controlId="cny">
-            <Form.Control
-              style={formInput}
-              // placeholder={props.rmbAmt ? props.rmbAmt : 'CNY'}
-              value={props.rmbAmt ? props.rmbAmt : ''}
-              onChange={props.getRmbAmt}
-              autoComplete="off"
-              type="number"
-            />
-            {/* <Form.Text>adf</Form.Text> */}
-            <span style={inputText}>CNY</span>
-          </Form.Group>
-        </Form.Row>
-        {/* <p
+            <Form.Group className="" as={Col} xl={5} controlId="cny">
+              <Form.Control
+                style={formInput}
+                // placeholder={props.rmbAmt ? props.rmbAmt : 'CNY'}
+                value={props.rmbAmt ? props.rmbAmt : ''}
+                onChange={props.getRmbAmt}
+                autoComplete="off"
+                type="number"
+              />
+              {/* <Form.Text>adf</Form.Text> */}
+              <span style={inputText}>CNY</span>
+            </Form.Group>
+          </Form.Row>
+          {/* <p
           style={{
             letterSpacing: 1.5,
             marginBottom: 20,
@@ -83,51 +93,55 @@ const BuyCount = props => {
         >
           手續費：5.00USDT
         </p> */}
-        <TransferHandle />
+          <TransferHandle />
 
-        <Form.Row className="mb-4">
-          <Form.Group as={Col}>
-            <p>付款方式</p>
-            <Button
-              disabled
-              style={{
-                marginTop: -8,
-                padding: 10,
-                fontSize: 17,
-              }}
-              size="lg"
-              variant="outline-primary"
-            >
-              銀行卡
-            </Button>
-          </Form.Group>
-        </Form.Row>
+          <Form.Row className="mb-4">
+            <Form.Group as={Col}>
+              <p>付款方式</p>
+              <Button
+                disabled
+                style={{
+                  marginTop: -8,
+                  padding: 10,
+                  fontSize: 17,
+                }}
+                size="lg"
+                variant="outline-primary"
+              >
+                銀行卡
+              </Button>
+            </Form.Group>
+          </Form.Row>
 
-        <Form.Row
-          className="text-center"
-          style={{
-            maxWidth: 400,
-            margin: 'auto',
-          }}
-        >
-          <Form.Group as={Col}>
-            <Button
-              style={{
-                padding: 15,
-                fontSize: 17,
-              }}
-              block
-              className=""
-              onClick={props.showPayDetail}
-              variant="primary"
-            >
-              下一步
-            </Button>
-          </Form.Group>
-        </Form.Row>
+          <Form.Row
+            className="text-center"
+            style={{
+              maxWidth: 400,
+              margin: 'auto',
+            }}
+          >
+            <Form.Group as={Col}>
+              <Button
+                style={{
+                  padding: 15,
+                  fontSize: 17,
+                }}
+                block
+                className=""
+                onClick={props.showPayDetail}
+                variant="primary"
+              >
+                下一步
+              </Button>
+            </Form.Group>
+          </Form.Row>
 
-        {/* <button onClick={props.showPayDetail}>下一步</button> */}
-      </Form>
+          {/* <button onClick={props.showPayDetail}>下一步</button> */}
+        </Form>
+      ) : (
+        <Spinner />
+      )}
+
       <div>
         <hr className="mt_mb" />
         <p className="txt_12_grey">
@@ -159,8 +173,8 @@ const inputText = {
   color: '#D7E2F3',
   position: 'absolute',
   top: '50%',
-  transform: 'translateY(-50%)',
-  right: 25,
+  transform: 'translateY(-45%)',
+  right: 35,
   fontSize: 17,
 };
 

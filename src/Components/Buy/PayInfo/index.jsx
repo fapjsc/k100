@@ -9,12 +9,13 @@ import Chat from '../../Chat';
 import ExRate from '../ExRate';
 
 import CountDownUnreset from '../CountDownUnreset';
-import MediaQuery from 'react-responsive';
 
 // import Countdown from 'react-countdown';
 import PubSub from 'pubsub-js';
 
 import TalkIcon from '../../../Assets/i_talk.png';
+import clockIcon from '../../../Assets/i_clock.png';
+
 import './index.scss';
 import Button from 'react-bootstrap/Button';
 
@@ -341,15 +342,19 @@ export default class PayInfo extends Component {
       seconds2,
       overTime,
       completed,
-      bigScreenChat,
     } = this.state;
 
     const pairTitleBox = {
-      maxWidth: '50%',
+      width: '50%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       marginBottom: '-17px',
+    };
+
+    const clockStyle = {
+      height: 17,
+      marginRight: 3,
     };
 
     return (
@@ -358,7 +363,8 @@ export default class PayInfo extends Component {
           {showInfo && !isCompletePay && !overTime && stateId === 33 ? (
             <>
               <ExRate title="購買USDT" />
-              <div style={pairTitleBox} className="">
+
+              <div style={pairTitleBox} className="titleBoxSm">
                 <p
                   style={{
                     fontSize: '12px',
@@ -367,28 +373,36 @@ export default class PayInfo extends Component {
                 >
                   轉帳資料
                 </p>
-                <p
+
+                <div
                   style={{
-                    fontSize: '12px',
-                    fontWeight: 'bold',
+                    display: 'flex',
                   }}
                 >
-                  剩餘支付時間：
-                  <span className="payTime c_yellow">
-                    {minutes && (
-                      <CountDownUnreset
-                        minutes={minutes}
-                        seconds={seconds}
-                        setInfo={this.setInfo}
-                      />
-                    )}
-                    {/* <Countdown
+                  <img style={clockStyle} src={clockIcon} alt="clock icon" />
+                  <p
+                    style={{
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    剩餘支付時間：
+                    <span className="payTime c_yellow">
+                      {minutes && (
+                        <CountDownUnreset
+                          minutes={minutes}
+                          seconds={seconds}
+                          setInfo={this.setInfo}
+                        />
+                      )}
+                      {/* <Countdown
                                             date={Date.now() + timer}
                                             renderer={Timer}
                                             onComplete={() => this.setInfo(false)}
                                         ></Countdown> */}
-                  </span>
-                </p>
+                    </span>
+                  </p>
+                </div>
               </div>
               <InfoDetail transferData={master} getConfirmPay={this.getConfirmPay} />
               <ul className="txt_12_grey">

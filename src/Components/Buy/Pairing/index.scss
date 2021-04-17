@@ -1,30 +1,12 @@
-
-
-.modal-title {
-}
-
-
-
-
-
-
-
-.modal-90w {
-}
-
 .modal-content {
-    border: 5px solid #3F80FA;
+  border: 5px solid #3f80fa;
+  span {
+    color: #3f80fa;
+    font-size: 3rem;
+  }
 
-
-    span {
-        color: #3F80FA;
-        font-size: 3rem;
-    }
-
-    .modal-img {
-        height: 15rem;
-        margin-left: 5.5rem;
-    }
-    
-
+  .modal-img {
+    height: 15rem;
+    margin-left: 5.5rem;
+  }
 }

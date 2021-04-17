@@ -8,35 +8,38 @@ import SellForm from './SellForm';
 import Pairing from './Pairing';
 
 const Sell = () => {
-    const history = useHistory();
-    const sellContext = useContext(SellContext);
-    const { wsPairing, wsData, closeWebSocket } = sellContext;
+  const history = useHistory();
+  const sellContext = useContext(SellContext);
+  const { wsPairing, wsData, closeWebSocket } = sellContext;
 
-    useEffect(() => {
-        closeWebSocket();
-        return () => {
-            closeWebSocket();
-        };
-
-        // eslint-disable-next-line
-    }, []);
-
-    const backHome = () => {
-        history.replace('/home/overview');
+  useEffect(() => {
+    closeWebSocket();
+    return () => {
+      closeWebSocket();
     };
 
-    return (
-        <Fragment>
-            <SellHeaders />
-            <Pairing
-                show={wsPairing}
-                onHide={backHome}
-                title="請稍等，現正整合交易者資料"
-                text={wsData && `出售訂單：${Math.abs(wsData.UsdtAmt)} USDT @ ${wsData.D2} CNY`}
-            />
-            <SellForm />
-        </Fragment>
-    );
+    // eslint-disable-next-line
+  }, []);
+
+  const backHome = () => {
+    history.replace('/home/overview');
+  };
+
+  return (
+    <Fragment>
+      <SellHeaders />
+      <Pairing
+        show={wsPairing}
+        onHide={backHome}
+        title="請稍等，現正整合交易者資料"
+        text={
+          wsData &&
+          `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT @ ${wsData.D2.toFixed(2)} CNY`
+        }
+      />
+      <SellForm />
+    </Fragment>
+  );
 };
 
 export default Sell;

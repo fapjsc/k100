@@ -236,7 +236,7 @@ const SellState = props => {
     // 2.收到server回復
     client.onmessage = message => {
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // console.log('got reply!', dataFromServer);
 
       // 配對中 Order_StatusID：31 or 32
       if (dataFromServer.data.Order_StatusID === 31) {

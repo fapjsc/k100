@@ -29,11 +29,12 @@ export default class Transfer extends Component {
     Avb_Balance: null, // 可提
     headers: null,
     isComplete: false,
-    isloading: false,
+    isloading: true,
     isfailed: false,
     token: '',
     data: {},
     transferLoading: false,
+    isSubmit: false,
   };
 
   setTransferCount = e => {
@@ -91,7 +92,7 @@ export default class Transfer extends Component {
 
     // 不能是負數
     let negative = /^((-\d+(\.\d+)?)|((\.0+)?))$/;
-    if (!rule.test(transfercount.val)) {
+    if (negative.test(transfercount.val)) {
       this.setState({
         transfercount: {
           val: '',
@@ -173,6 +174,7 @@ export default class Transfer extends Component {
   handleSubmit = async () => {
     this.setState({
       isloading: true,
+      handleSubmit: true,
     });
 
     this.setState({
@@ -342,6 +344,7 @@ export default class Transfer extends Component {
         this.setState({
           isloading: false,
           isComplete: true,
+          hash: dataFromServer.data.Tx_HASH,
         });
       }
     };
@@ -436,6 +439,8 @@ export default class Transfer extends Component {
       isfailed,
       token,
       transferLoading,
+      isSubmit,
+      hash,
     } = this.state;
     const { exRate } = this.props;
 
@@ -443,8 +448,8 @@ export default class Transfer extends Component {
       color: '#D7E2F3',
       position: 'absolute',
       top: 0,
-      transform: 'translateY(50%)',
-      right: 50,
+      transform: 'translateY(56%)',
+      right: 45,
       fontSize: 17,
     };
 
@@ -453,9 +458,9 @@ export default class Transfer extends Component {
         <ExRate title="轉帳USDT" />
         <Route exact path="/home/transaction/transfer">
           <>
-            <Form>
+            <Form className="text-center">
               <Row className="mb-2 w-50">
-                <Col className="pr-0 text-right">
+                <Col className="pr-0 text-left">
                   <Button
                     disabled={transferLoading}
                     variant="outline-primary"
@@ -467,7 +472,7 @@ export default class Transfer extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col sm={12} md={6} lg={6} xl={6} className="">
+                <Col sm={12} md={6} lg={6} xl={6} className="mb-4">
                   <Form.Group controlId="transferUsdt" className="">
                     <Form.Control
                       type="number"
@@ -481,17 +486,12 @@ export default class Transfer extends Component {
                     />
                     <span style={inputText}>USDT</span>
                     {transfercount.error ? (
-                      <Form.Text className="text-muted">{transfercount.error}</Form.Text>
-                    ) : null}
-                    {exRate !== null ? (
-                      <Form.Text className="text-muted my-3">
-                        <span className="text-dark">手續費: {exRate.TransferHandle} USDT</span>
-                      </Form.Text>
+                      <Form.Text className="text-muted text-left">{transfercount.error}</Form.Text>
                     ) : null}
                   </Form.Group>
                 </Col>
 
-                <Col sm={12} md={6} lg={6} xl={6} className="">
+                <Col sm={12} md={6} lg={6} xl={6} className="mb-2">
                   <Form.Group controlId="transferAddress" className="">
                     <Form.Control
                       type="text"
@@ -503,10 +503,23 @@ export default class Transfer extends Component {
                     />
 
                     {transferAddress.error ? (
-                      <Form.Text className="text-muted">{transferAddress.error}</Form.Text>
+                      <Form.Text className="text-muted text-left">
+                        {transferAddress.error}
+                      </Form.Text>
                     ) : null}
                   </Form.Group>
                 </Col>
+
+                {exRate !== null ? (
+                  <Col
+                    className="text-left"
+                    style={{
+                      marginTop: '-10px',
+                    }}
+                  >
+                    <span className="text-dark">手續費: {exRate.TransferHandle} USDT</span>
+                  </Col>
+                ) : null}
               </Row>
               {/* <Button
                             variant="primary"
@@ -519,9 +532,9 @@ export default class Transfer extends Component {
 
               <Button
                 // variant={formIsValid ? 'primary' : 'secondary'}
-                variant="primary"
-                className="w-50 mx-auto mw400 cus-btn"
+                className="easy-btn smScreen-btn mt-4"
                 onClick={this.handleSubmit}
+                disabled={isSubmit}
               >
                 下一步
               </Button>
@@ -555,6 +568,7 @@ export default class Transfer extends Component {
               isComplete={isComplete ? 1 : 0}
               onHide={this.closeModal}
               detailReq={this.detailReq}
+              hash={hash}
             />
           )}
         />

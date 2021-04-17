@@ -88,6 +88,14 @@ export default class Buy extends Component {
     });
   };
 
+  backToHome = () => {
+    this.setState({
+      isPairing: false,
+    });
+
+    this.props.history.replace('/home/transaction/buy');
+  };
+
   handleConfirm = async () => {
     const { usdtAmt, clientName } = this.state;
 
@@ -344,9 +352,11 @@ export default class Buy extends Component {
               {isPairing ? (
                 <Paring
                   show={isPairing}
-                  onHide={() => this.setState({ isPairing: true })}
+                  // onHide={() => this.setState({ isPairing: true })}
+                  onHide={this.backToHome}
                   rmbamt={rmbAmt}
                   usdtamt={usdtAmt}
+                  backToHome={this.backToHome}
                 />
               ) : null}
             </div>

@@ -75,7 +75,7 @@ const ConfirmBuy = props => {
 
               <div className="confirmBuy-textBox text-right">
                 <p className="txt_12_grey mb-0">數量</p>
-                <p className="confirmBuy-text mb-0">
+                <p className="confirmBuy-text mb-0 text-dark">
                   {/* 小數第二位，千分逗號 */}
                   {Number(props.usdtAmt)
                     .toFixed(2)
