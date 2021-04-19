@@ -158,6 +158,10 @@ export default class index extends Component {
     }
   };
 
+  gotToAgreePage = () => {
+    this.props.history.push('/agreement');
+  };
+
   handleRegisterSubmit = async event => {
     event.preventDefault(); //防止表單提交
 
@@ -333,7 +337,12 @@ export default class index extends Component {
                       onChange={this.handleAgree}
                       checked={agree}
                     />
-                    <span>{`《用戶協議》`}</span>
+                    <span
+                      style={{
+                        cursor: 'pointer',
+                      }}
+                      onClick={this.gotToAgreePage}
+                    >{`《用戶協議》`}</span>
                   </Form.Group>
                 </Form.Row>
 
