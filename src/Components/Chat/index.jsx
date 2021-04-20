@@ -1,4 +1,6 @@
 import React from 'react';
+import { Fragment, useState, useEffect } from 'react';
+
 import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,15 +9,15 @@ import Zmage from 'react-zmage';
 
 // 圖片壓縮
 import Resizer from 'react-image-file-resizer';
+
+// RWD
 import { useMediaQuery } from 'react-responsive';
 
 import SendIcon from '../../Assets/send_icon.png';
 import AttachIcon from '../../Assets/attach_icon.png';
 
 import Card from 'react-bootstrap/Card';
-
 import './index.scss';
-import { Fragment } from 'react';
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 1200 });
@@ -27,7 +29,7 @@ const Mobile = ({ children }) => {
   return isMobile ? children : null;
 };
 
-class Chat extends React.Component {
+const Chat = () =>  {
   state = {
     client: {},
     messages: [],
@@ -36,10 +38,18 @@ class Chat extends React.Component {
     img: '',
   };
 
-  setInput = e => {
-    this.setState({
-      userInput: e.target.value,
-    });
+  const [client, setClient] = useState({})
+  const [messages, setMessage] = useState([])
+  const [userInput, setUserInput] = useState('')
+  const [orderToken, setOrderToken] = useState(null)
+  const [img, setImg] = useState('')
+
+
+  cont setInput = e => {
+    setUserInput(e.target.value)
+    // this.setState({
+    //   userInput: e.target.value,
+    // });
   };
 
   //點擊後發送訊息到server
@@ -124,6 +134,7 @@ class Chat extends React.Component {
 
   componentWillUnmount() {
     // this.closeWebSocket();
+    console.log('unmount');
   }
 
   // Chat WebSocket

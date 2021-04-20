@@ -356,7 +356,7 @@ export default class Buy extends Component {
                   onHide={this.backToHome}
                   rmbamt={rmbAmt}
                   usdtamt={usdtAmt}
-                  backToHome={this.backToHome}
+                  backtohome={this.backToHome}
                 />
               ) : null}
             </div>
