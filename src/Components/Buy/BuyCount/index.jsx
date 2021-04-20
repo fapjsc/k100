@@ -122,7 +122,6 @@ const BuyCount = props => {
             <Form.Group as={Col}>
               <button
                 style={{}}
-                block
                 className="easy-btn mw400"
                 onClick={props.showPayDetail}
                 variant="primary"

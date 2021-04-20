@@ -11,7 +11,7 @@ import ExRate from '../ExRate';
 const ConfirmBuy = props => {
   const [isLoading, setLoading] = useState(false);
 
-  let handleConfirm = props.handleConfirm;
+  // let handleConfirm = props.handleConfirm;
 
   useEffect(() => {
     if (isLoading) {
@@ -23,7 +23,7 @@ const ConfirmBuy = props => {
 
   const handleClick = () => {
     setLoading(true);
-    handleConfirm();
+    props.handleConfirm();
   };
 
   return (

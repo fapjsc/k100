@@ -125,17 +125,17 @@ export default class Buy extends Component {
 
       const resData = await res.json();
 
+      // console.log(resData);
       const {
         data: { order_token },
       } = resData;
 
+      this.submitTransaction(order_token);
       this.setState(
         {
           orderToken: order_token,
         },
-        () => {
-          this.submitTransaction();
-        }
+        () => {}
       );
     } catch (error) {
       alert(error, 'transaction');
@@ -186,7 +186,6 @@ export default class Buy extends Component {
 
   // webSocket 連接
   submitTransaction = value => {
-    console.log('call buy');
     const { orderToken, loginSession } = this.state;
     const transactionApi = 'j/ws_orderstatus.ashx';
 
@@ -240,8 +239,8 @@ export default class Buy extends Component {
       if (dataFromServer.data.Order_StatusID === 33) {
         this.setState(
           {
-            pair: true,
             isPairing: false,
+            pair: true,
             pairFinish: true,
           },
           () => {
@@ -356,7 +355,6 @@ export default class Buy extends Component {
                   onHide={this.backToHome}
                   rmbamt={rmbAmt}
                   usdtamt={usdtAmt}
-                  backtohome={this.backToHome}
                 />
               ) : null}
             </div>

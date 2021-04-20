@@ -20,9 +20,9 @@ import Col from 'react-bootstrap/Col';
 
 const SellInfo = () => {
   // Break Points
-  const isLaptopFloor = useMediaQuery({ query: '(max-width: 1100px)' });
+  // const isLaptopFloor = useMediaQuery({ query: '(max-width: 1100px)' });
   const lapTopBig = useMediaQuery({ query: '(max-width: 1200px)' });
-  const mobileApp = useMediaQuery({ query: '(max-width: 520px)' });
+  // const mobileApp = useMediaQuery({ query: '(max-width: 520px)' });
 
   let { id } = useParams();
   const sellContext = useContext(SellContext);
@@ -35,13 +35,13 @@ const SellInfo = () => {
     confirmSellAction,
     confirmSell,
     getOrderDetail,
-    sellWebSocket,
+    // sellWebSocket,
   } = sellContext;
 
   const [timer, setTimer] = useState(null);
-  const [minutes, setMinutes] = useState(null);
-  const [seconds, setSeconds] = useState(null);
-  const [overTime, setOverTime] = useState(false);
+  // const [minutes, setMinutes] = useState(null);
+  // const [seconds, setSeconds] = useState(null);
+  // const [overTime, setOverTime] = useState(false);
   const [isChat, setIsChat] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
 
@@ -55,30 +55,30 @@ const SellInfo = () => {
   }, []);
 
   useEffect(() => {
-    setOverTime(false);
+    // setOverTime(false);
     if (wsData) {
       setTimer(900 - wsData.DeltaTime);
 
-      let minutesTime;
+      // let minutesTime;
 
       if (timer !== null) {
         if (timer <= 0) {
-          setMinutes(0);
-          setSeconds(0);
-          setOverTime(true);
+          // setMinutes(0);
+          // setSeconds(0);
+          // setOverTime(true);
           return;
         }
 
-        if (wsData.DeltaTime === 0) {
-          minutesTime = parseInt(timer / 60) + 1;
-        } else {
-          minutesTime = parseInt(timer / 60);
-        }
+        // if (wsData.DeltaTime === 0) {
+        //   minutesTime = parseInt(timer / 60) + 1;
+        // } else {
+        //   minutesTime = parseInt(timer / 60);
+        // }
 
-        let secondsTime = Math.round((timer / 60 - Math.trunc(timer / 60)) * 60);
+        // let secondsTime = Math.round((timer / 60 - Math.trunc(timer / 60)) * 60);
 
-        setMinutes(minutesTime);
-        setSeconds(secondsTime);
+        // setMinutes(minutesTime);
+        // setSeconds(secondsTime);
       }
     }
   }, [timer, wsData]);
@@ -162,46 +162,49 @@ const SellInfo = () => {
               <p>開戶銀行：{wsData && wsData.P3}</p>
               <p>所在省市：{wsData && wsData.P4}</p>
             </Col>
-            <Col xl={6}>
-              <SetAccount
-                usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
-                rmbAmt={wsData.D2.toFixed(2)}
-              />
-              {/* <p
-                style={{
-                  fontSize: 15,
-                }}
-              >
-                總價
-                <br />
-                <span
+
+            {wsData && (
+              <Col xl={6}>
+                <SetAccount
+                  usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
+                  rmbAmt={wsData.D2.toFixed(2)}
+                />
+                {/* <p
                   style={{
-                    fontSize: 28,
-                    color: '#007bff',
-                    fontWeight: 'bold',
+                    fontSize: 15,
                   }}
                 >
-                  {wsData && wsData.D2.toFixed(2) + ` CNY`}
-                </span>
-              </p>
-              <p
-                style={{
-                  fontSize: 15,
-                }}
-              >
-                數量
-                <br />
-                <span
+                  總價
+                  <br />
+                  <span
+                    style={{
+                      fontSize: 28,
+                      color: '#007bff',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {wsData && wsData.D2.toFixed(2) + ` CNY`}
+                  </span>
+                </p>
+                <p
                   style={{
-                    fontSize: 28,
-                    color: 'black',
-                    fontWeight: 'bold',
+                    fontSize: 15,
                   }}
                 >
-                  {wsData && Math.abs(wsData.UsdtAmt).toFixed(2) + ` USDT`}
-                </span>
-              </p> */}
-            </Col>
+                  數量
+                  <br />
+                  <span
+                    style={{
+                      fontSize: 28,
+                      color: 'black',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {wsData && Math.abs(wsData.UsdtAmt).toFixed(2) + ` USDT`}
+                  </span>
+                </p> */}
+              </Col>
+            )}
           </Row>
           <Row className="mw400 text-center m-auto">
             <Col>
@@ -316,47 +319,47 @@ const SellInfo = () => {
   }
 };
 
-const infoBox = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gridTemplateRows: 'repeat(3, min-content)',
-  gridColumnGap: 30,
-  fontSize: 20,
-  marginTop: 25,
-};
+// const infoBox = {
+//   display: 'grid',
+//   gridTemplateColumns: 'repeat(2, 1fr)',
+//   gridTemplateRows: 'repeat(3, min-content)',
+//   gridColumnGap: 30,
+//   fontSize: 20,
+//   marginTop: 25,
+// };
 
-const infoHeader = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: 10,
-};
+// const infoHeader = {
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'space-between',
+//   padding: 10,
+// };
 
-const infoBody = {
-  gridRow: '2 / 3',
-  gridColumn: '1 / 2',
-  backgroundColor: '#f2f2f2',
-  padding: 10,
-};
+// const infoBody = {
+//   gridRow: '2 / 3',
+//   gridColumn: '1 / 2',
+//   backgroundColor: '#f2f2f2',
+//   padding: 10,
+// };
 
-const infoCount = {
-  gridRow: '1 / 3',
-  gridColumn: '2 / 3',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: 20,
-  height: 200,
-  border: '3px solid #007bff',
-  borderRadius: 7,
-};
+// const infoCount = {
+//   gridRow: '1 / 3',
+//   gridColumn: '2 / 3',
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'space-between',
+//   padding: 20,
+//   height: 200,
+//   border: '3px solid #007bff',
+//   borderRadius: 7,
+// };
 
-const infoBtnBox = {
-  textAlign: 'center',
-  maxWidth: '40%',
-  margin: 'auto',
-  marginTop: 30,
-};
+// const infoBtnBox = {
+//   textAlign: 'center',
+//   maxWidth: '40%',
+//   margin: 'auto',
+//   marginTop: 30,
+// };
 
 const infoBtn = {
   // padding: 10,
@@ -386,7 +389,6 @@ const infoBtnDisabled = {
   margin: '10px auto 15px',
   border: 'none',
   transition: '0.3s',
-  cursor: 'pointer',
   fontSize: '17px',
   opacity: '0.65',
   cursor: 'not-allowed',
@@ -420,44 +422,44 @@ const helpBtn = {
 };
 
 // Lab TOp
-const infoBoxLabTop = {};
+// const infoBoxLabTop = {};
 
-const infoBodyLabTop = {
-  backgroundColor: '#f2f2f2',
-  padding: 10,
-  fontSize: 20,
-};
+// const infoBodyLabTop = {
+//   backgroundColor: '#f2f2f2',
+//   padding: 10,
+//   fontSize: 20,
+// };
 
-const infoCountLabTop = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: 20,
-  height: 200,
-  border: '3px solid #007bff',
-  borderRadius: 7,
-  marginTop: 20,
-};
+// const infoCountLabTop = {
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'space-between',
+//   padding: 20,
+//   height: 200,
+//   border: '3px solid #007bff',
+//   borderRadius: 7,
+//   marginTop: 20,
+// };
 
 // Mobile App
-const infoHeaderMobileApp = {
-  display: 'flex',
-  flexDirection: 'column-reverse',
-  padding: 10,
-};
+// const infoHeaderMobileApp = {
+//   display: 'flex',
+//   flexDirection: 'column-reverse',
+//   padding: 10,
+// };
 
-const infoCountMobileApp = {
-  border: '3px solid #007bff',
-  borderRadius: 7,
-  marginTop: 20,
-  padding: 20,
-};
+// const infoCountMobileApp = {
+//   border: '3px solid #007bff',
+//   borderRadius: 7,
+//   marginTop: 20,
+//   padding: 20,
+// };
 
-const infoBtnBoxMobileApp = {
-  textAlign: 'center',
-  maxWidth: '100%',
-  margin: 'auto',
-  marginTop: 30,
-};
+// const infoBtnBoxMobileApp = {
+//   textAlign: 'center',
+//   maxWidth: '100%',
+//   margin: 'auto',
+//   marginTop: 30,
+// };
 
 export default SellInfo;

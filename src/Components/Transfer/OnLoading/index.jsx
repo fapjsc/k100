@@ -4,7 +4,6 @@ import trans from '../../../Assets/icon_trans.gif';
 import iconError from '../../../Assets/icon_error.png';
 
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 
 import closeBtn from '../../../Assets/blue_close_btn.png';
 

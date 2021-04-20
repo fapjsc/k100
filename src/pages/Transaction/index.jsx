@@ -17,10 +17,10 @@ const Transaction = () => {
   // };
 
   const [Avb_Balance, setAvb_Balance] = useState(null);
-  const [Real_Balance, setReal_Balance] = useState(null);
+  // const [Real_Balance, setReal_Balance] = useState(null);
   const [exRate, setexRate] = useState(null);
-  const [loginSession, setLoginSession] = useState(null);
-  const [headers, setHeaders] = useState(null);
+  // const [loginSession, setLoginSession] = useState(null);
+  // const [headers, setHeaders] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
@@ -80,10 +80,10 @@ const Transaction = () => {
         return;
       }
 
-      const { Avb_Balance, Real_Balance } = resData.data;
+      const { Avb_Balance } = resData.data;
 
       setAvb_Balance(Avb_Balance);
-      setReal_Balance(Real_Balance);
+      // setReal_Balance(Real_Balance);
     } catch (error) {
       localStorage.removeItem('token');
       // clearInterval(this.checkTickLoop);
@@ -99,8 +99,8 @@ const Transaction = () => {
       headers.append('Content-Type', 'application/json');
       headers.append('login_session', token);
 
-      setHeaders(headers);
-      setLoginSession(token);
+      // setHeaders(headers);
+      // setLoginSession(token);
       getExRate(headers);
 
       getBalance(token);
@@ -139,8 +139,34 @@ const Transaction = () => {
           marginTop: 40,
         }}
       >
-        <p className="welcome_txt col-xl-9 mx-auto">歡迎登入</p>
-        <div className="col-xl-9 transaction-card">
+        <p
+          className="welcome_txt col-xl-9"
+          style={{
+            margin:
+              location.pathname === '/home/transaction/buy'
+                ? '0 auto'
+                : location.pathname === '/home/transaction/sell'
+                ? '0 auto'
+                : location.pathname === '/home/transaction/transfer'
+                ? '0 auto'
+                : '0',
+          }}
+        >
+          歡迎登入
+        </p>
+        <div
+          className="col-xl-9 transaction-card"
+          style={{
+            margin:
+              location.pathname === '/home/transaction/buy'
+                ? '0 auto'
+                : location.pathname === '/home/transaction/sell'
+                ? '0 auto'
+                : location.pathname === '/home/transaction/transfer'
+                ? '0 auto'
+                : '0',
+          }}
+        >
           {/* Nav */}
           <TransactionNav location={location} />
 

@@ -10,7 +10,6 @@ import CancelSell from '../../../Sell/CancelSell';
 const InfoDetail = props => {
   const [confirmCancel, setConfirmCancel] = useState(false);
 
-  console.log(props);
   return (
     <>
       {confirmCancel && props.transferData ? (

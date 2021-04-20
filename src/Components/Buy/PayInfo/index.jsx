@@ -76,7 +76,7 @@ export default class PayInfo extends Component {
 
       const resData = await res.json();
 
-      console.log(resData);
+      // console.log(resData);
       if (resData.code === 200) {
         alert('取消成功');
         this.props.history.replace('/home/transaction/buy');
@@ -261,7 +261,6 @@ export default class PayInfo extends Component {
   };
 
   mediaOnChange = e => {
-    console.log(e);
     this.setState({
       bigScreenChat: !this.state.bigScreenChat,
     });

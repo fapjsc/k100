@@ -14,7 +14,7 @@ const Paring = props => {
           style={{
             cursor: 'pointer',
           }}
-          onClick={props.backtohome}
+          onClick={props.onHide}
         />
         <div className="text-center">
           <img src={searchIcon} alt="icon" className="" />

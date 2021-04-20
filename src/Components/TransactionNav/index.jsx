@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
+// eslint-disable-next-line
 import index from './index.scss';
 
 export default class TransactionNav extends Component {
@@ -59,7 +61,7 @@ const linkBox = {
 
 const linkStyle = {
   backgroundColor: 'inherit',
-  border: 'none',
+  borderBottom: 'none',
   outline: 'none',
   cursor: 'pointer',
   padding: '14px 16px',

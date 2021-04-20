@@ -241,7 +241,7 @@ const SellState = props => {
       // 配對中 Order_StatusID：31 or 32
       if (dataFromServer.data.Order_StatusID === 31) {
         dispatch({ type: SET_WS_DATA, payload: dataFromServer.data });
-        console.log(dataFromServer);
+        // console.log(dataFromServer);
       }
 
       // 等待付款  Order_StatusID：33
