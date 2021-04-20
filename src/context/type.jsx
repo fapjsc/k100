@@ -12,3 +12,6 @@ export const SET_CONFIRM_SELL = 'SET_CONFIRM_SELL';
 
 // Balance
 export const SET_BALANCE = 'GET_BALANCE';
+
+// Chat
+export const SET_TRANSLATE = 'SET_TRANSLATE';

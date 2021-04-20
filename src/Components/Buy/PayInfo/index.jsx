@@ -57,6 +57,37 @@ export default class PayInfo extends Component {
     });
   };
 
+  cancelOrder = async () => {
+    const orderToken = this.props.match.params.id;
+    const token = localStorage.getItem('token');
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('login_session', token);
+
+    try {
+      const cancelApi = `/j/Req_CancelOrder.aspx`;
+      const res = await fetch(cancelApi, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          Token: orderToken,
+        }),
+      });
+
+      const resData = await res.json();
+
+      console.log(resData);
+      if (resData.code === 200) {
+        alert('取消成功');
+        this.props.history.replace('/home/transaction/buy');
+      } else {
+        alert('訂單未取消');
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   getConfirmPay = async () => {
     const token = localStorage.getItem('token');
     let headers = new Headers();
@@ -101,7 +132,7 @@ export default class PayInfo extends Component {
   };
 
   openChat = () => {
-    const { orderToken } = this.state;
+    const { orderToken } = this.props.match.params.id;
     this.props.submitTransaction(orderToken);
     this.setState({
       isChat: !this.state.isChat,
@@ -359,11 +390,10 @@ export default class PayInfo extends Component {
 
     return (
       <div>
+        <ExRate title="購買USDT" />
         <div className="pairBox">
           {showInfo && !isCompletePay && !overTime && stateId === 33 ? (
             <>
-              <ExRate title="購買USDT" />
-
               <div style={pairTitleBox} className="titleBoxSm">
                 <p
                   style={{
@@ -404,7 +434,12 @@ export default class PayInfo extends Component {
                   </p>
                 </div>
               </div>
-              <InfoDetail transferData={master} getConfirmPay={this.getConfirmPay} />
+              <InfoDetail
+                transferData={master}
+                getConfirmPay={this.getConfirmPay}
+                orderToken={this.props.match.params.id}
+                cancelOrder={this.cancelOrder}
+              />
               <ul className="txt_12_grey">
                 <li>請勿向上述地址充值任何非USDT資産，否則資産將不可找回。</li>
                 <br />
@@ -419,6 +454,7 @@ export default class PayInfo extends Component {
                 </li>
                 <br />
                 <li>請務必確認電腦及浏覽器安全，防止信息被篡改或泄露。</li>
+                <br />
                 <li>
                   USDT充幣僅支持以太坊transfer和transferFrom方法，使用其他方法的充幣暫時無法上賬，請您諒解。
                 </li>
@@ -426,8 +462,24 @@ export default class PayInfo extends Component {
 
               {/* Chat */}
               <Mobile>
-                <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
-                <Button variant="primary" className="talk-iconBox" onClick={this.openChat}>
+                <div style={chatMobil}>
+                  <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
+                </div>
+                <Button
+                  variant="primary"
+                  className=""
+                  style={{
+                    padding: '1rem 2rem',
+                    fontSize: '1.5rem',
+                    fontWeight: 300,
+                    borderRadius: '10rem',
+                    position: 'fixed',
+                    bottom: '5%',
+                    right: '5%',
+                    backgroundColor: '#F80FA',
+                  }}
+                  onClick={this.openChat}
+                >
                   <img src={TalkIcon} alt="talk icon" className="mr-2" />
                   <span>對話</span>
                 </Button>
@@ -439,7 +491,7 @@ export default class PayInfo extends Component {
             </>
           ) : !showInfo && !isCompletePay && stateId === 33 ? (
             <>
-              <ExRate title="購買USDT" />
+              {/* <ExRate title="購買USDT" /> */}
               {/* <Countdown
                                 date={Date.now() + 10000}
                                 renderer={ButtonTimer}
@@ -456,8 +508,24 @@ export default class PayInfo extends Component {
 
               {/* Chat */}
               <Mobile>
-                <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
-                <Button variant="primary" className="talk-iconBox" onClick={this.openChat}>
+                <div style={chatMobil}>
+                  <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
+                </div>
+                <Button
+                  variant="primary"
+                  className=""
+                  style={{
+                    padding: '1rem 2rem',
+                    fontSize: '1.5rem',
+                    fontWeight: 300,
+                    borderRadius: '10rem',
+                    position: 'fixed',
+                    bottom: '5%',
+                    right: '5%',
+                    backgroundColor: '#F80FA',
+                  }}
+                  onClick={this.openChat}
+                >
                   <img src={TalkIcon} alt="talk icon" className="mr-2" />
                   <span>對話</span>
                 </Button>
@@ -486,8 +554,24 @@ export default class PayInfo extends Component {
               </div>
               {/* Chat */}
               <Mobile>
-                <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
-                <Button variant="primary" className="talk-iconBox" onClick={this.openChat}>
+                <div style={chatMobil}>
+                  <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
+                </div>
+                <Button
+                  variant="primary"
+                  className=""
+                  style={{
+                    padding: '1rem 2rem',
+                    fontSize: '1.5rem',
+                    fontWeight: 300,
+                    borderRadius: '10rem',
+                    position: 'fixed',
+                    bottom: '5%',
+                    right: '5%',
+                    backgroundColor: '#F80FA',
+                  }}
+                  onClick={this.openChat}
+                >
                   <img src={TalkIcon} alt="talk icon" className="mr-2" />
                   <span>對話</span>
                 </Button>
@@ -513,12 +597,28 @@ export default class PayInfo extends Component {
                   返回主頁
                 </button>
                 <br />
-                <p>詳細購買紀錄</p>
+                {/* <p>詳細購買紀錄</p> */}
               </div>
               {/* Chat */}
               <Mobile>
-                <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
-                <Button variant="primary" className="talk-iconBox" onClick={this.openChat}>
+                <div style={chatMobil}>
+                  <Chat isChat={isChat} {...this.props} Tx_HASH={Tx_HASH} />
+                </div>
+                <Button
+                  variant="primary"
+                  className=""
+                  style={{
+                    padding: '1rem 2rem',
+                    fontSize: '1.5rem',
+                    fontWeight: 300,
+                    borderRadius: '10rem',
+                    position: 'fixed',
+                    bottom: '5%',
+                    right: '5%',
+                    backgroundColor: '#F80FA',
+                  }}
+                  onClick={this.openChat}
+                >
                   <img src={TalkIcon} alt="talk icon" className="mr-2" />
                   <span>對話</span>
                 </Button>
@@ -539,3 +639,9 @@ export default class PayInfo extends Component {
     );
   }
 }
+
+const chatMobil = {
+  position: 'fixed',
+  bottom: '11%',
+  right: '5%',
+};

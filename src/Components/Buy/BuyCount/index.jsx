@@ -41,7 +41,7 @@ const BuyCount = props => {
             <Form.Group as={Col} xl={5} controlId="usdt" className="">
               <Form.Control
                 style={formInput}
-                className="align-self-center"
+                className="align-self-center easy-border"
                 // placeholder={props.usdtAmt ? props.usdtAmt : 'USDT'}
                 placeholder="請輸入購買數量"
                 value={props.usdtAmt ? props.usdtAmt : ''}
@@ -53,19 +53,17 @@ const BuyCount = props => {
               />
 
               <span style={inputText}>USDT</span>
-            </Form.Group>
-            {props.error && (
-              <Form.Group
-                as={Col}
-                style={{
-                  marginTop: '-20px',
-                }}
-              >
-                <Form.Text className="text-muted">
-                  <span className="">{props.error}</span>
+              {props.error && (
+                <Form.Text
+                  className=""
+                  style={{
+                    fontSize: '12px',
+                  }}
+                >
+                  <span className="">*{props.error}</span>
                 </Form.Text>
-              </Form.Group>
-            )}
+              )}
+            </Form.Group>
 
             <Form.Group as={Col} className="transaction-twoWay">
               {/* <span className="twoWay-icon "></span> */}
@@ -80,6 +78,7 @@ const BuyCount = props => {
                 onChange={props.getRmbAmt}
                 autoComplete="off"
                 type="number"
+                className="easy-border "
               />
               {/* <Form.Text>adf</Form.Text> */}
               <span style={inputText}>CNY</span>
@@ -121,18 +120,15 @@ const BuyCount = props => {
             }}
           >
             <Form.Group as={Col}>
-              <Button
-                style={{
-                  padding: 15,
-                  fontSize: 17,
-                }}
+              <button
+                style={{}}
                 block
-                className=""
+                className="easy-btn mw400"
                 onClick={props.showPayDetail}
                 variant="primary"
               >
                 下一步
-              </Button>
+              </button>
             </Form.Group>
           </Form.Row>
 

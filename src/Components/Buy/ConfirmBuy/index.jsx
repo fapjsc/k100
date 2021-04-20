@@ -43,12 +43,12 @@ const ConfirmBuy = props => {
               <Form.Control
                 placeholder="請輸入銀行卡持有人姓名"
                 onChange={props.getClientName}
-                className="confirmBuyInput"
+                className="confirmBuyInput easy-border"
                 autoComplete="off"
                 isInvalid={props.error}
               />
 
-              {props.error && <Form.Text className="text-muted">{props.error}</Form.Text>}
+              {props.error && <Form.Text className="">*{props.error}</Form.Text>}
               <p
                 style={{
                   color: '#eb0303',
@@ -91,8 +91,9 @@ const ConfirmBuy = props => {
             <Button
               style={{
                 fontSize: 17,
+                borderRadius: '5px',
               }}
-              className="buyCount-btn"
+              className="easy-btn mw400"
               variant="primary"
               disabled={props.isPairing || props.pairFinish || props.pair || isLoading}
               onClick={!isLoading ? handleClick : null}

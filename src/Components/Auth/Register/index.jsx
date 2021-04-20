@@ -263,8 +263,12 @@ export default class index extends Component {
             {!showValidCode ? (
               <Form>
                 <Form.Row>
-                  <Form.Group as={Col} md="3" controlId="CountryCode">
+                  <Form.Group as={Col} md="4" controlId="CountryCode">
                     <Form.Control
+                      style={{
+                        fontSize: '17px',
+                        color: '#495057',
+                      }}
                       as="select"
                       defaultValue="區號"
                       className="form-select mb-4 pl-2"
@@ -281,7 +285,7 @@ export default class index extends Component {
                     )}
                   </Form.Group>
 
-                  <Form.Group as={Col} md="9" controlId="formBasicPhoneNumber">
+                  <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
                     <Form.Control
                       className="form-select mb-4"
                       size="lg"

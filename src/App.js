@@ -7,6 +7,7 @@ import Home from './pages/Home';
 
 import SellState from './context/sell/SellState';
 import BalanceState from './context/balance/BalanceState';
+import ChatState from './context/chat/ChatState';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -25,18 +26,20 @@ function App() {
   return (
     <BalanceState>
       <SellState>
-        <Switch>
-          <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
+        <ChatState>
+          <Switch>
+            <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
 
-          <Route path="/agreement" component={Agreement} />
-          <Route
-            isAuth={isAuth}
-            path="/home"
-            component={props => <Home {...props} setAuth={setAuth} />}
-          />
+            <Route path="/agreement" component={Agreement} />
+            <Route
+              isAuth={isAuth}
+              path="/home"
+              component={props => <Home {...props} setAuth={setAuth} />}
+            />
 
-          <Redirect to="/auth/login" />
-        </Switch>
+            <Redirect to="/auth/login" />
+          </Switch>
+        </ChatState>
       </SellState>
     </BalanceState>
   );

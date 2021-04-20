@@ -188,8 +188,12 @@ export default class LoginForm extends Component {
         <div className="form-container">
           <Form>
             <Form.Row>
-              <Form.Group as={Col} md="3" controlId="CountryCode">
+              <Form.Group as={Col} md="4" controlId="CountryCode">
                 <Form.Control
+                  style={{
+                    fontSize: '17px',
+                    color: '#495057',
+                  }}
                   as="select"
                   defaultValue="區號"
                   className="form-select mb-4 pl-2"
@@ -202,11 +206,14 @@ export default class LoginForm extends Component {
                   <option>香港＋852</option>
                 </Form.Control>
                 {countryCode.error && (
-                  <Form.Text className="mb-4">{`*${countryCode.error}`}</Form.Text>
+                  <Form.Text
+                    className="mb-4"
+                    style={{ fontSize: '12px' }}
+                  >{`*${countryCode.error}`}</Form.Text>
                 )}
               </Form.Group>
 
-              <Form.Group as={Col} md="9" controlId="formBasicPhoneNumber">
+              <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
                 <Form.Control
                   isInvalid={phoneNumber.error}
                   className="form-select mb-4"
@@ -217,7 +224,10 @@ export default class LoginForm extends Component {
                   autoComplete="off"
                 />
                 {phoneNumber.error && (
-                  <Form.Text className="mb-4">{`*${phoneNumber.error}`}</Form.Text>
+                  <Form.Text
+                    className="mb-4"
+                    style={{ fontSize: '12px' }}
+                  >{`*${phoneNumber.error}`}</Form.Text>
                 )}
               </Form.Group>
             </Form.Row>
@@ -233,7 +243,12 @@ export default class LoginForm extends Component {
                   onChange={this.setPassword}
                   autoComplete="off"
                 />
-                {password.error && <Form.Text className="mb-4">{`*${password.error}`}</Form.Text>}
+                {password.error && (
+                  <Form.Text
+                    className="mb-4"
+                    style={{ fontSize: '12px' }}
+                  >{`*${password.error}`}</Form.Text>
+                )}
               </Form.Group>
             </Form.Row>
 

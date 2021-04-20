@@ -122,7 +122,7 @@ export default class Transaction extends Component {
               marginTop: 40,
             }}
           >
-            <p className="welcome_txt col-xl-9">歡迎登入</p>
+            <p className="welcome_txt col-xl-9 mx-auto">歡迎登入</p>
             <div className="col-xl-9 transaction-card">
               {/* Nav */}
               <TransactionNav location={location} />

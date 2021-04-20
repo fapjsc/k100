@@ -15,8 +15,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import changeMoney from '../../Assets/i_twoways.png';
 
 const SellForm = () => {
-  const mobileApp = useMediaQuery({ query: '(max-width: 991px)' });
-  const smPoint = useMediaQuery({ query: '(max-width: 500px)' });
+  const mobileApp = useMediaQuery({ query: '(max-width: 1199px)' });
+  // const smPoint = useMediaQuery({ query: '(max-width: 500px)' });
 
   const balanceContext = useContext(BalanceContext);
   const { getBalance, wsPairing, avb } = balanceContext;
@@ -325,45 +325,37 @@ const SellForm = () => {
       {exRate ? (
         <Form onSubmit={onSubmit}>
           {/* sell count */}
-          <Row
+          <Form.Row
             className="mt-4"
             style={{
               marginBottom: '-12px',
             }}
           >
-            <Col className="">
-              <Form.Group className="mb-0">
-                {fetchLoading ? (
-                  <Button variant="secondary" disabled style={{}}>
-                    <Spinner
-                      as="span"
-                      animation="grow"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                    Loading...
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={fetchLoading}
-                    variant="outline-primary"
-                    size="sm"
-                    className=""
-                    onClick={fetchAll}
-                    style={{}}
-                  >
-                    提取所有
-                  </Button>
-                )}
-              </Form.Group>
-            </Col>
-          </Row>
+            <Form.Group as={Col} xl={5} className="mb-0 d-flex justify-content-end pr-0">
+              {fetchLoading ? (
+                <Button variant="secondary" disabled className="" style={{}}>
+                  <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
+                  Loading...
+                </Button>
+              ) : (
+                <Button
+                  disabled={fetchLoading}
+                  variant="outline-primary"
+                  size="sm"
+                  className=""
+                  onClick={fetchAll}
+                  style={{}}
+                >
+                  提取所有
+                </Button>
+              )}
+            </Form.Group>
+          </Form.Row>
 
           <Form.Row className="mt-4">
             <Form.Group as={Col} xl={5} controlId="usdt" className="p-0 m-0">
               <Form.Control
-                className=""
+                className="easy-border"
                 placeholder="請輸入出售數量"
                 autoComplete="off"
                 type="number"
@@ -378,9 +370,11 @@ const SellForm = () => {
               />
 
               {/* 錯誤提示 */}
-              {usdt && <Form.Text className="text-left my-2 h4">{usdt.error}</Form.Text>}
-
-              {/* 手續費顯示 */}
+              {usdt.error && (
+                <Form.Text className="" style={{ fontSize: '12px' }}>
+                  *{usdt.error}
+                </Form.Text>
+              )}
 
               <span style={inputText}>USDT</span>
             </Form.Group>
@@ -397,7 +391,7 @@ const SellForm = () => {
 
             <Form.Group as={Col} xl={5} controlId="cny" className="m-0 p-0">
               <Form.Control
-                className=""
+                className="easy-border"
                 autoComplete="off"
                 type="number"
                 name="cny"
@@ -423,13 +417,7 @@ const SellForm = () => {
           </div>
 
           <div className="mt-4">
-            <p
-              style={{
-                fontSize: 16,
-              }}
-            >
-              電子錢包
-            </p>
+            <p className="txt_12">電子錢包</p>
             <Button
               variant="outline-primary"
               size="sm"
@@ -449,97 +437,117 @@ const SellForm = () => {
           </div>
 
           {/* info */}
-          {showForm && (
-            <section>
-              <Row>
-                <Col sm={12} md={6} lg={6}>
-                  <Form.Group controlId="name">
-                    <Form.Control
-                      className="buyCount-input"
-                      placeholder="收款姓名"
-                      name="name"
-                      isInvalid={!name.isValid}
-                      value={name.val}
-                      onChange={onChange}
-                      autoComplete="off"
-                      style={{
-                        width: '100%',
-                      }}
-                    />
-                  </Form.Group>
-                  {name.error && <Form.Text className="text-left my-2 h4">{name.error}</Form.Text>}
-                </Col>
-                <Col sm={12} md={6} lg={6}>
-                  <Form.Group controlId="bank">
-                    <Form.Control
-                      className="buyCount-input"
-                      placeholder="開戶銀行"
-                      name="bank"
-                      isInvalid={!bank.isValid}
-                      value={bank.val}
-                      onChange={onChange}
-                      autoComplete="off"
-                      style={{
-                        width: '100%',
-                      }}
-                    />
-                  </Form.Group>
-                  {bank.error && <Form.Text className="text-left my-2 h4">{bank.error}</Form.Text>}
-                </Col>
-              </Row>
+          <Form.Row className="mt-4">
+            <Form.Group as={Col} xl={6} sm={12} controlId="name" className="mt-4">
+              <Form.Label>收款姓名</Form.Label>
+              <Form.Control
+                placeholder="收款姓名"
+                name="name"
+                isInvalid={!name.isValid}
+                value={name.val}
+                onChange={onChange}
+                autoComplete="off"
+                className="easy-border "
+                style={{
+                  padding: 30,
+                  fontSize: 20,
+                }}
+              />
+              {name.error && (
+                <Form.Text className="" style={{ fontSize: '12px' }}>
+                  *{name.error}
+                </Form.Text>
+              )}
+            </Form.Group>
 
-              <Row>
-                <Col sm={12} md={6} lg={6}>
-                  <Form.Group controlId="account">
-                    <Form.Control
-                      className="buyCount-input"
-                      placeholder="收款帳號"
-                      name="account"
-                      isInvalid={!account.isValid}
-                      value={account.val}
-                      onChange={onChange}
-                      autoComplete="off"
-                      style={{
-                        width: '100%',
-                      }}
-                    />
-                  </Form.Group>
-                  {account.error && (
-                    <Form.Text className="text-left my-2 h4">{account.error}</Form.Text>
-                  )}
-                </Col>
-                <Col sm={12} md={6} lg={6}>
-                  <Form.Group controlId="city">
-                    <Form.Control
-                      className="buyCount-input"
-                      placeholder="所在省市"
-                      name="city"
-                      isInvalid={!city.isValid}
-                      value={city.val}
-                      onChange={onChange}
-                      autoComplete="off"
-                      style={{
-                        width: '100%',
-                      }}
-                    />
-                  </Form.Group>
-                  {city.error && <Form.Text className="text-left my-2 h4">{city.error}</Form.Text>}
-                </Col>
-              </Row>
-              <br />
-              <br />
-              <Button
-                type="submit"
-                disabled={wsPairing}
-                block
-                className="m-auto"
-                variant={!wsPairing ? 'primary' : 'secondary'}
-                style={smPoint ? sellFormBtnSmPoint : sellFormBtn}
-              >
-                下一步
-              </Button>
-            </section>
-          )}
+            <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-4">
+              <Form.Label>開戶銀行</Form.Label>
+              <Form.Control
+                className="easy-border"
+                placeholder="開戶銀行"
+                name="bank"
+                isInvalid={!bank.isValid}
+                value={bank.val}
+                onChange={onChange}
+                autoComplete="off"
+                style={{
+                  padding: 30,
+                  fontSize: 20,
+                }}
+              />
+              {bank.error && (
+                <Form.Text className="" style={{ fontSize: '12px' }}>
+                  *{bank.error}
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Form.Row>
+
+          <Form.Row className="">
+            <Form.Group as={Col} xl={6} sm={12} controlId="account" className="mt-4">
+              <Form.Label>收款帳號</Form.Label>
+              <Form.Control
+                className="easy-border"
+                placeholder="收款帳號"
+                name="account"
+                isInvalid={!account.isValid}
+                value={account.val}
+                onChange={onChange}
+                autoComplete="off"
+                style={{
+                  padding: 30,
+                  fontSize: 20,
+                }}
+              />
+              {account.error && (
+                <Form.Text className="" style={{ fontSize: '12px' }}>
+                  *{account.error}
+                </Form.Text>
+              )}
+            </Form.Group>
+
+            <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-4">
+              <Form.Label>所在省市</Form.Label>
+              <Form.Control
+                className="easy-border"
+                placeholder="所在省市"
+                name="city"
+                isInvalid={!city.isValid}
+                value={city.val}
+                onChange={onChange}
+                autoComplete="off"
+                style={{
+                  padding: 30,
+                  fontSize: 20,
+                }}
+              />
+              {city.error && (
+                <Form.Text
+                  className=""
+                  style={{
+                    fontSize: '12px',
+                  }}
+                >
+                  *{city.error}
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Form.Row>
+          <br />
+          <br />
+          <Button
+            type="submit"
+            disabled={wsPairing}
+            block
+            className="easy-btn mw400"
+            // variant={!wsPairing ? 'primary' : 'secondary'}
+            // style={smPoint ? sellFormBtnSmPoint : sellFormBtn}
+            style={{
+              backgroundColor: wsPairing && 'grey',
+            }}
+          >
+            下一步
+          </Button>
 
           {/* <button onClick={props.showPayDetail}>下一步</button> */}
         </Form>
@@ -570,19 +578,19 @@ const changeMoneyIconMobile = {
   width: 45,
 };
 
-const sellFormBtn = {
-  height: 50,
-  fontSize: 18,
-  borderRadius: 5,
-  maxWidth: '50%',
-};
+// const sellFormBtn = {
+//   height: 50,
+//   fontSize: 18,
+//   borderRadius: 5,
+//   maxWidth: '50%',
+// };
 
-const sellFormBtnSmPoint = {
-  height: 50,
-  fontSize: 18,
-  borderRadius: 5,
-  width: '100%',
-};
+// const sellFormBtnSmPoint = {
+//   height: 50,
+//   fontSize: 18,
+//   borderRadius: 5,
+//   width: '100%',
+// };
 
 const inputText = {
   color: '#D7E2F3',

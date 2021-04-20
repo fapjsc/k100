@@ -6,6 +6,7 @@ import SellContext from '../../context/sell/SellContext';
 import SellHeaders from './SellHeader';
 
 import SellCompleted from './SellCompleted';
+import SetAccount from '../Buy/SetAccount';
 // import SellCountDown from './SellCountDown';
 import Chat from '../Chat';
 import CancelSell from './CancelSell';
@@ -13,6 +14,9 @@ import CancelSell from './CancelSell';
 import helpIcon from '../../Assets/i_ask2.png';
 import btnWait from '../../Assets/btn_wait.png';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const SellInfo = () => {
   // Break Points
@@ -100,17 +104,20 @@ const SellInfo = () => {
           hash={wsData && wsData.Tx_HASH}
         />
         <SellHeaders />
-        <main>
-          <section style={isLaptopFloor ? infoBoxLabTop : infoBox}>
-            <div style={mobileApp ? infoHeaderMobileApp : infoHeader}>
+        <Container>
+          <Row className="mb-2">
+            <Col className="mt-4 pl-1">
               <p
                 style={{
-                  fontSize: 18,
+                  fontSize: '12px',
+                  fontWeight: 'bold',
                 }}
+                className="mb-0"
               >
                 提交資料
               </p>
 
+              {/* 倒數時間 */}
               {/* <p
                                 style={{
                                     fontSize: 18,
@@ -133,16 +140,18 @@ const SellInfo = () => {
                                     ) : null}
                                 </span>
                             </p> */}
-            </div>
+            </Col>
+          </Row>
 
-            <div style={isLaptopFloor ? infoBodyLabTop : infoBody}>
+          <Row className=" mb-2">
+            <Col xl={6} className="txt_12 lightblue_bg mb-4">
               <p>
-                收款金額：
+                收款金額： &emsp;
                 <span
                   style={{
-                    color: '#007bff',
-                    fontSize: 30,
-                    fontWeight: '600',
+                    color: '#3e80f9',
+                    fontSize: '17px',
+                    fontWeight: 'bold',
                   }}
                 >
                   {wsData && wsData.D2 + ` CNY`}
@@ -152,18 +161,13 @@ const SellInfo = () => {
               <p>付款帳號：{wsData && wsData.P1}</p>
               <p>開戶銀行：{wsData && wsData.P3}</p>
               <p>所在省市：{wsData && wsData.P4}</p>
-            </div>
-
-            <div
-              style={
-                isLaptopFloor && !mobileApp
-                  ? infoCountLabTop
-                  : mobileApp
-                  ? infoCountMobileApp
-                  : infoCount
-              }
-            >
-              <p
+            </Col>
+            <Col xl={6}>
+              <SetAccount
+                usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
+                rmbAmt={wsData.D2.toFixed(2)}
+              />
+              {/* <p
                 style={{
                   fontSize: 15,
                 }}
@@ -196,52 +200,45 @@ const SellInfo = () => {
                 >
                   {wsData && Math.abs(wsData.UsdtAmt).toFixed(2) + ` USDT`}
                 </span>
-              </p>
-            </div>
-          </section>
-          <div style={mobileApp ? infoBtnBoxMobileApp : infoBtnBox}>
-            {/* <Button
-                            onClick={handleSubmit}
-                            block
-                            style={infoBtn}
-                            variant={overTime ? 'secondary' : 'primary'}
-                            disabled={overTime}
-                        >
-                            {overTime ? '逾時' : '確認收款'}
-                        </Button> */}
-
-            <Button
-              onClick={handleSubmit}
-              block
-              style={infoBtn}
-              variant={payment ? 'primary' : 'secondary'}
-              disabled={!payment}
-            >
-              {!payment && (
-                <img
-                  src={btnWait}
-                  alt="btn wait"
-                  style={{
-                    height: 25,
-                    marginRight: 15,
-                  }}
-                />
-              )}
-
-              <span>{payment ? ' 買家已付款，確認收款' : '對方準備中'}</span>
-            </Button>
-
-            {!payment && (
-              <span
-                // onClick={() => cancelOrder(id)}
-                onClick={() => setShowCancel(true)}
-                className="txt_12_grey"
-                style={cancelLink}
+              </p> */}
+            </Col>
+          </Row>
+          <Row className="mw400 text-center m-auto">
+            <Col>
+              <Button
+                onClick={handleSubmit}
+                block
+                // className="easy-btn mw400"
+                style={payment ? infoBtn : infoBtnDisabled}
+                // variant={payment ? 'primary' : 'secondary'}
+                disabled={!payment}
               >
-                取消訂單
-              </span>
-            )}
-          </div>
+                {!payment && (
+                  <img
+                    src={btnWait}
+                    alt="btn wait"
+                    style={{
+                      height: 25,
+                      marginRight: 10,
+                    }}
+                  />
+                )}
+
+                <span className="">{payment ? ' 買家已付款，確認收款' : '對方準備中'}</span>
+              </Button>
+
+              {!payment && (
+                <span
+                  // onClick={() => cancelOrder(id)}
+                  onClick={() => setShowCancel(true)}
+                  className="txt_12_grey"
+                  style={cancelLink}
+                >
+                  取消訂單
+                </span>
+              )}
+            </Col>
+          </Row>
           {/* Footer */}
           <footer
             style={{
@@ -269,7 +266,7 @@ const SellInfo = () => {
               </li>
             </ul>
           </footer>
-        </main>
+        </Container>
 
         {lapTopBig && wsData ? (
           <Fragment>
@@ -362,11 +359,37 @@ const infoBtnBox = {
 };
 
 const infoBtn = {
-  padding: 10,
-  fontSize: 20,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  // padding: 10,
+  // fontSize: 20,
+  // display: 'flex',
+  // alignItems: 'center',
+  // justifyContent: 'center',
+
+  backgroundColor: '#3E80F9',
+  borderRadius: '5px',
+  color: '#fff',
+  width: '100%',
+  padding: '15px',
+  margin: '10px auto 15px',
+  border: 'none',
+  transition: '0.3s',
+  cursor: 'pointer',
+  fontSize: '17px',
+};
+
+const infoBtnDisabled = {
+  backgroundColor: 'grey',
+  borderRadius: '5px',
+  color: '#fff',
+  width: '100%',
+  padding: '15px',
+  margin: '10px auto 15px',
+  border: 'none',
+  transition: '0.3s',
+  cursor: 'pointer',
+  fontSize: '17px',
+  opacity: '0.65',
+  cursor: 'not-allowed',
 };
 
 const cancelLink = {
@@ -374,12 +397,10 @@ const cancelLink = {
   fontWeight: 'bold',
   borderBottom: '1px solid grey',
   display: 'inline-block',
-  marginTop: 20,
   cursor: 'pointer',
 };
 
 const helpBtn = {
-  fontSize: 18,
   paddingLeft: 15,
   paddingRight: 15,
   paddingTop: 5,
@@ -387,10 +408,15 @@ const helpBtn = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  borderRadius: 40,
+
+  padding: '1rem 2rem',
+  fontSize: '1.5rem',
+  fontWeight: 300,
+  borderRadius: '10rem',
   position: 'fixed',
-  bottom: 10,
-  right: 50,
+  bottom: '5%',
+  right: '5%',
+  backgroundColor: '#F80FA',
 };
 
 // Lab TOp

@@ -459,8 +459,8 @@ export default class Transfer extends Component {
         <Route exact path="/home/transaction/transfer">
           <>
             <Form className="text-center">
-              <Row className="mb-2 w-50">
-                <Col className="pr-0 text-left">
+              <Form.Row className="">
+                <Form.Group as={Col} sm={12} md={6} className="text-right ">
                   <Button
                     disabled={transferLoading}
                     variant="outline-primary"
@@ -469,58 +469,53 @@ export default class Transfer extends Component {
                   >
                     提取所有
                   </Button>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={12} md={6} lg={6} xl={6} className="mb-4">
-                  <Form.Group controlId="transferUsdt" className="">
-                    <Form.Control
-                      type="number"
-                      placeholder="請輸入轉帳數量"
-                      className="p_sm-2"
-                      onChange={this.setTransferCount}
-                      autoComplete="off"
-                      value={transfercount.val}
-                      isInvalid={!transfercount.isValid}
-                      // onKeyUp={this.countryInput}
-                    />
-                    <span style={inputText}>USDT</span>
-                    {transfercount.error ? (
-                      <Form.Text className="text-muted text-left">{transfercount.error}</Form.Text>
-                    ) : null}
-                  </Form.Group>
-                </Col>
+                </Form.Group>
+              </Form.Row>
 
-                <Col sm={12} md={6} lg={6} xl={6} className="mb-2">
-                  <Form.Group controlId="transferAddress" className="">
-                    <Form.Control
-                      type="text"
-                      placeholder="請輸入收款地址"
-                      className="p_sm-2"
-                      autoComplete="off"
-                      onChange={this.setTransferAddress}
-                      isInvalid={!transferAddress.isValid}
-                    />
+              <Form.Row>
+                <Form.Group as={Col} md={6} sm={12} controlId="transferUsdt" className="">
+                  <Form.Control
+                    type="number"
+                    placeholder="請輸入轉帳數量"
+                    className="p_sm-2 easy-border"
+                    onChange={this.setTransferCount}
+                    autoComplete="off"
+                    value={transfercount.val}
+                    isInvalid={!transfercount.isValid}
+                    // onKeyUp={this.countryInput}
+                  />
+                  <span style={inputText}>USDT</span>
+                  {transfercount.error ? (
+                    <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
+                      *{transfercount.error}
+                    </Form.Text>
+                  ) : null}
+                </Form.Group>
 
-                    {transferAddress.error ? (
-                      <Form.Text className="text-muted text-left">
-                        {transferAddress.error}
-                      </Form.Text>
-                    ) : null}
-                  </Form.Group>
-                </Col>
+                <Form.Group as={Col} md={6} sm={12} controlId="transferAddress" className="">
+                  <Form.Control
+                    type="text"
+                    placeholder="請輸入收款地址"
+                    className="p_sm-2 easy-border"
+                    autoComplete="off"
+                    onChange={this.setTransferAddress}
+                    isInvalid={!transferAddress.isValid}
+                  />
 
-                {exRate !== null ? (
-                  <Col
-                    className="text-left"
-                    style={{
-                      marginTop: '-10px',
-                    }}
-                  >
+                  {transferAddress.error ? (
+                    <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
+                      *{transferAddress.error}
+                    </Form.Text>
+                  ) : null}
+                </Form.Group>
+              </Form.Row>
+              {exRate !== null ? (
+                <Form.Row>
+                  <Form.Group as={Col} className="text-right" style={{}}>
                     <span className="text-dark">手續費: {exRate.TransferHandle} USDT</span>
-                  </Col>
-                ) : null}
-              </Row>
+                  </Form.Group>
+                </Form.Row>
+              ) : null}
               {/* <Button
                             variant="primary"
                             className="easy-btn mw400"

@@ -78,7 +78,7 @@ header {
       margin: 0 2rem;
     }
 
-    @media only screen and(max-width: 300px) {
+    @media only screen and(max-width: 340px) {
       margin: 0 1rem;
     }
 
@@ -100,6 +100,19 @@ header {
     padding: 0 1rem;
     text-align: left;
     height: 4rem;
-    font-size: 1rem;
+  }
+
+  @media only screen and(max-width: 457px) {
+    padding: 0 1rem;
+    text-align: left;
+    height: 4rem;
+    font-size: 17px;
+  }
+
+  @media only screen and(max-width: 374px) {
+    padding: 0 10px;
+    text-align: left;
+    height: 4rem;
+    font-size: 14px;
   }
 }
