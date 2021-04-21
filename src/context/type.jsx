@@ -15,3 +15,5 @@ export const SET_BALANCE = 'GET_BALANCE';
 
 // Chat
 export const SET_TRANSLATE = 'SET_TRANSLATE';
+
+// Auth

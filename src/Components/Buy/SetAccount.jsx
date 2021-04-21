@@ -1,15 +1,25 @@
 import React from 'react';
 
 const SetAccount = props => {
+  const thousandBitSeparator = num => {
+    return (
+      num &&
+      (num.toString().indexOf('.') != -1
+        ? num.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
+            return $1 + ',';
+          })
+        : num.toString().replace(/(\d)(?=(\d{3}))/g, function ($0, $1) {
+            return $1 + ',';
+          }))
+    );
+  };
+
   return (
     <div style={confirmBuyTextBox}>
       <div className="">
         <p className="txt_12_grey mb-0">總價</p>
         <p className="c_blue mb-0">
-          {Number(props.rmbAmt)
-            .toFixed(2)
-            .toString()
-            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}{' '}
+          {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
           CNY
         </p>
       </div>
@@ -18,10 +28,7 @@ const SetAccount = props => {
         <p className="txt_12_grey mb-0">數量</p>
         <p className=" mb-0">
           {/* 小數第二位，千分逗號 */}
-          {Number(props.usdtAmt)
-            .toFixed(2)
-            .toString()
-            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}{' '}
+          {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
           USDT
         </p>
       </div>

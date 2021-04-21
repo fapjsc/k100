@@ -24,11 +24,11 @@ export default class LoginForm extends Component {
       isValid: true,
       error: '',
     },
-    captcha: {
-      val: '',
-      isValid: true,
-      error: '',
-    },
+    // captcha: {
+    //   val: '',
+    //   isValid: true,
+    //   error: '',
+    // },
     formIsValid: false,
   };
 
@@ -41,16 +41,16 @@ export default class LoginForm extends Component {
     const { phoneNumber, password, countryCode } = this.state;
 
     // captcha
-    if (!validateCaptcha(this.state.captcha.val)) {
-      this.setState({
-        captcha: {
-          val: '',
-          isValid: false,
-          error: '驗證碼錯誤',
-        },
-        formIsValid: false,
-      });
-    }
+    // if (!validateCaptcha(this.state.captcha.val)) {
+    //   this.setState({
+    //     captcha: {
+    //       val: '',
+    //       isValid: false,
+    //       error: '驗證碼錯誤',
+    //     },
+    //     formIsValid: false,
+    //   });
+    // }
 
     // 驗證區碼
     if (countryCode.val === null) {
@@ -200,7 +200,7 @@ export default class LoginForm extends Component {
   };
 
   componentDidMount() {
-    loadCaptchaEnginge(6);
+    // loadCaptchaEnginge(6);
   }
 
   render() {
@@ -275,7 +275,8 @@ export default class LoginForm extends Component {
               </Form.Group>
             </Form.Row>
 
-            <Form.Row>
+            {/* 驗證碼 */}
+            {/* <Form.Row>
               <Form.Group as={Col} xl={12}>
                 <Form.Control
                   isInvalid={captcha.error}
@@ -302,7 +303,7 @@ export default class LoginForm extends Component {
                 )}
                 <LoadCanvasTemplate />
               </Form.Group>
-            </Form.Row>
+            </Form.Row> */}
 
             <button
               onClick={this.handleLoginSubmit}

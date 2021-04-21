@@ -132,7 +132,7 @@ export default class Auth extends Component {
               </Modal>
             ) : (
               <div>
-                <h4 className="text-center p-4 font-weight-bold">{formState}帳號</h4>
+                <h4 className="text-center font-weight-bold">{formState}帳號</h4>
 
                 <nav className="form-nav">
                   <Link

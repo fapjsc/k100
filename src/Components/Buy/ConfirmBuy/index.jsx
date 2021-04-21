@@ -26,6 +26,19 @@ const ConfirmBuy = props => {
     props.handleConfirm();
   };
 
+  const thousandBitSeparator = num => {
+    return (
+      num &&
+      (num.toString().indexOf('.') != -1
+        ? num.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
+            return $1 + ',';
+          })
+        : num.toString().replace(/(\d)(?=(\d{3}))/g, function ($0, $1) {
+            return $1 + ',';
+          }))
+    );
+  };
+
   return (
     <>
       <div>
@@ -61,14 +74,11 @@ const ConfirmBuy = props => {
             </Form.Group>
 
             {/* 購買資訊 */}
-            <Form.Group as={Col} className="confirmBuy-textContent px-4 ">
+            <Form.Group as={Col} className="confirmBuy-textContent px-4">
               <div className="confirmBuy-textBox">
                 <p className="txt_12_grey mb-0">總價</p>
                 <p className="confirmBuy-text c_blue mb-0">
-                  {Number(props.rmbAmt)
-                    .toFixed(2)
-                    .toString()
-                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                  {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
                   CNY
                 </p>
               </div>
@@ -77,10 +87,7 @@ const ConfirmBuy = props => {
                 <p className="txt_12_grey mb-0">數量</p>
                 <p className="confirmBuy-text mb-0 text-dark">
                   {/* 小數第二位，千分逗號 */}
-                  {Number(props.usdtAmt)
-                    .toFixed(2)
-                    .toString()
-                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                  {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
                   USDT
                 </p>
               </div>

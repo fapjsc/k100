@@ -136,13 +136,15 @@ const SellForm = () => {
       }
 
       let counter = (e.target.value * exRate).toFixed(2);
+      // let counter = 1;
       setCny({
         val: counter,
         isValid: true,
         error: '',
       });
       setUsdt({
-        val: e.target.value.replace(/^((-\d+(\.\d+)?)|((\.0+)?))$/).trim(),
+        // val: e.target.value.replace(/^((-\d+(\.\d+)?)|((\.0+)?))$/).trim(),
+        val: e.target.value.trim(),
         isValid: true,
         error: '',
       });
@@ -164,7 +166,8 @@ const SellForm = () => {
         error: '',
       });
       setCny({
-        val: e.target.value.replace(/^((-\d+)|(0+))$/).trim(),
+        // val: e.target.value.replace(/^((-\d+)|(0+))$/).trim(),
+        val: e.target.value.trim(),
         isValid: true,
         error: '',
       });
@@ -208,7 +211,8 @@ const SellForm = () => {
     setFetchLoading(true);
     const balance = await getBalance();
 
-    let usdtCount = (balance.Avb_Balance - Number(transferHandle)).toFixed(2);
+    // let usdtCount = (balance.Avb_Balance - Number(transferHandle)).toFixed(2);
+    let usdtCount = balance.Avb_Balance.toFixed(2);
     let cnyCount = (usdtCount * Number(exRate)).toFixed(2);
 
     setUsdt({
@@ -229,7 +233,6 @@ const SellForm = () => {
   // 表單驗證
   const validForm = () => {
     setFormValid(true);
-
     // 有1~2位小数的正數，且不能為0或0開頭
     // let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
     // if (!rule.test(usdt.val) || !rule.test(cny.val)) {
@@ -242,7 +245,7 @@ const SellForm = () => {
     //     setFormValid(false);
     // }
 
-    if (usdt.val > avb - Number(transferHandle)) {
+    if (Number(usdt.val) > Number(avb)) {
       setUsdt({
         val: usdt.val,
         isValid: false,
@@ -332,14 +335,14 @@ const SellForm = () => {
             <Form.Group as={Col} xl={5} className="mb-0 d-flex justify-content-end pr-0">
               {fetchLoading ? (
                 <Button variant="secondary" disabled className="" style={{}}>
-                  <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
+                  <Spinner as="span" animation="grow" size="lg" role="status" aria-hidden="true" />
                   Loading...
                 </Button>
               ) : (
                 <Button
                   disabled={fetchLoading}
                   variant="outline-primary"
-                  size="sm"
+                  size="lg"
                   className=""
                   onClick={fetchAll}
                   style={{}}
@@ -357,6 +360,7 @@ const SellForm = () => {
                 placeholder="請輸入出售數量"
                 autoComplete="off"
                 type="number"
+                step="any"
                 isInvalid={!usdt.isValid}
                 value={usdt.val}
                 name="usdt"
@@ -392,6 +396,7 @@ const SellForm = () => {
                 className="easy-border"
                 autoComplete="off"
                 type="number"
+                step="any"
                 name="cny"
                 isInvalid={!cny.isValid}
                 value={cny.val}
@@ -408,11 +413,13 @@ const SellForm = () => {
               <span style={inputText}>CNY</span>
             </Form.Group>
           </Form.Row>
-          <div className="d-flex justify-content-between">
+
+          {/* 手續費 */}
+          {/* <div className="d-flex justify-content-between">
             <Form.Text className="text-left my-2">
               <span className="text-dark">手續費: {transferHandle}</span>
             </Form.Text>
-          </div>
+          </div> */}
 
           <div className="mt-4">
             <p className="txt_12">電子錢包</p>

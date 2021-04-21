@@ -11,6 +11,7 @@ const Pairing = props => {
         <img
           src={closeBtn}
           alt="close btn"
+          onClick={props.onHide}
           style={{
             cursor: 'pointer',
           }}
