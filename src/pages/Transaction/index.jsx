@@ -149,7 +149,7 @@ const Transaction = () => {
                 ? '0 auto'
                 : location.pathname === '/home/transaction/transfer'
                 ? '0 auto'
-                : '0',
+                : '0 0 0 -45px',
           }}
         >
           歡迎登入
@@ -164,7 +164,7 @@ const Transaction = () => {
                 ? '0 auto'
                 : location.pathname === '/home/transaction/transfer'
                 ? '0 auto'
-                : '0',
+                : '0 0 0 -45px',
           }}
         >
           {/* Nav */}

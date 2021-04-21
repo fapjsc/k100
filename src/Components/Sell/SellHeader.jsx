@@ -22,7 +22,7 @@ const SellHeader = () => {
           限額 :<span>100 - 10000</span>
         </p>
         <p className="mb-0">
-          付款窗口 :<span>30分鐘</span>
+          付款窗口 :<span>15分鐘</span>
         </p>
       </div>
     </Fragment>

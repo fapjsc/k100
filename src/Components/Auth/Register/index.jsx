@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import validator from 'validator';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 
 import ValidCode from './ValidCode';
 import BaseSpinner from '../../Ui/BaseSpinner';
@@ -26,6 +27,11 @@ export default class index extends Component {
       error: '',
     },
     countryCode: {
+      val: '',
+      isValid: true,
+      error: '',
+    },
+    captcha: {
       val: '',
       isValid: true,
       error: '',
@@ -103,12 +109,24 @@ export default class index extends Component {
     });
   };
 
-  validRegister = () => {
+  validRegister = async () => {
     this.setState({
       formIsValid: true,
     });
 
     const { phoneNumber, password, confirmPassword, countryCode } = this.state;
+
+    // captcha
+    if (!validateCaptcha(this.state.captcha.val)) {
+      this.setState({
+        captcha: {
+          val: '',
+          isValid: false,
+          error: '驗證碼錯誤',
+        },
+        formIsValid: false,
+      });
+    }
 
     //驗證區碼
     if (countryCode.val === '' || countryCode.val === null) {
@@ -165,79 +183,27 @@ export default class index extends Component {
   handleRegisterSubmit = async event => {
     event.preventDefault(); //防止表單提交
 
-    this.setState({
-      isLoading: true,
-    });
-
     await this.validRegister();
 
     const { formIsValid } = this.state;
 
     if (!formIsValid) {
-      this.setState({
-        isLoading: false,
-      });
       return;
     }
 
     this.setState(
       {
         showValidCode: true,
-        isLoading: false,
       },
       () => {
         this.props.history.replace('/auth/register/valid');
       }
     );
-
-    // const { phoneNumber, countryCode } = this.state;
-
-    // const registerApi = `/j/Req_oneTimePwd.aspx`;
-
-    // if (countryCode.val === 886) {
-    //     phoneNumber.val = phoneNumber.val.substr(1);
-    // }
-
-    // console.log(countryCode.val, phoneNumber.val);
-
-    // try {
-    //     const res = await fetch(registerApi, {
-    //         method: 'POST',
-    //         body: JSON.stringify({
-    //             reg_countrycode: countryCode.val,
-    //             reg_tel: phoneNumber.val,
-    //         }),
-    //     });
-
-    //     const resData = await res.json();
-
-    //     if (resData.code === 200) {
-    //         this.setState(
-    //             {
-    //                 showValidCode: true,
-    //             },
-    //             () => {
-    //                 this.props.history.replace('/auth/register/valid');
-    //             }
-    //         );
-    //     } else {
-    //         this.props.history.replace('/auth/register');
-    //         alert(resData);
-    //     }
-
-    //     console.log(resData, '=======');
-    //     this.setState({
-    //         isLoading: false,
-    //     });
-    // } catch (error) {
-    //     this.setState({
-    //         isLoading: false,
-    //     });
-    //     alert(error);
-    // }
   };
 
   componentDidMount() {
+    loadCaptchaEnginge(6);
+
     if (!this.state.showValidCode) {
       this.props.history.replace('/auth/register');
     }
@@ -252,6 +218,7 @@ export default class index extends Component {
       agree,
       countryCode,
       isLoading,
+      captcha,
     } = this.state;
 
     return (
@@ -329,6 +296,35 @@ export default class index extends Component {
                     {confirmPassword.error && (
                       <Form.Text className="mb-4">{`*${confirmPassword.error}`}</Form.Text>
                     )}
+                  </Form.Group>
+                </Form.Row>
+
+                <Form.Row>
+                  <Form.Group as={Col} xl={12}>
+                    <Form.Control
+                      isInvalid={captcha.error}
+                      className="form-select mb-4"
+                      size="lg"
+                      placeholder="驗證碼區分大小寫"
+                      value={this.state.captcha.val}
+                      onChange={e =>
+                        this.setState({
+                          captcha: {
+                            val: e.target.value,
+                            isValid: true,
+                            error: '',
+                          },
+                        })
+                      }
+                      autoComplete="off"
+                    />
+                    {captcha.error && (
+                      <Form.Text
+                        className="mb-4"
+                        style={{ fontSize: '12px' }}
+                      >{`*${captcha.error}`}</Form.Text>
+                    )}
+                    <LoadCanvasTemplate style={{ width: 150, height: 30 }} />
                   </Form.Group>
                 </Form.Row>
 

@@ -109,12 +109,12 @@ export default class Auth extends Component {
     const { formState, isLoading, httpError, showModal, loginErr } = this.state;
     const { location } = this.props;
     return (
-      <div>
+      <div className="" style={{}}>
         <Header>
           <div className={style.logo}></div>
         </Header>
         <div className="user-auth">
-          <BaseCard isLoading={isLoading}>
+          <BaseCard className="" isLoading={isLoading}>
             {isLoading ? (
               <div className="mt_120">
                 <BaseSpinner />

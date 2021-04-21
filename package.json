@@ -20,6 +20,7 @@
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-simple-captcha": "^6.1.6",
     "react-zmage": "^0.8.5-beta.36",
     "reconnecting-websocket": "^4.4.0",
     "use-sound": "^2.0.2",

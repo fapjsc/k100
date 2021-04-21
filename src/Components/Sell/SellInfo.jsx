@@ -164,7 +164,7 @@ const SellInfo = () => {
             </Col>
 
             {wsData && (
-              <Col xl={6}>
+              <Col xl={6} className="px-0">
                 <SetAccount
                   usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
                   rmbAmt={wsData.D2.toFixed(2)}
@@ -206,10 +206,11 @@ const SellInfo = () => {
               </Col>
             )}
           </Row>
-          <Row className="mw400 text-center m-auto">
-            <Col>
+          <Row className="justify-content-center">
+            <Col className="mw400 text-center px-0">
               <Button
                 onClick={handleSubmit}
+                className=""
                 block
                 // className="easy-btn mw400"
                 style={payment ? infoBtn : infoBtnDisabled}

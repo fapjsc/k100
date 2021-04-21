@@ -43,24 +43,26 @@ const InfoDetail = props => {
               <p>開戶銀行： {props.transferData.bank}</p>
               <p>所在省市： {props.transferData.branch}</p>
             </Col>
-            <Col xl={6} className="">
+            <Col xl={6} className="px-0">
               <SetAccount rmbAmt={props.transferData.rmb} usdtAmt={props.transferData.usdtAmt} />
             </Col>
           </Row>
 
-          <div className="text-center">
-            <button className="easy-btn mw400" onClick={props.getConfirmPay}>
-              已完成付款
-            </button>
-            <p
-              style={{
-                cursor: 'pointer',
-              }}
-              onClick={setConfirmCancel}
-            >
-              取消訂單
-            </p>
-          </div>
+          <Row className="justify-content-center">
+            <Col className="mw400 text-center">
+              <button className="easy-btn w-100" onClick={props.getConfirmPay}>
+                已完成付款
+              </button>
+              <p
+                style={{
+                  cursor: 'pointer',
+                }}
+                onClick={setConfirmCancel}
+              >
+                取消訂單
+              </p>
+            </Col>
+          </Row>
         </>
       )}
     </>

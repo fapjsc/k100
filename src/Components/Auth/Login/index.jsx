@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+
 import { Form, Col } from 'react-bootstrap';
 import './index.scss';
 import { Fragment } from 'react';
@@ -22,6 +24,11 @@ export default class LoginForm extends Component {
       isValid: true,
       error: '',
     },
+    captcha: {
+      val: '',
+      isValid: true,
+      error: '',
+    },
     formIsValid: false,
   };
 
@@ -32,6 +39,18 @@ export default class LoginForm extends Component {
     });
 
     const { phoneNumber, password, countryCode } = this.state;
+
+    // captcha
+    if (!validateCaptcha(this.state.captcha.val)) {
+      this.setState({
+        captcha: {
+          val: '',
+          isValid: false,
+          error: '驗證碼錯誤',
+        },
+        formIsValid: false,
+      });
+    }
 
     // 驗證區碼
     if (countryCode.val === null) {
@@ -180,8 +199,12 @@ export default class LoginForm extends Component {
     }
   };
 
+  componentDidMount() {
+    loadCaptchaEnginge(6);
+  }
+
   render() {
-    const { password, phoneNumber, countryCode } = this.state;
+    const { password, phoneNumber, countryCode, captcha } = this.state;
 
     return (
       <Fragment>
@@ -249,6 +272,35 @@ export default class LoginForm extends Component {
                     style={{ fontSize: '12px' }}
                   >{`*${password.error}`}</Form.Text>
                 )}
+              </Form.Group>
+            </Form.Row>
+
+            <Form.Row>
+              <Form.Group as={Col} xl={12}>
+                <Form.Control
+                  isInvalid={captcha.error}
+                  className="form-select mb-4"
+                  size="lg"
+                  type="captcha"
+                  placeholder="驗證碼區分大小寫"
+                  onChange={e =>
+                    this.setState({
+                      captcha: {
+                        val: e.target.value,
+                        isValid: true,
+                        error: '',
+                      },
+                    })
+                  }
+                  autoComplete="off"
+                />
+                {captcha.error && (
+                  <Form.Text
+                    className="mb-4"
+                    style={{ fontSize: '12px' }}
+                  >{`*${captcha.error}`}</Form.Text>
+                )}
+                <LoadCanvasTemplate />
               </Form.Group>
             </Form.Row>
 

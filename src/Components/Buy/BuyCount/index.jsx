@@ -96,7 +96,7 @@ const BuyCount = props => {
 
           <Form.Row className="mb-4">
             <Form.Group as={Col}>
-              <p>付款方式</p>
+              <p className="txt_12">付款方式</p>
               <Button
                 disabled
                 style={{
@@ -121,10 +121,9 @@ const BuyCount = props => {
           >
             <Form.Group as={Col}>
               <button
-                style={{}}
+                style={{ width: '100%' }}
                 className="easy-btn mw400"
                 onClick={props.showPayDetail}
-                variant="primary"
               >
                 下一步
               </button>

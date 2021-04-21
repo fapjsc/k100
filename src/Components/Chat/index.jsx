@@ -45,6 +45,8 @@ const Chat = props => {
   const [messages, setMessage] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [orderToken, setOrderToken] = useState(null);
+
+  const [messagesEnd, setMessagesEnd] = useState(null);
   // const [img, setImg] = useState('');
 
   const setInput = e => {
@@ -147,7 +149,7 @@ const Chat = props => {
   }, [orderToken]);
 
   useEffect(() => {
-    // scrollToBottom();
+    scrollToBottom();
   });
 
   // componentDidUpdate() {
@@ -258,7 +260,9 @@ const Chat = props => {
   };
 
   const scrollToBottom = () => {
-    // messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEnd) {
+      messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -319,12 +323,12 @@ const Chat = props => {
                   </p>
                 </Fragment>
               ))}
-              {/* <div
+              <div
                 style={{ float: 'left', clear: 'both' }}
                 ref={el => {
-                  messagesEnd = el;
+                  setMessagesEnd(el);
                 }}
-              ></div> */}
+              ></div>
             </div>
 
             {/* 輸入訊息 */}
@@ -415,12 +419,12 @@ const Chat = props => {
                   </p>
                 </Fragment>
               ))}
-              {/* <div
+              <div
                 style={{ float: 'left', clear: 'both' }}
                 ref={el => {
-                  messagesEnd = el;
+                  setMessagesEnd(el);
                 }}
-              ></div> */}
+              ></div>
             </div>
 
             {/* 輸入訊息 */}

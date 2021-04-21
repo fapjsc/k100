@@ -71,7 +71,6 @@ const SellForm = () => {
 
   const [formValid, setFormValid] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
-  const [showForm, setShowForm] = useState(false);
 
   // 獲取匯率
   // useEffect(() => {
@@ -418,18 +417,14 @@ const SellForm = () => {
           <div className="mt-4">
             <p className="txt_12">電子錢包</p>
             <Button
-              variant="outline-primary"
-              size="sm"
-              className=""
-              onClick={() => setShowForm(!showForm)}
+              disabled
               style={{
-                fontSize: 20,
-                paddingLeft: 30,
-                paddingRight: 30,
-                paddingTop: 10,
-                paddingBottom: 10,
-                borderRadius: 6,
+                marginTop: -8,
+                padding: 10,
+                fontSize: 17,
               }}
+              size="lg"
+              variant="outline-primary"
             >
               銀行卡
             </Button>
@@ -534,19 +529,24 @@ const SellForm = () => {
           </Form.Row>
           <br />
           <br />
-          <Button
-            type="submit"
-            disabled={wsPairing}
-            block
-            className="easy-btn mw400"
-            // variant={!wsPairing ? 'primary' : 'secondary'}
-            // style={smPoint ? sellFormBtnSmPoint : sellFormBtn}
-            style={{
-              backgroundColor: wsPairing && 'grey',
-            }}
-          >
-            下一步
-          </Button>
+
+          <Form.Row className="justify-content-center">
+            <Form.Group as={Col} className="mw400 px-0">
+              <Button
+                type="submit"
+                disabled={wsPairing}
+                block
+                className="easy-btn w-100"
+                // variant={!wsPairing ? 'primary' : 'secondary'}
+                // style={smPoint ? sellFormBtnSmPoint : sellFormBtn}
+                style={{
+                  backgroundColor: wsPairing && 'grey',
+                }}
+              >
+                下一步
+              </Button>
+            </Form.Group>
+          </Form.Row>
 
           {/* <button onClick={props.showPayDetail}>下一步</button> */}
         </Form>

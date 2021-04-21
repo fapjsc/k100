@@ -275,24 +275,41 @@ a:visited {
 }
 input {
   font-size: 17px !important;
+
+  @media only screen and(max-width: 767px) {
+    padding-left: 12px !important;
+  }
 }
 
 ::-webkit-input-placeholder {
   font-size: 17px;
+
+  // @media only screen and(max-width: 400px) {
+  //   font-size: 12px;
+  // }
 }
 
 :-moz-placeholder {
   /* Firefox 18- */
   font-size: 17px;
+  // @media only screen and(max-width: 400px) {
+  //   font-size: 12px;
+  // }
 }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
   font-size: 17px;
+  // @media only screen and(max-width: 400px) {
+  //   font-size: 12px;
+  // }
 }
 
 :-ms-input-placeholder {
   font-size: 17px;
+  // @media only screen and(max-width: 400px) {
+  //   font-size: 12px;
+  // }
 }
 
 .form-control {

@@ -37,7 +37,7 @@ const ConfirmBuy = props => {
               as={Col}
               md={6}
               sm={12}
-              className="mr-4 mt-3 d-flex flex-column justify-content-center"
+              className="mr-4 mt-3 d-flex flex-column justify-content-center px-0"
               controlId="formBasicClientName"
             >
               <Form.Control
@@ -61,7 +61,7 @@ const ConfirmBuy = props => {
             </Form.Group>
 
             {/* 購買資訊 */}
-            <Form.Group as={Col} className="confirmBuy-textContent px-4">
+            <Form.Group as={Col} className="confirmBuy-textContent px-4 ">
               <div className="confirmBuy-textBox">
                 <p className="txt_12_grey mb-0">總價</p>
                 <p className="confirmBuy-text c_blue mb-0">
@@ -87,29 +87,31 @@ const ConfirmBuy = props => {
             </Form.Group>
           </Form.Row>
 
-          <div className="buyCount-btnBox">
-            <Button
-              style={{
-                fontSize: 17,
-                borderRadius: '5px',
-              }}
-              className="easy-btn mw400"
-              variant="primary"
-              disabled={props.isPairing || props.pairFinish || props.pair || isLoading}
-              onClick={!isLoading ? handleClick : null}
-            >
-              {props.pairFinish ? (
-                '完成配對'
-              ) : props.isPairing ? (
-                <>
-                  <Spinner animation="grow" variant="danger" />
-                  配對中...
-                </>
-              ) : (
-                '開始配對'
-              )}
-            </Button>
-          </div>
+          <Form.Row className="justify-content-center mt-4">
+            <Form.Group as={Col} className="mw400 px-0">
+              <Button
+                style={{
+                  fontSize: 17,
+                  borderRadius: '5px',
+                }}
+                className="easy-btn w-100"
+                variant="primary"
+                disabled={props.isPairing || props.pairFinish || props.pair || isLoading}
+                onClick={!isLoading ? handleClick : null}
+              >
+                {props.pairFinish ? (
+                  '完成配對'
+                ) : props.isPairing ? (
+                  <>
+                    <Spinner animation="grow" variant="danger" />
+                    配對中...
+                  </>
+                ) : (
+                  '開始配對'
+                )}
+              </Button>
+            </Form.Group>
+          </Form.Row>
         </Form>
       </div>
 
