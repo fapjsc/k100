@@ -1,4 +1,3 @@
-import TransferHandle from '../TransferHandle';
 import ExRate from '../ExRate';
 
 import Spinner from '../../Ui/BaseSpinner';
@@ -92,7 +91,11 @@ const BuyCount = props => {
         >
           手續費：5.00USDT
         </p> */}
-          <TransferHandle />
+          {/* <Form.Row className="mb-4 ">
+            <Form.Group as={Col} className="text-right">
+              <TransferHandle />
+            </Form.Group>
+          </Form.Row> */}
 
           <Form.Row className="mb-4">
             <Form.Group as={Col}>

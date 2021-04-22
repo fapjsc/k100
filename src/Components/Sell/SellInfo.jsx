@@ -143,7 +143,7 @@ const SellInfo = () => {
             </Col>
           </Row>
 
-          <Row className=" mb-2">
+          <Row className=" mb-2 justify-content-between">
             <Col xl={6} className="txt_12 lightblue_bg mb-4">
               <p>
                 收款金額： &emsp;
@@ -164,7 +164,7 @@ const SellInfo = () => {
             </Col>
 
             {wsData && (
-              <Col xl={6} className="px-0">
+              <Col xl={5} className="pl-4">
                 <SetAccount
                   usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
                   rmbAmt={wsData.D2.toFixed(2)}

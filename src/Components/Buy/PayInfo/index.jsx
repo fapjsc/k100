@@ -18,6 +18,7 @@ import clockIcon from '../../../Assets/i_clock.png';
 
 import './index.scss';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 1200 });
@@ -390,7 +391,7 @@ export default class PayInfo extends Component {
     return (
       <div>
         <ExRate title="購買USDT" />
-        <div className="pairBox">
+        <div className="pairBox pl-0">
           {showInfo && !isCompletePay && !overTime && stateId === 33 ? (
             <>
               <div style={pairTitleBox} className="titleBoxSm">
@@ -536,8 +537,8 @@ export default class PayInfo extends Component {
             </>
           ) : stateId === 34 && isCompletePay && !transactionDone ? (
             <div>
-              <div className="txt_12 pt_20">購買USDT</div>
-              <div className="text-center">
+              {/* <div className="txt_12 pt_20">購買USDT...</div> */}
+              <Card className="text-center border-0">
                 <div className="i_notyet" />
                 <h4 className="c_blue">已提交，等待確認中</h4>
                 <p className="txt_12_grey">
@@ -550,7 +551,7 @@ export default class PayInfo extends Component {
                 <button onClick={this.backToHome} className="easy-btn mw400">
                   返回主頁
                 </button>
-              </div>
+              </Card>
               {/* Chat */}
               <Mobile>
                 <div style={chatMobil}>
@@ -582,8 +583,8 @@ export default class PayInfo extends Component {
             </div>
           ) : stateId === 1 || (isCompletePay && transactionDone) ? (
             <div>
-              <div className="txt_12 pt_20">購買USDT</div>
-              <div className="text-center">
+              {/* <div className="txt_12 pt_20">購買USDT</div> */}
+              <Card className="text-center border-0">
                 <div className="i_done" />
                 <h4 className="c_blue">交易完成</h4>
                 <p className="txt_12_grey">
@@ -597,7 +598,7 @@ export default class PayInfo extends Component {
                 </button>
                 <br />
                 {/* <p>詳細購買紀錄</p> */}
-              </div>
+              </Card>
               {/* Chat */}
               <Mobile>
                 <div style={chatMobil}>

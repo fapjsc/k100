@@ -13,7 +13,15 @@ const SellHeader = () => {
 
   return (
     <Fragment>
-      <p>出售USDT</p>
+      <p
+        style={{
+          letterSpacing: '1.5px',
+          color: '#3242e47',
+          fontSize: '12px',
+        }}
+      >
+        出售USDT
+      </p>
       <div className="pay-info txt_12">
         <p className="mb-0">
           匯率 :<span>{exRate}</span>

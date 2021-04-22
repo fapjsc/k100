@@ -4,6 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 
 import SellContext from '../../context/sell/SellContext';
 import BalanceContext from '../../context/balance/BalanceContext';
+
 import BaseSpinner from '../Ui/BaseSpinner';
 
 import Col from 'react-bootstrap/Col';
@@ -26,7 +27,6 @@ const SellForm = () => {
     closeWebSocket,
     getExRate,
     getOrderToken,
-    transferHandle,
     exRate,
     orderToken,
     cleanOrderToken,

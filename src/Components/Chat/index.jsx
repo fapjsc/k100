@@ -2,7 +2,8 @@ import { Fragment, useState, useEffect } from 'react';
 
 import { useRouteMatch } from 'react-router-dom';
 
-import { w3cwebsocket as W3CWebsocket } from 'websocket';
+// import { w3cwebsocket as W3CWebsocket } from 'websocket';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { v4 as uuidv4 } from 'uuid';
 
 // 圖片縮放
@@ -180,7 +181,7 @@ const Chat = props => {
       url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new W3CWebsocket(url);
+    const client = new ReconnectingWebSocket(url);
 
     setClient(client);
     // this.setState({
@@ -188,7 +189,9 @@ const Chat = props => {
     // });
 
     // 1.建立連接
-    client.onopen = message => {};
+    client.onopen = message => {
+      console.log('chat connect');
+    };
 
     // 2.收到server回復
     client.onmessage = message => {
@@ -223,8 +226,9 @@ const Chat = props => {
     };
 
     // 3.錯誤處理
-    client.onclose = () => {
+    client.onclose = message => {
       console.log('聊天室關閉');
+
       // client.onopen();
     };
   };
@@ -250,7 +254,7 @@ const Chat = props => {
       url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new W3CWebsocket(url);
+    const client = new ReconnectingWebSocket(url);
 
     if (client) {
       client.close();

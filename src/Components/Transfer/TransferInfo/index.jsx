@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import Card from 'react-bootstrap/Card';
+
 import OnLoading from '../OnLoading';
 
 const TransferInfo = ({
@@ -23,7 +25,7 @@ const TransferInfo = ({
 
   if (!isloading && isComplete) {
     return (
-      <div>
+      <Card className="border-0">
         <div className="text-center">
           <div className="i_done" />
           <h4 className="c_blue">交易完成</h4>
@@ -38,7 +40,7 @@ const TransferInfo = ({
           <br />
           {/* <p>詳細購買紀錄</p> */}
         </div>
-      </div>
+      </Card>
     );
   } else {
     return (

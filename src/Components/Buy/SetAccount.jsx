@@ -1,5 +1,8 @@
 import React from 'react';
 
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 const SetAccount = props => {
   const thousandBitSeparator = num => {
     return (
@@ -15,24 +18,24 @@ const SetAccount = props => {
   };
 
   return (
-    <div style={confirmBuyTextBox}>
-      <div className="">
+    <Row style={confirmBuyTextBox} className="px-2 justify-content-between pl-4">
+      <Col className="pl-0" xl={12} lg={12} sm={12}>
         <p className="txt_12_grey mb-0">總價</p>
-        <p className="c_blue mb-0">
+        <p className="c_blue">
           {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
           CNY
         </p>
-      </div>
+      </Col>
 
-      <div className="text-right">
+      <Col className="pl-0" xl={12} lg={12} sm={12}>
         <p className="txt_12_grey mb-0">數量</p>
         <p className=" mb-0">
           {/* 小數第二位，千分逗號 */}
           {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
           USDT
         </p>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 };
 
@@ -40,8 +43,8 @@ const confirmBuyTextBox = {
   padding: 20,
   borderRadius: '5px',
   border: '2px solid #3f80fa',
-  display: 'flex',
-  justifyContent: 'space-between',
+  // display: 'flex',
+  // justifyContent: 'space-between',
   fontSize: '20px',
   fontWeight: 'bold',
 };

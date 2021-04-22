@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
-import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 
 import { Form, Col } from 'react-bootstrap';
 import './index.scss';
@@ -175,9 +174,44 @@ export default class LoginForm extends Component {
 
       const resData = await res.json();
 
+      if (resData.code === '1') {
+        alert('系統錯誤');
+        return;
+      }
+
       if (resData.code === '10') {
-        setLoginErr(true, '帳號或密碼錯誤');
+        // setLoginErr(true, '帳號或密碼錯誤');
+        alert('帳號密碼錯誤');
         setLoadingState(false);
+        return;
+      }
+
+      if (resData.code === '13') {
+        alert('json格式錯誤');
+        return;
+      }
+      if (resData.code === '14') {
+        alert('json格式錯誤');
+        return;
+      }
+
+      if (resData.code === '16') {
+        alert('錯誤的操作');
+        return;
+      }
+
+      if (resData.code === '17') {
+        alert('帳號未註冊');
+        return;
+      }
+
+      if (resData.code === '20') {
+        alert('數據格式錯誤');
+        return;
+      }
+
+      if (resData.code === '21') {
+        alert('請勿連續發送請求');
         return;
       }
 
@@ -204,7 +238,7 @@ export default class LoginForm extends Component {
   }
 
   render() {
-    const { password, phoneNumber, countryCode, captcha } = this.state;
+    const { password, phoneNumber, countryCode } = this.state;
 
     return (
       <Fragment>
@@ -219,7 +253,7 @@ export default class LoginForm extends Component {
                   }}
                   as="select"
                   defaultValue="區號"
-                  className="form-select mb-4 pl-2"
+                  className="form-select mb-4 pl-3"
                   onChange={this.setCountryCode}
                   isInvalid={countryCode.error}
                 >

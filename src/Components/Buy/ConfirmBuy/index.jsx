@@ -45,12 +45,12 @@ const ConfirmBuy = props => {
         <ExRate title="購買USDT" />
         {/* 姓名輸入以及submit button */}
         <Form className="confirmBuyContent">
-          <Form.Row>
+          <Form.Row className="justify-content-between align-items-center">
             <Form.Group
               as={Col}
               md={6}
               sm={12}
-              className="mr-4 mt-3 d-flex flex-column justify-content-center px-0"
+              className="mr-4 mt-0 d-flex flex-column justify-content-center px-0"
               controlId="formBasicClientName"
             >
               <Form.Control
@@ -61,7 +61,16 @@ const ConfirmBuy = props => {
                 isInvalid={props.error}
               />
 
-              {props.error && <Form.Text className="">*{props.error}</Form.Text>}
+              {props.error && (
+                <Form.Text
+                  style={{
+                    fontSize: '12px',
+                  }}
+                  className=""
+                >
+                  *{props.error}
+                </Form.Text>
+              )}
               <p
                 style={{
                   color: '#eb0303',
@@ -74,23 +83,26 @@ const ConfirmBuy = props => {
             </Form.Group>
 
             {/* 購買資訊 */}
-            <Form.Group as={Col} className="confirmBuy-textContent px-4">
-              <div className="confirmBuy-textBox">
-                <p className="txt_12_grey mb-0">總價</p>
-                <p className="confirmBuy-text c_blue mb-0">
-                  {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
-                  CNY
-                </p>
-              </div>
-
-              <div className="confirmBuy-textBox text-right">
-                <p className="txt_12_grey mb-0">數量</p>
-                <p className="confirmBuy-text mb-0 text-dark">
-                  {/* 小數第二位，千分逗號 */}
-                  {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
-                  USDT
-                </p>
-              </div>
+            <Form.Group as={Col}>
+              <Form.Row className="confirmBuy-textContent px-4 ">
+                <Form.Group as={Col} xl={12} lg={12} className="">
+                  <div className="">
+                    <p className="txt_12_grey mb-0">總價</p>
+                    <p className="confirmBuy-text c_blue mb-0">
+                      {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
+                      CNY
+                    </p>
+                  </div>
+                </Form.Group>
+                <Form.Group as={Col} xl={12} lg={12} className="">
+                  <p className="txt_12_grey mb-0">數量</p>
+                  <p className="confirmBuy-text mb-0 text-dark">
+                    {/* 小數第二位，千分逗號 */}
+                    {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
+                    USDT
+                  </p>
+                </Form.Group>
+              </Form.Row>
             </Form.Group>
           </Form.Row>
 

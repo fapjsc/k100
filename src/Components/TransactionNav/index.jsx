@@ -8,7 +8,7 @@ export default class TransactionNav extends Component {
   render() {
     const { location } = this.props;
     return (
-      <div className="transactionNav" style={linkBox}>
+      <div className="transactionNav  pt-3" style={linkBox}>
         <Link
           className="transactionLink"
           to="/home/transaction/buy"

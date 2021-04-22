@@ -16,6 +16,7 @@ const TransferHandle = () => {
       style={{
         letterSpacing: 1.5,
         marginBottom: 20,
+        fontSize: '12px',
       }}
     >
       手續費：{transferHandle && transferHandle} USDT

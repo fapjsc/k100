@@ -335,4 +335,14 @@ select {
   height: 30px;
   width: 100px;
   padding: 5px;
+  padding-left: 10px !important;
+}
+
+.i_copy2 {
+  background-image: url(./Assets/i_copy.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
 }

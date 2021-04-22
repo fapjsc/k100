@@ -238,7 +238,7 @@ export default class index extends Component {
                       }}
                       as="select"
                       defaultValue="區號"
-                      className="form-select mb-4 pl-2"
+                      className="form-select mb-4 pl-3"
                       onChange={this.setCountryCode}
                       isInvalid={!countryCode.isValid}
                     >
@@ -248,7 +248,12 @@ export default class index extends Component {
                       <option>香港＋852</option>
                     </Form.Control>
                     {countryCode.error && (
-                      <Form.Text className="mb-4">{`*${countryCode.error}`}</Form.Text>
+                      <Form.Text
+                        style={{
+                          fontSize: '12px',
+                        }}
+                        className="mb-4"
+                      >{`*${countryCode.error}`}</Form.Text>
                     )}
                   </Form.Group>
 
@@ -263,7 +268,12 @@ export default class index extends Component {
                       autoComplete="off"
                     />
                     {phoneNumber.error && (
-                      <Form.Text className="mb-4">{`*${phoneNumber.error}`}</Form.Text>
+                      <Form.Text
+                        style={{
+                          fontSize: '12px',
+                        }}
+                        className="mb-4"
+                      >{`*${phoneNumber.error}`}</Form.Text>
                     )}
                   </Form.Group>
                 </Form.Row>
@@ -279,7 +289,12 @@ export default class index extends Component {
                       isInvalid={!password.isValid}
                     />
                     {password.error && (
-                      <Form.Text className="mb-4">{`*${password.error}`}</Form.Text>
+                      <Form.Text
+                        style={{
+                          fontSize: '12px',
+                        }}
+                        className="mb-4"
+                      >{`*${password.error}`}</Form.Text>
                     )}
                   </Form.Group>
                 </Form.Row>
@@ -294,7 +309,12 @@ export default class index extends Component {
                       onChange={this.setConfirmPassword}
                     />
                     {confirmPassword.error && (
-                      <Form.Text className="mb-4">{`*${confirmPassword.error}`}</Form.Text>
+                      <Form.Text
+                        style={{
+                          fontSize: '12px',
+                        }}
+                        className="mb-4"
+                      >{`*${confirmPassword.error}`}</Form.Text>
                     )}
                   </Form.Group>
                 </Form.Row>
@@ -303,6 +323,9 @@ export default class index extends Component {
                   <Form.Group as={Col} xl={12}>
                     <Form.Control
                       isInvalid={captcha.error}
+                      style={{
+                        fontSize: '12px',
+                      }}
                       className="form-select mb-4"
                       size="lg"
                       placeholder="驗證碼區分大小寫"

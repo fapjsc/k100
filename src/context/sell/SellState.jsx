@@ -1,5 +1,7 @@
-import { useReducer } from 'react';
+import { useReducer, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+
+import AuthContext from '../auth/AuthContext';
 
 import SellContext from './SellContext';
 import SellReducer from './SellReducer';
@@ -37,6 +39,9 @@ const SellState = props => {
   };
 
   const history = useHistory();
+
+  const authContext = useContext(AuthContext);
+  const { handleHttpError } = authContext;
 
   // Get Header
   const getHeader = () => {
@@ -76,6 +81,8 @@ const SellState = props => {
 
       const { data } = resData;
 
+      handleHttpError(data);
+
       dispatch({ type: SET_RMB_SELL_RATE, payload: data });
     } catch (error) {
       alert(error, 'getExRate');
@@ -98,13 +105,15 @@ const SellState = props => {
 
       const resData = await res.json();
 
+      handleHttpError(resData);
+
       if (resData.code === 200) {
         dispatch({ type: SET_WS_DATA, payload: resData.data });
       } else {
-        alert(resData.msg);
+        return;
       }
     } catch (error) {
-      alert(error);
+      alert('server error get order detail');
     }
   };
 
@@ -127,6 +136,8 @@ const SellState = props => {
       });
 
       const resData = await res.json();
+
+      handleHttpError(resData);
 
       const {
         data: { order_token },
@@ -158,6 +169,8 @@ const SellState = props => {
       });
 
       const resData = await res.json();
+      handleHttpError(resData);
+
       dispatch({ type: SET_CANCEL_ORDER_DATA, payload: resData });
 
       // console.log(resData);
@@ -196,11 +209,10 @@ const SellState = props => {
       });
 
       const resData = await res.json();
+      handleHttpError(resData);
 
       if (resData.code === 200) {
         dispatch({ type: SET_CONFIRM_SELL, payload: true });
-      } else {
-        alert('error', resData.msg);
       }
     } catch (error) {
       alert(error);

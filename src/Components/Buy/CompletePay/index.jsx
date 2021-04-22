@@ -1,4 +1,5 @@
 import './index.scss';
+import Card from 'react-bootstrap/Card';
 
 const CompletePay = props => {
   const backToHome = () => {
@@ -7,11 +8,11 @@ const CompletePay = props => {
 
   if (!props.transactionDone) {
     return (
-      <div>
-        <div className="txt_12 pt_20">購買USDT</div>
+      <Card className="border-0">
+        {/* <div className="txt_12 pt_20">購買USDT</div> */}
         <div className="text-center ">
           <div className="i_notyet" />
-          <h4 className="c_blue">已提交，等待確認中...</h4>
+          <h4 className="c_blue">已提交，等待確認中</h4>
           <p className="txt_12_grey text-break">
             交易回執：
             {/* {props.transferData.Tx_HASH ? props.transferData.Tx_HASH : props.hash} */}
@@ -23,12 +24,12 @@ const CompletePay = props => {
             返回主頁
           </button>
         </div>
-      </div>
+      </Card>
     );
   } else {
     return (
-      <div>
-        <div className="txt_12 pt_20">購買USDT</div>
+      <Card className="border-0">
+        {/* <div className="txt_12 pt_20">購買USDT</div> */}
         <div className="text-center">
           <div className="i_done" />
           <h4 className="c_blue">交易完成</h4>
@@ -44,7 +45,7 @@ const CompletePay = props => {
           <br />
           <p>詳細購買紀錄</p>
         </div>
-      </div>
+      </Card>
     );
   }
 };
