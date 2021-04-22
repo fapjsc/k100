@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+
+import AuthContext from '../../context/auth/AuthContext';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -8,6 +10,9 @@ import Card from 'react-bootstrap/Card';
 import validator from 'validator';
 
 const ChangePassword = () => {
+  const authContext = useContext(AuthContext);
+  const { changePw } = authContext;
+
   const [formData, setFormData] = useState({
     oldPw: {
       val: '',
@@ -28,6 +33,18 @@ const ChangePassword = () => {
   });
 
   const { oldPw, newPw, confirmPw, formIsValid } = formData;
+
+  useEffect(() => {
+    if (formIsValid) {
+      const data = {
+        oldPw: oldPw.val,
+        newPw: newPw.val,
+      };
+      changePw(data);
+    } else {
+      console.log('faild');
+    }
+  }, [formIsValid]);
 
   const handleChange = e => {
     setFormData({
@@ -83,14 +100,9 @@ const ChangePassword = () => {
     }
   };
 
-  const formSubmit = async e => {
+  const formSubmit = e => {
     e.preventDefault();
-
-    await validForm();
-    console.log(formIsValid);
-    if (!formIsValid) return;
-
-    console.log('submit');
+    validForm();
   };
 
   return (
@@ -104,45 +116,57 @@ const ChangePassword = () => {
         <Form onSubmit={formSubmit}>
           <Form.Row className="mb-4">
             <Form.Group as={Col} controlId="oldPassword">
-              <Form.Label>請輸入舊密碼</Form.Label>
+              <Form.Label className="txt_12">請輸入舊密碼</Form.Label>
               <Form.Control
-                className="utiltInput"
+                className="utileInput"
                 type="password"
                 placeholder="請輸入舊密碼"
                 name="oldPw"
                 onChange={handleChange}
               />
 
-              {oldPw.error && <Form.Text className="text-muted">*{oldPw.error}</Form.Text>}
+              {oldPw.error && (
+                <Form.Text style={{ fontSize: 12 }} className="text-muted">
+                  *{oldPw.error}
+                </Form.Text>
+              )}
             </Form.Group>
           </Form.Row>
 
           <Form.Row className="mb-4">
             <Form.Group as={Col} controlId="newPassword" name="new">
-              <Form.Label>重設密碼</Form.Label>
+              <Form.Label className="txt_12">重設密碼</Form.Label>
               <Form.Control
-                className="utiltInput"
+                className="utileInput"
                 type="password"
                 placeholder="重設密碼"
                 name="newPw"
                 onChange={handleChange}
               />
-              {newPw.error && <Form.Text className="text-muted">*{oldPw.error}</Form.Text>}
+              {newPw.error && (
+                <Form.Text style={{ fontSize: 12 }} className="text-muted">
+                  *{oldPw.error}
+                </Form.Text>
+              )}
             </Form.Group>
           </Form.Row>
 
           <Form.Row className="mb-4">
             <Form.Group as={Col} controlId="confirmPassword" name="confirm">
-              <Form.Label>確認密碼</Form.Label>
+              <Form.Label className="txt_12">確認密碼</Form.Label>
               <Form.Control
-                className="utiltInput"
+                className="utileInput"
                 type="password"
                 placeholder="確認密碼"
                 name="confirmPw"
                 onChange={handleChange}
               />
+              {confirmPw.error && (
+                <Form.Text style={{ fontSize: 12 }} className="text-muted">
+                  *{confirmPw.error}
+                </Form.Text>
+              )}
             </Form.Group>
-            {confirmPw.error && <Form.Text className="text-muted">*{oldPw.error}</Form.Text>}
           </Form.Row>
 
           <Form.Row className="justify-content-center align-items-center">

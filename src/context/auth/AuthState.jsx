@@ -3,7 +3,7 @@ import { useReducer } from 'react';
 import AuthReducer from './AuthReducer';
 import AuthContext from './AuthContext';
 
-import {} from '../type';
+import { CHANGE_PASSWORD } from '../type';
 
 const AuthState = props => {
   const initialState = {};
@@ -19,6 +19,36 @@ const AuthState = props => {
       return headers;
     } else {
       return;
+    }
+  };
+
+  const changePw = async data => {
+    const changePwApi = `/j/Req_ChgPwd.aspx`;
+    const headers = getHeader();
+
+    console.log(data);
+
+    try {
+      const res = await fetch(changePwApi, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          Login_pwd: data.oldPw,
+          New_pwd: data.newPw,
+        }),
+      });
+
+      const resData = await res.json();
+
+      console.log(resData);
+
+      if (resData !== 200) {
+        handleHttpError(resData);
+      } else {
+        alert('密碼已經更換');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -118,7 +148,11 @@ const AuthState = props => {
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  return <AuthContext.Provider value={{ handleHttpError }}>{props.children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ handleHttpError, changePw }}>
+      {props.children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthState;

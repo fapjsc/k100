@@ -3,7 +3,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Auth from './Components/Auth';
 import Home from './pages/Home';
-import ChangePassword from './Components/Auth/ChangePassword';
 import ForgetPassword from './Components/Auth/ForgetPassword';
 // import { ProtectedRoute } from './router/ProtectedRoute';
 
@@ -39,7 +38,6 @@ function App() {
               component={props => <Home {...props} setAuth={setAuth} />}
             />
 
-            <Route path="/change-pw" component={ChangePassword} />
             <Route path="/forget-pw" component={ForgetPassword} />
 
             <Redirect to="/auth/login" />
