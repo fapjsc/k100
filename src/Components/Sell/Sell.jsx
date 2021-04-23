@@ -34,7 +34,7 @@ const Sell = () => {
         title="請稍等，現正整合交易者資料"
         text={
           wsData &&
-          `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT @ ${wsData.D2.toFixed(2)} CNY`
+          `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`
         }
       />
       <SellForm />

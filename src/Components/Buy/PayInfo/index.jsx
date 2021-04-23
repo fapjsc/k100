@@ -372,7 +372,7 @@ export default class PayInfo extends Component {
         method: 'POST',
         headers,
         body: JSON.stringify({
-          Token: 1234,
+          Token: orderToken,
         }),
       });
       const resData = await res.json();
@@ -530,22 +530,9 @@ export default class PayInfo extends Component {
                 cancelOrder={this.cancelOrder}
               />
               <ul className="txt_12_grey">
-                <li>請勿向上述地址充值任何非USDT資産，否則資産將不可找回。</li>
-                <br />
                 <li>
-                  您充值至上述地址後，需要整個網絡節點的確認，12次網絡確認後到賬，12次網絡確認後可提幣。
-                </li>
-                <br />
-                <li>最小充值金額：1 USDT，小于最小金額的充值將不會上賬且無法退回。</li>
-                <br />
-                <li>
-                  您的充值地址不會經常改變，可以重複充值；如有更改，我們會盡量通過網站公告或郵件通知您。
-                </li>
-                <br />
-                <li>請務必確認電腦及浏覽器安全，防止信息被篡改或泄露。</li>
-                <br />
-                <li>
-                  USDT充幣僅支持以太坊transfer和transferFrom方法，使用其他方法的充幣暫時無法上賬，請您諒解。
+                  請注意,如果您已經透過網路銀行或其他第三方付款平臺轉帳給賣方，
+                  “請絕對不能點擊取消交易”， 除非您已收到退款,否則訂單取消後您將無法拿回退款
                 </li>
               </ul>
 
@@ -635,7 +622,7 @@ export default class PayInfo extends Component {
                   {/* {props.transferData.Tx_HASH ? props.transferData.Tx_HASH : props.hash} */}
                   {Tx_HASH}
                   <br />
-                  購買成功後，數字貨幣將全額充值到您要付款的商戶，完成付款。訂單已開始處理，預計到賬時間：15分鐘內
+                  購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址
                 </p>
                 <button onClick={this.backToHome} className="easy-btn mw400">
                   返回主頁
@@ -680,7 +667,7 @@ export default class PayInfo extends Component {
                   交易回執：
                   {Tx_HASH}
                   <br />
-                  購買成功後，數字貨幣將全額充值到您要付款的商戶，完成付款。訂單已開始處理，預計到賬時間：15分鐘內
+                  購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址
                 </p>
                 <button onClick={this.backToHome} className="easy-btn mw400">
                   返回主頁

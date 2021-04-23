@@ -5,11 +5,20 @@ import CancelSell from '../../../Sell/CancelSell';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 import copy from 'copy-to-clipboard';
 
 const InfoDetail = props => {
   const [confirmCancel, setConfirmCancel] = useState(false);
+  const [isClick, setIsClick] = useState(false);
+
+  const handleSubmit = () => {
+    if (!isClick) {
+      props.getConfirmPay();
+    }
+    setIsClick(true);
+  };
 
   const handleCopy = value => {
     copy(value);
@@ -93,9 +102,9 @@ const InfoDetail = props => {
 
           <Row className="justify-content-center">
             <Col className="mw400 text-center">
-              <button className="easy-btn w-100" onClick={props.getConfirmPay}>
+              <Button disabled={isClick} className="easy-btn w-100" onClick={handleSubmit}>
                 已完成付款
-              </button>
+              </Button>
               <p
                 style={{
                   cursor: 'pointer',

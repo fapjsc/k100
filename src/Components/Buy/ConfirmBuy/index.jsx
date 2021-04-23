@@ -90,7 +90,7 @@ const ConfirmBuy = props => {
                     <p className="txt_12_grey mb-0">總價</p>
                     <p className="confirmBuy-text c_blue mb-0">
                       {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
-                      CNY
+                      &nbsp; CNY
                     </p>
                   </div>
                 </Form.Group>
@@ -99,7 +99,7 @@ const ConfirmBuy = props => {
                   <p className="confirmBuy-text mb-0 text-dark">
                     {/* 小數第二位，千分逗號 */}
                     {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
-                    USDT
+                    &nbsp; USDT
                   </p>
                 </Form.Group>
               </Form.Row>
@@ -135,10 +135,9 @@ const ConfirmBuy = props => {
       </div>
 
       <div>
-        <hr className="mt_mb" />
-        <p className="txt_12_grey">
-          信息為幣商的指定收款賬戶，請務必按照規則操作，網銀轉賬到賬戶。
-        </p>
+        <ul className="txt_12_grey">
+          <li>收款賬戶資訊由賣方提供並經本平台核實，買方必需遵守本平台條款及規則進行交易。</li>
+        </ul>
       </div>
     </>
   );

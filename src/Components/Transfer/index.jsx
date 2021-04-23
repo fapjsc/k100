@@ -35,6 +35,7 @@ export default class Transfer extends Component {
     data: {},
     transferLoading: false,
     isSubmit: false,
+    isClick: false,
   };
 
   setTransferCount = e => {
@@ -43,6 +44,7 @@ export default class Transfer extends Component {
         val: e.target.value.replace(/^((-\d+(\.\d+)?)|((\.0+)?))$/).trim(),
         isValid: true,
       },
+      isClick: false,
     });
   };
 
@@ -53,6 +55,7 @@ export default class Transfer extends Component {
           val: e.target.value.trim(),
           isValid: true,
         },
+        isClick: false,
       },
       () => {}
     );
@@ -254,71 +257,76 @@ export default class Transfer extends Component {
 
   handleSubmit = async () => {
     this.setState({
-      isloading: true,
-      handleSubmit: true,
+      isClick: true,
     });
-
-    this.setState({
-      formIsValid: true,
-    });
-    await this.valid();
-
-    if (!this.state.formIsValid) {
-      return;
-    }
-
-    const { transferAddress, transfercount, headers } = this.state;
-    const transferApi = '/j/Req_Transfer1.aspx';
-
-    try {
-      const res = await fetch(transferApi, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          ToAddress: transferAddress.val,
-          UsdtAmt: transfercount.val,
-        }),
+    if (!this.state.click) {
+      this.setState({
+        isloading: true,
+        handleSubmit: true,
       });
 
-      const resData = await res.json();
+      this.setState({
+        formIsValid: true,
+      });
+      await this.valid();
 
-      if (resData.code === 200) {
-        const loginToken = localStorage.getItem('token');
-        this.setState(
-          {
-            // isloading: false,
-            // isComplete: true,
-            loginSession: loginToken,
-            token: resData.data.order_token,
-          },
-          () => {
-            this.submitTransaction(loginToken);
-            this.getDetail(resData.data.order_token);
-          }
-        );
-
-        this.props.history.replace({
-          pathname: `/home/transaction/transfer/${resData.data.order_token}`,
-          state: {
-            item: {
-              UsdtAmt: transfercount.val,
-            },
-          },
-        });
+      if (!this.state.formIsValid) {
         return;
-      } else {
-        this.handleHttpError(resData);
+      }
 
+      const { transferAddress, transfercount, headers } = this.state;
+      const transferApi = '/j/Req_Transfer1.aspx';
+
+      try {
+        const res = await fetch(transferApi, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            ToAddress: transferAddress.val,
+            UsdtAmt: transfercount.val,
+          }),
+        });
+
+        const resData = await res.json();
+
+        if (resData.code === 200) {
+          const loginToken = localStorage.getItem('token');
+          this.setState(
+            {
+              // isloading: false,
+              // isComplete: true,
+              loginSession: loginToken,
+              token: resData.data.order_token,
+            },
+            () => {
+              this.submitTransaction(loginToken);
+              this.getDetail(resData.data.order_token);
+            }
+          );
+
+          this.props.history.replace({
+            pathname: `/home/transaction/transfer/${resData.data.order_token}`,
+            state: {
+              item: {
+                UsdtAmt: transfercount.val,
+              },
+            },
+          });
+          return;
+        } else {
+          this.handleHttpError(resData);
+
+          this.setState({
+            isfailed: true,
+            isloading: false,
+          });
+        }
+      } catch (error) {
         this.setState({
           isfailed: true,
           isloading: false,
         });
       }
-    } catch (error) {
-      this.setState({
-        isfailed: true,
-        isloading: false,
-      });
     }
   };
 
@@ -519,6 +527,7 @@ export default class Transfer extends Component {
       token,
       transferLoading,
       isSubmit,
+      isClick,
       hash,
     } = this.state;
     const { exRate } = this.props;
@@ -608,22 +617,30 @@ export default class Transfer extends Component {
                 // variant={formIsValid ? 'primary' : 'secondary'}
                 className="easy-btn smScreen-btn mt-4"
                 onClick={this.handleSubmit}
-                disabled={isSubmit}
+                disabled={isClick}
               >
                 下一步
               </Button>
             </Form>
 
-            <hr className="mt_mb" />
-            <p className="txt_12_grey">
-              由于数字资产价格随时存在较大波动，第二步交易报价的有效期为20分钟（即：您下单付款到广告方放币的时间需控制在20分钟内）。
-              <br />
-              <br />
-              如果您对新的报价不予接受的，将直接获得第一步交易购入的USDT。
-              <br />
-              <br />
-              USDT是系统根据您所需购买金额（或数量）和付款方式匹配出的最低价格，并且您可随时使用USDT在币币交易兑换其他数字资产。
-            </p>
+            <div>
+              <hr className="mt_mb" />
+              <ul className="txt_12_grey">
+                <li>本平台目前只提供USDT（ERC20 & TRC)交易，其他數字貨幣交易將不予受理</li>
+                <br />
+                <li>本平台錢包地址充值或轉出，都是經由 USDT區塊鏈系統網絡確認。</li>
+                <br />
+                <li>本平台錢包地址可以重複充值或轉出；如因系統更新，我們會通過網站或口訊通知。</li>
+                <br />
+                <li>請勿向錢包地址充值任何非USDT資産，否則資産將不可找回。</li>
+                <br />
+                <li>最小充值金額：100 USDT，小于最小金額的充值將不會上賬且無法退回。</li>
+                <br />
+                <li>請務必確認電腦及浏覽器安全，防止信息被篡改或泄露。</li>
+                <br />
+                <li>如有其他問題或要求提出爭議，可透過網頁上的客服對話窗聯絡我們。</li>
+              </ul>
+            </div>
           </>
         </Route>
 

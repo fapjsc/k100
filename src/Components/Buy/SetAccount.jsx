@@ -23,7 +23,7 @@ const SetAccount = props => {
         <p className="txt_12_grey mb-0">總價</p>
         <p className="c_blue">
           {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
-          CNY
+          &nbsp; CNY
         </p>
       </Col>
 
@@ -32,7 +32,7 @@ const SetAccount = props => {
         <p className=" mb-0">
           {/* 小數第二位，千分逗號 */}
           {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
-          USDT
+          &nbsp; USDT
         </p>
       </Col>
     </Row>
