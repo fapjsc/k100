@@ -6,14 +6,17 @@ import CancelSell from '../../../Sell/CancelSell';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import copy from 'copy-to-clipboard';
 
 const InfoDetail = props => {
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [isClick, setIsClick] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
 
   const handleSubmit = () => {
+    setBtnLoading(true);
     if (!isClick) {
       props.getConfirmPay();
     }
@@ -102,8 +105,16 @@ const InfoDetail = props => {
 
           <Row className="justify-content-center">
             <Col className="mw400 text-center">
-              <Button disabled={isClick} className="easy-btn w-100" onClick={handleSubmit}>
-                已完成付款
+              <Button
+                disabled={isClick}
+                className="easy-btn w-100"
+                onClick={handleSubmit}
+                style={{
+                  cursor: btnLoading ? 'auto' : 'pointer',
+                }}
+              >
+                {btnLoading && <Spinner animation="grow" variant="danger" />}
+                {btnLoading ? '處理中...' : '已完成付款'}
               </Button>
               <p
                 style={{

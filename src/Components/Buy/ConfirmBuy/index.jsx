@@ -10,6 +10,7 @@ import ExRate from '../ExRate';
 
 const ConfirmBuy = props => {
   const [isLoading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
 
   // let handleConfirm = props.handleConfirm;
 
@@ -23,6 +24,7 @@ const ConfirmBuy = props => {
 
   const handleClick = () => {
     setLoading(true);
+    setBtnLoading(true);
     props.handleConfirm();
   };
 
@@ -112,15 +114,16 @@ const ConfirmBuy = props => {
                 style={{
                   fontSize: 17,
                   borderRadius: '5px',
+                  cursor: btnLoading ? 'auto' : 'pointer',
                 }}
                 className="easy-btn w-100"
                 variant="primary"
-                disabled={props.isPairing || props.pairFinish || props.pair || isLoading}
+                disabled={btnLoading}
                 onClick={!isLoading ? handleClick : null}
               >
                 {props.pairFinish ? (
                   '完成配對'
-                ) : props.isPairing ? (
+                ) : btnLoading ? (
                   <>
                     <Spinner animation="grow" variant="danger" />
                     配對中...

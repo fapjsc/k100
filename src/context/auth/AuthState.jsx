@@ -9,6 +9,7 @@ import {
   SET_AUTH_LOADING,
   SHOW_ERROR_MODAL,
   REMOVE_VALID_TOKEN,
+  SET_EXPIRED_TIME,
 } from '../type';
 
 const AuthState = props => {
@@ -21,6 +22,7 @@ const AuthState = props => {
       text: '',
       status: '',
     },
+    expiredTime: null,
   };
 
   // Get Header
@@ -58,7 +60,9 @@ const AuthState = props => {
         dispatch({ type: IS_SEND_VALID_CODE, payload: true });
         const expiresStamp = 120000;
         const expiresDate = Date.now() + expiresStamp;
+
         localStorage.setItem('expiresIn', expiresDate);
+        dispatch({ type: SET_EXPIRED_TIME, payload: expiresDate });
       } else {
         dispatch({ type: IS_SEND_VALID_CODE, payload: false });
         handleHttpError(resData);
@@ -259,6 +263,12 @@ const AuthState = props => {
     }
   };
 
+  // set countdown btn
+  const setCountDown = value => {
+    dispatch({ type: IS_SEND_VALID_CODE, payload: value });
+    dispatch({ type: SET_EXPIRED_TIME, payload: null });
+  };
+
   const cleanErr = () => {
     dispatch({ type: SHOW_ERROR_MODAL, payload: { show: false, text: '', status: null } });
   };
@@ -289,6 +299,7 @@ const AuthState = props => {
         validToken: state.validToken,
         authLoading: state.authLoading,
         showErrorModal: state.showErrorModal,
+        expiredTime: state.expiredTime,
 
         handleHttpError,
         changePw,
@@ -297,6 +308,7 @@ const AuthState = props => {
         cleanErr,
         forgetPassword,
         removeValidToken,
+        setCountDown,
       }}
     >
       {props.children}

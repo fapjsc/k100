@@ -22,3 +22,4 @@ export const SET_VALID_TOKEN = 'SET_VALID_TOKEN'; // 確認驗證碼正確後回
 export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
 export const SHOW_ERROR_MODAL = 'SHOW_ERROR_MODAL';
 export const REMOVE_VALID_TOKEN = 'REMOVE_VALID_TOKEN';
+export const SET_EXPIRED_TIME = 'SET_EXPIRED_TIME';

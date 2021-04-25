@@ -37,6 +37,7 @@ export default class Transfer extends Component {
     transferLoading: false,
     isSubmit: false,
     isClick: false,
+    btnLoading: false,
   };
 
   setTransferCount = e => {
@@ -263,6 +264,7 @@ export default class Transfer extends Component {
   handleSubmit = async () => {
     this.setState({
       isClick: true,
+      btnLoading: true,
     });
     if (!this.state.click) {
       this.setState({
@@ -531,7 +533,7 @@ export default class Transfer extends Component {
       isfailed,
       token,
       transferLoading,
-      isSubmit,
+      btnLoading,
       isClick,
       hash,
     } = this.state;
@@ -636,8 +638,12 @@ export default class Transfer extends Component {
                 className="easy-btn smScreen-btn mt-4"
                 onClick={this.handleSubmit}
                 disabled={isClick}
+                style={{
+                  cursor: btnLoading ? 'auto' : 'pointer',
+                }}
               >
-                下一步
+                {btnLoading && <Spinner animation="grow" variant="danger" />}
+                {btnLoading ? '處理中...' : '下一步'}
               </Button>
             </Form>
 

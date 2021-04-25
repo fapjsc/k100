@@ -31,6 +31,8 @@ const ForgetPassword = () => {
     forgetPassword,
     showErrorModal,
     cleanErr,
+    setCountDown,
+    expiredTime,
   } = authContext;
 
   const [showNewPw, setShowNewPw] = useState(false);
@@ -75,7 +77,7 @@ const ForgetPassword = () => {
   // loading
   const [isLoading, setLoading] = useState(false);
 
-  let [restartCount, setRestartCount] = useState(0);
+  const [expirTime, setExpirTime] = useState(null);
 
   const handleChange = e => {
     if (e.target.name === 'countryCode') {
@@ -165,7 +167,6 @@ const ForgetPassword = () => {
 
   // send valid code
   const sendValidCode = async () => {
-    setRestartCount(restartCount + 1);
     setLoading(true);
 
     const data = {
@@ -362,7 +363,7 @@ const ForgetPassword = () => {
                   />
                 </Form.Group>
                 <Form.Group as={Col} className="mb-4" xl={4}>
-                  {isSendValidCode ? (
+                  {isSendValidCode && expiredTime ? (
                     // <>
                     //   <Button
                     //     aria-controls="example-collapse-text"
@@ -375,19 +376,19 @@ const ForgetPassword = () => {
 
                     //   <Form.Text className="pl-2">*輸入六位數驗證碼後系統自動驗證</Form.Text>
                     // </>
+
                     <Countdown
-                      date={Date.now() + 10000}
-                      key={restartCount}
+                      // date={expirTime ? expirTime : Date.now() + 1000 * 60 * 2}
+                      date={expiredTime}
+                      onComplete={() => setCountDown(false)}
                       renderer={props => (
-                        <Timer
-                          sendValidCode={sendValidCode}
-                          phoneValid={phoneValid}
-                          isLoading={isLoading}
-                          {...props}
-                        />
+                        <Timer phoneValid={phoneValid} setExpirTime={setExpirTime} {...props} />
                       )}
                     ></Countdown>
                   ) : (
+                    // <button disabled={timing} onClick={() => setTiming(true)}>
+                    //   {timing ? 'Timing ' + second : 'Go'}
+                    // </button>
                     <>
                       <Button
                         onClick={sendValidCode}
@@ -396,7 +397,7 @@ const ForgetPassword = () => {
                         className="w-100 easy-btn-bs"
                         disabled={isLoading}
                         style={{
-                          cursor: isLoading ? 'not-allowed' : 'pointer',
+                          cursor: isLoading ? 'auto' : 'pointer',
                           backgroundColor: isLoading ? 'grey' : '#3e80f9',
                         }}
                       >
