@@ -6,7 +6,8 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import ValidCode from './ValidCode';
 import BaseSpinner from '../../Ui/BaseSpinner';
 
-import { Form, Button, Col } from 'react-bootstrap';
+import { Form, Button, Col, Fade } from 'react-bootstrap';
+
 import './index.scss';
 
 export default class index extends Component {
@@ -40,6 +41,7 @@ export default class index extends Component {
     formIsValid: false,
     isLoading: false,
     showValidCode: false,
+    showAlert: false,
   };
 
   setPhoneNumber = event => {
@@ -80,6 +82,7 @@ export default class index extends Component {
           isValid: true,
           error: '',
         },
+        showAlert: true,
       });
     }
 
@@ -90,6 +93,7 @@ export default class index extends Component {
           isValid: true,
           error: '',
         },
+        showAlert: false,
       });
     }
     if (e.target.value.includes('香港')) {
@@ -99,6 +103,7 @@ export default class index extends Component {
           isValid: true,
           error: '',
         },
+        showAlert: false,
       });
     }
   };
@@ -276,6 +281,29 @@ export default class index extends Component {
                       >{`*${phoneNumber.error}`}</Form.Text>
                     )}
                   </Form.Group>
+
+                  {this.state.showAlert && (
+                    <Fade in={this.state.showAlert}>
+                      <div id="example-fade-text" className="text-danger">
+                        <div className="d-flex align-items-center mb-2">
+                          <svg
+                            xmlns="../../../Assets/cone-striped.svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-cone-striped"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z" />
+                          </svg>
+                          <p className="ml-3 mb-0">請注意！</p>
+                        </div>
+                        <p>
+                          因您身處地區受當地電信條例限制，可能會較慢收到系統發出的簡訊，請耐心等候或是再重新申請一次
+                        </p>
+                      </div>
+                    </Fade>
+                  )}
                 </Form.Row>
 
                 <Form.Row>

@@ -187,6 +187,7 @@ const Transaction = () => {
               component={props => (
                 <Transfer
                   Avb_Balance={Avb_Balance}
+                  getBalance={getBalance}
                   exRate={exRate}
                   getExRate={getExRate}
                   {...props}

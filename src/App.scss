@@ -225,6 +225,17 @@ html {
   cursor: pointer;
 }
 
+.easy-btn-bs {
+  background-color: #3e80f9;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  transition: 0.3s;
+  font-size: 17px;
+  cursor: pointer;
+}
+
 .smScreen-btn {
   @media only screen and(max-width:550px) {
     width: 100%;
@@ -279,6 +290,12 @@ input {
   @media only screen and(max-width: 767px) {
     padding-left: 12px !important;
   }
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #fff;
+  opacity: 1;
 }
 
 ::-webkit-input-placeholder {
@@ -345,4 +362,54 @@ select {
   height: 25px;
   width: 25px;
   cursor: pointer;
+}
+
+.walletBtn {
+  background-color: #fff;
+  outline: none;
+  font-size: 17px;
+  padding: 10px;
+
+  &:active,
+  &:focus {
+    background-color: #fff;
+    outline: none;
+    font-size: 17px;
+    padding: 10px;
+    box-shadow: none;
+  }
+
+  &:hover {
+    background-color: #fff !important;
+    color: #007bff !important;
+    border-color: #007bff !important;
+    box-shadow: none !important;
+  }
+}
+
+.walletBtn:hover {
+}
+
+// .walletBtn:hover {
+//   color: #007bff;
+//   background-color: #fff;
+// }
+
+.disableBtn {
+  color: #707070;
+  border-color: #d7e2f3;
+  background-color: #fff;
+  outline: none;
+  font-size: 17px;
+  padding: 10px;
+  cursor: not-allowed !important;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #707070 !important;
+    border-color: #d7e2f3 !important;
+    background-color: #fff !important;
+    box-shadow: none !important;
+  }
 }

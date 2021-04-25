@@ -44,6 +44,7 @@ const SellInfo = () => {
   // const [overTime, setOverTime] = useState(false);
   const [isChat, setIsChat] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
+  const [isClick, setIsClick] = useState(false);
 
   useEffect(() => {
     // sellWebSocket(id);
@@ -89,7 +90,11 @@ const SellInfo = () => {
 
   // 確認收款
   const handleSubmit = () => {
-    confirmSellAction(id);
+    if (!isClick) {
+      confirmSellAction(id);
+    }
+
+    setIsClick(true);
   };
 
   // confirmSell 判斷要render sell info 還是 提交確認/交易完成組件
@@ -252,7 +257,7 @@ const SellInfo = () => {
             <div>
               <hr className="mt_mb" />
               <ul className="txt_12_grey">
-                <li>本平台目前只提供USDT（ERC20 & TRC)交易，其他數字貨幣交易將不予受理</li>
+                <li>本平台目前只提供USDT交易，其他數字貨幣交易將不予受理</li>
                 <br />
                 <li>本平台錢包地址充值或轉出，都是經由 USDT區塊鏈系統網絡確認。</li>
                 <br />

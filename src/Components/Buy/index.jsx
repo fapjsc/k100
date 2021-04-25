@@ -206,7 +206,7 @@ export default class Buy extends Component {
 
       const resData = await res.json();
 
-      console.log(resData);
+      // console.log(resData);
 
       if (resData.code !== 200) {
         this.handleHttpError(resData);
@@ -315,7 +315,7 @@ export default class Buy extends Component {
     // 2.收到server回復
     client.onmessage = message => {
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // console.log('got reply!', dataFromServer);
       const DeltaTime = dataFromServer.data.DeltaTime;
 
       this.setState({

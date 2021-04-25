@@ -142,12 +142,6 @@ export default class ValidCode extends Component {
       isLoading: true,
     });
 
-    // setTimeout(() => {
-    //     this.setState({
-    //         isLoading: false,
-    //     });
-    // }, 0);
-
     const expiresStamp = 120000;
     const expiresDate = Date.now() + expiresStamp;
 
@@ -172,13 +166,6 @@ export default class ValidCode extends Component {
         isLoading: false,
       });
 
-      // if (resData.code !== 200) {
-      //   this.setState({
-      //     isLoading: false,
-      //     error: resData.msg,
-      //   });
-      //   return;
-      // }
       this.handleHttpError(resData);
     } catch (error) {
       this.setState({
@@ -276,6 +263,7 @@ export default class ValidCode extends Component {
         alreadyRegister: true,
         isLoading: false,
       });
+      return;
     }
 
     if (resData.code !== 200) {

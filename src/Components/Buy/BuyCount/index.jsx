@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import ExRate from '../ExRate';
 
 import Spinner from '../../Ui/BaseSpinner';
@@ -11,6 +13,7 @@ import changeMoney from '../../../Assets/i_twoways.png';
 import './index.scss';
 
 const BuyCount = props => {
+  const [showBankWallet, setShowBankWallet] = useState(true);
   return (
     <>
       <ExRate title="購買USDT" />
@@ -97,7 +100,7 @@ const BuyCount = props => {
             </Form.Group>
           </Form.Row> */}
 
-          <Form.Row className="mb-4">
+          {/* <Form.Row className="mb-4">
             <Form.Group as={Col}>
               <p className="txt_12">付款方式</p>
               <Button
@@ -112,6 +115,38 @@ const BuyCount = props => {
               >
                 銀行卡
               </Button>
+            </Form.Group>
+          </Form.Row> */}
+
+          <Form.Row className="mt-4">
+            <Form.Group as={Col} className="mt-4">
+              <p className="txt_12">電子錢包</p>
+              <Button
+                type="button"
+                style={{
+                  marginTop: -8,
+                  marginRight: 15,
+                  color: showBankWallet ? '#007bff' : '#707070',
+                  borderColor: showBankWallet ? '#007bff' : '#d7e2f3',
+                  cursor: 'auto',
+                }}
+                // className="walletBtn"
+                className="walletBtn"
+                // onClick={() => setShowBankWallet(!showBankWallet)}
+              >
+                銀行卡
+              </Button>
+
+              <Button
+                type="button"
+                className="disableBtn"
+                style={{
+                  marginTop: -8,
+                }}
+              >
+                支付寶
+              </Button>
+              {/* <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text> */}
             </Form.Group>
           </Form.Row>
 
@@ -142,7 +177,7 @@ const BuyCount = props => {
       <div>
         <hr className="mt_mb" />
         <ul className="txt_12_grey">
-          <li>本平台目前只提供USDT（ERC20 & TRC)交易，其他數字貨幣交易將不予受理</li>
+          <li>本平台目前只提供USDT交易，其他數字貨幣交易將不予受理</li>
           <br />
           <li>本平台錢包地址充值或轉出，都是經由 USDT區塊鏈系統網絡確認。</li>
           <br />

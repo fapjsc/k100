@@ -17,3 +17,8 @@ export const SET_BALANCE = 'GET_BALANCE';
 export const SET_TRANSLATE = 'SET_TRANSLATE';
 
 // Auth
+export const IS_SEND_VALID_CODE = 'IS_SEND_VALID_CODE'; // 簡訊驗證碼發送情況
+export const SET_VALID_TOKEN = 'SET_VALID_TOKEN'; // 確認驗證碼正確後回傳的token
+export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
+export const SHOW_ERROR_MODAL = 'SHOW_ERROR_MODAL';
+export const REMOVE_VALID_TOKEN = 'REMOVE_VALID_TOKEN';

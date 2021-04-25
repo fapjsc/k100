@@ -38,7 +38,7 @@ function App() {
               component={props => <Home {...props} setAuth={setAuth} />}
             />
 
-            <Route path="/forget-pw" component={ForgetPassword} />
+            <Route exact path="/forget-pw" component={ForgetPassword} />
 
             <Redirect to="/auth/login" />
           </Switch>

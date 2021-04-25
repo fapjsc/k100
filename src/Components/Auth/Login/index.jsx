@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
 
 import { Form, Col } from 'react-bootstrap';
 import './index.scss';
-import { Fragment } from 'react';
 
 export default class LoginForm extends Component {
   state = {
@@ -23,12 +22,10 @@ export default class LoginForm extends Component {
       isValid: true,
       error: '',
     },
-    // captcha: {
-    //   val: '',
-    //   isValid: true,
-    //   error: '',
-    // },
+
     formIsValid: false,
+    showError: false,
+    httpErr: '',
   };
 
   // 驗證函數
@@ -38,18 +35,6 @@ export default class LoginForm extends Component {
     });
 
     const { phoneNumber, password, countryCode } = this.state;
-
-    // captcha
-    // if (!validateCaptcha(this.state.captcha.val)) {
-    //   this.setState({
-    //     captcha: {
-    //       val: '',
-    //       isValid: false,
-    //       error: '驗證碼錯誤',
-    //     },
-    //     formIsValid: false,
-    //   });
-    // }
 
     // 驗證區碼
     if (countryCode.val === null) {
@@ -175,43 +160,42 @@ export default class LoginForm extends Component {
       const resData = await res.json();
 
       if (resData.code === '1') {
-        alert('系統錯誤');
+        setLoginErr(true, '系統錯誤', 'fail');
         return;
       }
 
       if (resData.code === '10') {
-        // setLoginErr(true, '帳號或密碼錯誤');
-        alert('帳號密碼錯誤');
+        setLoginErr(true, '帳號或密碼錯誤', 'fail');
         setLoadingState(false);
         return;
       }
 
       if (resData.code === '13') {
-        alert('json格式錯誤');
+        setLoginErr(true, 'json格式錯誤', 'fail');
         return;
       }
       if (resData.code === '14') {
-        alert('json格式錯誤');
+        setLoginErr(true, 'json格式錯誤', 'fail');
         return;
       }
 
       if (resData.code === '16') {
-        alert('錯誤的操作');
+        setLoginErr(true, '錯誤的操作', 'fail');
         return;
       }
 
       if (resData.code === '17') {
-        alert('帳號未註冊');
+        setLoginErr(true, '帳號未註冊', 'fail');
         return;
       }
 
       if (resData.code === '20') {
-        alert('數據格式錯誤');
+        setLoginErr(true, '數據格式錯誤', 'fail');
         return;
       }
 
       if (resData.code === '21') {
-        alert('請勿連續發送請求');
+        setLoginErr(true, '請勿連續發送請求', 'fail');
         return;
       }
 
@@ -238,7 +222,7 @@ export default class LoginForm extends Component {
   }
 
   render() {
-    const { password, phoneNumber, countryCode } = this.state;
+    const { password, phoneNumber, countryCode, showError, httpErr } = this.state;
 
     return (
       <Fragment>
@@ -308,36 +292,6 @@ export default class LoginForm extends Component {
                 )}
               </Form.Group>
             </Form.Row>
-
-            {/* 驗證碼 */}
-            {/* <Form.Row>
-              <Form.Group as={Col} xl={12}>
-                <Form.Control
-                  isInvalid={captcha.error}
-                  className="form-select mb-4"
-                  size="lg"
-                  type="captcha"
-                  placeholder="驗證碼區分大小寫"
-                  onChange={e =>
-                    this.setState({
-                      captcha: {
-                        val: e.target.value,
-                        isValid: true,
-                        error: '',
-                      },
-                    })
-                  }
-                  autoComplete="off"
-                />
-                {captcha.error && (
-                  <Form.Text
-                    className="mb-4"
-                    style={{ fontSize: '12px' }}
-                  >{`*${captcha.error}`}</Form.Text>
-                )}
-                <LoadCanvasTemplate />
-              </Form.Group>
-            </Form.Row> */}
 
             <button
               onClick={this.handleLoginSubmit}

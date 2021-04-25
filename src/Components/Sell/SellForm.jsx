@@ -71,6 +71,7 @@ const SellForm = () => {
 
   const [formValid, setFormValid] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
+  const [showBankWallet, setShowBankWallet] = useState(false);
 
   // 獲取匯率
   // useEffect(() => {
@@ -421,119 +422,140 @@ const SellForm = () => {
             </Form.Text>
           </div> */}
 
-          <div className="mt-4">
-            <p className="txt_12">電子錢包</p>
-            <Button
-              disabled
-              style={{
-                marginTop: -8,
-                padding: 10,
-                fontSize: 17,
-              }}
-              size="lg"
-              variant="outline-primary"
-            >
-              銀行卡
-            </Button>
-          </div>
+          <Form.Row className="mt-4">
+            <Form.Group as={Col} className="mt-4">
+              <p className="txt_12">電子錢包</p>
+              <Button
+                type="button"
+                style={{
+                  marginTop: -8,
+                  marginRight: 15,
+                  color: showBankWallet ? '#007bff' : '#707070',
+                  borderColor: showBankWallet ? '#007bff' : '#d7e2f3',
+                }}
+                // className="walletBtn"
+                className="walletBtn"
+                onClick={() => setShowBankWallet(!showBankWallet)}
+              >
+                銀行卡
+              </Button>
+
+              <Button
+                type="button"
+                className="disableBtn"
+                style={{
+                  marginTop: -8,
+                }}
+              >
+                支付寶
+              </Button>
+              <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
+            </Form.Group>
+          </Form.Row>
+
+          {showBankWallet && (
+            <>
+              <Form.Row className="mt-4">
+                <Form.Group as={Col} xl={6} sm={12} controlId="name" className="mt-4">
+                  <Form.Label>收款姓名</Form.Label>
+                  <Form.Control
+                    placeholder="收款姓名"
+                    name="name"
+                    isInvalid={!name.isValid}
+                    value={name.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    className="easy-border "
+                    style={{
+                      padding: 30,
+                      fontSize: 20,
+                    }}
+                  />
+                  {name.error && (
+                    <Form.Text className="" style={{ fontSize: '12px' }}>
+                      *{name.error}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+
+                <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-4">
+                  <Form.Label>開戶銀行</Form.Label>
+                  <Form.Control
+                    className="easy-border"
+                    placeholder="開戶銀行"
+                    name="bank"
+                    isInvalid={!bank.isValid}
+                    value={bank.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      padding: 30,
+                      fontSize: 20,
+                    }}
+                  />
+                  {bank.error && (
+                    <Form.Text className="" style={{ fontSize: '12px' }}>
+                      *{bank.error}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+              </Form.Row>
+
+              <Form.Row className="">
+                <Form.Group as={Col} xl={6} sm={12} controlId="account" className="mt-4">
+                  <Form.Label>收款帳號</Form.Label>
+                  <Form.Control
+                    className="easy-border"
+                    placeholder="收款帳號"
+                    name="account"
+                    isInvalid={!account.isValid}
+                    value={account.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      padding: 30,
+                      fontSize: 20,
+                    }}
+                  />
+                  {account.error && (
+                    <Form.Text className="" style={{ fontSize: '12px' }}>
+                      *{account.error}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+
+                <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-4">
+                  <Form.Label>所在省市</Form.Label>
+                  <Form.Control
+                    className="easy-border"
+                    placeholder="所在省市"
+                    name="city"
+                    isInvalid={!city.isValid}
+                    value={city.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      padding: 30,
+                      fontSize: 20,
+                    }}
+                  />
+                  {city.error && (
+                    <Form.Text
+                      className=""
+                      style={{
+                        fontSize: '12px',
+                      }}
+                    >
+                      *{city.error}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+              </Form.Row>
+            </>
+          )}
 
           {/* info */}
-          <Form.Row className="mt-4">
-            <Form.Group as={Col} xl={6} sm={12} controlId="name" className="mt-4">
-              <Form.Label>收款姓名</Form.Label>
-              <Form.Control
-                placeholder="收款姓名"
-                name="name"
-                isInvalid={!name.isValid}
-                value={name.val}
-                onChange={onChange}
-                autoComplete="off"
-                className="easy-border "
-                style={{
-                  padding: 30,
-                  fontSize: 20,
-                }}
-              />
-              {name.error && (
-                <Form.Text className="" style={{ fontSize: '12px' }}>
-                  *{name.error}
-                </Form.Text>
-              )}
-            </Form.Group>
 
-            <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-4">
-              <Form.Label>開戶銀行</Form.Label>
-              <Form.Control
-                className="easy-border"
-                placeholder="開戶銀行"
-                name="bank"
-                isInvalid={!bank.isValid}
-                value={bank.val}
-                onChange={onChange}
-                autoComplete="off"
-                style={{
-                  padding: 30,
-                  fontSize: 20,
-                }}
-              />
-              {bank.error && (
-                <Form.Text className="" style={{ fontSize: '12px' }}>
-                  *{bank.error}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Form.Row>
-
-          <Form.Row className="">
-            <Form.Group as={Col} xl={6} sm={12} controlId="account" className="mt-4">
-              <Form.Label>收款帳號</Form.Label>
-              <Form.Control
-                className="easy-border"
-                placeholder="收款帳號"
-                name="account"
-                isInvalid={!account.isValid}
-                value={account.val}
-                onChange={onChange}
-                autoComplete="off"
-                style={{
-                  padding: 30,
-                  fontSize: 20,
-                }}
-              />
-              {account.error && (
-                <Form.Text className="" style={{ fontSize: '12px' }}>
-                  *{account.error}
-                </Form.Text>
-              )}
-            </Form.Group>
-
-            <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-4">
-              <Form.Label>所在省市</Form.Label>
-              <Form.Control
-                className="easy-border"
-                placeholder="所在省市"
-                name="city"
-                isInvalid={!city.isValid}
-                value={city.val}
-                onChange={onChange}
-                autoComplete="off"
-                style={{
-                  padding: 30,
-                  fontSize: 20,
-                }}
-              />
-              {city.error && (
-                <Form.Text
-                  className=""
-                  style={{
-                    fontSize: '12px',
-                  }}
-                >
-                  *{city.error}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Form.Row>
           <br />
           <br />
 
@@ -564,7 +586,7 @@ const SellForm = () => {
       <div>
         <hr className="mt_mb" />
         <ul className="txt_12_grey">
-          <li>本平台目前只提供USDT（ERC20 & TRC)交易，其他數字貨幣交易將不予受理</li>
+          <li>本平台目前只提供USDT交易，其他數字貨幣交易將不予受理</li>
           <br />
           <li>本平台錢包地址充值或轉出，都是經由 USDT區塊鏈系統網絡確認。</li>
           <br />

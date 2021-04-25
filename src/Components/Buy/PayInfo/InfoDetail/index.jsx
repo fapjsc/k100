@@ -67,7 +67,7 @@ const InfoDetail = props => {
               </div>
 
               <div className="d-flex align-items-center mb-3">
-                <p class="mb-0 mr-3">收款姓名： {props.transferData.payee}</p>
+                <p className="mb-0 mr-3">收款姓名： {props.transferData.payee}</p>
                 <div
                   onClick={() => handleCopy(props.transferData.payee)}
                   className="i_copy2"
@@ -76,7 +76,7 @@ const InfoDetail = props => {
               </div>
 
               <div className="d-flex align-items-center mb-3">
-                <p class="mb-0 mr-3">付款帳號： {props.transferData.account}</p>
+                <p className="mb-0 mr-3">付款帳號： {props.transferData.account}</p>
                 <div
                   onClick={() => handleCopy(props.transferData.account)}
                   className="i_copy2"

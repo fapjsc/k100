@@ -8,7 +8,7 @@ import Header from '../Layout/Header';
 import LoginForm from './Login';
 import RegisterForm from './Register';
 
-import Modal from 'react-bootstrap/Modal';
+import ErrorModal from '../Ui/ErrorModal';
 
 import BaseSpinner from '../Ui/BaseSpinner';
 import './index.scss';
@@ -51,10 +51,11 @@ export default class Auth extends Component {
     }
   };
 
-  setLoginErr = (showModal, err) => {
+  setLoginErr = (showModal, err, status) => {
     this.setState({
       showModal: showModal,
       loginErr: err,
+      status,
     });
   };
 
@@ -106,7 +107,7 @@ export default class Auth extends Component {
   }
 
   render() {
-    const { formState, isLoading, httpError, showModal, loginErr } = this.state;
+    const { formState, isLoading, httpError, showModal, loginErr, status } = this.state;
     const { location } = this.props;
     return (
       <div className="" style={{}}>
@@ -120,16 +121,22 @@ export default class Auth extends Component {
                 <BaseSpinner />
               </div>
             ) : !isLoading && showModal ? (
-              <Modal
-                size="sm"
+              // <Modal
+              //   size="sm"
+              //   show={showModal}
+              //   onHide={() => this.setShow(false)}
+              //   aria-labelledby="example-modal-sizes-title-sm"
+              // >
+              //   <Modal.Header closeButton>
+              //     <Modal.Title id="example-modal-sizes-title-sm">{loginErr}</Modal.Title>
+              //   </Modal.Header>
+              // </Modal>
+              <ErrorModal
                 show={showModal}
+                title={loginErr}
+                status={status}
                 onHide={() => this.setShow(false)}
-                aria-labelledby="example-modal-sizes-title-sm"
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title id="example-modal-sizes-title-sm">{loginErr}</Modal.Title>
-                </Modal.Header>
-              </Modal>
+              />
             ) : (
               <div>
                 <h4 className="text-center font-weight-bold">{formState}帳號</h4>

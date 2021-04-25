@@ -12,6 +12,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import { Form, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default class Transfer extends Component {
   state = {
@@ -149,10 +150,14 @@ export default class Transfer extends Component {
     }
   };
 
-  getAll = () => {
+  getAll = async () => {
     this.setState({
       transferLoading: true,
     });
+
+    const token = localStorage.getItem('token');
+    await this.props.getBalance(token);
+
     const all = (this.props.Avb_Balance - Number(this.props.exRate.TransferHandle)).toFixed(2);
     if (all <= 0) {
       this.setState({
@@ -549,14 +554,27 @@ export default class Transfer extends Component {
             <Form className="text-center">
               <Form.Row className="">
                 <Form.Group as={Col} sm={12} md={6} className="text-right ">
-                  <Button
-                    disabled={transferLoading}
-                    variant="outline-primary"
-                    size="lg"
-                    onClick={this.getAll}
-                  >
-                    提取所有
-                  </Button>
+                  {transferLoading ? (
+                    <Button variant="secondary" disabled className="" style={{}}>
+                      <Spinner
+                        as="span"
+                        animation="grow"
+                        size="lg"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      Loading...
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={transferLoading}
+                      variant="outline-primary"
+                      size="lg"
+                      onClick={this.getAll}
+                    >
+                      提取所有
+                    </Button>
+                  )}
                 </Form.Group>
               </Form.Row>
 
@@ -626,7 +644,7 @@ export default class Transfer extends Component {
             <div>
               <hr className="mt_mb" />
               <ul className="txt_12_grey">
-                <li>本平台目前只提供USDT（ERC20 & TRC)交易，其他數字貨幣交易將不予受理</li>
+                <li>本平台目前只提供USDT交易，其他數字貨幣交易將不予受理</li>
                 <br />
                 <li>本平台錢包地址充值或轉出，都是經由 USDT區塊鏈系統網絡確認。</li>
                 <br />

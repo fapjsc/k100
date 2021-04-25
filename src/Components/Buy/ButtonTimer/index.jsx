@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import CountDownUnreset from '../CountDownUnreset';
 
+import CancelSell from '../../Sell/CancelSell';
+
 const Index = ({ minutes, seconds, getDeltaTime2, getConfirmPay, isCompleted }) => {
   console.log('button timer mount');
 
   const [completed, setCompleted] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
+
   useEffect(() => {
     getDeltaTime2();
     // eslint-disable-next-line
@@ -13,6 +17,7 @@ const Index = ({ minutes, seconds, getDeltaTime2, getConfirmPay, isCompleted }) 
 
   return (
     <div className="pairFoot">
+      {confirmCancel && <CancelSell />}
       <Button
         disabled={completed || isCompleted}
         variant={completed || isCompleted ? 'secondary' : 'primary'}
@@ -38,7 +43,9 @@ const Index = ({ minutes, seconds, getDeltaTime2, getConfirmPay, isCompleted }) 
           </>
         )}
       </Button>
-      <p>取消訂單</p>
+      <p className="txt_12" onClick={() => setConfirmCancel(true)}>
+        取消訂單
+      </p>
     </div>
   );
 

@@ -44,6 +44,7 @@ const ChangePassword = () => {
     } else {
       console.log('faild');
     }
+    // eslint-disable-next-line
   }, [formIsValid]);
 
   const handleChange = e => {
