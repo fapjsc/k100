@@ -426,7 +426,7 @@ export default class Transfer extends Component {
     // 2.收到server回復
     client.onmessage = message => {
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got reply!', dataFromServer);
+      console.log('got transfer reply!', dataFromServer);
 
       // 轉帳中
       if (dataFromServer.data.Order_StatusID === 0) {
