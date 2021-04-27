@@ -6,6 +6,7 @@ import Buy from '../../Components/Buy';
 import Sell from '../../Components/Sell/Sell';
 import SellInfo from '../../Components/Sell/SellInfo';
 import Transfer from '../../Components/Transfer';
+import TransferInfo from '../../Components/Transfer/TransferInfo';
 
 import './index.scss';
 
@@ -182,18 +183,8 @@ const Transaction = () => {
             <Route exact path="/home/transaction/sell/:id" component={SellInfo} />
 
             {/* Transfer */}
-            <Route
-              path="/home/transaction/transfer"
-              component={props => (
-                <Transfer
-                  Avb_Balance={Avb_Balance}
-                  getBalance={getBalance}
-                  exRate={exRate}
-                  getExRate={getExRate}
-                  {...props}
-                />
-              )}
-            />
+            <Route exact path="/home/transaction/transfer" component={Transfer} />
+            <Route exact path="/home/transaction/transfer/:id" component={TransferInfo} />
             <Redirect to="/home/transaction/buy" />
           </Switch>
         </div>
