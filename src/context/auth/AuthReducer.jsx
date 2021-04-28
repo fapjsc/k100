@@ -5,10 +5,22 @@ import {
   SHOW_ERROR_MODAL,
   REMOVE_VALID_TOKEN,
   SET_EXPIRED_TIME,
+  LOGIN_SET_LOADING,
+  SET_ERROR_TEXT,
 } from '../type';
 
 const AuthReducer = (state, action) => {
   switch (action.type) {
+    case SET_ERROR_TEXT:
+      return {
+        ...state,
+        errorText: action.payload,
+      };
+    case LOGIN_SET_LOADING:
+      return {
+        ...state,
+        loginLoading: action.payload,
+      };
     case SET_EXPIRED_TIME:
       return {
         ...state,

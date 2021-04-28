@@ -37,13 +37,13 @@ const BalanceState = props => {
 
       const resData = await res.json();
 
-      if (resData.code !== 200) {
-        alert('error');
+      if (resData.code === 200) {
+        const { data } = resData;
+        dispatch({ type: SET_BALANCE, payload: data });
+        return data;
+      } else {
+        alert(resData.msg);
       }
-
-      const { data } = resData;
-      dispatch({ type: SET_BALANCE, payload: data });
-      return data;
     } catch (error) {
       alert(error);
     }

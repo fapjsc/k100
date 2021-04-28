@@ -6,7 +6,7 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import ValidCode from './ValidCode';
 import BaseSpinner from '../../Ui/BaseSpinner';
 
-import { Form, Button, Col, Fade } from 'react-bootstrap';
+import { Form, Button, Col, Fade, Spinner } from 'react-bootstrap';
 
 import './index.scss';
 
@@ -37,11 +37,13 @@ export default class index extends Component {
       isValid: true,
       error: '',
     },
+    checkAccountErr: '',
     agree: false,
     formIsValid: false,
     isLoading: false,
     showValidCode: false,
     showAlert: false,
+    btnLoading: false,
   };
 
   setPhoneNumber = event => {
@@ -130,6 +132,7 @@ export default class index extends Component {
           error: '驗證碼錯誤',
         },
         formIsValid: false,
+        btnLoading: false,
       });
     }
 
@@ -142,6 +145,7 @@ export default class index extends Component {
           error: '請選擇區碼',
         },
         formIsValid: false,
+        btnLoading: false,
       });
     }
 
@@ -154,6 +158,7 @@ export default class index extends Component {
           error: '請輸入有效的電話號碼',
         },
         formIsValid: false,
+        btnLoading: false,
       });
     }
 
@@ -166,12 +171,14 @@ export default class index extends Component {
           error: '密碼只能是英文及數字，且至少六位數',
         },
         formIsValid: false,
+        btnLoading: false,
       });
     }
 
     if (password.val !== confirmPassword.val) {
       this.setState({
         formIsValid: false,
+        btnLoading: false,
         confirmPassword: {
           val: confirmPassword.val,
           isValid: false,
@@ -185,8 +192,47 @@ export default class index extends Component {
     this.props.history.push('/agreement');
   };
 
+  checkAccountExists = async data => {
+    const checkAccount = `/j/ChkLoginExists.aspx`;
+
+    const res = await fetch(checkAccount, {
+      method: 'POST',
+      body: JSON.stringify({
+        reg_countrycode: data.countryCode,
+        reg_tel: data.phoneNumber,
+      }),
+    });
+
+    const resData = await res.json();
+
+    if (resData.code === 200) {
+      this.setState(
+        {
+          showValidCode: true,
+        },
+        () => {
+          this.props.history.replace('/auth/register/valid');
+        }
+      );
+    }
+
+    if (resData.code === '11') {
+      this.setState({
+        checkAccountErr: '此手機號碼已經註冊過',
+        formIsValid: false,
+      });
+    }
+
+    this.setState({
+      btnLoading: false,
+    });
+  };
+
   handleRegisterSubmit = async event => {
     event.preventDefault(); //防止表單提交
+    this.setState({
+      btnLoading: true,
+    });
 
     await this.validRegister();
 
@@ -196,14 +242,12 @@ export default class index extends Component {
       return;
     }
 
-    this.setState(
-      {
-        showValidCode: true,
-      },
-      () => {
-        this.props.history.replace('/auth/register/valid');
-      }
-    );
+    const data = {
+      countryCode: this.state.countryCode.val,
+      phoneNumber: this.state.phoneNumber.val,
+    };
+
+    this.checkAccountExists(data);
   };
 
   componentDidMount() {
@@ -224,6 +268,8 @@ export default class index extends Component {
       countryCode,
       isLoading,
       captcha,
+      checkAccountErr,
+      btnLoading,
     } = this.state;
 
     return (
@@ -375,6 +421,13 @@ export default class index extends Component {
                         style={{ fontSize: '12px' }}
                       >{`*${captcha.error}`}</Form.Text>
                     )}
+
+                    {checkAccountErr && (
+                      <Form.Text
+                        className="mb-4"
+                        style={{ fontSize: '12px' }}
+                      >{`*${checkAccountErr}`}</Form.Text>
+                    )}
                     <LoadCanvasTemplate style={{ width: 150, height: 30 }} />
                   </Form.Group>
                 </Form.Row>
@@ -401,12 +454,21 @@ export default class index extends Component {
                   onClick={this.handleRegisterSubmit}
                   className="form-btn"
                   // variant="primary"
-                  variant={!agree ? 'secondary' : 'primary'}
+                  variant={!agree || btnLoading ? 'secondary' : 'primary'}
                   block
                   type="submit"
-                  disabled={!agree}
+                  disabled={!agree || btnLoading}
                 >
-                  下一步
+                  {btnLoading && (
+                    <Spinner
+                      as="span"
+                      animation="grow"
+                      size="md"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  )}
+                  {btnLoading ? '處理中..' : '下一步'}
                 </Button>
               </Form>
             ) : null}

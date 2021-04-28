@@ -10,6 +10,7 @@ import SellState from './context/sell/SellState';
 import BalanceState from './context/balance/BalanceState';
 import AuthState from './context/auth/AuthState.jsx';
 import TransferState from './context/transfer/TransferState';
+import HistoryState from './context/history/HistoryState';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -30,20 +31,22 @@ function App() {
       <BalanceState>
         <TransferState>
           <SellState>
-            <Switch>
-              <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
+            <HistoryState>
+              <Switch>
+                <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
 
-              <Route path="/agreement" component={Agreement} />
-              <Route
-                isAuth={isAuth}
-                path="/home"
-                component={props => <Home {...props} setAuth={setAuth} />}
-              />
+                <Route path="/agreement" component={Agreement} />
+                <Route
+                  isAuth={isAuth}
+                  path="/home"
+                  component={props => <Home {...props} setAuth={setAuth} />}
+                />
 
-              <Route exact path="/forget-pw" component={ForgetPassword} />
+                <Route exact path="/forget-pw" component={ForgetPassword} />
 
-              <Redirect to="/auth/login" />
-            </Switch>
+                <Redirect to="/auth/login" />
+              </Switch>
+            </HistoryState>
           </SellState>
         </TransferState>
       </BalanceState>

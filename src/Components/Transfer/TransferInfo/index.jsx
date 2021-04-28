@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import TransferContext from '../../../context/transfer/TransferContext';
 import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
 
 import errorIcon from '../../../Assets/icon-error-new.png';
 import transIcon from '../../../Assets/icon_load02.gif';
@@ -20,26 +21,37 @@ const TransferInfo = () => {
     cleanStatus,
     setOrderToken,
     setUsdtCount,
+    transferOrderToken,
   } = transferContext;
 
   const backToHome = () => {
     history.replace('/home/overview');
     closeWebSocket();
+    setOrderToken(null);
   };
+
+  useEffect(() => {
+    if (transferOrderToken === null) {
+      history.replace('/home/transaction/transfer');
+      closeWebSocket();
+      cleanStatus();
+      setUsdtCount(null);
+    }
+
+    // eslint-disable-next-line
+  }, [transferOrderToken]);
 
   useEffect(() => {
     if (match.params.id) {
       detailReq(match.params.id);
       transferWebSocket(match.params.id);
-    } else {
-      history.replace('/home/overview');
     }
 
     return () => {
       closeWebSocket();
       cleanStatus();
-      setOrderToken(null);
       setUsdtCount(null);
+      setOrderToken(null);
     };
     // eslint-disable-next-line
   }, []);
@@ -50,11 +62,8 @@ const TransferInfo = () => {
         <div className="text-center">
           <img src={completeIcon} alt="complete icon" className="mb-4" />
           <h4 className="c_blue mb-4">交易成功</h4>
-          <p className="txt_12_grey">
-            交易回執：{orderDetail && orderDetail.Tx_HASH}
-            <br />
-            購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址
-          </p>
+          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.P1}</p>
+          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.Tx_HASH}</p>
           <button onClick={backToHome} className="easy-btn mw400">
             返回主頁
           </button>
@@ -69,11 +78,8 @@ const TransferInfo = () => {
         <div className="text-center">
           <img src={transIcon} alt="transfer icon" className="mb-4" />
           <h4 className="c_blue mb-4">轉帳中</h4>
-          <p className="txt_12_grey">
-            交易回執：{orderDetail && orderDetail.Tx_HASH}
-            <br />
-            購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址
-          </p>
+          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.P1}</p>
+          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.Tx_HASH}</p>
           <button onClick={backToHome} className="easy-btn mw400">
             返回主頁
           </button>
@@ -86,12 +92,18 @@ const TransferInfo = () => {
     return (
       <Card className="border-0">
         <div className="text-center">
-          <img src={errorIcon} alt="error icon" className="mb-4" />
+          <img
+            src={errorIcon}
+            alt="error icon"
+            className="mb-4"
+            style={{
+              height: 110,
+            }}
+          />
           <h4 className="c_blue mb-4">轉帳失敗</h4>
           <p className="txt_12_grey">
-            交易回執：{orderDetail && orderDetail.Tx_HASH}
+            轉帳地址：{orderDetail && orderDetail.P1}
             <br />
-            購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址
           </p>
           <button onClick={backToHome} className="easy-btn mw400">
             返回主頁
@@ -107,7 +119,7 @@ const TransferInfo = () => {
         <div className="text-center">
           {/* <img src={errorIcon} alt="error icon" /> */}
           <br />
-          <h4 className="c_blue">沒有交易</h4>
+          <Spinner animation="border" variant="primary" />
 
           <button onClick={backToHome} className="easy-btn mw400">
             返回主頁

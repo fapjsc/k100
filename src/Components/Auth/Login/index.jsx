@@ -159,14 +159,19 @@ export default class LoginForm extends Component {
 
       const resData = await res.json();
 
+      setLoadingState(false);
+
       if (resData.code === '1') {
         setLoginErr(true, '系統錯誤', 'fail');
         return;
       }
 
       if (resData.code === '10') {
-        setLoginErr(true, '帳號或密碼錯誤', 'fail');
-        setLoadingState(false);
+        // setLoginErr(true, '帳號或密碼錯誤', 'fail');
+        // setLoadingState(false);
+        this.setState({
+          httpErr: '帳號或密碼錯誤',
+        });
         return;
       }
 

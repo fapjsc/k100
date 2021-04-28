@@ -1,4 +1,4 @@
-// SELL
+// Sell
 export const SET_RMB_SELL_RATE = 'SET_RMB_SELL_RATE';
 export const SET_ORDER_TOKEN = 'SET_ORDER_TOKEN';
 export const SET_WS_PAIRING = 'SET_WS_PAIRING';
@@ -17,6 +17,7 @@ export const SET_USDT_COUNT = 'SET_USDT_COUNT';
 export const SET_ORDER_DETAIL = 'SET_ORDER_DETAIL';
 export const GET_WS_CLIENT = 'GET_WS_CLIENT';
 export const HANDLE_BTN_LOADING = 'HANDLE_BTN_LOADING';
+export const SET_TRANSFER_ERROR_TEXT = 'SET_TRANSFER_ERROR_TEXT';
 
 // Balance
 export const SET_BALANCE = 'GET_BALANCE';
@@ -31,3 +32,11 @@ export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
 export const SHOW_ERROR_MODAL = 'SHOW_ERROR_MODAL';
 export const REMOVE_VALID_TOKEN = 'REMOVE_VALID_TOKEN';
 export const SET_EXPIRED_TIME = 'SET_EXPIRED_TIME';
+
+// History
+export const SET_ALL_HISTORY = 'SET_ALL_HISTORY';
+export const SET_SINGLE_DETAIL = 'SET_SINGLE_DETAIL';
+
+// Login
+export const LOGIN_SET_LOADING = 'LOGIN_SET_LOADING';
+export const SET_ERROR_TEXT = 'SET_ERROR_TEXT';

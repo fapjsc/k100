@@ -33,6 +33,10 @@ html {
   color: #707070;
 }
 
+.c_red {
+  color: #db1c1b;
+}
+
 .bg-orange {
   background-color: orange;
 }
@@ -53,6 +57,10 @@ html {
   width: 100vw;
 }
 
+.w-sm {
+  width: 80px !important;
+}
+
 // font size
 .fs_20 {
   font-size: 2rem;
@@ -60,6 +68,10 @@ html {
 
 .fs_15 {
   font-size: 1.5rem;
+}
+
+.fs_sm {
+  font-size: 14px !important;
 }
 
 .fs_40 {
@@ -132,6 +144,10 @@ html {
 
 .mt_ssm {
   margin-top: 10%;
+}
+
+.mt-20 {
+  margin-top: 3rem;
 }
 
 .mr_sm {
@@ -412,4 +428,49 @@ select {
     background-color: #fff !important;
     box-shadow: none !important;
   }
+}
+
+// history
+.txt14_b {
+  font-size: 14px;
+  color: #1f7eff;
+}
+.txt14_r {
+  font-size: 14px;
+  color: #db1c1c;
+}
+.txt14_p {
+  font-size: 14px;
+  color: #8a52a2;
+}
+.red_dot {
+  color: #fff;
+}
+
+// input label 動畫
+
+.input-fill:placeholder-shown::placeholder {
+  color: transparent;
+}
+
+.input-fill-x {
+  position: relative;
+}
+
+.input-label {
+  font-size: 17px;
+  color: #6c757d;
+
+  position: absolute;
+  left: 16px;
+  top: 20px;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-fill:not(:placeholder-shown) ~ .input-label,
+.input-fill:focus ~ .input-label {
+  font-size: 17px;
+  color: #a7bad9;
+  transform: scale(0.8) translate(0, -55px) !important;
 }

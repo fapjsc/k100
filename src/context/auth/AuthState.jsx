@@ -1,4 +1,5 @@
 import { useReducer } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import AuthReducer from './AuthReducer';
 import AuthContext from './AuthContext';
@@ -10,10 +11,16 @@ import {
   SHOW_ERROR_MODAL,
   REMOVE_VALID_TOKEN,
   SET_EXPIRED_TIME,
+  LOGIN_SET_LOADING,
+  SET_ERROR_TEXT,
 } from '../type';
 
 const AuthState = props => {
+  const history = useHistory();
+
   const initialState = {
+    loginLoading: false,
+    errorText: '',
     isSendValidCode: false,
     validToken: null,
     authLoading: false,
@@ -36,6 +43,52 @@ const AuthState = props => {
       return headers;
     } else {
       return;
+    }
+  };
+
+  // loginLoading
+  const handleLoginLoading = value => {
+    dispatch({ type: LOGIN_SET_LOADING, payload: value });
+  };
+
+  // set error text
+  const setErrorText = value => {
+    dispatch({ type: SET_ERROR_TEXT, payload: value });
+  };
+
+  // 登入
+  const login = async data => {
+    handleLoginLoading(true);
+    let loginApi = '/j/login.aspx';
+
+    try {
+      const res = await fetch(loginApi, {
+        method: 'POST',
+        body: JSON.stringify({
+          Login_countrycode: data.countryCode,
+          Login_tel: data.phoneNumber,
+          Login_pwd: data.password,
+        }),
+      });
+
+      const resData = await res.json();
+      handleLoginLoading(false);
+
+      console.log(resData);
+
+      if (resData.code === 200) {
+        const {
+          data: { login_session },
+        } = resData;
+
+        localStorage.setItem('token', login_session);
+
+        history.replace('/home/overview');
+      } else {
+        handleHttpError(resData);
+      }
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -150,8 +203,6 @@ const AuthState = props => {
     const changePwApi = `/j/Req_ChgPwd.aspx`;
     const headers = getHeader();
 
-    console.log(data);
-
     try {
       const res = await fetch(changePwApi, {
         method: 'POST',
@@ -176,51 +227,79 @@ const AuthState = props => {
 
   const handleHttpError = data => {
     if (data.code === '1') {
-      alert('系統錯誤');
+      // alert('系統錯誤');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '系統錯誤' });
+      setErrorText('系統錯誤');
       return;
     }
 
     if (data.code === '10') {
-      alert('帳號或密碼錯誤');
+      // alert('帳號或密碼錯誤');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '帳號或密碼錯誤' });
+      setErrorText('帳號或密碼錯誤');
       return;
     }
 
     if (data.code === '11') {
-      alert('此帳號已經註冊過');
+      // alert('此帳號已經註冊過');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '此帳號已經註冊過' });
+      setErrorText('此帳號已經註冊過');
+
       return;
     }
 
     if (data.code === '12') {
-      alert('此帳號無法註冊，可能被列入黑名單');
+      // alert('此帳號無法註冊，可能被列入黑名單');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '此帳號無法註冊' });
+      setErrorText('此帳號無法註冊');
+
       return;
     }
 
     if (data.code === '13') {
-      alert('json格式錯誤');
+      // alert('json格式錯誤');
+      // dispatch({ type: SET_ERROR_TEXT, payload: 'json格式錯誤' });
+      setErrorText('json格式錯誤');
+
       return;
     }
     if (data.code === '14') {
-      alert('json格式錯誤');
+      // alert('json格式錯誤');
+      // dispatch({ type: SET_ERROR_TEXT, payload: 'json格式錯誤' });
+      setErrorText('json格式錯誤');
+
       return;
     }
 
     if (data.code === '15') {
-      alert('無效的token');
+      // alert('無效的token');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '無效的token' });
+      setErrorText('無效的token');
+
       return;
     }
 
     if (data.code === '16') {
-      alert('錯誤的操作');
+      // alert('錯誤的操作');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '錯誤的操作' });
+      setErrorText('錯誤的操作');
+
       return;
     }
 
     if (data.code === '17') {
-      alert('帳號未註冊');
+      // alert('帳號未註冊');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '帳號未註冊' });
+      setErrorText('帳號未註冊');
+
       return;
     }
 
     if (data.code === '20') {
-      alert('數據格式錯誤');
+      // alert('數據格式錯誤');
+      // dispatch({ type: SET_ERROR_TEXT, payload: '數據格式錯誤' });
+      setErrorText('數據格式錯誤');
+
       return;
     }
 
@@ -229,6 +308,10 @@ const AuthState = props => {
         type: SHOW_ERROR_MODAL,
         payload: { show: true, text: '請勿連續發送請求', status: 'fail' },
       });
+
+      // dispatch({ type: SET_ERROR_TEXT, payload: '請勿連續發送請求' });
+      setErrorText('請勿連續發送請求');
+
       // alert('請勿連續發送請求');
       return;
     }
@@ -238,7 +321,10 @@ const AuthState = props => {
         type: SHOW_ERROR_MODAL,
         payload: { show: true, text: '驗證碼錯誤', status: 'fail' },
       });
+      // dispatch({ type: SET_ERROR_TEXT, payload: '驗證碼錯誤' });
+      setErrorText('驗證碼錯誤');
       // alert('驗證碼錯誤');
+
       return;
     }
 
@@ -277,19 +363,6 @@ const AuthState = props => {
     dispatch({ type: REMOVE_VALID_TOKEN });
   };
 
-  // const changePassword = async () => {
-  //   const changePwApi = `/j/Req_ChgPwd.aspx`
-  //   const headers = getHeader()
-
-  //   const res = await fetch(changePwApi, {
-  //     method: "POST",
-  //     headers,
-
-  //   })
-  // }
-
-  // get avb and real
-
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   return (
@@ -300,6 +373,8 @@ const AuthState = props => {
         authLoading: state.authLoading,
         showErrorModal: state.showErrorModal,
         expiredTime: state.expiredTime,
+        loginLoading: state.loginLoading,
+        errorText: state.errorText,
 
         handleHttpError,
         changePw,
@@ -309,6 +384,8 @@ const AuthState = props => {
         forgetPassword,
         removeValidToken,
         setCountDown,
+        login,
+        setErrorText,
       }}
     >
       {props.children}

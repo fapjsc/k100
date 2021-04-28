@@ -5,8 +5,10 @@ import BaseCard from './../Ui/BaseCard';
 import BaseDialog from './../Ui/BaseDialog';
 import Header from '../Layout/Header';
 
-import LoginForm from './Login';
+// import LoginForm from './Login';
 import RegisterForm from './Register';
+
+import LoginForm from './LoginForm';
 
 import ErrorModal from '../Ui/ErrorModal';
 

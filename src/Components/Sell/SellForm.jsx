@@ -234,17 +234,6 @@ const SellForm = () => {
   // 表單驗證
   const validForm = () => {
     setFormValid(true);
-    // 有1~2位小数的正數，且不能為0或0開頭
-    // let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
-    // if (!rule.test(usdt.val) || !rule.test(cny.val)) {
-    //     setUsdt({
-    //         val: usdt.val,
-    //         isValid: false,
-    //         error: '請輸入有效數量, (不能為0，最多小數第二位)',
-    //     });
-
-    //     setFormValid(false);
-    // }
 
     if (Number(usdt.val) > Number(avb)) {
       setUsdt({
@@ -455,9 +444,14 @@ const SellForm = () => {
 
           {showBankWallet && (
             <>
-              <Form.Row className="mt-4">
-                <Form.Group as={Col} xl={6} sm={12} controlId="name" className="mt-4">
-                  <Form.Label>收款姓名</Form.Label>
+              <Form.Row className="mt-20">
+                <Form.Group
+                  as={Col}
+                  xl={6}
+                  sm={12}
+                  controlId="name"
+                  className="input-fill-x  mt-20"
+                >
                   <Form.Control
                     placeholder="收款姓名"
                     name="name"
@@ -465,47 +459,30 @@ const SellForm = () => {
                     value={name.val}
                     onChange={onChange}
                     autoComplete="off"
-                    className="easy-border "
+                    className="easy-border input-fill"
                     style={{
                       padding: 30,
                       fontSize: 20,
                     }}
                   />
+                  <Form.Label className="input-label">收款姓名</Form.Label>
+
                   {name.error && (
                     <Form.Text className="" style={{ fontSize: '12px' }}>
                       *{name.error}
                     </Form.Text>
                   )}
                 </Form.Group>
-
-                <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-4">
-                  <Form.Label>開戶銀行</Form.Label>
+                <Form.Group
+                  as={Col}
+                  xl={6}
+                  sm={12}
+                  controlId="account"
+                  className="mt-20 input-fill-x"
+                >
+                  {/* <label className="input-label">收款帳號</label> */}
                   <Form.Control
-                    className="easy-border"
-                    placeholder="開戶銀行"
-                    name="bank"
-                    isInvalid={!bank.isValid}
-                    value={bank.val}
-                    onChange={onChange}
-                    autoComplete="off"
-                    style={{
-                      padding: 30,
-                      fontSize: 20,
-                    }}
-                  />
-                  {bank.error && (
-                    <Form.Text className="" style={{ fontSize: '12px' }}>
-                      *{bank.error}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-              </Form.Row>
-
-              <Form.Row className="">
-                <Form.Group as={Col} xl={6} sm={12} controlId="account" className="mt-4">
-                  <Form.Label>收款帳號</Form.Label>
-                  <Form.Control
-                    className="easy-border"
+                    className="easy-border input-fill"
                     placeholder="收款帳號"
                     name="account"
                     isInvalid={!account.isValid}
@@ -517,17 +494,42 @@ const SellForm = () => {
                       fontSize: 20,
                     }}
                   />
+                  <Form.Label className="input-label">收款帳號</Form.Label>
+
                   {account.error && (
                     <Form.Text className="" style={{ fontSize: '12px' }}>
                       *{account.error}
                     </Form.Text>
                   )}
                 </Form.Group>
+              </Form.Row>
 
-                <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-4">
-                  <Form.Label>所在省市</Form.Label>
+              <Form.Row className="">
+                <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-20 input-fill-x">
                   <Form.Control
-                    className="easy-border"
+                    className="easy-border input-fill"
+                    placeholder="開戶銀行"
+                    name="bank"
+                    isInvalid={!bank.isValid}
+                    value={bank.val}
+                    onChange={onChange}
+                    autoComplete="off"
+                    style={{
+                      padding: 30,
+                      fontSize: 20,
+                    }}
+                  />
+                  <Form.Label className="input-label">開戶銀行</Form.Label>
+
+                  {bank.error && (
+                    <Form.Text className="" style={{ fontSize: '12px' }}>
+                      *{bank.error}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+                <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-20 input-fill-x">
+                  <Form.Control
+                    className="easy-border input-fill"
                     placeholder="所在省市"
                     name="city"
                     isInvalid={!city.isValid}
@@ -539,6 +541,8 @@ const SellForm = () => {
                       fontSize: 20,
                     }}
                   />
+                  <Form.Label className="input-label">所在省市</Form.Label>
+
                   {city.error && (
                     <Form.Text
                       className=""
@@ -613,20 +617,6 @@ const changeMoneyIconMobile = {
   transform: 'rotate(90deg)',
   width: 45,
 };
-
-// const sellFormBtn = {
-//   height: 50,
-//   fontSize: 18,
-//   borderRadius: 5,
-//   maxWidth: '50%',
-// };
-
-// const sellFormBtnSmPoint = {
-//   height: 50,
-//   fontSize: 18,
-//   borderRadius: 5,
-//   width: '100%',
-// };
 
 const inputText = {
   color: '#D7E2F3',

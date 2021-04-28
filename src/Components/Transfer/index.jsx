@@ -24,6 +24,9 @@ const Transfer = () => {
     closeWebSocket,
     handleBtnLoading,
     setHandleBtnLoading,
+    setUsdtCount,
+    setErrorText,
+    transferErrText,
   } = transferContext;
 
   const balanceContext = useContext(BalanceContext);
@@ -46,7 +49,6 @@ const Transfer = () => {
 
   const [formIsValid, setFormIsValid] = useState(false);
 
-  const [btnLoading, setBtnLoading] = useState(false);
   const [transferLoading, setTransferLoading] = useState(false);
 
   const [isPairing, setIsPairing] = useState(false);
@@ -54,18 +56,16 @@ const Transfer = () => {
   useEffect(() => {
     getExRate();
     getBalance();
+    closeWebSocket();
+
+    return () => {
+      setErrorText('');
+    };
 
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    if (handleBtnLoading) {
-      setBtnLoading(false);
-    }
-    return setHandleBtnLoading(false);
-    // eslint-disable-next-line
-  }, [handleBtnLoading]);
-
+  // 表單驗證後發送轉帳請求，將會拿到order token
   useEffect(() => {
     if (formIsValid) {
       sendTransferReq(transferAddress, transferCount);
@@ -77,17 +77,16 @@ const Transfer = () => {
 
   useEffect(() => {
     if (transferOrderToken) {
+      setIsPairing(true);
+
       detailReq(transferOrderToken);
     }
-
     // eslint-disable-next-line
   }, [transferOrderToken]);
 
   useEffect(() => {
     if (usdtCount) {
-      setIsPairing(true);
       transferWebSocket(transferOrderToken);
-      setBtnLoading(false);
     }
 
     // eslint-disable-next-line
@@ -103,6 +102,7 @@ const Transfer = () => {
       setIsPairing(false);
       history.replace(`/home/transaction/transfer/${transferOrderToken}`);
       closeWebSocket();
+      setUsdtCount(null);
     }
 
     if (transferStatus === 2) {
@@ -115,12 +115,14 @@ const Transfer = () => {
       setIsPairing(false);
       history.replace(`/home/transaction/transfer/${transferOrderToken}`);
       closeWebSocket();
+      setUsdtCount(null);
     }
 
     // eslint-disable-next-line
   }, [transferStatus]);
 
   const onChange = e => {
+    setErrorText('');
     if (e.target.name === 'transferCount')
       setTransferCount({
         val: e.target.value.trim(),
@@ -139,7 +141,7 @@ const Transfer = () => {
 
   const valid = () => {
     setFormIsValid(true);
-    setBtnLoading(true);
+    setHandleBtnLoading(true);
 
     // 錢包地址小於40位
     if (transferAddress.val.length < 40) {
@@ -149,7 +151,7 @@ const Transfer = () => {
         error: '錢包地址錯誤',
       });
       setFormIsValid(false);
-      setBtnLoading(false);
+      setHandleBtnLoading(false);
     }
     // 輸入的數量小數點超過兩位數
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
@@ -160,7 +162,7 @@ const Transfer = () => {
         error: '請輸入有效數量, (不能為0或是負數，最多小數第二位)',
       });
       setFormIsValid(false);
-      setBtnLoading(false);
+      setHandleBtnLoading(false);
     }
     // 不能是負數
     let negative = /^((-\d+(\.\d+)?)|((\.0+)?))$/;
@@ -171,7 +173,7 @@ const Transfer = () => {
         error: '請輸入有效的數量',
       });
       setFormIsValid(false);
-      setBtnLoading(false);
+      setHandleBtnLoading(false);
     }
     // 輸入數量大於可提加上手續費
     if (Number(transferCount.val) > avb + Number(transferHandle)) {
@@ -181,7 +183,7 @@ const Transfer = () => {
         error: '超出最大可提',
       });
       setFormIsValid(false);
-      setBtnLoading(false);
+      setHandleBtnLoading(false);
     }
     // 可提為0
     // if (Number(Avb_Balance <= 0)) {
@@ -226,6 +228,8 @@ const Transfer = () => {
     setTransferLoading(true);
     await getBalance();
     await getExRate();
+    setTransferLoading(false);
+
     const all = (avb - Number(transferHandle)).toFixed(2);
     if (all <= 0) {
       setTransferCount({
@@ -234,6 +238,7 @@ const Transfer = () => {
         error: '可提不足',
       });
       setFormIsValid(false);
+
       return;
     }
 
@@ -242,11 +247,10 @@ const Transfer = () => {
       isValid: true,
       error: '',
     });
-
-    setTransferLoading(false);
   };
 
   const backToHome = () => {
+    setUsdtCount(null);
     history.replace('/home/overview');
   };
 
@@ -304,7 +308,28 @@ const Transfer = () => {
             ) : null}
           </Form.Group>
 
-          <Form.Group as={Col} md={6} sm={12} controlId="transferAddress" className="">
+          <Form.Group as={Col} md={12} className="text-left" style={{ marginBottom: 50 }}>
+            <span
+              className=""
+              style={{
+                color: '#262E45',
+                fontSize: 12,
+              }}
+            >
+              手續費: {transferHandle} USDT
+            </span>
+          </Form.Group>
+
+          <Form.Group as={Col} md={12} sm={12} controlId="transferAddress" className="text-left">
+            <Form.Label
+              className="text-left"
+              style={{
+                color: '#262E45',
+                fontSize: 12,
+              }}
+            >
+              轉帳地址
+            </Form.Label>
             <Form.Control
               type="text"
               placeholder="請輸入收款地址"
@@ -320,25 +345,31 @@ const Transfer = () => {
                 *{transferAddress.error}
               </Form.Text>
             ) : null}
+
+            {transferErrText && (
+              <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
+                *{transferErrText}
+              </Form.Text>
+            )}
           </Form.Group>
         </Form.Row>
-        <Form.Row>
+        {/* <Form.Row>
           <Form.Group as={Col} className="text-right" style={{}}>
             <span className="text-dark">手續費: {transferHandle} USDT</span>
           </Form.Group>
-        </Form.Row>
+        </Form.Row> */}
 
         <Button
           onClick={valid}
           className="easy-btn smScreen-btn mt-4"
-          disabled={btnLoading}
+          disabled={handleBtnLoading || transferErrText}
           style={{
-            cursor: btnLoading ? 'auto' : 'pointer',
-            backgroundColor: btnLoading ? 'grey' : '#3e80f9',
+            cursor: handleBtnLoading || transferErrText ? 'auto' : 'pointer',
+            backgroundColor: handleBtnLoading || transferErrText ? 'grey' : '#3e80f9',
           }}
         >
-          {btnLoading && <Spinner animation="grow" variant="danger" />}
-          {btnLoading ? '處理中...' : '下一步'}
+          {handleBtnLoading && <Spinner animation="grow" variant="danger" />}
+          {handleBtnLoading ? '處理中...' : '下一步'}
         </Button>
       </Form>
 

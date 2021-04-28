@@ -9,6 +9,7 @@ import {
   SET_ORDER_DETAIL,
   GET_WS_CLIENT,
   HANDLE_BTN_LOADING,
+  SET_TRANSFER_ERROR_TEXT,
 } from '../type';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -20,6 +21,7 @@ const TransferState = props => {
     usdtCount: null,
     orderDetail: null,
     handleBtnLoading: false,
+    transferErrText: '',
   };
 
   // Get Header
@@ -38,6 +40,7 @@ const TransferState = props => {
 
   // webSocket連接
   const transferWebSocket = orderToken => {
+    console.log(orderToken);
     if (!orderToken) return;
 
     const loginSession = localStorage.getItem('token');
@@ -65,9 +68,8 @@ const TransferState = props => {
     // 2.收到server回復
     client.onmessage = message => {
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      console.log('got transfer reply!', dataFromServer);
       dispatch({ type: SET_TRANSFER_STATUS, payload: dataFromServer.data.Order_StatusID });
-      setUsdtCount(null);
     };
 
     // 3.錯誤處理
@@ -87,6 +89,9 @@ const TransferState = props => {
 
   // send transfer req
   const sendTransferReq = async (transferAddress, transferCount) => {
+    console.log('transfer req');
+    if (!transferAddress || !transferCount) return;
+
     const headers = getHeader();
     const transferApi = '/j/Req_Transfer1.aspx';
     try {
@@ -99,13 +104,16 @@ const TransferState = props => {
         }),
       });
       const resData = await res.json();
-      console.log(resData);
+      setHandleBtnLoading(false);
+
       if (resData.code === 200) {
+        console.log(resData);
         setOrderToken(resData.data.order_token);
         detailReq(resData.data.order_token);
       } else {
+        // alert(resData.code);
         handleHttpError(resData);
-        setHandleBtnLoading(true);
+        // setHandleBtnLoading(true);
       }
     } catch (error) {
       alert(error);
@@ -114,6 +122,7 @@ const TransferState = props => {
 
   // get detail
   const detailReq = async orderToken => {
+    console.log('detail');
     if (!orderToken) {
       return;
     }
@@ -128,12 +137,13 @@ const TransferState = props => {
         }),
       });
       const resData = await res.json();
+      setHandleBtnLoading(false);
+
       if (resData.code === 200) {
         setUsdtCount(Math.abs(resData.data.UsdtAmt));
         dispatch({ type: SET_ORDER_DETAIL, payload: resData.data });
       } else {
         handleHttpError(resData);
-        setHandleBtnLoading(true);
       }
     } catch (error) {
       alert(error);
@@ -160,14 +170,21 @@ const TransferState = props => {
     dispatch({ type: SET_TRANSFER_ORDER_TOKEN, payload: value });
   };
 
+  // set transfer error
+  const setErrorText = value => {
+    dispatch({ type: SET_TRANSFER_ERROR_TEXT, payload: value });
+  };
+
   const handleHttpError = data => {
     if (data.code === '1') {
-      alert('系統錯誤');
+      // alert('系統錯誤');
+      setErrorText('系統錯誤');
       return;
     }
 
     if (data.code === '10') {
       alert('帳號或密碼錯誤');
+
       return;
     }
 
@@ -177,26 +194,31 @@ const TransferState = props => {
     }
 
     if (data.code === '12') {
-      alert('此帳號無法註冊，可能被列入黑名單');
+      alert('此帳號無法註冊');
       return;
     }
 
     if (data.code === '13') {
-      alert('json格式錯誤');
+      // alert('json格式錯誤');
+      setErrorText('json格式錯誤');
       return;
     }
     if (data.code === '14') {
-      alert('json格式錯誤');
+      // alert('json格式錯誤');
+      setErrorText('json格式錯誤');
       return;
     }
 
     if (data.code === '15') {
-      alert('無效的token');
+      // alert('無效的token');
+      setErrorText('無效的token');
       return;
     }
 
     if (data.code === '16') {
-      alert('錯誤的操作');
+      // alert('錯誤的操作');
+      setErrorText('錯誤的操作');
+
       return;
     }
 
@@ -206,12 +228,14 @@ const TransferState = props => {
     }
 
     if (data.code === '20') {
-      alert('數據格式錯誤');
+      // alert('數據格式錯誤');
+      setErrorText('數據格式錯誤');
       return;
     }
 
     if (data.code === '21') {
-      alert('請勿連續發送請求');
+      // alert('請勿連續發送請求');
+      setErrorText('請勿連續發送請求');
       return;
     }
 
@@ -221,21 +245,23 @@ const TransferState = props => {
     }
 
     if (data.code === '30') {
-      alert('無效的錢包地址');
+      // alert('無效的錢包地址');
+      setErrorText('無效的錢包地址');
       return;
     }
 
     if (data.code === '31') {
-      alert('不能轉帳給自己');
+      // alert('不能轉帳給自己');
+      setErrorText('不能轉帳給自己');
+      return;
+    }
+    if (data.code === '32') {
+      // alert('可提不足');
+      setErrorText('可提不足');
       return;
     }
 
-    if (data.code === 'ˇ32') {
-      alert('可提不足');
-      return;
-    }
-
-    if (data.code === 'ˇ91') {
+    if (data.code === '91') {
       alert('session過期，請重新登入');
       return;
     }
@@ -252,6 +278,7 @@ const TransferState = props => {
         usdtCount: state.usdtCount,
         orderDetail: state.orderDetail,
         handleBtnLoading: state.handleBtnLoading,
+        transferErrText: state.transferErrText,
 
         transferWebSocket,
         sendTransferReq,
@@ -261,6 +288,7 @@ const TransferState = props => {
         setOrderToken,
         closeWebSocket,
         setHandleBtnLoading,
+        setErrorText,
       }}
     >
       {props.children}

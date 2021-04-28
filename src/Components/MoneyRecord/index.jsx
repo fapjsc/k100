@@ -203,7 +203,7 @@ export default class MoneyRecord extends Component {
         this.checkTick(token);
       }, timer);
     } else {
-      alert('請重新登入, money record did mount');
+      alert('請重新登入, money record did mount...');
       history.replace('/auth/login');
     }
   }
