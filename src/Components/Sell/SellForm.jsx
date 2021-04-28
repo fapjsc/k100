@@ -234,6 +234,17 @@ const SellForm = () => {
   // 表單驗證
   const validForm = () => {
     setFormValid(true);
+    // 有1~2位小数的正數，且不能為0或0開頭
+    // let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
+    // if (!rule.test(usdt.val) || !rule.test(cny.val)) {
+    //     setUsdt({
+    //         val: usdt.val,
+    //         isValid: false,
+    //         error: '請輸入有效數量, (不能為0，最多小數第二位)',
+    //     });
+
+    //     setFormValid(false);
+    // }
 
     if (Number(usdt.val) > Number(avb)) {
       setUsdt({

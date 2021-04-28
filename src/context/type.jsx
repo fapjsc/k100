@@ -40,3 +40,6 @@ export const SET_SINGLE_DETAIL = 'SET_SINGLE_DETAIL';
 // Login
 export const LOGIN_SET_LOADING = 'LOGIN_SET_LOADING';
 export const SET_ERROR_TEXT = 'SET_ERROR_TEXT';
+
+// Http Error
+export const SET_HTTP_ERROR = 'SET_HTTP_ERROR';
