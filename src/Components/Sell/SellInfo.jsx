@@ -196,7 +196,7 @@ const SellInfo = () => {
                 // className="easy-btn mw400"
                 style={payment ? infoBtn : infoBtnDisabled}
                 // variant={payment ? 'primary' : 'secondary'}
-                disabled={!payment}
+                // disabled={!payment}
               >
                 {!payment && (
                   <img

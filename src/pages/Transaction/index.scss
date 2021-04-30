@@ -33,6 +33,7 @@
   // margin: 0 auto;
 
   @media only screen and(max-width: 1200px) {
+    margin: 0 auto !important;
   }
 
   @media only screen and(max-width: 760px) {
@@ -41,7 +42,7 @@
 }
 
 .welcome_txt {
-  @media only screen and(max-width: 760px) {
+  @media only screen and(max-width: 1200px) {
     margin: 0 auto !important;
   }
 }

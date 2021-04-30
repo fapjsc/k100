@@ -1,5 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 
 // Context
 import BuyContext from '../../context/buy/BuyContext';
@@ -10,23 +11,26 @@ import ExRate from './ExRate';
 import BuyDetail from './BuyDetail';
 import BuyComplete from './BuyComplete';
 import FormFooter from '../Layout/FormFooter';
+import Chat from '../Chat';
+
+// Style
+import helpIcon from '../../Assets/i_ask2.png';
+import Button from 'react-bootstrap/Button';
 
 const BuyInfo = () => {
+  // Init State
+  const [showChat, setShowChat] = useState(false);
+
+  // Media Query
+  const isDesktopOrLaptop = useMediaQuery({ query: '(max-width: 1200px)' }); // 小於等於 1200 true
+
   // Router Props
   const match = useRouteMatch();
   const history = useHistory();
 
   // Buy Context
   const buyContext = useContext(BuyContext);
-  const {
-    buyWsData,
-    buyConnectWs,
-    setOrderToken,
-    wsStatus,
-    cleanAll,
-    closeWebSocket,
-    setWsStatus,
-  } = buyContext;
+  const { buyWsData, buyConnectWs, setOrderToken, wsStatus, cleanAll, closeWebSocket } = buyContext;
 
   useEffect(() => {
     const orderToken = match.params.id;
@@ -61,9 +65,50 @@ const BuyInfo = () => {
         <BaseSpinner />
       )}
 
+      {/* 手機版聊天室*/}
+      {isDesktopOrLaptop && buyWsData ? (
+        <>
+          <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
+            <img
+              style={{
+                width: 15,
+                height: 20,
+                marginRight: 8,
+              }}
+              src={helpIcon}
+              alt="help icon"
+            />
+            幫助
+          </Button>
+          <Chat Tx_HASH={buyWsData.hash} isChat={showChat} />
+        </>
+      ) : null}
+
+      {/* 桌機版聊天室 */}
+      {buyWsData && <Chat isChat={!isDesktopOrLaptop} Tx_HASH={buyWsData.hash} />}
+
       <FormFooter />
     </>
   );
+};
+
+const helpBtn = {
+  paddingLeft: 15,
+  paddingRight: 15,
+  paddingTop: 5,
+  paddingBottom: 5,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  padding: '1rem 2rem',
+  fontSize: '1.5rem',
+  fontWeight: 300,
+  borderRadius: '10rem',
+  position: 'fixed',
+  bottom: '5%',
+  right: '5%',
+  backgroundColor: '#F80FA',
 };
 
 export default BuyInfo;
