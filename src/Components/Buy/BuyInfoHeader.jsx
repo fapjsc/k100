@@ -5,7 +5,7 @@ import Countdown from 'react-countdown';
 import BuyContext from '../../context/buy/BuyContext';
 
 // Components
-import Timer from './CounDown/timer';
+import Timer from './Timer';
 
 // Style
 import clockIcon from '../../Assets/i_clock.png';

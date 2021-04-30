@@ -166,7 +166,6 @@ const InfoDetail = props => {
             <Col className="mw400 text-center">
               <Button
                 disabled={buyBtnLoading}
-                //   className="easy-btn w-100"
                 className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
                 onClick={() => BuyerAlreadyPay(buyOrderToken)}
               >
