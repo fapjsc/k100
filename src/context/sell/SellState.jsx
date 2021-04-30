@@ -177,7 +177,7 @@ const SellState = props => {
 
       if (resData.code === 200) {
         alert('訂單已經取消');
-        history.replace('/home/transaction/sell');
+        history.replace('/home/overview');
       } else {
         alert(`${resData.msg}, 訂單取消失敗`);
       }

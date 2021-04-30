@@ -430,11 +430,10 @@ const SellForm = () => {
                 style={{
                   marginTop: -8,
                   marginRight: 15,
-                  color: showBankWallet ? '#007bff' : '#707070',
-                  borderColor: showBankWallet ? '#007bff' : '#d7e2f3',
                 }}
                 // className="walletBtn"
-                className="walletBtn"
+                // className="walletBtn"
+                className={showBankWallet ? 'walletBtnActive' : 'walletBtn'}
                 onClick={() => setShowBankWallet(!showBankWallet)}
               >
                 銀行卡
@@ -442,7 +441,7 @@ const SellForm = () => {
 
               <Button
                 type="button"
-                className="disableBtn"
+                className="disableWalletBtn"
                 style={{
                   marginTop: -8,
                 }}
@@ -580,12 +579,7 @@ const SellForm = () => {
                 type="submit"
                 disabled={wsPairing}
                 block
-                className="easy-btn w-100"
-                // variant={!wsPairing ? 'primary' : 'secondary'}
-                // style={smPoint ? sellFormBtnSmPoint : sellFormBtn}
-                style={{
-                  backgroundColor: wsPairing && 'grey',
-                }}
+                className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
               >
                 下一步
               </Button>

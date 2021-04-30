@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
 
 import TransactionNav from '../../Components/TransactionNav';
-import Buy from '../../Components/Buy';
+// import Buy from '../../Components/Buy';
 import Sell from '../../Components/Sell/Sell';
 import SellInfo from '../../Components/Sell/SellInfo';
 import Transfer from '../../Components/Transfer';
 import TransferInfo from '../../Components/Transfer/TransferInfo';
+
+import TheBuy from '../../Components/Buy/TheBuy';
+import BuyInfo from '../../Components/Buy/BuyInfo';
 
 import './index.scss';
 
@@ -173,10 +176,13 @@ const Transaction = () => {
 
           <Switch>
             {/* BUY */}
-            <Route
+            {/* <Route
               path="/home/transaction/buy"
               component={props => <Buy exRate={exRate} {...props} />}
-            />
+            /> */}
+
+            <Route exact path="/home/transaction/buy" component={TheBuy} />
+            <Route exact path="/home/transaction/buy/:id" component={BuyInfo} />
 
             {/* SELL */}
             <Route exact path="/home/transaction/sell" component={Sell} />

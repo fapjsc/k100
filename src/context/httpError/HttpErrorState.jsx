@@ -93,6 +93,8 @@ const HttpErrorState = props => {
       setHttpError('session過期，請重新登入');
       return;
     }
+
+    setHttpError('發生錯誤，請關閉瀏覽器重新嘗試');
   };
 
   const [state, dispatch] = useReducer(HttpErrorReducer, initialState);
@@ -102,6 +104,7 @@ const HttpErrorState = props => {
       value={{
         errorText: state.errorText,
         handleHttpError,
+        setHttpError,
       }}
     >
       {props.children}

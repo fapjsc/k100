@@ -47,6 +47,7 @@ const confirmBuyTextBox = {
   // justifyContent: 'space-between',
   fontSize: '20px',
   fontWeight: 'bold',
+  height: '100%',
 };
 
 export default SetAccount;

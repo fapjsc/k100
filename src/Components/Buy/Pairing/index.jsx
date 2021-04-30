@@ -1,3 +1,13 @@
+/*
+==========
+
+
+=== 保留 ===
+
+
+===========
+*/
+
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import './index.scss';
@@ -20,8 +30,7 @@ const Paring = props => {
           <img src={searchIcon} alt="icon" className="" />
           <h3 style={{ color: '#3F80FA' }}>請稍等，現正整合交易者資料</h3>
           <p>
-            購買訂單：{Number(props.usdtamt).toFixed(2)} USDT = ${Number(props.rmbamt).toFixed(2)}{' '}
-            CNY
+            購買訂單：{Number(props.usdt).toFixed(2)} USDT = ${Number(props.rmb).toFixed(2)} CNY
           </p>
         </div>
       </Modal.Body>

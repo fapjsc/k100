@@ -43,3 +43,16 @@ export const SET_ERROR_TEXT = 'SET_ERROR_TEXT';
 
 // Http Error
 export const SET_HTTP_ERROR = 'SET_HTTP_ERROR';
+
+// Buy
+export const BUY_BTN_LOADING = 'BUY_BTN_LOADING';
+export const SET_BUY_COUNT = 'SET_BUY_COUNT';
+export const SET_BUY_ERROR_TEXT = 'SET_BUY_ERROR_TEXT';
+export const SET_BUY_ORDER_TOKEN = 'SET_BUY_ORDER_TOKEN';
+export const SET_BUY_WS_STATUS = 'SET_BUY_WS_STATUS';
+export const HANDLE_PAIRING = 'HANDLE_PAIRING';
+export const SET_SHOW_BANK = 'SET_SHOW_BANK';
+export const SET_BUY_WS_CLIENT = 'SET_BUY_WS_CLIENT';
+export const SET_BUY_WS_DATA = 'SET_BUY_WS_DATA';
+export const SET_DELTA_TIME = 'SET_DELTA_TIME';
+export const HIDE_BUY_INFO = 'HIDE_BUY_INFO';

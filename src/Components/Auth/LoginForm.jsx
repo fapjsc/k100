@@ -43,7 +43,13 @@ const LoginForm = () => {
 
       return setFormIsValid(false);
     }
+    // eslint-disable-next-line
   }, [formIsValid]);
+
+  // 按下enter後登入
+  const handleKeyUp = e => {
+    if (e.keyCode === 13) validateForm();
+  };
 
   const onChange = e => {
     setErrorText('');
@@ -191,7 +197,7 @@ const LoginForm = () => {
                 placeholder="密碼"
                 onChange={onChange}
                 value={password.val}
-                // onChange={this.setPassword}
+                onKeyUp={handleKeyUp}
                 autoComplete="off"
               />
               {password.error && (

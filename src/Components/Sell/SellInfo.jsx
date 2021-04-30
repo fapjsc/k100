@@ -121,30 +121,6 @@ const SellInfo = () => {
               >
                 提交資料
               </p>
-
-              {/* 倒數時間 */}
-              {/* <p
-                                style={{
-                                    fontSize: 18,
-                                }}
-                            >
-                                剩餘時間：
-                                <span
-                                    style={{
-                                        color: !overTime ? '#DAA520' : 'red',
-                                    }}
-                                >
-                                    {timer && minutes && seconds && !overTime ? (
-                                        <SellCountDown
-                                            minutes={minutes}
-                                            seconds={seconds}
-                                            setOverTime={setOverTime}
-                                        />
-                                    ) : overTime ? (
-                                        '逾時'
-                                    ) : null}
-                                </span>
-                            </p> */}
             </Col>
           </Row>
 

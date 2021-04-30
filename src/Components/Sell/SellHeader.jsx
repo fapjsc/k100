@@ -27,7 +27,7 @@ const SellHeader = () => {
           匯率 :<span>{exRate}</span>
         </p>
         <p className="mb-0">
-          限額 :<span>100USDT - 10000USDT</span>
+          限額 :<span>USDT 100.00 - 10000.00</span>
         </p>
         <p className="mb-0">
           付款窗口 :<span>15分鐘</span>

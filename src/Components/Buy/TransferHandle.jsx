@@ -1,27 +1,27 @@
-import { useContext, useEffect } from 'react';
-import SellContext from '../../context/sell/SellContext';
+// import { useContext, useEffect } from 'react';
+// import SellContext from '../../context/sell/SellContext';
 
-const TransferHandle = () => {
-  const sellContext = useContext(SellContext);
-  const { getExRate, transferHandle } = sellContext;
+// const TransferHandle = () => {
+//   const sellContext = useContext(SellContext);
+//   const { getExRate, transferHandle } = sellContext;
 
-  useEffect(() => {
-    getExRate();
+//   useEffect(() => {
+//     getExRate();
 
-    // eslint-disable-next-line
-  }, []);
+//     // eslint-disable-next-line
+//   }, []);
 
-  return (
-    <p
-      style={{
-        letterSpacing: 1.5,
-        marginBottom: 20,
-        fontSize: '12px',
-      }}
-    >
-      手續費：{transferHandle && transferHandle} USDT
-    </p>
-  );
-};
+//   return (
+//     <p
+//       style={{
+//         letterSpacing: 1.5,
+//         marginBottom: 20,
+//         fontSize: '12px',
+//       }}
+//     >
+//       手續費：{transferHandle && transferHandle} USDT
+//     </p>
+//   );
+// };
 
-export default TransferHandle;
+// export default TransferHandle;

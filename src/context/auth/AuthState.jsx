@@ -74,8 +74,6 @@ const AuthState = props => {
       const resData = await res.json();
       handleLoginLoading(false);
 
-      console.log(resData);
-
       if (resData.code === 200) {
         const {
           data: { login_session },
@@ -107,7 +105,6 @@ const AuthState = props => {
         }),
       });
       const resData = await res.json();
-      console.log(resData);
 
       if (resData.code === 200) {
         dispatch({ type: IS_SEND_VALID_CODE, payload: true });
@@ -177,8 +174,6 @@ const AuthState = props => {
 
       const resData = await res.json();
 
-      console.log(resData);
-
       dispatch({ type: SET_AUTH_LOADING, payload: false });
 
       if (resData.code === 200) {
@@ -221,7 +216,7 @@ const AuthState = props => {
         alert('密碼已經更換');
       }
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 
