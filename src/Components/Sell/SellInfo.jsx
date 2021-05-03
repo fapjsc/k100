@@ -2,15 +2,17 @@ import { Fragment, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
+// ConText
 import SellContext from '../../context/sell/SellContext';
-import SellHeaders from './SellHeader';
 
+// Components
+import SellHeaders from './SellHeader';
 import SellCompleted from './SellCompleted';
 import SetAccount from '../Buy/SetAccount';
-// import SellCountDown from './SellCountDown';
 import Chat from '../Chat';
 import CancelSell from './CancelSell';
 
+// Style
 import helpIcon from '../../Assets/i_ask2.png';
 import btnWait from '../../Assets/btn_wait.png';
 import Button from 'react-bootstrap/Button';

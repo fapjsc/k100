@@ -35,9 +35,15 @@ const TheBuy = () => {
     buyConnectWs,
     cleanAll,
     wsStatus,
+    closeWebSocket,
   } = buyContext;
 
   useEffect(() => {
+    closeWebSocket();
+
+    return () => {
+      closeWebSocket();
+    };
     // eslint-disable-next-line
   }, []);
 
@@ -61,8 +67,8 @@ const TheBuy = () => {
 
   const onHide = () => {
     handlePairing(false);
-    history.replace('/home/transaction/buy');
     cleanAll();
+    history.replace('/home/overview');
   };
   return (
     <>

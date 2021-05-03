@@ -44,19 +44,8 @@ export default class Wait extends Component {
             state: { item },
           });
         }
-        // this.props.history.push(`/home/transaction/buy/${detailToken}`);
       }
-      // () => this.props.history.push(`/home/transaction/buy/${detailToken}`)
     );
-
-    // const { historyList } = this.state;
-    // const item = historyList.find(el => el.token === detailToken);
-    // console.log(item);
-    // if (item.MasterType === '買入') {
-    //     console.log(detailToken);
-    //     console.log(this.props);
-    //     this.props.history.push(`/home/transaction/buy/${detailToken}`);
-    // }
   };
 
   getTransactions = async (token, headers) => {
@@ -78,6 +67,7 @@ export default class Wait extends Component {
       const resData = await res.json();
 
       const { data } = resData;
+      console.log(data);
 
       const newData = data.map(h => {
         if (h.MasterType === 0) {

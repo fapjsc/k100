@@ -2,11 +2,12 @@ import { useReducer } from 'react';
 import HistoryReducer from './HistoryReducer';
 import HistoryContext from './HistoryContext';
 
-import { SET_ALL_HISTORY, SET_SINGLE_DETAIL } from '../type';
+import { SET_ALL_HISTORY, SET_SINGLE_DETAIL, SET_WAIT_HISTORY } from '../type';
 
 const HistoryState = props => {
   const initialState = {
     allHistory: [],
+    waitList: [],
     singleDetail: null,
   };
 
@@ -21,6 +22,48 @@ const HistoryState = props => {
       return headers;
     } else {
       return;
+    }
+  };
+
+  // Get History Wait
+  const setWaitList = async () => {
+    const headers = getHeader();
+
+    const historyApi = '/j/GetTxPendings.aspx';
+
+    try {
+      const res = await fetch(historyApi, {
+        headers,
+      });
+
+      const resData = await res.json();
+
+      if (resData.code === 200) {
+        const { data } = resData;
+        console.log(data);
+
+        const newData = data.map(h => {
+          if (h.MasterType === 0) {
+            h.MasterType = '買入';
+            return h;
+          } else if (h.MasterType === 1) {
+            h.MasterType = '賣出';
+            return h;
+          } else if (h.MasterType === 2) {
+            h.MasterType = '轉出';
+            return h;
+          } else {
+            h.MasterType = '轉入';
+            return h;
+          }
+        });
+
+        dispatch({ type: SET_WAIT_HISTORY, payload: newData });
+      } else {
+        alert(resData.msg);
+      }
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -135,9 +178,11 @@ const HistoryState = props => {
       value={{
         allHistory: state.allHistory,
         singleDetail: state.singleDetail,
+        waitList: state.waitList,
 
         getHistoryAll,
         detailReq,
+        setWaitList,
       }}
     >
       {props.children}

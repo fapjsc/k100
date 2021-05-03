@@ -176,11 +176,6 @@ const Transaction = () => {
 
           <Switch>
             {/* BUY */}
-            {/* <Route
-              path="/home/transaction/buy"
-              component={props => <Buy exRate={exRate} {...props} />}
-            /> */}
-
             <Route exact path="/home/transaction/buy" component={TheBuy} />
             <Route exact path="/home/transaction/buy/:id" component={BuyInfo} />
 

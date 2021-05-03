@@ -10,7 +10,7 @@ import Pairing from './Pairing';
 const Sell = () => {
   const history = useHistory();
   const sellContext = useContext(SellContext);
-  const { wsPairing, wsData, closeWebSocket } = sellContext;
+  const { wsPairing, wsData, closeWebSocket, setWsPairing } = sellContext;
 
   useEffect(() => {
     closeWebSocket();
@@ -22,6 +22,8 @@ const Sell = () => {
   }, []);
 
   const backHome = () => {
+    closeWebSocket();
+    setWsPairing(false);
     history.replace('/home/overview');
   };
 

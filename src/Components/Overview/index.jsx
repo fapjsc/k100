@@ -21,7 +21,7 @@ export default class index extends Component {
         <p className="welcome_txt text-left">歡迎登入</p>
         <Row className="text-center">
           <Col lg={3} md={6} sm={6} xs={6}>
-            <Link className="home_btn" to="/home/transaction">
+            <Link className="home_btn" to="/home/transaction/buy">
               <div className="trade"></div>
               <p>買賣</p>
             </Link>

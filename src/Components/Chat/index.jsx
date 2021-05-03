@@ -1,23 +1,14 @@
 import { Fragment, useState, useEffect } from 'react';
-
 import { useRouteMatch } from 'react-router-dom';
-
-// import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { v4 as uuidv4 } from 'uuid';
+import Zmage from 'react-zmage'; // 圖片縮放
+import Resizer from 'react-image-file-resizer'; // 圖片壓縮
+import { useMediaQuery } from 'react-responsive'; // RWD
 
-// 圖片縮放
-import Zmage from 'react-zmage';
-
-// 圖片壓縮
-import Resizer from 'react-image-file-resizer';
-
-// RWD
-import { useMediaQuery } from 'react-responsive';
-
+// Style
 import SendIcon from '../../Assets/send_icon.png';
 import AttachIcon from '../../Assets/attach_icon.png';
-
 import Card from 'react-bootstrap/Card';
 import './index.scss';
 
@@ -32,29 +23,18 @@ const Mobile = ({ children }) => {
 };
 
 const Chat = props => {
-  // state = {
-  //   client: {},
-  //   messages: [],
-  //   userInput: '',
-  //   orderToken: '',
-  //   img: '',
-  // };
-
+  // Router Props
   const match = useRouteMatch();
 
+  // Init State
   const [client, setClient] = useState({});
   const [messages, setMessage] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [orderToken, setOrderToken] = useState(null);
-
   const [messagesEnd, setMessagesEnd] = useState(null);
-  // const [img, setImg] = useState('');
 
   const setInput = e => {
     setUserInput(e.target.value);
-    // this.setState({
-    //   userInput: e.target.value,
-    // });
   };
 
   //點擊後發送訊息到server
@@ -64,18 +44,6 @@ const Chat = props => {
     }
 
     if (e.keyCode === 13 || e.keyCode === undefined) {
-      // send message to server
-      // this.state.client.send(
-      //   JSON.stringify({
-      //     Message_Type: 1,
-      //     Message: value.toString(),
-      //   })
-      // );
-
-      // this.setState({
-      //   userInput: '',
-      // });
-
       client.send(
         JSON.stringify({
           Message_Type: 1,
@@ -115,12 +83,6 @@ const Chat = props => {
 
       const image = await resizeFile(file);
 
-      // this.state.client.send(
-      //   JSON.stringify({
-      //     Message_Type: 2,
-      //     Message: image,
-      //   })
-      // );
       client.send(
         JSON.stringify({
           Message_Type: 2,
@@ -147,20 +109,13 @@ const Chat = props => {
     if (orderToken) {
       chatConnect(orderToken);
     }
+
+    // eslint-disable-next-line
   }, [orderToken]);
 
   useEffect(() => {
     scrollToBottom();
   });
-
-  // componentDidUpdate() {
-  //   this.scrollToBottom();
-  // }
-
-  // componentWillUnmount() {
-  //   // this.closeWebSocket();
-  //   console.log('unmount');
-  // }
 
   // Chat WebSocket
   const chatConnect = orderToken => {

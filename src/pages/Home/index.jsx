@@ -107,11 +107,6 @@ export default class index extends Component {
           <Route path="/home/history" component={History} />
           <Route path="/home/transaction" component={Transaction} />
           <Route path="/home/change-pw" component={ChangePassword} />
-
-          {/* <Route
-                        path="/home/payInfo/:id"
-                        component={() => <PayInfo getConfirmPay={this.getConfirmPay} />}
-                    /> */}
           <Redirect to="/home/overview" />
         </Switch>
       </>

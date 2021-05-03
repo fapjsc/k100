@@ -36,6 +36,7 @@ export const SET_EXPIRED_TIME = 'SET_EXPIRED_TIME';
 // History
 export const SET_ALL_HISTORY = 'SET_ALL_HISTORY';
 export const SET_SINGLE_DETAIL = 'SET_SINGLE_DETAIL';
+export const SET_WAIT_HISTORY = 'SET_WAIT_HISTORY';
 
 // Login
 export const LOGIN_SET_LOADING = 'LOGIN_SET_LOADING';

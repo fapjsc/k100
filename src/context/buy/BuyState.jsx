@@ -32,7 +32,10 @@ const BuyState = props => {
   // Init State
   const initialState = {
     buyBtnLoading: false,
-    buyCount: {},
+    buyCount: {
+      usdt: '',
+      rmb: '',
+    },
     buyErrorText: '',
     buyOrderToken: '',
     wsStatus: null,
@@ -216,7 +219,7 @@ const BuyState = props => {
     }
   };
 
-  // Get DeltaTime
+  // Get And Set DeltaTime
   const GetDeltaTime = async orderToken => {
     const headers = getHeader();
     const getDetailApi = `/j/GetTxDetail.aspx`;

@@ -30,7 +30,15 @@ const BuyInfo = () => {
 
   // Buy Context
   const buyContext = useContext(BuyContext);
-  const { buyWsData, buyConnectWs, setOrderToken, wsStatus, cleanAll, closeWebSocket } = buyContext;
+  const {
+    buyWsData,
+    buyConnectWs,
+    setOrderToken,
+    wsStatus,
+    cleanAll,
+    closeWebSocket,
+    GetDeltaTime,
+  } = buyContext;
 
   useEffect(() => {
     const orderToken = match.params.id;
@@ -46,6 +54,11 @@ const BuyInfo = () => {
 
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    GetDeltaTime(match.params.id);
+    // eslint-disable-next-line
+  }, [showChat]);
 
   const backToHome = () => {
     history.replace('/home/overview');
