@@ -17,30 +17,30 @@ export default class index extends Component {
 
   render() {
     return (
-      <Container>
-        <p className="welcome_txt text-left">歡迎登入</p>
-        <Row className="text-center">
-          <Col lg={3} md={6} sm={6} xs={6}>
-            <Link className="home_btn" to="/home/transaction/buy">
+      <Container style={{ maxWidth: '1140px' }} className="">
+        <p className="welcome_txt text-left px-0">歡迎登入</p>
+        <Row className="text-center m-0 p-0 justify-content-between">
+          <Col md={2} xs={5} className="px-0">
+            <Link className="home_btn w-100" to="/home/transaction/buy">
               <div className="trade"></div>
               <p>買賣</p>
             </Link>
           </Col>
-          <Col lg={3} md={6} sm={6} xs={6}>
-            <Link className="home_btn" to="/home/transaction/transfer">
+          <Col md={2} xs={5} className="px-0">
+            <Link className="home_btn w-100" to="/home/transaction/transfer">
               <div className="i_01"></div>
               <p>轉賬</p>
             </Link>
           </Col>
 
-          <Col lg={3} md={6} sm={6} xs={6}>
-            <Link className="home_btn" to="/home/wallet">
+          <Col md={2} xs={5} className="px-0">
+            <Link className="home_btn w-100" to="/home/wallet">
               <div className="i_wallet"></div>
               <p>我的錢包</p>
             </Link>
           </Col>
-          <Col lg={3} md={6} sm={6} xs={6}>
-            <Link className="home_btn" to="/home/history">
+          <Col md={2} xs={5} className="px-0">
+            <Link className="home_btn w-100" to="/home/history">
               <div className="i_trans"></div>
               <p>交易紀錄</p>
             </Link>

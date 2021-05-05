@@ -1,58 +1,55 @@
-.history-wait {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 10% 28% 30% 18%;
-    grid-gap: 3rem;
-    align-items: center;
-    margin-top: 4rem;
+// .history-wait {
+//     width: 100%;
+//     display: grid;
+//     grid-template-columns: 10% 28% 30% 18%;
+//     grid-gap: 3rem;
+//     align-items: center;
+//     margin-top: 4rem;
 
-    
+//     &:hover {
+//         background-color: #ddd;
+//     }
 
-    &:hover {
-        background-color: #ddd;
-    }
+//     // @media only screen and(max-width: 992px) {
+//     //     grid-template-rows: repeat(2, 1fr);
+//     //     grid-template-columns: 25% 30% 30% 1fr;
+//     //     grid-gap: 2rem;
+//     //     margin-bottom: 10rem;
+//     //     border-top: 3px solid #ddd;
+//     // }
+//     @media only screen and(max-width: 991px) {
+//     grid-template-columns: 15% 28% 30% 18%;
 
-    // @media only screen and(max-width: 992px) {
-    //     grid-template-rows: repeat(2, 1fr);
-    //     grid-template-columns: 25% 30% 30% 1fr;
-    //     grid-gap: 2rem;
-    //     margin-bottom: 10rem;
-    //     border-top: 3px solid #ddd;
-    // }
-    @media only screen and(max-width: 991px) {
-    grid-template-columns: 15% 28% 30% 18%;
-        
-    }
+//     }
 
+//     @media only screen and(max-width: 767px) {
+//         grid-template-columns: 15% 25% 20% 18%;
+//     }
 
-    @media only screen and(max-width: 767px) {
-        grid-template-columns: 15% 25% 20% 18%;
-    }
+//     @media only screen and(max-width: 533px) {
+//         grid-gap: 0;
+//         grid-template-columns: 18% 30% 30% 25%;
+//     }
 
-    @media only screen and(max-width: 533px) {
-        grid-gap: 0;
-        grid-template-columns: 18% 30% 30% 25%;
-    }
+//     @media only screen and(max-width: 476px) {
+//         grid-template-columns: 20% 32% 30% 25%;
+//     }
 
-    @media only screen and(max-width: 476px) {
-        grid-template-columns: 20% 32% 30% 25%;
-    }
+//     @media only screen and(max-width: 400px) {
+//         grid-template-columns: 25% 28% 30% 20%;
+//     }
 
-    @media only screen and(max-width: 400px) {
-        grid-template-columns: 25% 28% 30% 20%;
-    }
+//     @media only screen and(max-width: 380px) {
+//         grid-template-columns: 20% 28% 33% 24%;
+//     }
+// }
 
-    @media only screen and(max-width: 380px) {
-        grid-template-columns: 20% 28% 33% 24%;
-    }
-}
+// .wait-date {
+//     @media only screen and(max-width: 767px) {
+//         font-size: 1rem;
+//     }
+// }
 
-.wait-date {
-    @media only screen and(max-width: 767px) {
-        font-size: 1rem;
-    }
-}
+// .history-complete {
 
-.history-complete {
-    
-}
+// }

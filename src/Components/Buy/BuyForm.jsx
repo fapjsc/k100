@@ -154,6 +154,7 @@ const BuyForm = () => {
             autoComplete="off"
             type="number"
             isInvalid={usdtAmt.error}
+            onWheel={event => event.currentTarget.blur()}
           />
 
           <span style={inputText}>USDT</span>
@@ -192,7 +193,8 @@ const BuyForm = () => {
             name="rmbAmt"
             autoComplete="off"
             type="number"
-            className="easy-border "
+            className="easy-border"
+            onWheel={event => event.currentTarget.blur()}
           />
           <span style={inputText}>CNY</span>
         </Form.Group>

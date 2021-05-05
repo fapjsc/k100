@@ -1,12 +1,21 @@
 .balance-box {
-  padding-left: 9rem;
-
   @media only screen and(max-width: 500px) {
-    padding-left: 1rem;
   }
 
-  @media only screen and(max-width: 360px) {
+  @media only screen and(max-width: 390px) {
     display: flex;
     flex-direction: column;
+  }
+}
+
+.balance-width-box {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0;
+
+  @media only screen and(max-width: 390px) {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
   }
 }

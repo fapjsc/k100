@@ -217,20 +217,22 @@ export default class MoneyRecord extends Component {
     const { Avb_Balance, Real_Balance, httpError } = this.state;
     return (
       <section className="bg-white balance-box">
-        <div className="balance mr-4">
-          結餘：
-          <span className="usdt mr_sm"></span>
-          <span className="c_green mr_sm">USDT</span>
-          <span className="c_green fs_20">{Number(Real_Balance).toFixed(2)}</span>
-        </div>
+        <div className="balance-width-box px-4">
+          <div className="balance mr-4">
+            結餘：
+            <span className="usdt mr_sm"></span>
+            <span className="c_green mr_sm">USDT</span>
+            <span className="c_green fs_20">{Number(Real_Balance).toFixed(2)}</span>
+          </div>
 
-        <div className="balance">
-          可提：
-          <span className="usdt mr_sm"></span>
-          <span className="c_green mr_sm">USDT</span>
-          <span className="c_green fs_20">{Number(Avb_Balance).toFixed(2)}</span>
+          <div className="balance">
+            可提：
+            <span className="usdt mr_sm"></span>
+            <span className="c_green mr_sm">USDT</span>
+            <span className="c_green fs_20">{Number(Avb_Balance).toFixed(2)}</span>
+          </div>
+          {!!httpError ? <BaseDialog httpError={httpError} closeDialog={this.closeDialog} /> : null}
         </div>
-        {!!httpError ? <BaseDialog httpError={httpError} closeDialog={this.closeDialog} /> : null}
       </section>
     );
   }

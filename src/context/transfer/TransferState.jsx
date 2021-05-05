@@ -106,6 +106,8 @@ const TransferState = props => {
       const resData = await res.json();
       setHandleBtnLoading(false);
 
+      console.log(resData);
+
       if (resData.code === 200) {
         console.log(resData);
         setOrderToken(resData.data.order_token);

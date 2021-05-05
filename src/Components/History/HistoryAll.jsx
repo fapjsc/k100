@@ -1,20 +1,24 @@
 import { useContext, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+// Context
 import HistoryContext from '../../context/history/HistoryContext';
 
+// Components
 import HistoryAllDetail from './HistoryAllDetail';
+import BaseSpinner from '../Ui/BaseSpinner';
+import NoData from '../NoData/';
 
+// Style
 import Table from 'react-bootstrap/Table';
-
 import downIcon from '../../Assets/i_usdt_down.png';
 import redIcon from '../../Assets/i_usdt_red.png';
 import blueIcon from '../../Assets/i_usdt_blue.png';
 import purpleIcon from '../../Assets/i_usdt_purple.png';
 
-import BaseSpinner from '../Ui/BaseSpinner';
-
 const HistoryAll = () => {
   const historyContext = useContext(HistoryContext);
-  const { getHistoryAll, allHistory, detailReq, singleDetail } = historyContext;
+  const { getHistoryAll, allHistory, detailReq, singleDetail, historyLoading } = historyContext;
 
   const [show, setShow] = useState(false);
 
@@ -33,11 +37,11 @@ const HistoryAll = () => {
     }
   };
 
-  if (allHistory.length) {
+  if (allHistory.length && !historyLoading) {
     return (
       <>
-        <HistoryAllDetail show={show} singleDetail={singleDetail} onHide={() => setShow(false)} />
-        <Table bordered hover className="mt-4">
+        {singleDetail && <HistoryAllDetail show={show} onHide={() => setShow(false)} />}
+        <Table responsive bordered hover className="mt-4">
           <thead>
             <tr>
               <th></th>
@@ -50,7 +54,12 @@ const HistoryAll = () => {
           <tbody>
             {allHistory.map(item => {
               return (
-                <tr onClick={() => handleClick(item.token)} style={{ cursor: 'pointer' }}>
+                <tr
+                  key={uuidv4()}
+                  onClick={() => handleClick(item.token)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {/* 交易類別 */}
                   <td
                     style={{
                       maxWidth: 70,
@@ -90,6 +99,8 @@ const HistoryAll = () => {
                         : '轉入'}
                     </span>
                   </td>
+
+                  {/* 日期 */}
                   <td
                     style={{
                       verticalAlign: 'middle',
@@ -97,6 +108,7 @@ const HistoryAll = () => {
                   >
                     {item.Date}
                   </td>
+                  {/* 交易額 */}
                   <td
                     style={{
                       verticalAlign: 'middle',
@@ -109,6 +121,8 @@ const HistoryAll = () => {
                   >
                     {item.UsdtAmt.toFixed(2)}
                   </td>
+
+                  {/* 餘額 */}
                   <td
                     className="text-right pr-4"
                     style={{
@@ -118,6 +132,7 @@ const HistoryAll = () => {
                     {item.Balance.toFixed(2)}
                   </td>
 
+                  {/* 狀態 */}
                   <td
                     className="text-center"
                     style={{
@@ -144,6 +159,8 @@ const HistoryAll = () => {
         </Table>
       </>
     );
+  } else if (!allHistory.length && !historyLoading) {
+    return <NoData />;
   } else {
     return <BaseSpinner />;
   }

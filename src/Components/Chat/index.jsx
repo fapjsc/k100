@@ -121,7 +121,7 @@ const Chat = props => {
   const chatConnect = orderToken => {
     const loginSession = localStorage.getItem('token');
 
-    const chatApi = `chat/WS_ChatOrder.ashx`;
+    const chatApi = `WS_ChatOrder.ashx`;
 
     // 自動重連次數
     // const options = {
@@ -131,9 +131,9 @@ const Chat = props => {
     let url;
 
     if (window.location.protocol === 'http:') {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
+      url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
+      url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
     const client = new ReconnectingWebSocket(url);

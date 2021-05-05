@@ -22,7 +22,7 @@ const Transaction = () => {
 
   const [Avb_Balance, setAvb_Balance] = useState(null);
   // const [Real_Balance, setReal_Balance] = useState(null);
-  const [exRate, setexRate] = useState(null);
+  const [exRate, setExRate] = useState(null);
   // const [loginSession, setLoginSession] = useState(null);
   // const [headers, setHeaders] = useState(null);
 
@@ -47,7 +47,7 @@ const Transaction = () => {
 
       const { data } = resData;
 
-      setexRate(data);
+      setExRate(data);
     } catch (error) {
       alert(error, 'getExRate');
     }
@@ -186,6 +186,7 @@ const Transaction = () => {
             {/* Transfer */}
             <Route exact path="/home/transaction/transfer" component={Transfer} />
             <Route exact path="/home/transaction/transfer/:id" component={TransferInfo} />
+
             <Redirect to="/home/transaction/buy" />
           </Switch>
         </div>

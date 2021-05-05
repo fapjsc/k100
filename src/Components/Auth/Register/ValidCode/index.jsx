@@ -240,6 +240,10 @@ export default class ValidCode extends Component {
       isLoading: true,
     });
 
+    if (countryCode === 886) {
+      phoneNumber = phoneNumber.substr(1);
+    }
+
     const registerClientApi = `/j/req_RegClient.aspx`;
 
     const res = await fetch(registerClientApi, {

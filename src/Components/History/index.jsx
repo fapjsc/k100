@@ -1,76 +1,97 @@
-import React, { Component } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { Switch, Route, Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 
-import { Switch, Route, Link, Redirect } from 'react-router-dom';
+// Context
+import HistoryContext from '../../context/history/HistoryContext';
 
+// Components
 import All from './All'; // 舊版
-import Wait from './Wait';
-
+import Wait from './Wait'; // 舊版
 import HistoryAll from './HistoryAll'; // 修正中
+import HistoryWait from './HistoryWait'; // 修正中
 
+// Style
 import style from './History.module.scss';
 import './index.scss';
+import Badge from 'react-bootstrap/Badge';
 
-export default class History extends Component {
-  state = {
-    historyState: 'all',
-  };
+const History = () => {
+  // History Context
+  const historyContext = useContext(HistoryContext);
+  const { setWaitList, waitList } = historyContext;
 
-  handleHistoryState = value => {
-    if (value === 'all') this.setState({ historyState: 'all' });
+  // Router Props
+  const history = useHistory();
+  const location = useLocation();
 
-    if (value === 'wait') this.setState({ historyState: 'wait' });
-  };
+  // Init State
+  const [historyState, setHistoryState] = useState('all');
 
-  componentDidMount() {
-    this.props.history.push(`/home/history/${this.state.historyState}`);
-  }
+  useEffect(() => {
+    history.push(`/home/history/${historyState}`);
+    setWaitList();
 
-  componentWillUnmount() {}
+    // eslint-disable-next-line
+  }, []);
 
-  render() {
-    const { location } = this.props;
-    return (
-      <section className={style.section}>
-        <div className="container h_88">
-          <div className="row">
-            <div className="col-12">
-              <p className="welcome_txt">歡迎登入</p>
-              <div className="contentbox">
-                <div className="history-tab">
-                  <Link
-                    to="/home/history/all"
-                    className={
-                      location.pathname.includes('/home/history/all')
-                        ? 'history-link history-link-active'
-                        : 'history-link'
-                    }
-                    onClick={() => this.handleHistoryState('all')}
-                  >
-                    所有紀錄
-                  </Link>
-                  <Link
-                    to="/home/history/wait"
-                    className={
-                      location.pathname.includes('/home/history/wait')
-                        ? 'history-link history-link-active'
-                        : 'history-link'
-                    }
-                    onClick={() => this.handleHistoryState('wait')}
-                  >
-                    待處理
-                  </Link>
-                </div>
+  return (
+    <section className={style.section}>
+      <div className="row">
+        <div className="col-12">
+          <div className="contentbox" style={{ marginTop: 60, maxWidth: 1140 }}>
+            <div className="history-tab">
+              <Link
+                to="/home/history/all"
+                className={
+                  location.pathname.includes('/home/history/all')
+                    ? 'history-link history-link-active'
+                    : 'history-link'
+                }
+                onClick={() => setHistoryState('all')}
+              >
+                所有紀錄
+              </Link>
 
-                <Switch>
-                  <Route path="/home/history/all" component={All}></Route>
-                  <Route path="/home/history/wait" component={Wait}></Route>
-                  <Redirect to="/home/history/all" />
-                </Switch>
+              <div style={waitBox}>
+                <Link
+                  to="/home/history/wait"
+                  className={
+                    location.pathname.includes('/home/history/wait')
+                      ? 'history-link history-link-active'
+                      : 'history-link'
+                  }
+                  onClick={() => setHistoryState('wait')}
+                >
+                  待處理
+                </Link>
+                {waitList.length > 0 && (
+                  <Badge pill variant="danger" style={waitCount}>
+                    {waitList.length}
+                  </Badge>
+                )}
               </div>
             </div>
+
+            <Switch>
+              <Route path="/home/history/all" component={HistoryAll}></Route>
+              <Route path="/home/history/wait" component={HistoryWait}></Route>
+              <Redirect to="/home/history/all" />
+            </Switch>
           </div>
         </div>
-      </section>
-    );
-  }
-}
+      </div>
+    </section>
+  );
+};
+
+const waitBox = {
+  position: 'relative',
+};
+
+const waitCount = {
+  position: 'absolute',
+  top: -8,
+  right: 13,
+};
+
+export default History;

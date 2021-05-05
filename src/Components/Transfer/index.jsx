@@ -1,15 +1,22 @@
 import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import copy from 'copy-to-clipboard';
 
+// Components
 import OnLoading from './OnLoading';
+import FormFooter from '../Layout/FormFooter';
 
+// Context
 import TransferContext from '../../context/transfer/TransferContext';
 import BalanceContext from '../../context/balance/BalanceContext';
 import SellContext from '../../context/sell/SellContext';
 
+// Style
 import { Form, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+// import CopyIcon from '../../Assets/i_copy.png';
+// import ScanIcon from '../../Assets/i_scan_qr.png';
 
 const Transfer = () => {
   const history = useHistory();
@@ -254,6 +261,16 @@ const Transfer = () => {
     history.replace('/home/overview');
   };
 
+  // const handleCopy = value => {
+  //   copy(value);
+
+  //   if (copy(value)) {
+  //     alert('複製成功');
+  //   } else {
+  //     alert('複製失敗，請手動複製');
+  //   }
+  // };
+
   const inputText = {
     color: '#D7E2F3',
     position: 'absolute',
@@ -291,6 +308,7 @@ const Transfer = () => {
         <Form.Row>
           <Form.Group as={Col} md={6} sm={12} controlId="transferUsdt" className="">
             <Form.Control
+              onWheel={event => event.currentTarget.blur()}
               type="number"
               placeholder="請輸入轉帳數量"
               className="p_sm-2 easy-border"
@@ -330,15 +348,44 @@ const Transfer = () => {
             >
               轉帳地址
             </Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="請輸入收款地址"
-              className="p_sm-2 easy-border"
-              onChange={onChange}
-              value={transferAddress.val}
-              autoComplete="off"
-              name="transferAddress"
-            />
+
+            <div
+              style={{
+                position: 'relative',
+              }}
+            >
+              <Form.Control
+                type="text"
+                placeholder="請輸入收款地址"
+                className="p_sm-2 easy-border"
+                onChange={onChange}
+                value={transferAddress.val}
+                autoComplete="off"
+                name="transferAddress"
+              />
+
+              {/* <img
+                style={{
+                  position: 'absolute',
+                  top: -30,
+                  right: 70,
+                  cursor: 'pointer',
+                }}
+                src={CopyIcon}
+                alt="copy icon"
+                onClick={() => handleCopy(transferAddress.val)}
+              />
+
+              <img
+                style={{
+                  position: 'absolute',
+                  top: -30,
+                  right: 30,
+                }}
+                src={ScanIcon}
+                alt="copy icon"
+              /> */}
+            </div>
 
             {transferAddress.error ? (
               <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
@@ -373,24 +420,7 @@ const Transfer = () => {
         </Button>
       </Form>
 
-      <div>
-        <hr className="mt_mb" />
-        <ul className="txt_12_grey">
-          <li>本平台目前只提供USDT交易，其他數字貨幣交易將不予受理</li>
-          <br />
-          <li>本平台錢包地址充值或轉出，都是經由 USDT區塊鏈系統網絡確認。</li>
-          <br />
-          <li>本平台錢包地址可以重複充值或轉出；如因系統更新，我們會通過網站或口訊通知。</li>
-          <br />
-          <li>請勿向錢包地址充值任何非USDT資産，否則資産將不可找回。</li>
-          <br />
-          <li>最小充值金額：100 USDT，小于最小金額的充值將不會上賬且無法退回。</li>
-          <br />
-          <li>請務必確認電腦及浏覽器安全，防止信息被篡改或泄露。</li>
-          <br />
-          <li>如有其他問題或要求提出爭議，可透過網頁上的客服對話窗聯絡我們。</li>
-        </ul>
-      </div>
+      <FormFooter />
     </div>
   );
 };

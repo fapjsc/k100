@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import Countdown from 'react-countdown';
+import copy from 'copy-to-clipboard';
 
 // Context
 import BuyContext from '../../context/buy/BuyContext';
@@ -17,8 +18,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-
-import copy from 'copy-to-clipboard';
 
 const InfoDetail = props => {
   // Buy Context

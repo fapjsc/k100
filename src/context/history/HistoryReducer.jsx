@@ -1,7 +1,12 @@
-import { SET_ALL_HISTORY, SET_SINGLE_DETAIL, SET_WAIT_HISTORY } from '../type';
+import { SET_ALL_HISTORY, SET_SINGLE_DETAIL, SET_WAIT_HISTORY, HISTORY_LOADING } from '../type';
 
 const HistoryReducer = (state, action) => {
   switch (action.type) {
+    case HISTORY_LOADING:
+      return {
+        ...state,
+        historyLoading: action.payload,
+      };
     case SET_WAIT_HISTORY:
       return {
         ...state,

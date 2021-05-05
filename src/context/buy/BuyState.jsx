@@ -81,6 +81,7 @@ const BuyState = props => {
       const resData = await res.json();
 
       if (resData.code === 200) {
+        console.log(resData);
         setHttpError('');
         setOrderToken(resData.data.order_token);
       } else {
@@ -168,6 +169,7 @@ const BuyState = props => {
         };
 
         setWsData(wsData);
+        handleBuyBtnLoading(false);
       }
 
       // 交易完成
@@ -209,10 +211,10 @@ const BuyState = props => {
 
       const resData = await res.json();
       if (resData.code === 200) {
+        console.log(resData);
       } else {
         handleHttpError(resData);
       }
-      handleBuyBtnLoading(false);
     } catch (error) {
       alert(error);
       handleBuyBtnLoading(false);
@@ -338,6 +340,7 @@ const BuyState = props => {
    ** 7.購買數量清除，設為空字串
    */
   const cleanAll = () => {
+    handleBuyBtnLoading(false);
     closeWebSocket();
     setOrderToken('');
     setShowBank(false);

@@ -1,14 +1,18 @@
 import { useReducer } from 'react';
+import { useHistory } from 'react-router-dom';
 import HistoryReducer from './HistoryReducer';
 import HistoryContext from './HistoryContext';
 
-import { SET_ALL_HISTORY, SET_SINGLE_DETAIL, SET_WAIT_HISTORY } from '../type';
+import { SET_ALL_HISTORY, SET_SINGLE_DETAIL, SET_WAIT_HISTORY, HISTORY_LOADING } from '../type';
 
 const HistoryState = props => {
+  const history = useHistory();
+
   const initialState = {
     allHistory: [],
     waitList: [],
     singleDetail: null,
+    historyLoading: false,
   };
 
   // Get Header
@@ -21,6 +25,8 @@ const HistoryState = props => {
 
       return headers;
     } else {
+      alert('請重新登入');
+      history.replace('/auth/login');
       return;
     }
   };
@@ -40,7 +46,7 @@ const HistoryState = props => {
 
       if (resData.code === 200) {
         const { data } = resData;
-        console.log(data);
+        // console.log(data);
 
         const newData = data.map(h => {
           if (h.MasterType === 0) {
@@ -69,6 +75,7 @@ const HistoryState = props => {
 
   // get history all
   const getHistoryAll = async () => {
+    setLoading(true);
     const headers = getHeader();
 
     const historyApi = '/j/GetTxHistory.aspx';
@@ -79,20 +86,23 @@ const HistoryState = props => {
       });
 
       const resData = await res.json();
-      console.log(resData);
+      // console.log(resData);
 
       if (resData.code === 200) {
         dispatch({ type: SET_ALL_HISTORY, payload: resData.data });
       } else {
         alert(resData.msg);
       }
+      setLoading(false);
     } catch (error) {
       alert(error);
+      setLoading(false);
     }
   };
 
   // get single detail
   const detailReq = async detailToken => {
+    setLoading(true);
     const headers = getHeader();
 
     const detailApi = '/j/GetTxDetail.aspx';
@@ -107,7 +117,7 @@ const HistoryState = props => {
       });
       const resData = await res.json();
 
-      console.log(resData);
+      // console.log(resData);
 
       if (resData.code === 200) {
         const { data } = resData;
@@ -162,9 +172,17 @@ const HistoryState = props => {
       } else {
         alert(resData.msg);
       }
+
+      setLoading(false);
     } catch (error) {
       alert(error);
+      setLoading(false);
     }
+  };
+
+  // Set Loading
+  const setLoading = value => {
+    dispatch({ type: HISTORY_LOADING, payload: value });
   };
 
   const setSingleDetail = orderDetail => {
@@ -179,6 +197,7 @@ const HistoryState = props => {
         allHistory: state.allHistory,
         singleDetail: state.singleDetail,
         waitList: state.waitList,
+        historyLoading: state.historyLoading,
 
         getHistoryAll,
         detailReq,
