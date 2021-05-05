@@ -253,9 +253,9 @@ export default class index extends Component {
   componentDidMount() {
     loadCaptchaEnginge(6);
 
-    if (!this.state.showValidCode) {
-      this.props.history.replace('/auth/register');
-    }
+    // if (!this.state.showValidCode) {
+    //   this.props.history.replace('/auth/register');
+    // }
   }
 
   render() {
@@ -272,13 +272,15 @@ export default class index extends Component {
       btnLoading,
     } = this.state;
 
+    console.log(showValidCode);
+
     return (
       <>
         {isLoading ? (
           <BaseSpinner />
         ) : (
           <div className="form-container">
-            {!showValidCode ? (
+            {this.props.location.pathname === '/auth/register' || !showValidCode ? (
               <Form>
                 <Form.Row>
                   <Form.Group as={Col} md="4" controlId="CountryCode">

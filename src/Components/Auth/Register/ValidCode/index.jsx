@@ -25,6 +25,7 @@ export default class ValidCode extends Component {
     alreadyRegister: false,
   };
 
+  // 驗證碼如果是六位數的話
   setValidNum = event => {
     if (event.target.value.length === 6) {
       this.setState(
@@ -136,6 +137,7 @@ export default class ValidCode extends Component {
     }
   };
 
+  // 請求發送驗證碼
   getValidCode = async () => {
     this.setState({
       resendValidCode: true,
@@ -150,7 +152,10 @@ export default class ValidCode extends Component {
     let { phoneNumber, countryCode } = this.props;
     const registerApi = `/j/Req_oneTimePwd.aspx`;
     if (countryCode === 886) {
-      phoneNumber = phoneNumber.substr(1);
+      // 如果第一個字是0，就刪除掉
+      if (phoneNumber.charAt(0) === '0') {
+        phoneNumber = phoneNumber.substr(1);
+      }
     }
     try {
       const res = await fetch(registerApi, {
@@ -175,6 +180,7 @@ export default class ValidCode extends Component {
     }
   };
 
+  // 驗證碼確認是否ＯＫ
   handleSubmit = async () => {
     // event.preventDefault(); //防止表單提交
 
@@ -182,7 +188,11 @@ export default class ValidCode extends Component {
     let { phoneNumber, countryCode } = this.props;
 
     if (countryCode === 886) {
-      phoneNumber = phoneNumber.substr(1);
+      // 如果第一個字是0，就刪除掉
+      if (phoneNumber.charAt(0) === '0') {
+        phoneNumber = phoneNumber.substr(1);
+      }
+      // phoneNumber = phoneNumber.substr(1);
     }
 
     const timePwdApi = `/j/ChkoneTimePwd.aspx`;
@@ -227,7 +237,7 @@ export default class ValidCode extends Component {
 
       this.handleHttpError(resData);
     } catch (error) {
-      console.log(error);
+      alert(error);
       this.setState({
         isLoading: false,
         error: error,
@@ -235,13 +245,17 @@ export default class ValidCode extends Component {
     }
   };
 
+  // 註冊最後一步
   registerClient = async (token, countryCode, phoneNumber, password) => {
     this.setState({
       isLoading: true,
     });
 
     if (countryCode === 886) {
-      phoneNumber = phoneNumber.substr(1);
+      // 如果第一個字是0，就刪除掉
+      if (phoneNumber.charAt(0) === '0') {
+        phoneNumber = phoneNumber.substr(1);
+      }
     }
 
     const registerClientApi = `/j/req_RegClient.aspx`;
@@ -257,8 +271,6 @@ export default class ValidCode extends Component {
     });
 
     const resData = await res.json();
-
-    console.log(resData);
 
     // 已經註冊過了
     if (resData.code === '11') {

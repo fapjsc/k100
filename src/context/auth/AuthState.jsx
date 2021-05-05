@@ -61,6 +61,8 @@ const AuthState = props => {
     handleLoginLoading(true);
     let loginApi = '/j/login.aspx';
 
+    console.log(data.phoneNumber);
+
     try {
       const res = await fetch(loginApi, {
         method: 'POST',
