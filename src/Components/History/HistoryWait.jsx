@@ -1,6 +1,7 @@
 import { useContext, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useMediaQuery } from 'react-responsive';
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
@@ -16,6 +17,9 @@ import blueIcon from '../../Assets/i_usdt_blue.png';
 import purpleIcon from '../../Assets/i_usdt_purple.png';
 
 const HistoryWait = () => {
+  // Media Query
+  const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
+
   // Router props
   const history = useHistory();
 
@@ -63,37 +67,73 @@ const HistoryWait = () => {
           {waitList.map(h => (
             <tr key={uuidv4()} onClick={() => handleClick(h.token)} style={{ cursor: 'pointer' }}>
               {/* 交易類別 */}
-              <td
-                style={{
-                  maxWidth: 70,
-                  textAlign: 'center',
-                  fontWeight: 300,
-                }}
-                className={
-                  h.MasterType === '買入'
-                    ? 'txt18'
-                    : h.MasterType === '賣出'
-                    ? 'txt18_r'
-                    : 'txt18_p'
-                }
-              >
-                <img
-                  src={
-                    h.MasterType === '買入'
-                      ? blueIcon
-                      : h.MasterType === '賣出'
-                      ? redIcon
-                      : purpleIcon
-                  }
-                  alt="status icon"
+              {!isMobile ? (
+                // - 桌面
+                <td
                   style={{
-                    height: 21,
-                    marginBottom: 3,
-                    marginRight: 8,
+                    maxWidth: 70,
+                    textAlign: 'center',
+                    fontWeight: 300,
                   }}
-                />
-                {h.MasterType}
-              </td>
+                  className={
+                    h.MasterType === '買入'
+                      ? 'txt18'
+                      : h.MasterType === '賣出'
+                      ? 'txt18_r'
+                      : 'txt18_p'
+                  }
+                >
+                  <img
+                    src={
+                      h.MasterType === '買入'
+                        ? blueIcon
+                        : h.MasterType === '賣出'
+                        ? redIcon
+                        : purpleIcon
+                    }
+                    alt="status icon"
+                    style={{
+                      height: 21,
+                      marginBottom: 3,
+                      marginRight: 8,
+                    }}
+                  />
+                  {h.MasterType}
+                </td>
+              ) : (
+                // -手機
+                <td
+                  style={{
+                    maxWidth: 70,
+                    textAlign: 'center',
+                    fontWeight: 300,
+                  }}
+                  className={
+                    h.MasterType === '買入'
+                      ? 'txt14_b'
+                      : h.MasterType === '賣出'
+                      ? 'txt14_r'
+                      : 'txt14_p'
+                  }
+                >
+                  {/* <img
+                    src={
+                      h.MasterType === '買入'
+                        ? blueIcon
+                        : h.MasterType === '賣出'
+                        ? redIcon
+                        : purpleIcon
+                    }
+                    alt="status icon"
+                    style={{
+                      height: 21,
+                      marginBottom: 3,
+                      marginRight: 8,
+                    }}
+                  /> */}
+                  {h.MasterType}
+                </td>
+              )}
 
               {/* 日期 */}
               <td>{h.Date}</td>
@@ -104,7 +144,7 @@ const HistoryWait = () => {
                   verticalAlign: 'middle',
                 }}
                 className={
-                  h.MasterType === '買入' || h.MasterType === '轉出'
+                  h.MasterType === '買入' || h.MasterType === '轉入'
                     ? 'c_green text-right pr-4'
                     : 'c_red text-right pr-4'
                 }

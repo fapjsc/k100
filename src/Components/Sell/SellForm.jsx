@@ -578,19 +578,20 @@ const SellForm = () => {
 
           <br />
           <br />
-
-          <Form.Row className="justify-content-center">
-            <Form.Group as={Col} className="mw400 px-0">
-              <Button
-                type="submit"
-                disabled={wsPairing}
-                block
-                className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
-              >
-                下一步
-              </Button>
-            </Form.Group>
-          </Form.Row>
+          {showBankWallet && (
+            <Form.Row className="justify-content-center">
+              <Form.Group as={Col} className="mw400 px-0">
+                <Button
+                  type="submit"
+                  disabled={wsPairing}
+                  block
+                  className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
+                >
+                  下一步
+                </Button>
+              </Form.Group>
+            </Form.Row>
+          )}
 
           {/* <button onClick={props.showPayDetail}>下一步</button> */}
         </Form>

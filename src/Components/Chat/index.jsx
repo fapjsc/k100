@@ -254,7 +254,7 @@ const Chat = props => {
                   <Card
                     className="text-center"
                     style={{
-                      width: 100,
+                      maxWidth: 300,
                       margin: '16px 5px 0 5px',
                       backgroundColor: message.Message_Role === 1 ? '#F6F6F6' : '#D7E2F3',
                       alignSelf: message.Message_Role === 1 ? 'flex-end' : 'flex-start',

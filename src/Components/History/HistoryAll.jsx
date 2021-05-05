@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useMediaQuery } from 'react-responsive';
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
@@ -17,9 +18,14 @@ import blueIcon from '../../Assets/i_usdt_blue.png';
 import purpleIcon from '../../Assets/i_usdt_purple.png';
 
 const HistoryAll = () => {
+  // Media Query
+  const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
+
+  // History Context
   const historyContext = useContext(HistoryContext);
   const { getHistoryAll, allHistory, detailReq, singleDetail, historyLoading } = historyContext;
 
+  // Init State
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -60,45 +66,91 @@ const HistoryAll = () => {
                   style={{ cursor: 'pointer' }}
                 >
                   {/* 交易類別 */}
-                  <td
-                    style={{
-                      maxWidth: 70,
-                      textAlign: 'center',
-                      fontWeight: 300,
-                    }}
-                    className={
-                      item.MasterType === 0
-                        ? 'txt18'
-                        : item.MasterType === 1
-                        ? 'txt18_r'
-                        : 'txt18_p'
-                    }
-                  >
-                    <img
-                      src={
-                        item.MasterType === 0
-                          ? blueIcon
-                          : item.MasterType === 1
-                          ? redIcon
-                          : purpleIcon
-                      }
-                      alt="status icon"
+                  {!isMobile ? (
+                    // - 桌面
+                    <td
                       style={{
-                        height: 21,
-                        marginBottom: 3,
-                        marginRight: 8,
+                        maxWidth: 70,
+                        textAlign: 'center',
+                        fontWeight: 300,
                       }}
-                    />
-                    <span className="" style={{ letterSpacing: 1.5, fontSize: 17 }}>
-                      {item.MasterType === 0
-                        ? '買入'
-                        : item.MasterType === 1
-                        ? '賣出'
-                        : item.MasterType === 2
-                        ? '轉出'
-                        : '轉入'}
-                    </span>
-                  </td>
+                      className={
+                        item.MasterType === 0
+                          ? 'txt18'
+                          : item.MasterType === 1
+                          ? 'txt18_r'
+                          : 'txt18_p'
+                      }
+                    >
+                      <img
+                        src={
+                          item.MasterType === 0
+                            ? blueIcon
+                            : item.MasterType === 1
+                            ? redIcon
+                            : purpleIcon
+                        }
+                        alt="status icon"
+                        style={{
+                          height: 21,
+                          marginBottom: 3,
+                          marginRight: 8,
+                        }}
+                      />
+                      <span className="" style={{ letterSpacing: 1.5, fontSize: 17 }}>
+                        {item.MasterType === 0
+                          ? '買入'
+                          : item.MasterType === 1
+                          ? '賣出'
+                          : item.MasterType === 2
+                          ? '轉出'
+                          : '轉入'}
+                      </span>
+                    </td>
+                  ) : (
+                    // - 手機
+                    <td
+                      style={{
+                        maxWidth: 200,
+                        textAlign: 'center',
+                        fontWeight: 300,
+                        position: 'relative',
+                      }}
+                      className={
+                        item.MasterType === 0
+                          ? 'txt14_b '
+                          : item.MasterType === 1
+                          ? 'txt14_r'
+                          : 'txt14_p '
+                      }
+                    >
+                      {/* <img
+                        src={
+                          item.MasterType === 0
+                            ? blueIcon
+                            : item.MasterType === 1
+                            ? redIcon
+                            : purpleIcon
+                        }
+                        alt="status icon"
+                        style={{
+                          height: 10,
+                          position: 'absolute',
+                          top: 2,
+                          left: 7,
+                        }}
+                      /> */}
+                      <span className="">
+                        {item.MasterType === 0
+                          ? '買入'
+                          : item.MasterType === 1
+                          ? '賣出'
+                          : item.MasterType === 2
+                          ? '轉出'
+                          : '轉入'}
+                      </span>
+                    </td>
+                  )}
 
                   {/* 日期 */}
                   <td
@@ -140,7 +192,7 @@ const HistoryAll = () => {
                       textAlign: 'center',
                     }}
                   >
-                    <span className="fs_sm">完成</span>
+                    <span className={isMobile ? 'fs_ssm' : 'fs_sm'}>完成</span>
                     <img
                       className=""
                       src={downIcon}

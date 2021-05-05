@@ -225,6 +225,7 @@ const BuyForm = () => {
           >
             支付寶
           </Button>
+          <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
         </Form.Group>
       </Form.Row>
     </Form>

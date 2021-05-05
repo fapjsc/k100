@@ -184,7 +184,24 @@ html {
 Font
 ================
 */
-// history
+.txt18 {
+  font-size: 1.8rem;
+  color: #1f7eff;
+}
+.txt18_r {
+  font-size: 18px;
+  color: #db1c1b;
+}
+
+.txt18_p {
+  font-size: 18px;
+  color: #8a52a2;
+}
+.txt18_g {
+  font-size: 18px;
+  color: #01b289;
+}
+
 .txt14_b {
   font-size: 14px;
   color: #1f7eff;
@@ -197,6 +214,21 @@ Font
 
 .txt14_p {
   font-size: 14px;
+  color: #8a52a2;
+}
+
+.txt10_b {
+  font-size: 10px !important;
+  color: #1f7eff;
+}
+
+.txt10_r {
+  font-size: 10px !important;
+  color: #db1c1c;
+}
+
+.txt10_p {
+  font-size: 10px !important;
   color: #8a52a2;
 }
 
@@ -223,6 +255,10 @@ Font
 
 .fs_sm {
   font-size: 14px !important;
+}
+
+.fs_ssm {
+  font-size: 10px !important;
 }
 
 .fs_40 {
@@ -450,24 +486,6 @@ History
   background-repeat: no-repeat;
   height: 1.8rem;
   width: 2.2rem;
-}
-
-.txt18 {
-  font-size: 1.8rem;
-  color: #1f7eff;
-}
-.txt18_g {
-  font-size: 18px;
-  color: #01b289;
-}
-.txt18_p {
-  font-size: 18px;
-  color: #8a52a2;
-}
-
-.txt18_r {
-  font-size: 18px;
-  color: #db1c1b;
 }
 
 .all-spinner {

@@ -12,6 +12,7 @@ import purpleIcon from '../../Assets/i_usdt_purple.png';
 const HistoryAllDetail = props => {
   const historyContext = useContext(HistoryContext);
   const { singleDetail } = historyContext;
+  console.log(singleDetail);
   return (
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="md">
       <Modal.Header closeButton style={{ borderBottom: 'none' }}></Modal.Header>
