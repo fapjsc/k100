@@ -36,6 +36,7 @@ const TheBuy = () => {
     cleanAll,
     wsStatus,
     closeWebSocket,
+    buyWsClient,
   } = buyContext;
 
   useEffect(() => {

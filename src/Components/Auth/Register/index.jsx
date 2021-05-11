@@ -149,6 +149,32 @@ export default class index extends Component {
       });
     }
 
+    // 驗證中國手機是否為11碼
+    if (countryCode.val === 86 && phoneNumber.val.length !== 11) {
+      this.setState({
+        phoneNumber: {
+          val: '',
+          isValid: false,
+          error: '請輸入有效的電話號碼',
+        },
+        formIsValid: false,
+        btnLoading: false,
+      });
+    }
+
+    // 驗證香港手機是否為8碼
+    if (countryCode.val === 852 && phoneNumber.val.length !== 8) {
+      this.setState({
+        phoneNumber: {
+          val: '',
+          isValid: false,
+          error: '請輸入有效的電話號碼',
+        },
+        formIsValid: false,
+        btnLoading: false,
+      });
+    }
+
     // 驗證電話號碼
     if (phoneNumber.val === '' || !validator.isMobilePhone(phoneNumber.val)) {
       this.setState({
@@ -270,6 +296,7 @@ export default class index extends Component {
       captcha,
       checkAccountErr,
       btnLoading,
+      formIsValid,
     } = this.state;
 
     console.log(showValidCode);
@@ -280,7 +307,7 @@ export default class index extends Component {
           <BaseSpinner />
         ) : (
           <div className="form-container">
-            {this.props.location.pathname === '/auth/register' || !showValidCode ? (
+            {!showValidCode ? (
               <Form>
                 <Form.Row>
                   <Form.Group as={Col} md="4" controlId="CountryCode">
@@ -347,7 +374,9 @@ export default class index extends Component {
                           <p className="ml-3 mb-0">請注意！</p>
                         </div>
                         <p>
-                          因您身處地區受當地電信條例限制，可能會較慢收到系統發出的簡訊，請耐心等候或是再重新申請一次
+                          因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。
+                          如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號：
+                          238bien
                         </p>
                       </div>
                     </Fade>

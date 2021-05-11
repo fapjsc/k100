@@ -182,8 +182,10 @@ const Transfer = () => {
       setFormIsValid(false);
       setHandleBtnLoading(false);
     }
+
     // 輸入數量大於可提加上手續費
-    if (Number(transferCount.val) > avb + Number(transferHandle)) {
+    if (Number(transferCount.val) > Number(avb) - Number(transferHandle)) {
+      console.log('hi');
       setTransferCount({
         val: '',
         isValid: false,

@@ -13,6 +13,7 @@ import {
   SET_EXPIRED_TIME,
   LOGIN_SET_LOADING,
   SET_ERROR_TEXT,
+  SET_AGENT,
 } from '../type';
 
 const AuthState = props => {
@@ -30,6 +31,7 @@ const AuthState = props => {
       status: '',
     },
     expiredTime: null,
+    isAgent: false,
   };
 
   // Get Header
@@ -61,8 +63,6 @@ const AuthState = props => {
     handleLoginLoading(true);
     let loginApi = '/j/login.aspx';
 
-    console.log(data.phoneNumber);
-
     try {
       const res = await fetch(loginApi, {
         method: 'POST',
@@ -74,9 +74,18 @@ const AuthState = props => {
       });
 
       const resData = await res.json();
+      console.log(resData);
+
       handleLoginLoading(false);
 
       if (resData.code === 200) {
+        if (resData.data.isAgent) {
+          setAgent(true);
+          const expiresStamp = 3000;
+          const expiresDate = new Date().getTime() + expiresStamp;
+          localStorage.setItem('agent', expiresDate);
+        }
+
         const {
           data: { login_session },
         } = resData;
@@ -360,6 +369,10 @@ const AuthState = props => {
     dispatch({ type: REMOVE_VALID_TOKEN });
   };
 
+  const setAgent = value => {
+    dispatch({ type: SET_AGENT, payload: value });
+  };
+
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   return (
@@ -372,6 +385,7 @@ const AuthState = props => {
         expiredTime: state.expiredTime,
         loginLoading: state.loginLoading,
         errorText: state.errorText,
+        isAgent: state.isAgent,
 
         handleHttpError,
         changePw,

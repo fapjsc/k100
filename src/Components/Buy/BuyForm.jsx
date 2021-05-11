@@ -1,17 +1,15 @@
 import { useState, useEffect, useContext } from 'react';
 
+// Context
 import SellContext from '../../context/sell/SellContext';
 import BuyContext from '../../context/buy/BuyContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
-// import Spinner from '../../Ui/BaseSpinner';
-
+// Style
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
-
 import changeMoney from '../../Assets/i_twoways.png';
-
 import './index.scss';
 
 const BuyForm = () => {
@@ -66,9 +64,18 @@ const BuyForm = () => {
       setShowBank(true);
     }
 
-    return setFormIsValid(false);
+    return () => {
+      setFormIsValid(false);
+    };
     //eslint-disable-next-line
   }, [formIsValid]);
+
+  useEffect(() => {
+    return () => {
+      setShowBank(false);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   const onChange = e => {
     setHttpError(''); // http錯誤提示

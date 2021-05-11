@@ -77,6 +77,10 @@ html {
   padding-top: 2rem;
 }
 
+.pb_20 {
+  padding-bottom: 2rem;
+}
+
 .p_sm {
   padding: 2rem;
 }
@@ -271,7 +275,15 @@ Font
 }
 
 .red_dot {
+  background-color: #f73434;
+  border-radius: 26px;
   color: #fff;
+  padding: 2px 5px;
+  font-size: 10px;
+  display: inline;
+  position: absolute;
+  top: -5px;
+  left: 3px;
 }
 .c_yellow {
   color: #f09314;
@@ -464,30 +476,6 @@ History
   justify-content: center;
 }
 
-.i_blue {
-  background-image: url(./Assets/i_usdt_blue.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 1.8rem;
-  width: 2.2rem;
-}
-
-.i_green {
-  background-image: url(./Assets/i_usdt_green2.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 1.8rem;
-  width: 2.2rem;
-}
-
-.i_purple {
-  background-image: url(./Assets/i_usdt_purple.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 1.8rem;
-  width: 2.2rem;
-}
-
 .all-spinner {
   padding: 10rem;
 }
@@ -655,6 +643,78 @@ Images
   cursor: pointer;
 }
 
+.i_cny {
+  background-image: url(./Assets/i_cny.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 22px;
+  margin: auto;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+.i_red {
+  background-image: url(./Assets/i_usdt_red.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 22px;
+  margin: auto;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+.i_ready {
+  background-image: url(./Assets/i_ready.gif) !important;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 26px;
+  margin: auto;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+.i_blue1 {
+  background-image: url(./Assets/i_usdt_blue.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 22px;
+  margin: auto;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+.i_blue {
+  background-image: url(./Assets/i_usdt_blue.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 1.8rem;
+  width: 2.2rem;
+}
+
+.i_green {
+  background-image: url(./Assets/i_usdt_green2.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 1.8rem;
+  width: 2.2rem;
+}
+
+.i_purple {
+  background-image: url(./Assets/i_usdt_purple.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 1.8rem;
+  width: 2.2rem;
+}
+
 /*
 ==============
 Form & Input
@@ -677,6 +737,10 @@ Form & Input
 .lightblue_bg {
   background-color: rgba(215, 226, 243, 0.2);
   padding: 10px;
+}
+
+.bg_greyblue {
+  background-color: #afb9cb;
 }
 
 input {
@@ -819,7 +883,7 @@ Button
 }
 
 .disable-easy-btn {
-  background-color: #c7c7c7;
+  background-color: #afb9cb;
   border-radius: 5px;
   color: #fff;
   width: 50%;
@@ -874,4 +938,308 @@ Button
 a:link,
 a:visited {
   text-decoration: none;
+}
+
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  width: 49%;
+  color: #707070;
+  cursor: pointer;
+}
+
+/* Style the buttons inside the tab */
+
+// .tab button.active,
+// .tab button.hover {
+//   border-bottom: 2px solid #3f80fa;
+//   color: #3f80fa;
+// }
+
+.container {
+  max-width: 1140px;
+  margin: auto;
+}
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-bottom: 1px solid #d7e2f3;
+  color: #707070;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  border-bottom: 2px solid #3f80fa;
+  color: #3f80fa;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  border-bottom: 2px solid #3f80fa;
+  color: #3f80fa;
+}
+
+/* Style the tab content */
+// .tabcontent {
+//   display: none;
+//   padding: 6px 12px;
+//   border-top: none;
+// }
+
+.inline {
+  display: inline-block;
+}
+
+.bb1 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 20px;
+}
+
+.w1140 {
+  width: 1140px;
+}
+
+.bold_22 {
+  font-size: 22px !important;
+  font-weight: bold !important;
+  letter-spacing: 0;
+}
+.margin0 {
+  margin: 0px;
+}
+
+.red {
+  color: #db1c1c;
+}
+
+.blue {
+  color: #3e80f9;
+}
+
+.i_s1 {
+  background-image: url(./Assets/i_s1.png) !important;
+}
+.i_s2 {
+  background-image: url(./Assets/i_s2.png) !important;
+}
+.i_s3 {
+  background-image: url(./Assets/i_s3.png) !important;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.5rem 0.2rem;
+}
+
+.pl_20 {
+  padding-left: 20px;
+}
+
+.txt_16 {
+  color: #242e47;
+  font-size: 16px;
+}
+
+.i_clock {
+  background-image: url(./Assets/i_clock.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 12px;
+  width: 20px;
+  display: inline-block;
+}
+.c_yellow {
+  color: #f09314;
+}
+
+.w45_m100 {
+  width: 45%;
+}
+
+.contentbox {
+  background-color: #fff;
+  margin-top: 5px;
+  padding: 20px;
+  border-radius: 5px;
+}
+.w_100 {
+  width: 100px !important;
+}
+
+.positionTab {
+  position: relative;
+}
+
+.easy_info {
+  float: right;
+  border: 2px solid #3f80fa;
+  border-radius: 5px;
+  padding: 20px;
+  width: 45%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.txt16 {
+  font-size: 16px;
+  color: #1f7eff;
+}
+.txt18 {
+  font-size: 18px;
+  color: #1f7eff;
+}
+.txt18_g {
+  font-size: 18px;
+  color: #01b289;
+}
+.txt18_p {
+  font-size: 18px;
+  color: #8a52a2;
+}
+
+.right_txt16 {
+  float: right;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #d7e2f3;
+  margin: 1em 0;
+  padding: 0;
+}
+
+// Chat origin
+.easy_help span {
+  background-image: url(./Assets/i_ask2.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 17px;
+  width: 23px;
+  display: inline-block;
+  position: relative;
+  top: 3px;
+}
+
+.chatbox {
+  background-color: #fff;
+  border-radius: 10px;
+  position: fixed;
+  float: right;
+  width: 350px;
+  height: 550px;
+  // top: 37vh;
+  top: 12.9vh;
+  right: 20px;
+  z-index: 10;
+}
+
+.chatbox .top {
+  background-color: #3f80fa;
+  color: #fff;
+  padding: 15px 15px 7px;
+  border-radius: 10px 10px 0px 0px;
+  word-wrap: break-word;
+}
+
+.chatTitleBox {
+  background-color: red;
+}
+
+.chatbox .top span {
+  background-image: url(./Assets/i_logo.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  margin-right: 12px;
+  background-color: red;
+}
+
+.chatbox .top p {
+  display: inline;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.talk {
+  height: 340px;
+  overflow: scroll;
+  padding: 10px;
+}
+
+.talk_l {
+  background-color: #d7e2f3;
+  color: #707070;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 15px 10px;
+  width: 85%;
+}
+.talk_r {
+  background-color: #f6f6f6;
+  color: #707070;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 15px 10px;
+  width: 85%;
+  margin-left: 15%;
+}
+.talk_time {
+  color: #707070;
+  font-size: 10px;
+  margin-bottom: 10px;
+}
+.a_right {
+  text-align: right;
+}
+
+.attach_icon {
+  background-image: url(./Assets/attach_icon.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 15px;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.send_icon {
+  background-image: url(./Assets/send_icon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 22px;
+  width: 20px;
+  display: inline-block;
+  background-position: center;
+  margin-left: 5px;
+}
+
+.chatbox .bottom {
+  padding: 10px;
+  border-top: 1px solid #d7e2f3;
+}
+input.talkbox {
+  background-color: transparent;
+  margin: 0px;
+  padding: 5px;
+}
+input.talkbox:focus {
+  outline-width: 0;
+}
+
+.w_77 {
+  width: 77%;
+  display: inline-block;
 }

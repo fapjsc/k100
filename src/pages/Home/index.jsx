@@ -11,6 +11,9 @@ import Wallet from '../../Components/Wallet';
 import History from '../../Components/History';
 import ChangePassword from '../../Components/Auth/ChangePassword';
 
+import InstantCount from '../../Components/Instant/InstantCount';
+import InstantDetail from '../../Components/Instant/InstantDetail';
+
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
 
 import style from '../../Components/Layout/Header.module.scss';
@@ -39,10 +42,6 @@ export default class index extends Component {
 
       const resData = await res.json();
 
-      if (!res.ok) {
-        alert(resData);
-      }
-
       if (resData.code === 200) {
         this.setState({
           upload: true,
@@ -58,6 +57,10 @@ export default class index extends Component {
 
     const { token, history } = this.props;
     localStorage.removeItem('token');
+    localStorage.removeItem('expiresIn');
+    localStorage.removeItem('agent');
+    localStorage.removeItem('loglevel');
+
     history.replace('/login');
 
     let headers = new Headers();
@@ -107,6 +110,9 @@ export default class index extends Component {
           <Route path="/home/history" component={History} />
           <Route path="/home/transaction" component={Transaction} />
           <Route path="/home/change-pw" component={ChangePassword} />
+          <Route exact path="/home/instant" component={InstantCount} />
+          <Route exact path="/home/instant/:id" component={InstantDetail} />
+
           <Redirect to="/home/overview" />
         </Switch>
       </>

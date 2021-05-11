@@ -14,17 +14,10 @@ import BuyInfo from '../../Components/Buy/BuyInfo';
 import './index.scss';
 
 const Transaction = () => {
-  // state = {
-  //   Avb_Balance: null,
-  //   Real_Balance: null,
-  //   exRate: null,
-  // };
-
+  // eslint-disable-next-line
   const [Avb_Balance, setAvb_Balance] = useState(null);
-  // const [Real_Balance, setReal_Balance] = useState(null);
+  // eslint-disable-next-line
   const [exRate, setExRate] = useState(null);
-  // const [loginSession, setLoginSession] = useState(null);
-  // const [headers, setHeaders] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
@@ -103,8 +96,6 @@ const Transaction = () => {
       headers.append('Content-Type', 'application/json');
       headers.append('login_session', token);
 
-      // setHeaders(headers);
-      // setLoginSession(token);
       getExRate(headers);
 
       getBalance(token);
@@ -114,27 +105,7 @@ const Transaction = () => {
 
     // eslint-disable-next-line
   }, []);
-  // componentDidMount() {
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     let headers = new Headers();
-  //     headers.append('Content-Type', 'application/json');
-  //     headers.append('login_session', token);
 
-  //     this.setState({
-  //       loginSession: token,
-  //       headers,
-  //     });
-  //     this.getExRate(headers);
-
-  //     this.getBalance(token);
-  //   } else {
-  //     return;
-  //   }
-  // }
-
-  // const { location } = this.props;
-  // const { Avb_Balance, exRate } = this.state;
   return (
     <section className="transaction">
       <div

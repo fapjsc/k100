@@ -56,6 +56,8 @@ export default class ValidCode extends Component {
     localStorage.removeItem('expiresIn');
   }
 
+  componentDidMount() {}
+
   handleHttpError = data => {
     if (data.code === '1') {
       alert('系統錯誤');

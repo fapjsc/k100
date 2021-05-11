@@ -1,6 +1,7 @@
 import { useReducer, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import { w3cwebsocket as W3CWebsocket } from 'websocket';
 
 import BuyReducer from './BuyReducer';
 import BuyContext from './BuyContext';
@@ -111,7 +112,7 @@ const BuyState = props => {
       url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
     }
 
-    const client = new ReconnectingWebSocket(url);
+    const client = new W3CWebsocket(url);
 
     if (client) setWsClient(client);
 
@@ -174,6 +175,7 @@ const BuyState = props => {
 
       // 交易完成
       if (dataFromServer.data.Order_StatusID === 1) {
+        client.close();
       }
     };
 
@@ -348,6 +350,7 @@ const BuyState = props => {
     handlePairing(false);
     setWsData({});
     setWsStatus(null);
+    setWsClient(null);
     setBuyCount({
       rmb: '',
       usdt: '',

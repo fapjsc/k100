@@ -7,10 +7,16 @@ import {
   SET_EXPIRED_TIME,
   LOGIN_SET_LOADING,
   SET_ERROR_TEXT,
+  SET_AGENT,
 } from '../type';
 
 const AuthReducer = (state, action) => {
   switch (action.type) {
+    case SET_AGENT:
+      return {
+        ...state,
+        isAgent: action.payload,
+      };
     case SET_ERROR_TEXT:
       return {
         ...state,

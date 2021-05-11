@@ -10,28 +10,30 @@ import Pairing from './Pairing';
 const Sell = () => {
   const history = useHistory();
   const sellContext = useContext(SellContext);
-  const { wsPairing, wsData, closeWebSocket, setWsPairing } = sellContext;
+  const { wsPairing, wsData, setWsPairing, CleanAll, wsClient } = sellContext;
 
   useEffect(() => {
-    closeWebSocket();
+    if (wsClient) wsClient.close();
     return () => {
-      closeWebSocket();
+      if (wsClient) wsClient.close();
+      CleanAll();
     };
 
     // eslint-disable-next-line
   }, []);
 
   const backHome = () => {
-    closeWebSocket();
+    if (wsClient) wsClient.close();
     setWsPairing(false);
     history.replace('/home/overview');
+    CleanAll();
   };
 
   return (
     <Fragment>
       <SellHeaders />
       <Pairing
-        show={wsPairing}
+        show={wsPairing && wsClient}
         onHide={backHome}
         title="請稍等，現正整合交易者資料"
         text={

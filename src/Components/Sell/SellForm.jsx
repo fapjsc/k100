@@ -19,22 +19,12 @@ import changeMoney from '../../Assets/i_twoways.png';
 
 const SellForm = () => {
   const mobileApp = useMediaQuery({ query: '(max-width: 1199px)' });
-  // const smPoint = useMediaQuery({ query: '(max-width: 500px)' });
 
   const balanceContext = useContext(BalanceContext);
   const { getBalance, wsPairing, avb } = balanceContext;
 
   const sellContext = useContext(SellContext);
-  const {
-    sellWebSocket,
-    closeWebSocket,
-    getExRate,
-    getOrderToken,
-    exRate,
-    orderToken,
-    cleanOrderToken,
-    setWsPairing,
-  } = sellContext;
+  const { closeWebSocket, getExRate, getOrderToken, exRate, setWsPairing } = sellContext;
 
   const [usdt, setUsdt] = useState({
     val: '',
@@ -76,54 +66,38 @@ const SellForm = () => {
   const [fetchLoading, setFetchLoading] = useState(false);
   const [showBankWallet, setShowBankWallet] = useState(false);
 
-  // 獲取匯率
-  // useEffect(() => {
-  //     getExRate();
-  //     // eslint-disable-next-line
-  // }, []);
-
   useEffect(() => {
-    closeWebSocket();
     getExRate();
     getBalance();
-
-    return () => {
-      closeWebSocket();
-    };
 
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {}, [wsPairing]);
-
   // 連接WebSocket
-  useEffect(() => {
-    if (orderToken) {
-      sellWebSocket(orderToken);
-      // history.replace(`/home/transaction/sell/${orderToken}`);
-    }
+  // useEffect(() => {
+  //   if (orderToken) {
+  //     sellWebSocket(orderToken);
+  //   }
 
-    return cleanOrderToken();
-    // eslint-disable-next-line
-  }, [orderToken]);
+  //   return cleanOrderToken();
+  //   // eslint-disable-next-line
+  // }, [orderToken]);
 
   // 表單驗證後發送請求
   useEffect(() => {
-    if (!formValid) {
-      return;
-    } else {
-      const data = {
-        usdt: usdt.val,
-        name: name.val,
-        bank: bank.val,
-        account: account.val,
-        city: city.val,
-      };
+    if (!formValid) return;
 
-      setWsPairing(true);
-      getOrderToken(data);
-      setFormValid(false);
-    }
+    const data = {
+      usdt: usdt.val,
+      name: name.val,
+      bank: bank.val,
+      account: account.val,
+      city: city.val,
+    };
+
+    setWsPairing(true);
+    getOrderToken(data);
+    setFormValid(false);
 
     //eslint-disable-next-line
   }, [formValid]);
@@ -140,14 +114,12 @@ const SellForm = () => {
       }
 
       let counter = (e.target.value * exRate).toFixed(2);
-      // let counter = 1;
       setCny({
         val: counter,
         isValid: true,
         error: '',
       });
       setUsdt({
-        // val: e.target.value.replace(/^((-\d+(\.\d+)?)|((\.0+)?))$/).trim(),
         val: e.target.value.trim(),
         isValid: true,
         error: '',
@@ -170,7 +142,6 @@ const SellForm = () => {
         error: '',
       });
       setCny({
-        // val: e.target.value.replace(/^((-\d+)|(0+))$/).trim(),
         val: e.target.value.trim(),
         isValid: true,
         error: '',
@@ -215,7 +186,6 @@ const SellForm = () => {
     setFetchLoading(true);
     const balance = await getBalance();
 
-    // let usdtCount = (balance.Avb_Balance - Number(transferHandle)).toFixed(2);
     let usdtCount = balance.Avb_Balance.toFixed(2);
     let cnyCount = (usdtCount * Number(exRate)).toFixed(2);
 
@@ -237,17 +207,6 @@ const SellForm = () => {
   // 表單驗證
   const validForm = () => {
     setFormValid(true);
-    // 有1~2位小数的正數，且不能為0或0開頭
-    // let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
-    // if (!rule.test(usdt.val) || !rule.test(cny.val)) {
-    //     setUsdt({
-    //         val: usdt.val,
-    //         isValid: false,
-    //         error: '請輸入有效數量, (不能為0，最多小數第二位)',
-    //     });
-
-    //     setFormValid(false);
-    // }
 
     if (Number(usdt.val) > Number(avb)) {
       setUsdt({
@@ -575,7 +534,6 @@ const SellForm = () => {
           )}
 
           {/* info */}
-
           <br />
           <br />
           {showBankWallet && (
@@ -592,8 +550,6 @@ const SellForm = () => {
               </Form.Group>
             </Form.Row>
           )}
-
-          {/* <button onClick={props.showPayDetail}>下一步</button> */}
         </Form>
       ) : (
         <BaseSpinner />

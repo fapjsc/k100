@@ -9,9 +9,12 @@ import BuyContext from '../../context/buy/BuyContext';
 import BaseSpinner from '../Ui/BaseSpinner';
 import ExRate from './ExRate';
 import BuyDetail from './BuyDetail';
-import BuyComplete from './BuyComplete';
+// import BuyComplete from './BuyComplete';
 import FormFooter from '../Layout/FormFooter';
 import Chat from '../Chat';
+import CompleteStatus from '../universal/CompleteStatus';
+// import TheChat from '../Chat/TheChat';
+// import ChatMobile from '../Chat/ChatMobile';
 
 // Style
 import helpIcon from '../../Assets/i_ask2.png';
@@ -20,6 +23,21 @@ import Button from 'react-bootstrap/Button';
 const BuyInfo = () => {
   // Init State
   const [showChat, setShowChat] = useState(false);
+
+  // eslint-disable-next-line
+  const [state, setState] = useState({
+    messageList: [],
+    newMessagesCount: 0,
+    isOpen: false,
+    fileUpload: true,
+  });
+
+  // function onMessageWasSent(message) {
+  //   setState(state => ({
+  //     ...state,
+  //     messageList: [...state.messageList, message],
+  //   }));
+  // }
 
   // Media Query
   const isDesktopOrLaptop = useMediaQuery({ query: '(max-width: 1200px)' }); // 小於等於 1200 true
@@ -38,6 +56,7 @@ const BuyInfo = () => {
     cleanAll,
     closeWebSocket,
     GetDeltaTime,
+    buyWsClient,
   } = buyContext;
 
   useEffect(() => {
@@ -48,7 +67,8 @@ const BuyInfo = () => {
     }
 
     return () => {
-      closeWebSocket();
+      if (buyWsClient) buyWsClient.close();
+      closeWebSocket(match.params.id);
       cleanAll();
     };
 
@@ -62,6 +82,9 @@ const BuyInfo = () => {
 
   const backToHome = () => {
     history.replace('/home/overview');
+    if (buyWsClient) buyWsClient.close();
+    closeWebSocket(match.params.id);
+    cleanAll();
   };
 
   return (
@@ -73,10 +96,15 @@ const BuyInfo = () => {
           <BuyDetail />
         </>
       ) : (wsStatus === 34 || wsStatus === 1 || wsStatus === 99 || wsStatus === 98) && buyWsData ? (
-        <BuyComplete wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
+        // <BuyComplete wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
+        <CompleteStatus wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
       ) : (
         <BaseSpinner />
       )}
+
+      {/* 桌機版聊天室 */}
+      {buyWsData && <Chat isChat={!isDesktopOrLaptop} Tx_HASH={buyWsData.hash} />}
+      {/* {buyWsData && !isDesktopOrLaptop ? <TheChat Tx_HASH={buyWsData.hash} /> : null} */}
 
       {/* 手機版聊天室*/}
       {isDesktopOrLaptop && buyWsData ? (
@@ -99,7 +127,6 @@ const BuyInfo = () => {
 
       {/* 桌機版聊天室 */}
       {buyWsData && <Chat isChat={!isDesktopOrLaptop} Tx_HASH={buyWsData.hash} />}
-
       <FormFooter />
     </>
   );

@@ -24,6 +24,11 @@ export const SET_BALANCE = 'GET_BALANCE';
 
 // Chat
 export const SET_TRANSLATE = 'SET_TRANSLATE';
+export const SET_MESSAGES = 'SET_MESSAGES';
+export const SET_CHAT_WS_CLIENT = 'SET_CHAT_WS_CLIENT';
+export const CHAT_SET_ORDER_TOKEN = 'CHAT_SET_ORDER_TOKEN';
+export const SET_INSTANT_CLIENT = 'SET_INSTANT_CLIENT';
+export const SET_INSTANT_MESSAGES = 'SET_INSTANT_MESSAGES';
 
 // Auth
 export const IS_SEND_VALID_CODE = 'IS_SEND_VALID_CODE'; // 簡訊驗證碼發送情況
@@ -32,6 +37,7 @@ export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
 export const SHOW_ERROR_MODAL = 'SHOW_ERROR_MODAL';
 export const REMOVE_VALID_TOKEN = 'REMOVE_VALID_TOKEN';
 export const SET_EXPIRED_TIME = 'SET_EXPIRED_TIME';
+export const SET_AGENT = 'SET_AGENT';
 
 // History
 export const SET_ALL_HISTORY = 'SET_ALL_HISTORY';
@@ -45,6 +51,7 @@ export const SET_ERROR_TEXT = 'SET_ERROR_TEXT';
 
 // Http Error
 export const SET_HTTP_ERROR = 'SET_HTTP_ERROR';
+export const SET_HTTP_LOADING = 'SET_HTTP_LOADING';
 
 // Buy
 export const BUY_BTN_LOADING = 'BUY_BTN_LOADING';
@@ -58,3 +65,13 @@ export const SET_BUY_WS_CLIENT = 'SET_BUY_WS_CLIENT';
 export const SET_BUY_WS_DATA = 'SET_BUY_WS_DATA';
 export const SET_DELTA_TIME = 'SET_DELTA_TIME';
 export const HIDE_BUY_INFO = 'HIDE_BUY_INFO';
+
+// Instant
+export const SET_INSTANT_WS_DATA = 'SET_INSTANT_WS_DATA';
+export const CLEAN_INSTANT_DATA = 'CLEAN_INSTANT_DATA';
+export const SET_COUNT_DATA = 'SET_COUNT_DATA';
+export const SET_SELL1_DATA = 'SET_SELL1_DATA';
+export const SET_BUY1_DATA = 'SET_BUY1_DATA';
+export const INSTANT_SET_WS_CLIENT = 'INSTANT_SET_WS_CLIENT';
+export const SET_WS_STATUS_DATA = 'SET_WS_STATUS_DATA';
+export const SET_STATUS_WS_CLIENT = 'SET_STATUS_WS_CLIENT';

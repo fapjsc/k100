@@ -1,7 +1,7 @@
 const FormFooter = () => {
   return (
     <div>
-      <hr className="mt_mb" />
+      <hr className="mt_mb" style={{ color: 'red' }} />
       <ul className="txt_12_grey">
         <li>本平台目前只提供USDT交易，其他數字貨幣交易將不予受理</li>
         <br />

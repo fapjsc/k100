@@ -3,15 +3,20 @@ import { useReducer } from 'react';
 import HttpErrorReducer from './HttpErrorReducer';
 import HttpErrorContext from './HttpErrorContext';
 
-import { SET_HTTP_ERROR } from '../type';
+import { SET_HTTP_ERROR, SET_HTTP_LOADING } from '../type';
 
 const HttpErrorState = props => {
   const initialState = {
     errorText: '',
+    httpLoading: false,
   };
 
   const setHttpError = value => {
     dispatch({ type: SET_HTTP_ERROR, payload: value });
+  };
+
+  const setHttpLoading = value => {
+    dispatch({ type: SET_HTTP_LOADING, payload: value });
   };
 
   const handleHttpError = data => {
@@ -103,8 +108,11 @@ const HttpErrorState = props => {
     <HttpErrorContext.Provider
       value={{
         errorText: state.errorText,
+        httpLoading: state.httpLoading,
+
         handleHttpError,
         setHttpError,
+        setHttpLoading,
       }}
     >
       {props.children}
