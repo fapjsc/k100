@@ -103,7 +103,7 @@ const ChatState = props => {
       url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new W3CWebsocket(url);
+    const client = new ReconnectingWebSocket(url);
 
     // 1.建立連接
     client.onopen = message => {

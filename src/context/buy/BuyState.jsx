@@ -175,6 +175,16 @@ const BuyState = props => {
 
       // 交易完成
       if (dataFromServer.data.Order_StatusID === 1) {
+        const wsData = {
+          cny: dataFromServer.data.D2,
+          name: dataFromServer.data.P2,
+          account: dataFromServer.data.P1,
+          bank: dataFromServer.data.P3,
+          city: dataFromServer.data.P4,
+          usdt: dataFromServer.data.UsdtAmt,
+          hash: dataFromServer.data.Tx_HASH,
+        };
+        setWsData(wsData);
         client.close();
       }
     };

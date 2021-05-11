@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
@@ -11,10 +11,17 @@ import purpleIcon from '../../Assets/i_usdt_purple.png';
 
 const HistoryAllDetail = props => {
   const historyContext = useContext(HistoryContext);
-  const { singleDetail } = historyContext;
-  console.log(singleDetail);
+  const { singleDetail, setSingleDetail } = historyContext;
+
+  useEffect(() => {
+    return () => {
+      setSingleDetail(null);
+    };
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="md">
+    <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="md" centered>
       <Modal.Header closeButton style={{ borderBottom: 'none' }}></Modal.Header>
       <Modal.Body className="show-grid">
         <div style={gridBox}>
@@ -66,7 +73,7 @@ const HistoryAllDetail = props => {
                   : 'c_red text-right pr-4'
               }
             >
-              {singleDetail.usdtAmt}
+              {singleDetail.usdtAmt.toFixed(2)}
             </p>
           </div>
 

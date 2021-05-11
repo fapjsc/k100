@@ -24,6 +24,7 @@ export default class Auth extends Component {
     httpError: null,
     showModal: false,
     loginErr: '',
+    showRegister: false,
   };
 
   toggleForm = mode => {
@@ -36,6 +37,12 @@ export default class Auth extends Component {
     }
     this.setState({
       formState,
+    });
+  };
+
+  handleRegisterFrom = value => {
+    this.setState({
+      showRegister: value,
     });
   };
 
@@ -187,7 +194,7 @@ export default class Auth extends Component {
                       />
                     )}
                   />
-                  <Route path="/auth/register" component={RegisterForm} />
+                  <Route path="/auth/register" component={props => <RegisterForm {...props} />} />
 
                   <Redirect to="/auth/login" />
                 </Switch>

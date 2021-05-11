@@ -9,10 +9,16 @@ import {
   SET_WS_CLIENT,
   SET_CANCEL_ORDER_DATA,
   SET_CONFIRM_SELL,
+  SET_SELL_STATUS,
 } from '../type';
 
 const SellReducer = (state, action) => {
   switch (action.type) {
+    case SET_SELL_STATUS:
+      return {
+        ...state,
+        sellStatus: action.payload,
+      };
     case SET_RMB_SELL_RATE: {
       return {
         ...state,

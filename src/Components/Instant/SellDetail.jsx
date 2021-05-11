@@ -28,15 +28,8 @@ const SellDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const {
-    sell1Data,
-    setSell1Data,
-    setCountData,
-    sellMatch1,
-    sellMatch2,
-    wsStatusData,
-    cleanAll,
-  } = instantContext;
+  const { sell1Data, setSell1Data, setCountData, sellMatch1, sellMatch2, wsStatusData, cleanAll } =
+    instantContext;
 
   useEffect(() => {
     sellMatch1(match.params.id);
@@ -188,6 +181,7 @@ const SellDetail = () => {
                   wsStatus={wsStatusData}
                   backToHome={backToHome}
                   hash={sell1Data.Tx_HASH}
+                  type="buy"
                 />
               ) : (
                 <BaseSpinner />

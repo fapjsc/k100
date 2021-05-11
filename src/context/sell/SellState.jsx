@@ -16,6 +16,7 @@ import {
   SET_WS_CLIENT,
   SET_CANCEL_ORDER_DATA,
   SET_CONFIRM_SELL,
+  SET_SELL_STATUS,
 } from '../type';
 
 // import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -38,6 +39,7 @@ const SellState = props => {
     cancelData: null,
     confirmSell: false,
     sellCurrentToken: null,
+    sellStatus: null,
   };
 
   const history = useHistory();
@@ -106,7 +108,7 @@ const SellState = props => {
         const {
           data: { order_token },
         } = resData;
-        // setOrderToken(order_token);
+        setOrderToken(order_token);
         sellWebSocket(order_token);
       } else {
         handleHttpError(resData);
@@ -201,6 +203,7 @@ const SellState = props => {
     client.onmessage = message => {
       const dataFromServer = JSON.parse(message.data);
       console.log('got reply!', dataFromServer);
+      setSellStatus(dataFromServer.data.Order_StatusID);
 
       // 配對中 Order_StatusID：31 or 32
       if (dataFromServer.data.Order_StatusID === 31) {
@@ -211,7 +214,7 @@ const SellState = props => {
       if (dataFromServer.data.Order_StatusID === 33) {
         setWsData(dataFromServer.data);
         setWsPairing(false);
-        history.replace(`/home/transaction/sell/${orderToken}`);
+        // history.replace(`/home/transaction/sell/${orderToken}`);
       }
 
       // 等待收款 Order_StatusID：34
@@ -345,6 +348,11 @@ const SellState = props => {
     dispatch({ type: SET_SELL_COMPLETED, payload: value });
   };
 
+  // Set Sell Status
+  const setSellStatus = value => {
+    dispatch({ type: SET_SELL_STATUS, payload: value });
+  };
+
   // Clean All
   const CleanAll = () => {
     if (state.wsClient) state.wsClient.close();
@@ -354,6 +362,8 @@ const SellState = props => {
     setPayment(false);
     setCompleteStatus(false);
     setWsClient(null);
+    setSellStatus(null);
+    setOrderToken(null);
   };
 
   // useReducer
@@ -375,6 +385,7 @@ const SellState = props => {
         cancelData: state.cancelData, // 取消的訂單數據
         confirmSell: state.confirmSell, // 判斷是否應該進入 "提交確認/交易完成" 組件
         wsClient: state.wsClient,
+        sellStatus: state.sellStatus,
 
         getExRate,
         getOrderToken,

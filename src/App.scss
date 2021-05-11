@@ -1118,7 +1118,7 @@ hr {
   padding: 0;
 }
 
-// Chat origin
+// Chat Box
 .easy_help span {
   background-image: url(./Assets/i_ask2.png);
   background-size: contain;
@@ -1151,10 +1151,6 @@ hr {
   word-wrap: break-word;
 }
 
-.chatTitleBox {
-  background-color: red;
-}
-
 .chatbox .top span {
   background-image: url(./Assets/i_logo.png);
   background-size: cover;
@@ -1163,7 +1159,6 @@ hr {
   width: 30px;
   display: inline-block;
   margin-right: 12px;
-  background-color: red;
 }
 
 .chatbox .top p {
@@ -1173,8 +1168,8 @@ hr {
 }
 
 .talk {
-  height: 340px;
-  overflow: scroll;
+  height: 79%;
+  overflow: auto;
   padding: 10px;
 }
 
@@ -1242,4 +1237,9 @@ input.talkbox:focus {
 .w_77 {
   width: 77%;
   display: inline-block;
+}
+
+// Wallet
+.qrCode-img {
+  width: 10000;
 }

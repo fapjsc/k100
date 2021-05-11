@@ -16,6 +16,7 @@ import HttpErrorState from './context/httpError/HttpErrorState';
 import BuyState from './context/buy/BuyState';
 import ChatState from './context/chat/ChatState';
 import InstantState from './context/instant/InstantState';
+import WalletState from './context/wallet/WalletState';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -40,25 +41,27 @@ function App() {
               <SellState>
                 <HistoryState>
                   <BuyState>
-                    <ChatState>
-                      <Switch>
-                        <Route
-                          path="/auth"
-                          component={props => <Auth {...props} setAuth={setAuth} />}
-                        />
+                    <WalletState>
+                      <ChatState>
+                        <Switch>
+                          <Route
+                            path="/auth"
+                            component={props => <Auth {...props} setAuth={setAuth} />}
+                          />
 
-                        <Route path="/agreement" component={Agreement} />
-                        <Route
-                          isAuth={isAuth}
-                          path="/home"
-                          component={props => <Home {...props} setAuth={setAuth} />}
-                        />
+                          <Route path="/agreement" component={Agreement} />
+                          <Route
+                            isAuth={isAuth}
+                            path="/home"
+                            component={props => <Home {...props} setAuth={setAuth} />}
+                          />
 
-                        <Route exact path="/forget-pw" component={ForgetPassword} />
+                          <Route exact path="/forget-pw" component={ForgetPassword} />
 
-                        <Redirect to="/auth/login" />
-                      </Switch>
-                    </ChatState>
+                          <Redirect to="/auth/login" />
+                        </Switch>
+                      </ChatState>
+                    </WalletState>
                   </BuyState>
                 </HistoryState>
               </SellState>

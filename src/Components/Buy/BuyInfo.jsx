@@ -97,7 +97,12 @@ const BuyInfo = () => {
         </>
       ) : (wsStatus === 34 || wsStatus === 1 || wsStatus === 99 || wsStatus === 98) && buyWsData ? (
         // <BuyComplete wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
-        <CompleteStatus wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
+        <CompleteStatus
+          wsStatus={wsStatus}
+          hash={buyWsData.hash}
+          backToHome={backToHome}
+          type="buy"
+        />
       ) : (
         <BaseSpinner />
       )}

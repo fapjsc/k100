@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
+import { Route, Switch, Redirect, Link } from 'react-router-dom';
 
+// Components
 import Transaction from '../../pages/Transaction';
-
 import Header from '../../Components/Layout/Header';
 import TheNav from '../../Components/Layout/TheNav';
-
 import MoneyRecord from '../../Components/MoneyRecord';
 import Overview from '../../Components/Overview';
-import Wallet from '../../Components/Wallet';
+// import Wallet from '../../Components/Wallet';
+import TheWallet from '../../Components/Wallet/TheWallet';
+import WalletDetail from '../../Components/Wallet/WalletDetail';
 import History from '../../Components/History';
 import ChangePassword from '../../Components/Auth/ChangePassword';
-
 import InstantCount from '../../Components/Instant/InstantCount';
 import InstantDetail from '../../Components/Instant/InstantDetail';
 
-import { Route, Switch, Redirect, Link } from 'react-router-dom';
-
+// Style
 import style from '../../Components/Layout/Header.module.scss';
 
 export default class index extends Component {
@@ -106,7 +106,8 @@ export default class index extends Component {
         <MoneyRecord history={history} />
         <Switch>
           <Route path="/home/overview" component={Overview} />
-          <Route path="/home/wallet" component={Wallet} />
+          <Route exact path="/home/wallet" component={TheWallet} />
+          <Route exact path="/home/wallet/:id" component={WalletDetail} />
           <Route path="/home/history" component={History} />
           <Route path="/home/transaction" component={Transaction} />
           <Route path="/home/change-pw" component={ChangePassword} />

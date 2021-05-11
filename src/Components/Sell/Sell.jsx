@@ -10,7 +10,7 @@ import Pairing from './Pairing';
 const Sell = () => {
   const history = useHistory();
   const sellContext = useContext(SellContext);
-  const { wsPairing, wsData, setWsPairing, CleanAll, wsClient } = sellContext;
+  const { wsPairing, wsData, CleanAll, wsClient, sellStatus, orderToken } = sellContext;
 
   useEffect(() => {
     if (wsClient) wsClient.close();
@@ -22,9 +22,14 @@ const Sell = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (sellStatus === 33) history.replace(`/home/transaction/sell/${orderToken}`);
+    // eslint-disable-next-line
+  }, [sellStatus]);
+
   const backHome = () => {
     if (wsClient) wsClient.close();
-    setWsPairing(false);
+    // setWsPairing(false);
     history.replace('/home/overview');
     CleanAll();
   };

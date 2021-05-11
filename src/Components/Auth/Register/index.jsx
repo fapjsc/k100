@@ -237,7 +237,7 @@ export default class index extends Component {
           showValidCode: true,
         },
         () => {
-          this.props.history.replace('/auth/register/valid');
+          // this.props.history.replace('/auth/valid');
         }
       );
     }
@@ -298,8 +298,6 @@ export default class index extends Component {
       btnLoading,
       formIsValid,
     } = this.state;
-
-    console.log(showValidCode);
 
     return (
       <>
@@ -502,21 +500,25 @@ export default class index extends Component {
                   {btnLoading ? '處理中..' : '下一步'}
                 </Button>
               </Form>
-            ) : null}
-
-            <Switch>
-              <Route
-                path="/auth/register/valid"
-                component={props => (
-                  <ValidCode
-                    phoneNumber={phoneNumber.val}
-                    countryCode={countryCode.val}
-                    password={password.val}
-                    {...props}
-                  />
-                )}
+            ) : (
+              <ValidCode
+                phoneNumber={phoneNumber.val}
+                countryCode={countryCode.val}
+                password={password.val}
               />
-            </Switch>
+            )}
+
+            {/* <Route
+              path="/auth/valid"
+              component={props => (
+                <ValidCode
+                  phoneNumber={phoneNumber.val}
+                  countryCode={countryCode.val}
+                  password={password.val}
+                  {...props}
+                />
+              )}
+            /> */}
           </div>
         )}
       </>

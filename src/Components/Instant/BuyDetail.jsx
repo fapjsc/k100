@@ -179,6 +179,7 @@ const BuyDetail = () => {
                     wsStatus={wsStatusData}
                     backToHome={backToHome}
                     hash={buy1Data.Tx_HASH}
+                    type="sell"
                   />
                 ) : (
                   <BaseSpinner />

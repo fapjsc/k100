@@ -117,7 +117,7 @@ const HistoryState = props => {
       });
       const resData = await res.json();
 
-      // console.log(resData);
+      console.log(resData);
 
       if (resData.code === 200) {
         const { data } = resData;
@@ -202,6 +202,7 @@ const HistoryState = props => {
         getHistoryAll,
         detailReq,
         setWaitList,
+        setSingleDetail,
       }}
     >
       {props.children}

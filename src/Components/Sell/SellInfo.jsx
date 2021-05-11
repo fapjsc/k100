@@ -211,6 +211,7 @@ const SellInfo = () => {
           wsStatus={wsData.Order_StatusID}
           backToHome={backToHome}
           hash={wsData && wsData.Tx_HASH}
+          type="sell"
         />
 
         {/* Chat */}

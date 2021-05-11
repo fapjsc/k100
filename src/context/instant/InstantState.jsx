@@ -110,48 +110,32 @@ const InstantState = props => {
 
     const client = new W3CWebsocket(url);
 
-    setWsStatusClient(client);
+    if (client) {
+      setWsStatusClient(client);
 
-    // 1.建立連接
-    client.onopen = () => {
-      console.log('websocket client connected instant status');
-    };
+      // 1.建立連接
+      client.onopen = () => {
+        console.log('websocket client connected instant status');
+      };
 
-    // 2.收到server回復
-    client.onmessage = message => {
-      const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // 2.收到server回復
+      client.onmessage = message => {
+        const dataFromServer = JSON.parse(message.data);
+        console.log('got reply!', dataFromServer);
 
-      if (dataFromServer) setWsStatusData(dataFromServer.data.Order_StatusID);
+        if (dataFromServer) setWsStatusData(dataFromServer.data.Order_StatusID);
 
-      // // 配對中 Order_StatusID：31 or 32
-      // if (dataFromServer.data.Order_StatusID === 31) {
-      //   setWsData(dataFromServer.data);
-      // }
+        // // 交易成功 Order_StatusID：1
+        if (dataFromServer.data.Order_StatusID === 1) {
+          client.close();
+        }
+      };
 
-      // // 等待付款  Order_StatusID：33
-      // if (dataFromServer.data.Order_StatusID === 33) {
-      //   setWsData(dataFromServer.data);
-      //   setWsPairing(false);
-      //   history.replace(`/home/transaction/sell/${orderToken}`);
-      // }
-
-      // // 等待收款 Order_StatusID：34
-      // if (dataFromServer.data.Order_StatusID === 34) {
-      //   setWsData(dataFromServer.data);
-      //   setPayment(true); // 開啟確認收款button
-      // }
-
-      // // 交易成功 Order_StatusID：1
-      if (dataFromServer.data.Order_StatusID === 1) {
-        client.close();
-      }
-    };
-
-    // 3.錯誤處理
-    client.onclose = function (message) {
-      console.log('關閉連線.....');
-    };
+      // 3.錯誤處理
+      client.onclose = function (message) {
+        console.log('關閉連線.....');
+      };
+    }
   };
 
   // Sell Match --1
