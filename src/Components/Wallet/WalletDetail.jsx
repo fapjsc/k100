@@ -5,6 +5,7 @@ import copy from 'copy-to-clipboard';
 // Context
 import WalletContext from '../../context/wallet/WalletContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import BalanceContext from '../../context/balance/BalanceContext';
 
 // Components
 import FromFooter from '../Layout/FormFooter';
@@ -16,19 +17,35 @@ const WalletDetail = () => {
 
   // Wallet Context
   const walletContext = useContext(WalletContext);
-  const { walletData, setWalletType, walletType, getQrCode } = walletContext;
+  const { walletData, setWalletType, walletType } = walletContext;
+
+  // Balance Context
+  const balanceContext = useContext(BalanceContext);
+  const { avb, real, getBalance } = balanceContext;
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
-  const { httpLoading } = httpErrorContext;
+  const { httpLoading, errorText, setHttpError } = httpErrorContext;
 
   useEffect(() => {
-    getQrCode();
     return () => {
       setWalletType('');
     };
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (errorText) alert(errorText);
+    return () => {
+      setHttpError('');
+    };
+    // eslint-disable-next-line
+  }, [errorText]);
+
+  useEffect(() => {
+    if (!avb || !real) getBalance();
+    // eslint-disable-next-line
+  }, [avb, real]);
 
   const handleClick = () => {
     history.replace('/home/wallet');
@@ -113,7 +130,7 @@ const WalletDetail = () => {
                           結餘：
                           <span className="usdt mr_sm"></span>
                           <span className="c_green mr_sm">USDT</span>
-                          <span className="c_green fs_20">1234</span>
+                          <span className="c_green fs_20">{real}</span>
                         </div>
                       </div>
                       <div>
@@ -121,7 +138,7 @@ const WalletDetail = () => {
                           可提：
                           <span className="usdt mr_sm"></span>
                           <span className="c_green mr_sm">USDT</span>
-                          <span className="c_green fs_20">1234</span>
+                          <span className="c_green fs_20">{avb}</span>
                         </div>
                       </div>
                     </div>

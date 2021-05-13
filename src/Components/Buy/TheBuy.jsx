@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Context
@@ -36,7 +36,6 @@ const TheBuy = () => {
     cleanAll,
     wsStatus,
     closeWebSocket,
-    buyWsClient,
   } = buyContext;
 
   useEffect(() => {

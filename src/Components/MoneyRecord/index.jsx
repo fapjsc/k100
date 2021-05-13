@@ -14,16 +14,6 @@ export default class MoneyRecord extends Component {
   };
 
   getBalance = async () => {
-    // if (!token) {
-    //     const { history } = this.props;
-
-    //     alert('請重新登入, get balance');
-    //     localStorage.removeItem('token');
-    //     history.replace('/auth/login');
-
-    //     return;
-    // }
-
     const { history } = this.props;
 
     const token = localStorage.getItem('token');
@@ -107,14 +97,6 @@ export default class MoneyRecord extends Component {
         tick,
       });
     } catch (error) {
-      // const errStr = String(error);
-      // this.setState({
-      //     httpError: {
-      //         title: '發生錯誤，from get tick',
-      //         body: errStr,
-      //     },
-      // });
-      // clearInterval(this.checkTickLoop);
       localStorage.removeItem('token');
       clearInterval(this.checkTickLoop);
       alert('session過期，請重新登入 get tick catch');
@@ -162,14 +144,6 @@ export default class MoneyRecord extends Component {
         this.getBalance();
       }
     } catch (error) {
-      // const errStr = String(error);
-      // this.setState({
-      //     httpError: {
-      //         title: '發生錯誤，from check tick',
-      //         body: errStr,
-      //     },
-      // });
-
       localStorage.removeItem('token');
       clearInterval(this.checkTickLoop);
       alert('session過期，請重新登入 check tick catch');

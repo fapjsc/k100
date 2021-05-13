@@ -1,13 +1,21 @@
-import { useReducer } from 'react';
+import { useReducer, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import HistoryReducer from './HistoryReducer';
 import HistoryContext from './HistoryContext';
-
 import { SET_ALL_HISTORY, SET_SINGLE_DETAIL, SET_WAIT_HISTORY, HISTORY_LOADING } from '../type';
 
+// Context
+import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+
 const HistoryState = props => {
+  // Router Props
   const history = useHistory();
 
+  // Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { handleHttpError } = httpErrorContext;
+
+  // Init State
   const initialState = {
     allHistory: [],
     waitList: [],
@@ -18,6 +26,7 @@ const HistoryState = props => {
   // Get Header
   const getHeader = () => {
     const token = localStorage.getItem('token');
+
     if (token) {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
@@ -66,10 +75,10 @@ const HistoryState = props => {
 
         dispatch({ type: SET_WAIT_HISTORY, payload: newData });
       } else {
-        alert(resData.msg);
+        handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
@@ -91,11 +100,11 @@ const HistoryState = props => {
       if (resData.code === 200) {
         dispatch({ type: SET_ALL_HISTORY, payload: resData.data });
       } else {
-        alert(resData.msg);
+        handleHttpError(resData);
       }
       setLoading(false);
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
       setLoading(false);
     }
   };
@@ -170,12 +179,12 @@ const HistoryState = props => {
 
         // handle error
       } else {
-        alert(resData.msg);
+        handleHttpError(resData);
       }
 
       setLoading(false);
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
       setLoading(false);
     }
   };

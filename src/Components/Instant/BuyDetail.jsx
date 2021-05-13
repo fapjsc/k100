@@ -28,7 +28,7 @@ const BuyDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { buy1Data, setBuy1Data, wsStatusData, buyMatch1, buyMatch2, cleanAll } = instantContext;
+  const { buy1Data, setBuy1Data, wsStatusData, buyMatch2, cleanAll } = instantContext;
 
   useEffect(() => {
     // buyMatch1(match.params.id);
@@ -39,6 +39,14 @@ const BuyDetail = () => {
     };
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (errorText) alert(errorText);
+    return () => {
+      setHttpError('');
+    };
+    // eslint-disable-next-line
+  }, [errorText]);
 
   useEffect(() => {
     if (buy1Data) {

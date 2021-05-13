@@ -7,12 +7,13 @@ import SellContext from '../../context/sell/SellContext';
 
 // Components
 import SellHeaders from './SellHeader';
-import SellCompleted from './SellCompleted';
+// import SellCompleted from './SellCompleted';
 import SetAccount from '../Buy/SetAccount';
 import Chat from '../Chat';
 import CancelSell from './CancelSell';
 import FromFooter from '../Layout/FormFooter';
 import CompleteStatus from '../universal/CompleteStatus';
+import BaseSpinner from '../Ui/BaseSpinner';
 
 // Style
 import helpIcon from '../../Assets/i_ask2.png';
@@ -81,7 +82,7 @@ const SellInfo = () => {
   };
 
   // confirmSell 判斷要render sell info 還是 提交確認/交易完成組件
-  if (!confirmSell) {
+  if (!confirmSell && wsData) {
     return (
       <Fragment>
         <CancelSell
@@ -157,22 +158,13 @@ const SellInfo = () => {
 
                 <span className="">{payment ? ' 買家已付款，確認收款' : '對方準備中'}</span>
               </Button>
-
-              {/* {!payment && (
-                <span
-                  onClick={() => setShowCancel(true)}
-                  className="txt_12_grey"
-                  style={cancelLink}
-                >
-                  取消訂單
-                </span>
-              )} */}
             </Col>
           </Row>
           {/* Footer */}
           <FromFooter />
         </Container>
 
+        {/* Chat */}
         {lapTopBig && wsData ? (
           <Fragment>
             <Button style={helpBtn} variant="primary" onClick={handleChat}>
@@ -197,7 +189,7 @@ const SellInfo = () => {
         ) : null}
       </Fragment>
     );
-  } else {
+  } else if (confirmSell && wsData) {
     return (
       // 已提交以及交易完成，isCompleted判斷是否完成交易
       <Fragment>
@@ -231,7 +223,7 @@ const SellInfo = () => {
         {wsData ? <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={isChat} /> : null}
       </Fragment>
     );
-  }
+  } else return <BaseSpinner />;
 };
 
 const infoBtn = {
@@ -261,13 +253,13 @@ const infoBtnDisabled = {
   cursor: 'not-allowed',
 };
 
-const cancelLink = {
-  fontSize: 15,
-  fontWeight: 'bold',
-  borderBottom: '1px solid grey',
-  display: 'inline-block',
-  cursor: 'pointer',
-};
+// const cancelLink = {
+//   fontSize: 15,
+//   fontWeight: 'bold',
+//   borderBottom: '1px solid grey',
+//   display: 'inline-block',
+//   cursor: 'pointer',
+// };
 
 const helpBtn = {
   paddingLeft: 15,

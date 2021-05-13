@@ -1,4 +1,3 @@
-import { clearAllSubscriptions } from 'pubsub-js';
 import {
   SET_INSTANT_WS_DATA,
   CLEAN_INSTANT_DATA,

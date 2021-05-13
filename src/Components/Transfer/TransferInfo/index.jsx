@@ -62,8 +62,8 @@ const TransferInfo = () => {
         <div className="text-center">
           <img src={completeIcon} alt="complete icon" className="mb-4" />
           <h4 className="c_blue mb-4">交易成功</h4>
-          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.P1}</p>
-          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.Tx_HASH}</p>
+          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.data.P1}</p>
+          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.data.Tx_HASH}</p>
           <button onClick={backToHome} className="easy-btn mw400">
             返回主頁
           </button>
@@ -78,8 +78,8 @@ const TransferInfo = () => {
         <div className="text-center">
           <img src={transIcon} alt="transfer icon" className="mb-4" />
           <h4 className="c_blue mb-4">轉帳中</h4>
-          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.P1}</p>
-          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.Tx_HASH}</p>
+          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.data.P1}</p>
+          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.data.Tx_HASH}</p>
           <button onClick={backToHome} className="easy-btn mw400">
             返回主頁
           </button>
@@ -102,7 +102,7 @@ const TransferInfo = () => {
           />
           <h4 className="c_blue mb-4">轉帳失敗</h4>
           <p className="txt_12_grey">
-            轉帳地址：{orderDetail && orderDetail.P1}
+            轉帳地址：{orderDetail && orderDetail.data.P1}
             <br />
           </p>
           <button onClick={backToHome} className="easy-btn mw400">

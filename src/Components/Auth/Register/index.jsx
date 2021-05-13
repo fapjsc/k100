@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
 import validator from 'validator';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 
@@ -296,7 +295,6 @@ export default class index extends Component {
       captcha,
       checkAccountErr,
       btnLoading,
-      formIsValid,
     } = this.state;
 
     return (

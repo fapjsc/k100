@@ -36,6 +36,7 @@ const InfoDetail = props => {
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
+  // eslint-disable-next-line
   const { errorText, setHttpError } = httpErrorContext;
 
   // Init State

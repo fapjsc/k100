@@ -149,6 +149,7 @@ export default class index extends Component {
                       <span className="easy_link">{WalletAddress}</span>
                       <div className="i_copy2" onClick={() => this.handleCopy(WalletAddress)}></div>
                     </div>
+
                     <div className="pt_20">
                       <div className="balance">
                         結餘：

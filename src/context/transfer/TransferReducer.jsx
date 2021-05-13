@@ -4,22 +4,10 @@ import {
   SET_USDT_COUNT,
   SET_ORDER_DETAIL,
   GET_WS_CLIENT,
-  HANDLE_BTN_LOADING,
-  SET_TRANSFER_ERROR_TEXT,
 } from '../type';
 
 const SellReducer = (state, action) => {
   switch (action.type) {
-    case SET_TRANSFER_ERROR_TEXT:
-      return {
-        ...state,
-        transferErrText: action.payload,
-      };
-    case HANDLE_BTN_LOADING:
-      return {
-        ...state,
-        handleBtnLoading: action.payload,
-      };
     case GET_WS_CLIENT:
       return {
         ...state,

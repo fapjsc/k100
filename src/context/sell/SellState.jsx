@@ -17,6 +17,8 @@ import {
   SET_CANCEL_ORDER_DATA,
   SET_CONFIRM_SELL,
   SET_SELL_STATUS,
+  SET_RATE_DATA,
+  SET_TRANSFER_HANDLE,
 } from '../type';
 
 // import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -40,6 +42,7 @@ const SellState = props => {
     confirmSell: false,
     sellCurrentToken: null,
     sellStatus: null,
+    rateAllData: null,
   };
 
   const history = useHistory();
@@ -50,19 +53,27 @@ const SellState = props => {
   // Get Header
   const getHeader = () => {
     const token = localStorage.getItem('token');
-    if (token) {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('login_session', token);
 
-      return headers;
-    } else {
+    if (!token) {
+      alert('請新登入');
+      history.replace('/auth/login');
       return;
     }
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('login_session', token);
+
+    return headers;
   };
 
   const getExRate = async () => {
     const headers = getHeader();
+    if (!headers) {
+      alert('請新登入');
+      history.replace('/auth/login');
+      return;
+    }
 
     const exRateApi = `/j/ChkExRate.aspx`;
 
@@ -76,17 +87,27 @@ const SellState = props => {
 
       if (resData.code === 200) {
         setExRateData(data);
+        setRateAllData(data);
       } else {
         handleHttpError(data);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
   // Sell --step 1  (獲取 order token)
   const getOrderToken = async data => {
     const headers = getHeader();
+
+    if (!headers) {
+      alert('請新登入');
+      history.replace('/auth/login');
+      return;
+    }
+
+    if (!data) return;
+
     const getOrderApi = `j/req_sell1.aspx`;
 
     try {
@@ -114,15 +135,15 @@ const SellState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
   // 確認收款 (sell 2)
   const confirmSellAction = async orderToken => {
-    if (!orderToken) return;
-
     const headers = getHeader();
+
+    if (!orderToken || !headers) return;
 
     const sell2Api = `/j/Req_Sell2.aspx`;
 
@@ -143,13 +164,16 @@ const SellState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
   // get order detail
   const getOrderDetail = async orderToken => {
     const headers = getHeader();
+
+    if (!orderToken || !headers) return;
+
     const detailApi = `/j/GetTxDetail.aspx`;
 
     try {
@@ -169,16 +193,15 @@ const SellState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
   // webSocket連接
   const sellWebSocket = orderToken => {
-    if (!orderToken) return;
-
     const loginSession = localStorage.getItem('token');
-    if (!loginSession) return;
+
+    if (!orderToken || !loginSession) return;
 
     const connectWs = 'j/ws_orderstatus.ashx';
 
@@ -265,18 +288,12 @@ const SellState = props => {
     client.close();
   };
 
-  // 關閉Web Socket
-  // const closeWebSocket = () => {
-  //   if (state.buyWsClient) {
-  //     state.buyWsClient.close();
-  //   } else {
-  //     console.log('沒有webSocket Client');
-  //   }
-  // };
-
   // 取消訂單
   const cancelOrder = async orderToken => {
     const headers = getHeader();
+
+    if (!orderToken || !headers) return;
+
     const cancelApi = `/j/Req_CancelOrder.aspx`;
 
     try {
@@ -289,7 +306,6 @@ const SellState = props => {
       });
 
       const resData = await res.json();
-      handleHttpError(resData);
 
       dispatch({ type: SET_CANCEL_ORDER_DATA, payload: resData });
 
@@ -297,7 +313,7 @@ const SellState = props => {
         alert('訂單已經取消');
         history.replace('/home/overview');
       } else {
-        alert(`${resData.msg}, 訂單取消失敗`);
+        alert(`訂單取消失敗`);
       }
     } catch (error) {
       alert(error);
@@ -353,17 +369,29 @@ const SellState = props => {
     dispatch({ type: SET_SELL_STATUS, payload: value });
   };
 
+  // Set Rate All Data
+  const setRateAllData = data => {
+    dispatch({ type: SET_RATE_DATA, payload: data });
+  };
+
+  // Set Transfer Handle
+  const setTransferHandle = num => {
+    dispatch({ type: SET_TRANSFER_HANDLE, payload: num });
+  };
+
   // Clean All
   const CleanAll = () => {
     if (state.wsClient) state.wsClient.close();
     setConfirmSell(false);
     setWsPairing(false);
-    setWsData(null);
+    // setWsData(null);
     setPayment(false);
     setCompleteStatus(false);
     setWsClient(null);
     setSellStatus(null);
     setOrderToken(null);
+    setRateAllData(null);
+    setTransferHandle(null);
   };
 
   // useReducer
@@ -386,6 +414,7 @@ const SellState = props => {
         confirmSell: state.confirmSell, // 判斷是否應該進入 "提交確認/交易完成" 組件
         wsClient: state.wsClient,
         sellStatus: state.sellStatus,
+        rateAllData: state.rateAllData,
 
         getExRate,
         getOrderToken,
@@ -398,6 +427,7 @@ const SellState = props => {
         getOrderDetail,
         CleanAll,
         setConfirmSell,
+        setTransferHandle,
       }}
     >
       {props.children}

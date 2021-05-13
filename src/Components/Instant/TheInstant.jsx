@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -67,9 +67,9 @@ const TheInstant = () => {
                   <div className="">
                     <div className="txt_12 pt_20 inline mb-1">匯率：{el.D1}</div>
                     <div className="txt_12 pt_20 inline pl_20">
-                      <span className="i_clock" />
+                      {/* <span className="i_clock" />
                       <span className="">剩餘時間：</span>
-                      <span className="c_yellow">13秒</span>
+                      <span className="c_yellow">13秒</span> */}
                     </div>
 
                     <div className="row bb1 mx-0">
@@ -141,7 +141,7 @@ const TheInstant = () => {
                   </div>
                 </div>
               );
-            }
+            } else return null;
           })}
 
         {httpLoading ? (

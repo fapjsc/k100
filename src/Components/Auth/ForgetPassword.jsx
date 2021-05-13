@@ -77,6 +77,7 @@ const ForgetPassword = () => {
   // loading
   const [isLoading, setLoading] = useState(false);
 
+  // eslint-disable-next-line
   const [expirTime, setExpirTime] = useState(null);
 
   const handleChange = e => {

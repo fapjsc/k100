@@ -21,6 +21,12 @@ const Cancel = props => {
 
   const handleCancel = () => {
     setLoading(true);
+    console.log(props.token);
+
+    if (props.type === 'instant') {
+      cancelOrder(props.token);
+    }
+
     cancelOrder(buyOrderToken);
   };
 
@@ -52,7 +58,8 @@ const Cancel = props => {
             }}
             className="mb-0"
           >
-            {buyWsData.hash}
+            {buyWsData && buyWsData.hash}
+            {props.hash && props.hash}
           </p>
         </div>
       </Modal.Body>

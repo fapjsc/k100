@@ -10,10 +10,22 @@ import {
   SET_CANCEL_ORDER_DATA,
   SET_CONFIRM_SELL,
   SET_SELL_STATUS,
+  SET_RATE_DATA,
+  SET_TRANSFER_HANDLE,
 } from '../type';
 
 const SellReducer = (state, action) => {
   switch (action.type) {
+    case SET_TRANSFER_HANDLE:
+      return {
+        ...state,
+        transferHandle: action.payload,
+      };
+    case SET_RATE_DATA:
+      return {
+        ...state,
+        rateAllData: action.payload,
+      };
     case SET_SELL_STATUS:
       return {
         ...state,
@@ -24,7 +36,6 @@ const SellReducer = (state, action) => {
         ...state,
         exRate: action.payload.RMB_SELL,
         buyRate: action.payload.RMB_BUY,
-        transferHandle: action.payload.TransferHandle,
       };
     }
 

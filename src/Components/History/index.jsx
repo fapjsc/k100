@@ -3,10 +3,11 @@ import { Switch, Route, Link, Redirect, useHistory, useLocation } from 'react-ro
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
+import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
-import All from './All'; // 舊版
-import Wait from './Wait'; // 舊版
+// import All from './All'; // 舊版
+// import Wait from './Wait'; // 舊版
 import HistoryAll from './HistoryAll'; // 修正中
 import HistoryWait from './HistoryWait'; // 修正中
 
@@ -20,6 +21,10 @@ const History = () => {
   const historyContext = useContext(HistoryContext);
   const { setWaitList, waitList } = historyContext;
 
+  // Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { errorText, setHttpError } = httpErrorContext;
+
   // Router Props
   const history = useHistory();
   const location = useLocation();
@@ -27,12 +32,23 @@ const History = () => {
   // Init State
   const [historyState, setHistoryState] = useState('all');
 
+  // ===========
+  // useEffect
+  // ===========
   useEffect(() => {
     history.push(`/home/history/${historyState}`);
     setWaitList();
 
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (errorText) alert(errorText);
+    return () => {
+      setHttpError('');
+    };
+    // eslint-disable-next-line
+  }, [errorText]);
 
   return (
     <section className={style.section}>

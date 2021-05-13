@@ -1,6 +1,6 @@
 import { useReducer, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import ReconnectingWebSocket from 'reconnecting-websocket';
+// import ReconnectingWebSocket from 'reconnecting-websocket';
 import { w3cwebsocket as W3CWebsocket } from 'websocket';
 
 import BuyReducer from './BuyReducer';
@@ -51,15 +51,13 @@ const BuyState = props => {
   // Get Header
   const getHeader = () => {
     const token = localStorage.getItem('token');
-    if (token) {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('login_session', token);
 
-      return headers;
-    } else {
-      return;
-    }
+    if (!token) return;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('login_session', token);
+
+    return headers;
   };
 
   // 確認購買，獲得Order Token--step 1
@@ -82,14 +80,13 @@ const BuyState = props => {
       const resData = await res.json();
 
       if (resData.code === 200) {
-        console.log(resData);
         setHttpError('');
         setOrderToken(resData.data.order_token);
       } else {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error, 'Buy1');
+      handleHttpError(error);
       handleBuyBtnLoading(false);
     }
   };
@@ -124,7 +121,7 @@ const BuyState = props => {
     // 2.收到server回復
     client.onmessage = message => {
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // console.log('got reply!', dataFromServer);
       setWsStatus(dataFromServer.data.Order_StatusID);
       setDeltaTime(dataFromServer.data.DeltaTime);
 
@@ -252,10 +249,10 @@ const BuyState = props => {
       if (resData.code === 200) {
         setDeltaTime(resData.data.DeltaTime);
       } else {
-        alert(resData.msg);
+        handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
@@ -263,7 +260,7 @@ const BuyState = props => {
   const cancelOrder = async orderToken => {
     const headers = getHeader();
     const cancelApi = `/j/Req_CancelOrder.aspx`;
-
+    console.log(orderToken);
     try {
       const res = await fetch(cancelApi, {
         method: 'POST',
@@ -276,9 +273,9 @@ const BuyState = props => {
       const resData = await res.json();
 
       if (resData.code === 200) {
-        // alert('訂單已經取消');
+        alert('訂單已經取消');
       } else {
-        alert(`${resData.msg}, 訂單取消失敗`);
+        alert(`訂單取消失敗`);
         history.replace('/home/overview');
       }
     } catch (error) {

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 // Context
@@ -17,7 +17,6 @@ const CompleteStatus = props => {
 
   // Init State
   const [show, setShow] = useState(false);
-  const [showInstant, setShowInstant] = useState(false);
 
   // History Context
   const historyContext = useContext(HistoryContext);
@@ -25,7 +24,7 @@ const CompleteStatus = props => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { sell1Data, buy1Data, setSell1Data, setBuy1Data } = instantContext;
+  const { sell1Data, buy1Data } = instantContext;
 
   const handleClick = () => {
     if (sell1Data || buy1Data) {

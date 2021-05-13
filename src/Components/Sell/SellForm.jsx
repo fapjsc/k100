@@ -24,7 +24,7 @@ const SellForm = () => {
   const { getBalance, wsPairing, avb } = balanceContext;
 
   const sellContext = useContext(SellContext);
-  const { closeWebSocket, getExRate, getOrderToken, exRate, setWsPairing } = sellContext;
+  const { getExRate, getOrderToken, exRate, setWsPairing } = sellContext;
 
   const [usdt, setUsdt] = useState({
     val: '',

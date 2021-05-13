@@ -1,5 +1,5 @@
-import { useReducer } from 'react';
-
+import { useReducer, useContext } from 'react';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import TransferContext from './TransferContext';
 import TransferReducer from './TransferReducer';
 import {
@@ -8,39 +8,37 @@ import {
   SET_USDT_COUNT,
   SET_ORDER_DETAIL,
   GET_WS_CLIENT,
-  HANDLE_BTN_LOADING,
-  SET_TRANSFER_ERROR_TEXT,
 } from '../type';
 
-import ReconnectingWebSocket from 'reconnecting-websocket';
+// Context
+import HttpErrorContext from '../httpError/HttpErrorContext';
 
 const TransferState = props => {
+  // Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { setHttpLoading, handleHttpError } = httpErrorContext;
+
+  // Init State
   const initialState = {
     transferOrderToken: null,
     transferStatus: null,
     usdtCount: null,
     orderDetail: null,
-    handleBtnLoading: false,
-    transferErrText: '',
   };
 
   // Get Header
   const getHeader = () => {
     const token = localStorage.getItem('token');
-    if (token) {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('login_session', token);
+    if (!token) return;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('login_session', token);
 
-      return headers;
-    } else {
-      return;
-    }
+    return headers;
   };
 
   // webSocket連接
   const transferWebSocket = orderToken => {
-    console.log(orderToken);
     if (!orderToken) return;
 
     const loginSession = localStorage.getItem('token');
@@ -87,12 +85,44 @@ const TransferState = props => {
     }
   };
 
-  // send transfer req
-  const sendTransferReq = async (transferAddress, transferCount) => {
-    console.log('transfer req');
-    if (!transferAddress || !transferCount) return;
-
+  // 驗證錢包地址 ---ERC
+  const checkErcAddress = async (transferAddress, transferCount) => {
     const headers = getHeader();
+    if (!headers) return;
+
+    const checkErcApi = `/j/ChkToAddressValid.aspx`;
+
+    try {
+      const res = await fetch(checkErcApi, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ToAddress: transferAddress.val,
+        }),
+      });
+      const resData = await res.json();
+
+      if (resData.code === 200) {
+        sendTransferReq(transferAddress, transferCount);
+      } else {
+        handleHttpError(resData);
+        setHttpLoading(false);
+      }
+    } catch (error) {
+      handleHttpError(error);
+      setHttpLoading(false);
+    }
+  };
+
+  // send transfer req --- ERC
+  const sendTransferReq = async (transferAddress, transferCount) => {
+    const headers = getHeader();
+    if (!transferAddress || !transferCount || !headers) {
+      setHttpLoading(false);
+      handleHttpError('');
+      return;
+    }
+
     const transferApi = '/j/Req_Transfer1.aspx';
     try {
       const res = await fetch(transferApi, {
@@ -104,31 +134,90 @@ const TransferState = props => {
         }),
       });
       const resData = await res.json();
-      setHandleBtnLoading(false);
-
-      console.log(resData);
 
       if (resData.code === 200) {
-        console.log(resData);
         setOrderToken(resData.data.order_token);
         detailReq(resData.data.order_token);
       } else {
-        // alert(resData.code);
         handleHttpError(resData);
-        // setHandleBtnLoading(true);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
+    setHttpLoading(false);
+  };
+
+  // 驗證錢包地址 ---TRC
+  const checkTrcAddress = async (transferAddress, transferCount) => {
+    const headers = getHeader();
+    if (!headers) return;
+
+    const checkErcApi = `/j/ChkToAddressValid2.aspx`;
+
+    try {
+      const res = await fetch(checkErcApi, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ToAddress: transferAddress.val,
+        }),
+      });
+      const resData = await res.json();
+
+      if (resData.code === 200) {
+        sendTransferReqTrc(transferAddress, transferCount);
+      } else {
+        handleHttpError(resData);
+        setHttpLoading(false);
+      }
+    } catch (error) {
+      handleHttpError(error);
+      setHttpLoading(false);
+    }
+  };
+
+  // send transfer req --- TRC
+  const sendTransferReqTrc = async (transferAddress, transferCount) => {
+    const headers = getHeader();
+    if (!transferAddress || !transferCount || !headers) {
+      setHttpLoading(false);
+      handleHttpError('');
+      return;
+    }
+
+    const transferApi = '/j/Req_Transfer2.aspx';
+    try {
+      const res = await fetch(transferApi, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ToAddress: transferAddress.val,
+          UsdtAmt: transferCount.val,
+        }),
+      });
+      const resData = await res.json();
+
+      if (resData.code === 200) {
+        setOrderToken(resData.data.order_token);
+        detailReq(resData.data.order_token);
+      } else {
+        handleHttpError(resData);
+      }
+    } catch (error) {
+      handleHttpError(error);
+    }
+    setHttpLoading(false);
   };
 
   // get detail
   const detailReq = async orderToken => {
-    console.log('detail');
-    if (!orderToken) {
+    const headers = getHeader();
+
+    if (!orderToken || !headers) {
+      setHttpLoading(false);
       return;
     }
-    const headers = getHeader();
+
     const detailApi = '/j/GetTxDetail.aspx';
     try {
       const res = await fetch(detailApi, {
@@ -139,27 +228,27 @@ const TransferState = props => {
         }),
       });
       const resData = await res.json();
-      setHandleBtnLoading(false);
+
+      console.log(resData, 'detail req ====');
 
       if (resData.code === 200) {
         setUsdtCount(Math.abs(resData.data.UsdtAmt));
-        dispatch({ type: SET_ORDER_DETAIL, payload: resData.data });
+        setOrderDetail(resData);
       } else {
         handleHttpError(resData);
+        setHttpLoading(false);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
+      setHttpLoading(false);
     }
+
+    setHttpLoading(false);
   };
 
   // clean status
   const cleanStatus = () => {
     dispatch({ type: SET_TRANSFER_STATUS, payload: null });
-  };
-
-  // handle btn loading
-  const setHandleBtnLoading = value => {
-    dispatch({ type: HANDLE_BTN_LOADING, payload: value });
   };
 
   // set usdt count
@@ -172,101 +261,9 @@ const TransferState = props => {
     dispatch({ type: SET_TRANSFER_ORDER_TOKEN, payload: value });
   };
 
-  // set transfer error
-  const setErrorText = value => {
-    dispatch({ type: SET_TRANSFER_ERROR_TEXT, payload: value });
-  };
-
-  const handleHttpError = data => {
-    if (data.code === '1') {
-      // alert('系統錯誤');
-      setErrorText('系統錯誤');
-      return;
-    }
-
-    if (data.code === '10') {
-      alert('帳號或密碼錯誤');
-
-      return;
-    }
-
-    if (data.code === '11') {
-      alert('此帳號已經註冊過');
-      return;
-    }
-
-    if (data.code === '12') {
-      alert('此帳號無法註冊');
-      return;
-    }
-
-    if (data.code === '13') {
-      // alert('json格式錯誤');
-      setErrorText('json格式錯誤');
-      return;
-    }
-    if (data.code === '14') {
-      // alert('json格式錯誤');
-      setErrorText('json格式錯誤');
-      return;
-    }
-
-    if (data.code === '15') {
-      // alert('無效的token');
-      setErrorText('無效的token');
-      return;
-    }
-
-    if (data.code === '16') {
-      // alert('錯誤的操作');
-      setErrorText('錯誤的操作');
-
-      return;
-    }
-
-    if (data.code === '17') {
-      alert('帳號未註冊');
-      return;
-    }
-
-    if (data.code === '20') {
-      // alert('數據格式錯誤');
-      setErrorText('數據格式錯誤');
-      return;
-    }
-
-    if (data.code === '21') {
-      // alert('請勿連續發送請求');
-      setErrorText('請勿連續發送請求');
-      return;
-    }
-
-    if (data.code === '22') {
-      alert('無效的一次性驗證碼');
-      return;
-    }
-
-    if (data.code === '30') {
-      // alert('無效的錢包地址');
-      setErrorText('無效的錢包地址');
-      return;
-    }
-
-    if (data.code === '31') {
-      // alert('不能轉帳給自己');
-      setErrorText('不能轉帳給自己');
-      return;
-    }
-    if (data.code === '32') {
-      // alert('可提不足');
-      setErrorText('可提不足');
-      return;
-    }
-
-    if (data.code === '91') {
-      alert('session過期，請重新登入');
-      return;
-    }
+  // Set Order Detail
+  const setOrderDetail = data => {
+    dispatch({ type: SET_ORDER_DETAIL, payload: data });
   };
 
   // useReducer
@@ -279,18 +276,15 @@ const TransferState = props => {
         transferStatus: state.transferStatus,
         usdtCount: state.usdtCount,
         orderDetail: state.orderDetail,
-        handleBtnLoading: state.handleBtnLoading,
-        transferErrText: state.transferErrText,
 
         transferWebSocket,
-        sendTransferReq,
         cleanStatus,
         detailReq,
         setUsdtCount,
         setOrderToken,
         closeWebSocket,
-        setHandleBtnLoading,
-        setErrorText,
+        checkErcAddress,
+        checkTrcAddress,
       }}
     >
       {props.children}

@@ -1,4 +1,4 @@
-import { useContext, useEffect, Fragment } from 'react';
+import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useMediaQuery } from 'react-responsive';

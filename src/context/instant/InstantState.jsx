@@ -1,7 +1,6 @@
 import { useReducer, useContext } from 'react';
-import ReconnectingWebSocket from 'reconnecting-websocket';
+// import ReconnectingWebSocket from 'reconnecting-websocket';
 import { w3cwebsocket as W3CWebsocket } from 'websocket';
-
 import InstantReducer from './InstantReducer';
 import InstantContext from './InstantContext';
 
@@ -22,7 +21,7 @@ import {
 const InstantState = props => {
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
-  const { handleHttpError, errorText, setHttpLoading } = httpErrorContext;
+  const { handleHttpError, setHttpLoading } = httpErrorContext;
 
   const initialState = {
     instantData: [],

@@ -99,7 +99,7 @@ const HttpErrorState = props => {
       return;
     }
 
-    setHttpError('發生錯誤，請關閉瀏覽器重新嘗試');
+    setHttpError('發生錯誤，請重新登入並重新嘗試');
   };
 
   const [state, dispatch] = useReducer(HttpErrorReducer, initialState);
