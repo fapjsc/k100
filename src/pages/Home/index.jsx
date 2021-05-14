@@ -12,8 +12,9 @@ import TheWallet from '../../Components/Wallet/TheWallet';
 import WalletDetail from '../../Components/Wallet/WalletDetail';
 import History from '../../Components/History';
 import ChangePassword from '../../Components/Auth/ChangePassword';
-import InstantCount from '../../Components/Instant/InstantCount';
+// import InstantCount from '../../Components/Instant/InstantCount';
 import InstantDetail from '../../Components/Instant/InstantDetail';
+import InstantScreen from '../../pages/InstantScreen';
 
 // Style
 import style from '../../Components/Layout/Header.module.scss';
@@ -105,14 +106,14 @@ export default class index extends Component {
         </Header>
         <MoneyRecord history={history} />
         <Switch>
-          <Route path="/home/overview" component={Overview} />
+          <Route exact path="/home/overview" component={Overview} />
           <Route exact path="/home/wallet" component={TheWallet} />
           <Route exact path="/home/wallet/:id" component={WalletDetail} />
           <Route path="/home/history" component={History} />
           <Route path="/home/transaction" component={Transaction} />
           <Route path="/home/change-pw" component={ChangePassword} />
-          <Route exact path="/home/instant" component={InstantCount} />
-          <Route exact path="/home/instant/:id" component={InstantDetail} />
+          <Route exact path="/home/instant" component={InstantScreen} />
+          <Route exact path="/home/instant/:type/:id" component={InstantDetail} />
 
           <Redirect to="/home/overview" />
         </Switch>

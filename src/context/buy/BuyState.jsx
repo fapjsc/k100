@@ -199,16 +199,6 @@ const BuyState = props => {
     };
   };
 
-  // 關閉Web Socket
-  const closeWebSocket = () => {
-    // console.log(state.buyWsClient);
-    if (state.buyWsClient) {
-      state.buyWsClient.close();
-    } else {
-      console.log('沒有webSocket Client');
-    }
-  };
-
   // Buy2 --step 3
   const BuyerAlreadyPay = async orderToken => {
     handleBuyBtnLoading(true);
@@ -359,13 +349,13 @@ const BuyState = props => {
    ** 7.購買數量清除，設為空字串
    */
   const cleanAll = () => {
+    setWsClient(null);
     handleBuyBtnLoading(false);
-    closeWebSocket();
     setShowBank(false);
     setWsStatus(null);
     handlePairing(false);
     setWsData({});
-    setWsStatus(null);
+    setOrderToken(null);
     setBuyCount({
       rmb: '',
       usdt: '',

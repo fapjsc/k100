@@ -34,13 +34,13 @@ const TheBuy = () => {
     buyConnectWs,
     cleanAll,
     wsStatus,
+    // setWsStatus,
   } = buyContext;
 
   // Listen Web Socket Status
   useEffect(() => {
-    if (wsStatus === 33) {
-      history.replace(`/home/transaction/buy/${buyOrderToken}`);
-    }
+    if (wsStatus === 33) history.replace(`/home/transaction/buy/${buyOrderToken}`);
+
     // eslint-disable-next-line
   }, [wsStatus]);
 

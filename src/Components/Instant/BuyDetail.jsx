@@ -9,6 +9,7 @@ import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 import FromFooter from '../Layout/FormFooter';
 import BaseSpinner from '../Ui/BaseSpinner';
 import CompleteStatus from '../universal/CompleteStatus';
+import InstantNav from './InstantNav';
 
 // Style
 import Spinner from 'react-bootstrap/Spinner';
@@ -21,6 +22,7 @@ const BuyDetail = () => {
 
   // Init State
   const [showComplete, setShowComplete] = useState(false);
+  const [tab, setTab] = useState('all');
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -28,9 +30,11 @@ const BuyDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { buy1Data, setBuy1Data, wsStatusData, buyMatch2, cleanAll, setWsStatusData } =
-    instantContext;
+  const { buy1Data, setBuy1Data, wsStatusData, buyMatch2, cleanAll } = instantContext;
 
+  // ===========
+  //  UseEffect
+  // ===========
   useEffect(() => {
     // buyMatch1(match.params.id);
 
@@ -50,8 +54,14 @@ const BuyDetail = () => {
   }, [errorText]);
 
   useEffect(() => {
+    if (tab === 'onGoing') history.replace('/home/overview');
+    // eslint-disable-next-line
+  }, [tab]);
+
+  useEffect(() => {
+    console.log(buy1Data);
     if (buy1Data) {
-      if (buy1Data.Order_StatusID === 34 || buy1Data.Order_StatusID === 1) setShowComplete(true);
+      // if (buy1Data.Order_StatusID === 34 || buy1Data.Order_StatusID === 1) setShowComplete(true);
     }
     // eslint-disable-next-line
   }, [buy1Data]);
@@ -61,6 +71,8 @@ const BuyDetail = () => {
       alert('訂單已經取消');
       setShowComplete(true);
     }
+
+    if (wsStatusData === 1) setShowComplete(true);
 
     // eslint-disable-next-line
   }, [wsStatusData]);
@@ -81,15 +93,7 @@ const BuyDetail = () => {
           <div className="col-10">
             <p className="welcome_txt pl-0">歡迎登入</p>
             <div className="contentbox">
-              <div className="tab">
-                <button className="tablinks w_100" id="defaultOpen">
-                  即時買賣
-                </button>
-                <button className="tablinks w_100">
-                  進行中
-                  {/* <span className="red_dot">2</span> */}
-                </button>
-              </div>
+              <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
 
               <div id="buy" className="tabcontent">
                 {buy1Data && !showComplete ? (
@@ -98,7 +102,7 @@ const BuyDetail = () => {
                     <div className="easy_info" style={{}}>
                       <div className="inline">
                         <div className="txt_12_grey">匯率：</div>
-                        <span className>{buy1Data.D1}</span>
+                        <span className="">{buy1Data.D1.toFixed(2)}</span>
                       </div>
 
                       <div className="right_txt16">
@@ -111,11 +115,11 @@ const BuyDetail = () => {
                       <div className="d-flex justify-content-between">
                         <div>
                           <p className="txt_12_grey mb-0">總價</p>
-                          <p className="c_blue">{buy1Data.D2}CNY</p>
+                          <p className="c_blue">{buy1Data.D2.toFixed(2)} CNY</p>
                         </div>
                         <div>
                           <p className="txt_12_grey text-right mb-0">數量</p>
-                          <p className="">{Math.abs(buy1Data.UsdtAmt)} USDT</p>
+                          <p className="">{Math.abs(buy1Data.UsdtAmt).toFixed(2)} USDT</p>
                         </div>
                       </div>
 

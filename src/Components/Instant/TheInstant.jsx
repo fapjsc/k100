@@ -5,6 +5,7 @@ import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
+import InstantNav from './InstantNav';
 import InstantAll from './InstantAll';
 import InstantOnGoing from './InstantOnGoing';
 
@@ -17,7 +18,7 @@ const TheInstant = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { connectInstantWs, instantData, cleanAll } = instantContext;
+  const { connectInstantWs, instantOngoingWsConnect, cleanAll } = instantContext;
 
   // HttpError Context
   const httpError = useContext(HttpErrorContext);
@@ -25,7 +26,7 @@ const TheInstant = () => {
 
   useEffect(() => {
     connectInstantWs();
-
+    instantOngoingWsConnect();
     return cleanAll();
     // eslint-disable-next-line
   }, []);
@@ -35,29 +36,11 @@ const TheInstant = () => {
       <p className="welcome_txt">即時買賣</p>
       <div className="contentbox">
         {/* Tab Link */}
-        <div className="tab ">
-          <div>
-            <button
-              className={tab === 'all' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'}
-              onClick={() => setTab('all')}
-            >
-              即時買賣
-            </button>
-          </div>
-          <div className="onGoing">
-            <span className="red_dot">2</span>
-            <button
-              className={tab === 'onGoing' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'}
-              onClick={() => setTab('onGoing')}
-            >
-              進行中
-            </button>
-          </div>
-        </div>
+        <InstantNav setTab={setTab} tab={tab} />
 
         {/* Content */}
-        {tab === 'all' && instantData.length && !httpLoading ? <InstantAll /> : null}
-        {tab === 'onGoing' && instantData.length && !httpLoading ? <InstantOnGoing /> : null}
+        {tab === 'all' && !httpLoading ? <InstantAll /> : null}
+        {tab === 'onGoing' && !httpLoading ? <InstantOnGoing /> : null}
 
         {/* Loading */}
         {httpLoading && (
@@ -65,11 +48,6 @@ const TheInstant = () => {
             <BaseSpinner />
           </div>
         )}
-
-        {/* Empty */}
-        {!httpLoading && !instantData.length ? (
-          <h2 className="mt-4 text-center">目前沒有交易</h2>
-        ) : null}
       </div>
     </div>
   );

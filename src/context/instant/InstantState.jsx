@@ -1,5 +1,5 @@
 import { useReducer, useContext } from 'react';
-// import ReconnectingWebSocket from 'reconnecting-websocket';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import InstantReducer from './InstantReducer';
 import InstantContext from './InstantContext';
@@ -17,6 +17,7 @@ import {
   SET_WS_STATUS_DATA,
   SET_STATUS_WS_CLIENT,
   SET_INSTANT_ONGOING_DATA,
+  SET_ACTION_TYPE,
 } from '../type';
 
 const InstantState = props => {
@@ -26,13 +27,14 @@ const InstantState = props => {
 
   const initialState = {
     instantData: [],
+    wsOnGoingData: [],
     countData: null,
     sell1Data: null,
     buy1Data: null,
     wsClient: null,
     wsStatusData: null,
     wsStatusClient: null,
-    wsOnGoingData: null,
+    actionType: '',
   };
 
   // Get Header
@@ -47,7 +49,7 @@ const InstantState = props => {
     return headers;
   };
 
-  // Instant Web Socket連接
+  // Instant Web Socket連接   --所有的即時交易
   const connectInstantWs = () => {
     setHttpLoading(true);
     const loginSession = localStorage.getItem('token');
@@ -63,7 +65,7 @@ const InstantState = props => {
       url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}`;
     }
 
-    const client = new W3CWebsocket(url);
+    const client = new ReconnectingWebSocket(url);
 
     setWsClient(client);
 
@@ -92,12 +94,12 @@ const InstantState = props => {
     };
   };
 
-  // Instant Ongoing Web Socket Connect
+  // Instant Ongoing Web Socket Connect  --進行中
   const instantOngoingWsConnect = () => {
-    setHttpLoading(true);
     const loginSession = localStorage.getItem('token');
     if (!loginSession) return;
 
+    setHttpLoading(true);
     const connectWs = 'j/WS_livePendingOrders.ashx';
 
     let url;
@@ -108,7 +110,7 @@ const InstantState = props => {
       url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}`;
     }
 
-    const client = new W3CWebsocket(url);
+    const client = new ReconnectingWebSocket(url);
 
     setWsClient(client);
 
@@ -126,7 +128,7 @@ const InstantState = props => {
       if (dataFromServer.data.length > 0) {
         setOnGoingData(dataFromServer.data);
       } else {
-        setOnGoingData(null);
+        setOnGoingData([]);
       }
       setHttpLoading(false);
     };
@@ -168,7 +170,7 @@ const InstantState = props => {
       client.onmessage = message => {
         if (!message.data) return;
         const dataFromServer = JSON.parse(message.data);
-        // console.log('got reply!', dataFromServer);
+        console.log('got reply!', dataFromServer);
 
         if (dataFromServer) setWsStatusData(dataFromServer.data.Order_StatusID);
 
@@ -189,6 +191,7 @@ const InstantState = props => {
   const sellMatch1 = async token => {
     const headers = getHeader();
     if (!headers) return;
+    setHttpLoading(true);
     try {
       const match1 = `j/Req_SellMatch1.aspx`;
 
@@ -202,13 +205,15 @@ const InstantState = props => {
 
       const resData = await res.json();
 
+      console.log(resData, 'sell1');
+
       if (resData.code === 200) {
         setSell1Data(resData.data);
       } else {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
@@ -245,6 +250,7 @@ const InstantState = props => {
   const buyMatch1 = async token => {
     const headers = getHeader();
     if (!headers) return;
+    setHttpLoading(true);
     try {
       const match1 = `j/Req_BuyMatch1.aspx`;
 
@@ -257,6 +263,7 @@ const InstantState = props => {
       });
 
       const resData = await res.json();
+      console.log(resData, 'buy1');
 
       if (resData.code === 200) {
         setBuy1Data(resData.data);
@@ -264,7 +271,7 @@ const InstantState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
@@ -290,7 +297,7 @@ const InstantState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
     setHttpLoading(false);
   };
@@ -341,6 +348,11 @@ const InstantState = props => {
     dispatch({ type: SET_INSTANT_ONGOING_DATA, payload: data });
   };
 
+  // Set Action Type
+  const setActionType = type => {
+    dispatch({ type: SET_ACTION_TYPE, payload: type });
+  };
+
   // Clean All
   const cleanAll = () => {
     setWsStatusData(null);
@@ -366,6 +378,7 @@ const InstantState = props => {
         wsStatusData: state.wsStatusData,
         wsStatusClient: state.wsStatusClient,
         wsOnGoingData: state.wsOnGoingData,
+        actionType: state.actionType,
 
         connectInstantWs,
         sellMatch1,
@@ -379,6 +392,7 @@ const InstantState = props => {
         setWsStatusData,
         cleanAll,
         instantOngoingWsConnect,
+        setActionType,
       }}
     >
       {props.children}

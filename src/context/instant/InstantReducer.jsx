@@ -8,10 +8,16 @@ import {
   SET_WS_STATUS_DATA,
   SET_STATUS_WS_CLIENT,
   SET_INSTANT_ONGOING_DATA,
+  SET_ACTION_TYPE,
 } from '../type';
 
 const InstantReducer = (state, action) => {
   switch (action.type) {
+    case SET_ACTION_TYPE:
+      return {
+        ...state,
+        actionType: action.payload,
+      };
     case SET_INSTANT_ONGOING_DATA:
       return {
         ...state,

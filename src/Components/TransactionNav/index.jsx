@@ -1,55 +1,69 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
+// Context
+import BuyContext from '../../context/buy/BuyContext';
 
 // eslint-disable-next-line
 import index from './index.scss';
 
-export default class TransactionNav extends Component {
-  render() {
-    const { location } = this.props;
-    return (
-      <div className="transactionNav  pt-3" style={linkBox}>
-        <Link
-          className="transactionLink"
-          to="/home/transaction/buy"
-          style={location.pathname.includes(`/home/transaction/buy`) ? linkActive : linkStyle}
-          // className={
-          //   location.pathname.includes(`/home/transaction/buy`)
-          //     ? 'history-link history-link-active'
-          //     : 'history-link'
-          // }
-        >
-          購買
-        </Link>
-        <Link
-          className="transactionLink"
-          to="/home/transaction/sell"
-          style={location.pathname.includes('/home/transaction/sell') ? linkActive : linkStyle}
-          //   className={
-          //     location.pathname.includes('/home/transaction/sell')
-          //       ? 'history-link history-link-active'
-          //       : 'history-link'
-          //   }
-        >
-          出售
-        </Link>
+const TransactionNav = () => {
+  // Router Props
+  const location = useLocation();
 
-        <Link
-          className="transactionLink"
-          to="/home/transaction/transfer"
-          style={location.pathname.includes('/home/transaction/transfer') ? linkActive : linkStyle}
-          //   className={
-          //     location.pathname.includes('/home/transaction/transfer')
-          //       ? 'history-link history-link-active'
-          //       : 'history-link'
-          //   }
-        >
-          轉帳
-        </Link>
-      </div>
-    );
-  }
-}
+  // Buy Context
+  const buyContext = useContext(BuyContext);
+  const { buyWsClient } = buyContext;
+
+  const handleClick = () => {
+    if (buyWsClient) buyWsClient.close();
+  };
+
+  return (
+    <div className="transactionNav  pt-3" style={linkBox}>
+      <Link
+        onClick={handleClick}
+        className="transactionLink"
+        to="/home/transaction/buy"
+        style={location.pathname.includes(`/home/transaction/buy`) ? linkActive : linkStyle}
+        // className={
+        //   location.pathname.includes(`/home/transaction/buy`)
+        //     ? 'history-link history-link-active'
+        //     : 'history-link'
+        // }
+      >
+        購買
+      </Link>
+      <Link
+        onClick={handleClick}
+        className="transactionLink"
+        to="/home/transaction/sell"
+        style={location.pathname.includes('/home/transaction/sell') ? linkActive : linkStyle}
+        //   className={
+        //     location.pathname.includes('/home/transaction/sell')
+        //       ? 'history-link history-link-active'
+        //       : 'history-link'
+        //   }
+      >
+        出售
+      </Link>
+
+      <Link
+        onClick={handleClick}
+        className="transactionLink"
+        to="/home/transaction/transfer"
+        style={location.pathname.includes('/home/transaction/transfer') ? linkActive : linkStyle}
+        //   className={
+        //     location.pathname.includes('/home/transaction/transfer')
+        //       ? 'history-link history-link-active'
+        //       : 'history-link'
+        //   }
+      >
+        轉帳
+      </Link>
+    </div>
+  );
+};
 
 const linkBox = {
   borderBottom: '1px solid #D7E2F3',
@@ -91,3 +105,5 @@ const linkActive = {
   width: '10rem',
   textAlign: 'center',
 };
+
+export default TransactionNav;

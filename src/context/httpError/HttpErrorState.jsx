@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import HttpErrorReducer from './HttpErrorReducer';
 import HttpErrorContext from './HttpErrorContext';
 
-import { SET_HTTP_ERROR, SET_HTTP_LOADING } from '../type';
+import { SET_HTTP_ERROR, SET_HTTP_LOADING, SET_BUTTON_LOADING } from '../type';
 
 const HttpErrorState = props => {
   // Router Props
@@ -14,6 +14,7 @@ const HttpErrorState = props => {
   const initialState = {
     errorText: '',
     httpLoading: false,
+    btnLoading: false,
   };
 
   const setHttpError = value => {
@@ -22,6 +23,10 @@ const HttpErrorState = props => {
 
   const setHttpLoading = value => {
     dispatch({ type: SET_HTTP_LOADING, payload: value });
+  };
+
+  const setBtnLoading = value => {
+    dispatch({ type: SET_BUTTON_LOADING, payload: value });
   };
 
   const handleHttpError = data => {
@@ -117,10 +122,12 @@ const HttpErrorState = props => {
       value={{
         errorText: state.errorText,
         httpLoading: state.httpLoading,
+        btnLoading: state.btnLoading,
 
         handleHttpError,
         setHttpError,
         setHttpLoading,
+        setBtnLoading,
       }}
     >
       {props.children}

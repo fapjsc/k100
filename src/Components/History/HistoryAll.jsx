@@ -4,7 +4,6 @@ import { useMediaQuery } from 'react-responsive';
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
-import BuyContext from '../../context/buy/BuyContext';
 
 // Components
 import HistoryAllDetail from './HistoryAllDetail';
@@ -13,15 +12,13 @@ import NoData from '../NoData/';
 
 // Style
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import downIcon from '../../Assets/i_usdt_down.png';
 import redIcon from '../../Assets/i_usdt_red.png';
 import blueIcon from '../../Assets/i_usdt_blue.png';
 import purpleIcon from '../../Assets/i_usdt_purple.png';
 
 const HistoryAll = () => {
-  const buyContext = useContext(BuyContext);
-  const { buyWsClient } = buyContext;
   // Media Query
   const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
 
@@ -51,7 +48,7 @@ const HistoryAll = () => {
     return (
       <>
         {singleDetail && <HistoryAllDetail show={show} onHide={() => setShow(false)} />}
-        <Button onClick={() => buyWsClient.close()}>test</Button>
+        {/* <Button onClick={() => buyWsClient.close()}>test</Button> */}
         <Table responsive bordered hover className="mt-4">
           <thead>
             <tr>

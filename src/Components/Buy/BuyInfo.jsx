@@ -12,8 +12,8 @@ import BuyDetail from './BuyDetail';
 // import BuyComplete from './BuyComplete';
 import FormFooter from '../Layout/FormFooter';
 import Chat from '../Chat';
-import TheChat from '../Chat/TheChat';
-import TheMobileChat from '../Chat/TheMobileChat';
+// import TheChat from '../Chat/TheChat';
+// import TheMobileChat from '../Chat/TheMobileChat';
 import CompleteStatus from '../universal/CompleteStatus';
 // import TheChat from '../Chat/TheChat';
 // import ChatMobile from '../Chat/ChatMobile';
@@ -56,7 +56,7 @@ const BuyInfo = () => {
     setOrderToken,
     wsStatus,
     cleanAll,
-    closeWebSocket,
+    // closeWebSocket,
     GetDeltaTime,
     buyWsClient,
   } = buyContext;
@@ -69,8 +69,8 @@ const BuyInfo = () => {
     }
 
     return () => {
-      console.log(buyWsClient);
       if (buyWsClient) buyWsClient.close();
+      cleanAll();
       // cleanAll();
     };
 

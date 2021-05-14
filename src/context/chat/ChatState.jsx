@@ -53,7 +53,7 @@ const ChatState = props => {
 
     // 2.收到server回復
     client.onmessage = message => {
-      if (!message.data) return;
+      if (message.data === '') return;
       const dataFromServer = JSON.parse(message.data);
       // console.log('got Chat reply!', dataFromServer);
 
@@ -114,7 +114,7 @@ const ChatState = props => {
 
     // 2.收到server回復
     client.onmessage = message => {
-      if (!message.data) return;
+      if (message.data === '') return;
 
       const dataFromServer = JSON.parse(message.data);
       console.log('got Chat reply!', dataFromServer);

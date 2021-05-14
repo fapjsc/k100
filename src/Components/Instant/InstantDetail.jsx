@@ -25,13 +25,13 @@ const InstantDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { sell1Data, buy1Data, statusWs } = instantContext;
+  const { sell1Data, buy1Data, sellMatch1, buyMatch1, statusWs } = instantContext;
 
   // Init State
   const [showMobileChat, setShowMobileChat] = useState(false);
 
   useEffect(() => {
-    if (!sell1Data && !buy1Data) history.replace('/home/overview');
+    // if (!sell1Data && !buy1Data) history.replace('/home/overview');
     // eslint-disable-next-line
   }, []);
 
@@ -104,7 +104,7 @@ const InstantDetail = () => {
       </>
     );
   } else {
-    return <h2>目前沒有交易</h2>;
+    return <h2>目前沒有交易..</h2>;
   }
 };
 
