@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@chatscope/chat-ui-kit-react": "^1.7.0",
-    "@chatscope/chat-ui-kit-styles": "^1.2.0",
     "@slider-captcha/react": "^1.0.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
@@ -15,9 +13,6 @@
     "pubsub-js": "^1.9.3",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.1",
-    "react-chat-elements": "^10.14.0",
-    "react-chat-widget": "^3.0.5",
-    "react-chat-window": "^1.2.1",
     "react-countdown": "^2.3.1",
     "react-countdown-hook": "^1.1.0",
     "react-dom": "^17.0.1",

@@ -4,24 +4,20 @@ import { useMediaQuery } from 'react-responsive';
 
 // ConText
 import SellContext from '../../context/sell/SellContext';
+import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
 import SellHeaders from './SellHeader';
+import SellDetail from './SellDetail';
 // import SellCompleted from './SellCompleted';
-import SetAccount from '../Buy/SetAccount';
+
 import Chat from '../Chat';
-import CancelSell from './CancelSell';
-import FromFooter from '../Layout/FormFooter';
 import CompleteStatus from '../universal/CompleteStatus';
 import BaseSpinner from '../Ui/BaseSpinner';
 
 // Style
 import helpIcon from '../../Assets/i_ask2.png';
-import btnWait from '../../Assets/btn_wait.png';
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 const SellInfo = () => {
   // Break Points
@@ -29,25 +25,17 @@ const SellInfo = () => {
 
   // Router Props
   const history = useHistory();
-
   let { id } = useParams();
+
+  /// Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { errorText, setHttpError } = httpErrorContext;
+
+  // Sell Context
   const sellContext = useContext(SellContext);
-  const {
-    wsData,
-    closeWebSocket,
-    payment,
-    cancelOrder,
-    confirmSellAction,
-    confirmSell,
-    sellWebSocket,
-    CleanAll,
-    setConfirmSell,
-    wsClient,
-  } = sellContext;
+  const { wsData, closeWebSocket, sellWebSocket, CleanAll, wsClient, sellStatus } = sellContext;
 
   const [isChat, setIsChat] = useState(false);
-  const [showCancel, setShowCancel] = useState(false);
-  const [isClick, setIsClick] = useState(false);
 
   useEffect(() => {
     if (id) sellWebSocket(id);
@@ -59,19 +47,17 @@ const SellInfo = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleChat = () => {
-    setIsChat(!isChat);
-  };
+  useEffect(() => {
+    if (errorText) alert(errorText);
+    return () => {
+      setHttpError('');
+    };
+    // eslint-disable-next-line
+  }, [errorText]);
 
-  // 確認收款
-  const handleSubmit = () => {
-    if (!isClick) {
-      setConfirmSell(true);
-      confirmSellAction(id);
-    }
-
-    setIsClick(true);
-  };
+  useEffect(() => {
+    if (sellStatus === 99 || sellStatus === 98) alert('訂單已經取消');
+  }, [sellStatus]);
 
   const backToHome = () => {
     if (wsClient) wsClient.close();
@@ -82,175 +68,45 @@ const SellInfo = () => {
   };
 
   // confirmSell 判斷要render sell info 還是 提交確認/交易完成組件
-  if (!confirmSell && wsData) {
-    return (
-      <Fragment>
-        <CancelSell
-          handleClose={setShowCancel}
-          show={showCancel}
-          cancelOrder={cancelOrder}
-          orderToken={id && id}
-          hash={wsData && wsData.Tx_HASH}
-        />
-        <SellHeaders />
-        <Container>
-          <Row className="mb-2">
-            <Col className="mt-4 pl-1">
-              <p
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 'bold',
-                }}
-                className="mb-0"
-              >
-                提交資料
-              </p>
-            </Col>
-          </Row>
+  return (
+    <>
+      <SellHeaders />
 
-          <Row className=" mb-2 justify-content-between">
-            <Col xl={6} className="txt_12 lightblue_bg mb-4">
-              <p>
-                收款金額： &emsp;
-                <span
-                  style={{
-                    color: '#3e80f9',
-                    fontSize: '17px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {wsData && wsData.D2 + ` CNY`}
-                </span>
-              </p>
-              <p>收款姓名：{wsData && wsData.P2}</p>
-              <p>付款帳號：{wsData && wsData.P1}</p>
-              <p>開戶銀行：{wsData && wsData.P3}</p>
-              <p>所在省市：{wsData && wsData.P4}</p>
-            </Col>
-
-            {wsData && (
-              <Col xl={5} className="pl-4">
-                <SetAccount
-                  usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
-                  rmbAmt={wsData.D2.toFixed(2)}
-                />
-              </Col>
-            )}
-          </Row>
-          <Row className="justify-content-center">
-            <Col className="mw400 text-center px-0">
-              <Button
-                onClick={handleSubmit}
-                className=""
-                block
-                style={payment ? infoBtn : infoBtnDisabled}
-              >
-                {!payment && (
-                  <img
-                    src={btnWait}
-                    alt="btn wait"
-                    style={{
-                      height: 25,
-                      marginRight: 10,
-                    }}
-                  />
-                )}
-
-                <span className="">{payment ? ' 買家已付款，確認收款' : '對方準備中'}</span>
-              </Button>
-            </Col>
-          </Row>
-          {/* Footer */}
-          <FromFooter />
-        </Container>
-
-        {/* Chat */}
-        {lapTopBig && wsData ? (
-          <Fragment>
-            <Button style={helpBtn} variant="primary" onClick={handleChat}>
-              <img
-                style={{
-                  width: 15,
-                  height: 20,
-                  marginRight: 8,
-                }}
-                src={helpIcon}
-                alt="help icon"
-              />
-              幫助
-            </Button>
-            <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={isChat} />
-          </Fragment>
-        ) : null}
-
-        {/* 1200px */}
-        {wsData && !lapTopBig ? (
-          <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={true} />
-        ) : null}
-      </Fragment>
-    );
-  } else if (confirmSell && wsData) {
-    return (
-      // 已提交以及交易完成，isCompleted判斷是否完成交易
-      <Fragment>
-        {/* <CompleteStatus
-          Tx_HASH={wsData && wsData.Tx_HASH}
-          isCompleted={sellIsCompleted}
-          cleanAll={CleanAll}
-        /> */}
-
+      {(sellStatus === 33 || sellStatus === 34) && wsData ? (
+        <SellDetail />
+      ) : sellStatus === 1 || sellStatus === 99 || (sellStatus === 98 && wsData) ? (
         <CompleteStatus
-          wsStatus={wsData.Order_StatusID}
-          backToHome={backToHome}
+          wsStatus={sellStatus}
           hash={wsData && wsData.Tx_HASH}
+          backToHome={backToHome}
           type="sell"
         />
+      ) : (
+        <BaseSpinner />
+      )}
 
-        {/* Chat */}
-        <Button style={helpBtn} variant="primary" onClick={handleChat}>
-          <img
-            style={{
-              width: 15,
-              height: 20,
-              marginRight: 8,
-            }}
-            src={helpIcon}
-            alt="help icon"
-          />
-          幫助
-        </Button>
+      {/* 聊天室  --電腦版 1200px  */}
+      {wsData && !lapTopBig ? (
+        <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={true} />
+      ) : null}
 
-        {wsData ? <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={isChat} /> : null}
-      </Fragment>
-    );
-  } else return <BaseSpinner />;
-};
+      {/* 聊天室 --手機版 1200px  */}
+      <Button style={helpBtn} variant="primary" onClick={() => setIsChat(!isChat)}>
+        <img
+          style={{
+            width: 15,
+            height: 20,
+            marginRight: 8,
+          }}
+          src={helpIcon}
+          alt="help icon"
+        />
+        幫助
+      </Button>
 
-const infoBtn = {
-  backgroundColor: '#3E80F9',
-  borderRadius: '5px',
-  color: '#fff',
-  width: '100%',
-  padding: '15px',
-  margin: '10px auto 15px',
-  border: 'none',
-  transition: '0.3s',
-  cursor: 'pointer',
-  fontSize: '17px',
-};
-
-const infoBtnDisabled = {
-  backgroundColor: 'grey',
-  borderRadius: '5px',
-  color: '#fff',
-  width: '100%',
-  padding: '15px',
-  margin: '10px auto 15px',
-  border: 'none',
-  transition: '0.3s',
-  fontSize: '17px',
-  opacity: '0.65',
-  cursor: 'not-allowed',
+      {wsData ? <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={isChat} /> : null}
+    </>
+  );
 };
 
 // const cancelLink = {

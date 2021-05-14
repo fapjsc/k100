@@ -16,7 +16,9 @@ import {
   SET_BUY1_DATA,
   SET_WS_STATUS_DATA,
   SET_STATUS_WS_CLIENT,
+  SET_INSTANT_ONGOING_DATA,
 } from '../type';
+import { NULL } from 'node-sass';
 
 const InstantState = props => {
   // Http Error Context
@@ -31,6 +33,7 @@ const InstantState = props => {
     wsClient: null,
     wsStatusData: null,
     wsStatusClient: null,
+    wsOnGoingData: null,
   };
 
   // Get Header
@@ -67,19 +70,64 @@ const InstantState = props => {
 
     // 1.建立連接
     client.onopen = () => {
-      console.log('websocket client connected sell');
+      console.log('websocket client connected instant');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
-      if (message.data) {
-        const dataFromServer = JSON.parse(message.data);
-        console.log('got reply!', dataFromServer);
-        if (dataFromServer.data.length > 0) {
-          setInstantData(dataFromServer.data);
-        } else {
-          cleanInstantData();
-        }
+      if (!message.data) return;
+      const dataFromServer = JSON.parse(message.data);
+      // console.log('got reply!', dataFromServer);
+
+      if (dataFromServer.data.length > 0) {
+        setInstantData(dataFromServer.data);
+      } else {
+        cleanInstantData();
+      }
+      setHttpLoading(false);
+    };
+
+    // 3.錯誤處理
+    client.onclose = function (message) {
+      // console.log('關閉連線.....');
+    };
+  };
+
+  // Instant Ongoing Web Socket Connect
+  const instantOngoingWsConnect = () => {
+    setHttpLoading(true);
+    const loginSession = localStorage.getItem('token');
+    if (!loginSession) return;
+
+    const connectWs = 'j/WS_livePendingOrders.ashx';
+
+    let url;
+
+    if (window.location.protocol === 'http:') {
+      url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}`;
+    } else {
+      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}`;
+    }
+
+    const client = new W3CWebsocket(url);
+
+    setWsClient(client);
+
+    // 1.建立連接
+    client.onopen = () => {
+      console.log('websocket client connected instant on going');
+    };
+
+    // 2.收到server回復
+    client.onmessage = message => {
+      if (!message.data) return;
+      const dataFromServer = JSON.parse(message.data);
+      // console.log('got reply!', dataFromServer);
+
+      if (dataFromServer.data.length > 0) {
+        setOnGoingData(dataFromServer.data);
+      } else {
+        setOnGoingData(NULL);
       }
       setHttpLoading(false);
     };
@@ -119,8 +167,9 @@ const InstantState = props => {
 
       // 2.收到server回復
       client.onmessage = message => {
+        if (!message.data) return;
         const dataFromServer = JSON.parse(message.data);
-        console.log('got reply!', dataFromServer);
+        // console.log('got reply!', dataFromServer);
 
         if (dataFromServer) setWsStatusData(dataFromServer.data.Order_StatusID);
 
@@ -181,13 +230,14 @@ const InstantState = props => {
       });
 
       const resData = await res.json();
+
       if (resData.code === 200) {
         setSell1Data(resData.data);
       } else {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
     setHttpLoading(false);
   };
@@ -208,7 +258,6 @@ const InstantState = props => {
       });
 
       const resData = await res.json();
-      console.log(resData);
 
       if (resData.code === 200) {
         setBuy1Data(resData.data);
@@ -223,7 +272,6 @@ const InstantState = props => {
   // Buy Match --2
   const buyMatch2 = async token => {
     const headers = getHeader();
-    if (!headers) return;
     setHttpLoading(true);
     try {
       const match2 = `j/Req_BuyMatch2.aspx`;
@@ -260,6 +308,7 @@ const InstantState = props => {
 
   // Set Count Data
   const setCountData = data => {
+    if (!data) return;
     dispatch({ type: SET_COUNT_DATA, payload: data });
   };
 
@@ -288,6 +337,11 @@ const InstantState = props => {
     dispatch({ type: SET_STATUS_WS_CLIENT, payload: client });
   };
 
+  // Set Ws On Going Data
+  const setOnGoingData = data => {
+    dispatch({ type: SET_INSTANT_ONGOING_DATA, payload: data });
+  };
+
   // Clean All
   const cleanAll = () => {
     setWsStatusData(null);
@@ -312,6 +366,7 @@ const InstantState = props => {
         wsClient: state.wsClient,
         wsStatusData: state.wsStatusData,
         wsStatusClient: state.wsStatusClient,
+        wsOnGoingData: state.wsOnGoingData,
 
         connectInstantWs,
         sellMatch1,
@@ -322,7 +377,9 @@ const InstantState = props => {
         buyMatch2,
         setBuy1Data,
         statusWs,
+        setWsStatusData,
         cleanAll,
+        instantOngoingWsConnect,
       }}
     >
       {props.children}

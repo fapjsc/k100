@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 // Context
@@ -81,7 +81,7 @@ const CompleteStatus = props => {
 
   if (props.wsStatus === 34) {
     return (
-      <Card className="border-0 text-center">
+      <Card className="border-0 text-center pb-4">
         <div className="i_notyet mt-4" />
         <h4 className="c_blue">已提交，等待確認中</h4>
         <br />
@@ -105,7 +105,7 @@ const CompleteStatus = props => {
       <>
         {singleDetail && <HistoryDetail show={show} onHide={handleHide} />}
 
-        <Card className="border-0 text-center">
+        <Card className="border-0 text-center pb-4">
           <div className="i_done mt-4" />
           <h4 className="c_blue">交易完成</h4>
           <br />
@@ -129,7 +129,7 @@ const CompleteStatus = props => {
 
   if (props.wsStatus === 99) {
     return (
-      <Card className="border-0 text-center">
+      <Card className="border-0 text-center pb-4">
         <div className="i_error mt-4" />
         <h4 className="c_blue mt-4">交易取消</h4>
         <br />
@@ -144,7 +144,7 @@ const CompleteStatus = props => {
 
   if (props.wsStatus === 98) {
     return (
-      <Card className="border-0 text-center">
+      <Card className="border-0 text-center pb-4">
         <div className="i_error mt-4" />
         <h4 className="c_blue mt-4">交易超時</h4>
         <br />

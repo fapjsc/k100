@@ -1,4 +1,5 @@
 import { useReducer } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import HttpErrorReducer from './HttpErrorReducer';
 import HttpErrorContext from './HttpErrorContext';
@@ -6,6 +7,10 @@ import HttpErrorContext from './HttpErrorContext';
 import { SET_HTTP_ERROR, SET_HTTP_LOADING } from '../type';
 
 const HttpErrorState = props => {
+  // Router Props
+  const history = useHistory();
+
+  // Init State
   const initialState = {
     errorText: '',
     httpLoading: false,
@@ -56,7 +61,7 @@ const HttpErrorState = props => {
 
     if (data.code === '16') {
       setHttpError('錯誤的操作');
-
+      history.replace('/home/overview');
       return;
     }
 
@@ -67,6 +72,7 @@ const HttpErrorState = props => {
 
     if (data.code === '20') {
       setHttpError('數據格式錯誤');
+      history.replace('/home/overview');
       return;
     }
 
@@ -96,10 +102,12 @@ const HttpErrorState = props => {
 
     if (data.code === '91') {
       setHttpError('session過期，請重新登入');
+      history.replace('/auth/login');
       return;
     }
 
     setHttpError('發生錯誤，請重新登入並重新嘗試');
+    history.replace('/auth/login');
   };
 
   const [state, dispatch] = useReducer(HttpErrorReducer, initialState);

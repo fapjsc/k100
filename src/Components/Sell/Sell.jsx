@@ -1,11 +1,14 @@
 import { Fragment, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+// context
 import SellContext from '../../context/sell/SellContext';
 
+// Components
 import SellHeaders from './SellHeader';
 import SellForm from './SellForm';
 import Pairing from './Pairing';
+import FormFooter from '../Layout/FormFooter';
 
 const Sell = () => {
   const history = useHistory();
@@ -37,6 +40,8 @@ const Sell = () => {
   return (
     <Fragment>
       <SellHeaders />
+      <SellForm />
+      <FormFooter />
       <Pairing
         show={wsPairing && wsClient}
         onHide={backHome}
@@ -46,7 +51,6 @@ const Sell = () => {
           `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`
         }
       />
-      <SellForm />
     </Fragment>
   );
 };

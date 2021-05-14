@@ -32,7 +32,7 @@ export default class MoneyRecord extends Component {
 
       if (resData.code === '91' || resData.code === '90') {
         localStorage.removeItem('token');
-        window.confirm('session過期，請重新登入 get balance !res.ok');
+        alert('session過期，請重新登入 get balance !res.ok');
 
         history.replace('/auth/login');
         clearInterval(this.checkTickLoop);
@@ -177,7 +177,6 @@ export default class MoneyRecord extends Component {
         this.checkTick(token);
       }, timer);
     } else {
-      alert('請重新登入, money record did mount...');
       history.replace('/auth/login');
     }
   }

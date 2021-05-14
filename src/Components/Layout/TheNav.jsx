@@ -17,7 +17,7 @@ const TheNav = props => {
       >
         |
       </span>
-      <Link to="/home/history/all" className={style.navLink}>
+      <Link to="/home/history/all" replace className={style.navLink}>
         紀錄
       </Link>
       <span

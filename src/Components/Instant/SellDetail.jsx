@@ -4,7 +4,6 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
-import BuyContext from '../../context/buy/BuyContext';
 
 // Components
 import FromFooter from '../Layout/FormFooter';
@@ -28,10 +27,6 @@ const SellDetail = () => {
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { errorText, setHttpError, httpLoading } = httpErrorContext;
-
-  // Buy Context
-  const buyContext = useContext(BuyContext);
-  const { setOrderToken } = buyContext;
 
   // Instant Context
   const instantContext = useContext(InstantContext);
@@ -57,15 +52,19 @@ const SellDetail = () => {
 
   useEffect(() => {
     if (sell1Data) {
-      if (
-        sell1Data.Order_StatusID === 34 ||
-        sell1Data.Order_StatusID === 1 ||
-        sell1Data.Order_StatusID === 99 ||
-        sell1Data.Order_StatusID === 98
-      )
-        setShowComplete(true);
+      if (sell1Data.Order_StatusID === 34 || sell1Data.Order_StatusID === 1) setShowComplete(true);
     }
+    // eslint-disable-next-line
   }, [sell1Data]);
+
+  useEffect(() => {
+    if (wsStatusData === 99 || wsStatusData === 98) {
+      setShowComplete(true);
+      setShowCancel(false);
+    }
+
+    // eslint-disable-next-line
+  }, [wsStatusData]);
 
   const handleClick = () => {
     sellMatch2(match.params.id);
@@ -210,6 +209,7 @@ const SellDetail = () => {
                           borderBottom: '1px solid #262e45',
                           fontSize: 12,
                           color: '#262e45',
+                          borderColor: '#262e45',
                         }}
                         // onClick={() => setShowCancel(true)}
                         onClick={handleCancel}

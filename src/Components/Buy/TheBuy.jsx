@@ -9,7 +9,6 @@ import SellContext from '../../context/sell/SellContext';
 import Pairing from './Pairing';
 import ExRate from './ExRate';
 import BaseSpinner from '../Ui/BaseSpinner';
-
 import BuyForm from './BuyForm';
 import BankForm from './BankForm';
 import FormFooter from '../Layout/FormFooter';
@@ -35,24 +34,13 @@ const TheBuy = () => {
     buyConnectWs,
     cleanAll,
     wsStatus,
-    closeWebSocket,
   } = buyContext;
-
-  useEffect(() => {
-    closeWebSocket();
-
-    return () => {
-      closeWebSocket();
-    };
-    // eslint-disable-next-line
-  }, []);
 
   // Listen Web Socket Status
   useEffect(() => {
     if (wsStatus === 33) {
       history.replace(`/home/transaction/buy/${buyOrderToken}`);
     }
-
     // eslint-disable-next-line
   }, [wsStatus]);
 

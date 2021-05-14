@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
-import ReconnectingWebSocket from 'reconnecting-websocket';
-// import { w3cwebsocket as W3CWebsocket } from 'websocket';
+// import ReconnectingWebSocket from 'reconnecting-websocket';
+import { w3cwebsocket as W3CWebsocket } from 'websocket';
 
 import ChatReducer from './ChatReducer';
 import ChatContext from './ChatContext';
@@ -42,17 +42,18 @@ const ChatState = props => {
       url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new ReconnectingWebSocket(url);
+    const client = new W3CWebsocket(url);
 
     dispatch({ type: SET_CHAT_WS_CLIENT, payload: client });
 
     // 1.建立連接
     client.onopen = message => {
-      console.log('chat connect');
+      // console.log('chat connect');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
+      if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       // console.log('got Chat reply!', dataFromServer);
 
@@ -61,13 +62,13 @@ const ChatState = props => {
 
     // 3.錯誤處理
     client.onclose = message => {
-      console.log('聊天室關閉');
+      // console.log('聊天室關閉');
     };
   };
 
   // 關閉連線
   const closeWebSocket = orderToken => {
-    console.log('close chart');
+    // console.log('close chart');
 
     const loginSession = localStorage.getItem('token');
     const chatApi = `chat/WS_ChatOrder.ashx`;
@@ -80,7 +81,7 @@ const ChatState = props => {
       url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new ReconnectingWebSocket(url);
+    const client = new W3CWebsocket(url);
 
     if (client) {
       client.close();
@@ -103,16 +104,18 @@ const ChatState = props => {
       url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new ReconnectingWebSocket(url);
+    const client = new W3CWebsocket(url);
 
     // 1.建立連接
     client.onopen = message => {
       setInstantClient(client);
-      console.log('chat connect');
+      // console.log('chat connect');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
+      if (!message.data) return;
+
       const dataFromServer = JSON.parse(message.data);
       console.log('got Chat reply!', dataFromServer);
 
@@ -121,7 +124,7 @@ const ChatState = props => {
 
     // 3.錯誤處理
     client.onclose = message => {
-      console.log('聊天室關閉');
+      // console.log('聊天室關閉');
     };
   };
 

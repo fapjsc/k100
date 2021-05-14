@@ -28,7 +28,7 @@ const BuyState = props => {
 
   // http error context
   const httpErrorContext = useContext(HttpErrorContext);
-  const { handleHttpError, setHttpError } = httpErrorContext;
+  const { handleHttpError, setHttpError, setHttpLoading } = httpErrorContext;
 
   // Init State
   const initialState = {
@@ -93,10 +93,6 @@ const BuyState = props => {
 
   //連接web socket --step 2
   const buyConnectWs = token => {
-    // 自動重連次數
-    // const options = {
-    //     maxRetries: null,
-    // };
     const transactionApi = 'j/ws_orderstatus.ashx';
 
     let loginSession = localStorage.getItem('token');
@@ -111,7 +107,10 @@ const BuyState = props => {
 
     const client = new W3CWebsocket(url);
 
+    // console.log(client);
+
     if (client) setWsClient(client);
+    console.log(token);
 
     // 1.建立連接
     client.onopen = () => {
@@ -120,8 +119,10 @@ const BuyState = props => {
 
     // 2.收到server回復
     client.onmessage = message => {
+      // console.log(message);
+      if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got reply!', dataFromServer);
+      console.log('got reply!', dataFromServer);
       setWsStatus(dataFromServer.data.Order_StatusID);
       setDeltaTime(dataFromServer.data.DeltaTime);
 
@@ -184,16 +185,23 @@ const BuyState = props => {
         setWsData(wsData);
         client.close();
       }
+
+      // 交易失敗
+      if (dataFromServer.data.Order_StatusID === 99 || dataFromServer.data.Order_StatusID === 98) {
+        client.close();
+      }
     };
 
     //3. 連線關閉
-    client.onclose = () => {
-      console.log('關閉連線');
+    client.onclose = message => {
+      console.log('關閉連線', message);
+      // setWsClient(null);
     };
   };
 
   // 關閉Web Socket
   const closeWebSocket = () => {
+    // console.log(state.buyWsClient);
     if (state.buyWsClient) {
       state.buyWsClient.close();
     } else {
@@ -260,8 +268,9 @@ const BuyState = props => {
   const cancelOrder = async orderToken => {
     const headers = getHeader();
     const cancelApi = `/j/Req_CancelOrder.aspx`;
-    console.log(orderToken);
     try {
+      console.log(orderToken);
+
       const res = await fetch(cancelApi, {
         method: 'POST',
         headers,
@@ -273,7 +282,6 @@ const BuyState = props => {
       const resData = await res.json();
 
       if (resData.code === 200) {
-        alert('訂單已經取消');
       } else {
         alert(`訂單取消失敗`);
         history.replace('/home/overview');
@@ -282,6 +290,8 @@ const BuyState = props => {
       alert(error);
       history.replace('/home/overview');
     }
+
+    setHttpLoading(false);
   };
 
   // 設定購買數量
@@ -351,13 +361,11 @@ const BuyState = props => {
   const cleanAll = () => {
     handleBuyBtnLoading(false);
     closeWebSocket();
-    setOrderToken('');
     setShowBank(false);
     setWsStatus(null);
     handlePairing(false);
     setWsData({});
     setWsStatus(null);
-    setWsClient(null);
     setBuyCount({
       rmb: '',
       usdt: '',
@@ -393,7 +401,6 @@ const BuyState = props => {
         buyConnectWs,
         handlePairing,
         setShowBank,
-        closeWebSocket,
         setOrderToken,
         setWsStatus,
         cleanAll,

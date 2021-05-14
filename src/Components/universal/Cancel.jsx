@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 
 // Context
 import BuyContext from '../../context/buy/BuyContext';
+import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
 import Modal from 'react-bootstrap/Modal';
@@ -12,19 +13,20 @@ import Spinner from 'react-bootstrap/Spinner';
 import errorIcon from '../../Assets/icon-error-new.png';
 
 const Cancel = props => {
+  // Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { httpLoading, setHttpLoading } = httpErrorContext;
+
   // Buy Context
   const buyContext = useContext(BuyContext);
   const { buyWsData, cancelOrder, buyOrderToken } = buyContext;
 
-  // Init State
-  const [loading, setLoading] = useState(false);
-
   const handleCancel = () => {
-    setLoading(true);
-    console.log(props.token);
+    setHttpLoading(true);
 
     if (props.type === 'instant') {
       cancelOrder(props.token);
+      return;
     }
 
     cancelOrder(buyOrderToken);
@@ -67,7 +69,7 @@ const Cancel = props => {
         <Button className="mr-3" variant="secondary" onClick={props.onHide}>
           返回
         </Button>
-        {loading ? (
+        {httpLoading ? (
           <Button variant="primary" disabled>
             <Spinner animation="grow" variant="danger" />
             Loading...

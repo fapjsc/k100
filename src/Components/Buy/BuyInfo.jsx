@@ -12,6 +12,8 @@ import BuyDetail from './BuyDetail';
 // import BuyComplete from './BuyComplete';
 import FormFooter from '../Layout/FormFooter';
 import Chat from '../Chat';
+import TheChat from '../Chat/TheChat';
+import TheMobileChat from '../Chat/TheMobileChat';
 import CompleteStatus from '../universal/CompleteStatus';
 // import TheChat from '../Chat/TheChat';
 // import ChatMobile from '../Chat/ChatMobile';
@@ -67,9 +69,9 @@ const BuyInfo = () => {
     }
 
     return () => {
+      console.log(buyWsClient);
       if (buyWsClient) buyWsClient.close();
-      closeWebSocket(match.params.id);
-      cleanAll();
+      // cleanAll();
     };
 
     // eslint-disable-next-line
@@ -81,9 +83,9 @@ const BuyInfo = () => {
   }, [showChat]);
 
   const backToHome = () => {
+    console.log(buyWsClient);
     history.replace('/home/overview');
     if (buyWsClient) buyWsClient.close();
-    closeWebSocket(match.params.id);
     cleanAll();
   };
 
@@ -126,12 +128,16 @@ const BuyInfo = () => {
             />
             幫助
           </Button>
+
+          {/* 手機版 */}
           <Chat Tx_HASH={buyWsData.hash} isChat={showChat} />
+          {/* <TheMobileChat hash={buyWsData.hash} isChat={showChat} /> */}
         </>
       ) : null}
 
       {/* 桌機版聊天室 */}
       {buyWsData && <Chat isChat={!isDesktopOrLaptop} Tx_HASH={buyWsData.hash} />}
+      {/* {buyWsData && <TheChat isChat={!isDesktopOrLaptop} hash={buyWsData.hash} />} */}
       <FormFooter />
     </>
   );

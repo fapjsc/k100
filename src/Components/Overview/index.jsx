@@ -20,6 +20,7 @@ export default class index extends Component {
 
     if (!token) {
       this.props.history.replace('/auth/login');
+      return;
     }
 
     this.setState({

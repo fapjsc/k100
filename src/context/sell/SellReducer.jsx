@@ -4,7 +4,6 @@ import {
   SET_ORDER_TOKEN,
   SET_WS_PAIRING,
   SET_WS_DATA,
-  SET_PAYMENT,
   CLEAN_ORDER_TOKEN,
   SET_WS_CLIENT,
   SET_CANCEL_ORDER_DATA,
@@ -73,14 +72,6 @@ const SellReducer = (state, action) => {
       return {
         ...state,
         sellIsCompleted: action.payload,
-      };
-    }
-
-    // 買方完成付款 (出現call sell 2 btn)
-    case SET_PAYMENT: {
-      return {
-        ...state,
-        payment: action.payload,
       };
     }
 

@@ -7,7 +7,6 @@ import BalanceContext from '../../context/balance/BalanceContext';
 
 // Components
 import BaseSpinner from '../Ui/BaseSpinner';
-import FormFooter from '../Layout/FormFooter';
 
 // Style
 import Col from 'react-bootstrap/Col';
@@ -554,8 +553,6 @@ const SellForm = () => {
       ) : (
         <BaseSpinner />
       )}
-
-      <FormFooter />
     </Fragment>
   );
 };

@@ -172,14 +172,20 @@ const InfoDetail = props => {
                 {buyBtnLoading && <Spinner animation="grow" variant="danger" />}
                 {buyBtnLoading ? '處理中...' : '已完成付款'}
               </Button>
-              <p
+
+              <span
                 style={{
                   cursor: 'pointer',
+                  paddingBottom: '2px',
+                  borderBottom: '1px solid #262e45',
+                  borderColor: '#262e45',
+                  fontSize: 12,
+                  color: '#262e45',
                 }}
                 onClick={() => setShowCancel(true)}
               >
                 取消訂單
-              </p>
+              </span>
             </Col>
           </Row>
         </>

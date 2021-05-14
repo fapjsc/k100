@@ -61,10 +61,6 @@ html {
   width: 80px !important;
 }
 
-.w_100 {
-  width: 10rem !important;
-}
-
 .w_400 {
   width: 40rem !important;
 }
@@ -275,15 +271,19 @@ Font
 }
 
 .red_dot {
-  background-color: #f73434;
-  border-radius: 26px;
-  color: #fff;
-  padding: 2px 5px;
-  font-size: 10px;
-  display: inline;
   position: absolute;
-  top: -5px;
-  left: 3px;
+  top: 2px;
+  right: 6px;
+  background-color: #f73434;
+  border-radius: 50%;
+  color: #fff;
+  // padding: 2px 5px;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .c_yellow {
   color: #f09314;
@@ -940,18 +940,18 @@ a:visited {
   text-decoration: none;
 }
 
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  padding: 14px 16px;
-  transition: 0.3s;
-  font-size: 17px;
-  width: 49%;
-  color: #707070;
-  cursor: pointer;
-}
+// .tab button {
+//   background-color: inherit;
+//   float: left;
+//   border: none;
+//   outline: none;
+//   padding: 14px 16px;
+//   transition: 0.3s;
+//   font-size: 17px;
+//   width: 49%;
+//   color: #707070;
+//   cursor: pointer;
+// }
 
 /* Style the buttons inside the tab */
 
@@ -970,19 +970,53 @@ a:visited {
   overflow: hidden;
   border-bottom: 1px solid #d7e2f3;
   color: #707070;
+
+  display: flex;
 }
+
+.tabLinks {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.tabLinksActive {
+  border-bottom: 2px solid #3f80fa;
+  color: #3f80fa;
+}
+
+.onGoing {
+  position: relative;
+}
+
+// .tablinks {
+//   background-color: inherit;
+//   border: none;
+//   outline: none;
+//   padding: 14px 16px;
+//   transition: 0.3s;
+//   font-size: 17px;
+//   // width: 49%;
+//   color: #707070;
+//   cursor: pointer;
+// }
 
 /* Change background color of buttons on hover */
-.tab button:hover {
-  border-bottom: 2px solid #3f80fa;
-  color: #3f80fa;
-}
+// .tab button:hover {
+//   border-bottom: 2px solid #3f80fa;
+//   color: #3f80fa;
+// }
 
 /* Create an active/current tablink class */
-.tab button.active {
-  border-bottom: 2px solid #3f80fa;
-  color: #3f80fa;
-}
+// .tab button.active {
+//   border-bottom: 2px solid #3f80fa;
+//   color: #3f80fa;
+// }
 
 /* Style the tab content */
 // .tabcontent {
@@ -1172,7 +1206,7 @@ hr {
 }
 
 .talk {
-  height: 79%;
+  height: 75%;
   overflow: auto;
   padding: 10px;
 }

@@ -1,7 +1,7 @@
 import { useReducer, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import AuthContext from '../auth/AuthContext';
+import HttpErrorContext from '../httpError/HttpErrorContext';
 
 import SellContext from './SellContext';
 import SellReducer from './SellReducer';
@@ -11,7 +11,6 @@ import {
   SET_ORDER_TOKEN,
   SET_WS_PAIRING,
   SET_WS_DATA,
-  SET_PAYMENT,
   CLEAN_ORDER_TOKEN,
   SET_WS_CLIENT,
   SET_CANCEL_ORDER_DATA,
@@ -35,7 +34,6 @@ const SellState = props => {
     sellData: null,
     closeWs: false,
     loading: false,
-    payment: false,
     wsClient: null,
     sellIsCompleted: false,
     cancelData: null,
@@ -47,8 +45,8 @@ const SellState = props => {
 
   const history = useHistory();
 
-  const authContext = useContext(AuthContext);
-  const { handleHttpError } = authContext;
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { handleHttpError } = httpErrorContext;
 
   // Get Header
   const getHeader = () => {
@@ -158,6 +156,8 @@ const SellState = props => {
 
       const resData = await res.json();
 
+      console.log(resData);
+
       if (resData.code === 200) {
         // setConfirmSell(true);
       } else {
@@ -224,6 +224,7 @@ const SellState = props => {
 
     // 2.收到server回復
     client.onmessage = message => {
+      if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       console.log('got reply!', dataFromServer);
       setSellStatus(dataFromServer.data.Order_StatusID);
@@ -243,7 +244,6 @@ const SellState = props => {
       // 等待收款 Order_StatusID：34
       if (dataFromServer.data.Order_StatusID === 34) {
         setWsData(dataFromServer.data);
-        setPayment(true); // 開啟確認收款button
       }
 
       // 交易成功 Order_StatusID：1
@@ -252,6 +252,11 @@ const SellState = props => {
         setWsData(dataFromServer.data);
         setCompleteStatus(true);
 
+        client.close();
+      }
+
+      // 交易失敗
+      if (dataFromServer.data.Order_StatusID === 99 || dataFromServer.data.Order_StatusID === 98) {
         client.close();
       }
     };
@@ -350,10 +355,6 @@ const SellState = props => {
     dispatch({ type: SET_WS_DATA, payload: data });
   };
 
-  // Set Payment (買方完成付款後為true)
-  const setPayment = value => {
-    dispatch({ type: SET_PAYMENT, payload: value });
-  };
   // Set Confirm Sell (判斷是否要進入complete)
   const setConfirmSell = value => {
     dispatch({ type: SET_CONFIRM_SELL, payload: value });
@@ -384,12 +385,9 @@ const SellState = props => {
     if (state.wsClient) state.wsClient.close();
     setConfirmSell(false);
     setWsPairing(false);
-    // setWsData(null);
-    setPayment(false);
     setCompleteStatus(false);
     setWsClient(null);
     setSellStatus(null);
-    setOrderToken(null);
     setRateAllData(null);
     setTransferHandle(null);
   };
@@ -407,7 +405,6 @@ const SellState = props => {
         wsPairing: state.wsPairing,
         wsData: state.wsData,
         loading: state.loading,
-        payment: state.payment, // 買方是否完成付款
         sellIsCompleted: state.sellIsCompleted,
         closeWs: state.closeWs,
         cancelData: state.cancelData, // 取消的訂單數據

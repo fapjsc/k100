@@ -95,7 +95,7 @@ const Chat = props => {
   };
 
   useEffect(() => {
-    console.log('chat mount');
+    // console.log('chat mount');
     setOrderToken(match.params.id);
 
     scrollToBottom();
@@ -145,7 +145,7 @@ const Chat = props => {
 
     // 1.建立連接
     client.onopen = message => {
-      console.log('chat connect');
+      // console.log('chat connect');
     };
 
     // 2.收到server回復
@@ -182,15 +182,14 @@ const Chat = props => {
 
     // 3.錯誤處理
     client.onclose = message => {
-      console.log('聊天室關閉');
-
+      // console.log('聊天室關閉');
       // client.onopen();
     };
   };
 
   // 關閉連線
   const closeWebSocket = () => {
-    console.log('close chart');
+    // console.log('close chart');
     // const { orderToken: token } = this.state;
 
     const loginSession = localStorage.getItem('token');

@@ -28,7 +28,8 @@ const BuyDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { buy1Data, setBuy1Data, wsStatusData, buyMatch2, cleanAll } = instantContext;
+  const { buy1Data, setBuy1Data, wsStatusData, buyMatch2, cleanAll, setWsStatusData } =
+    instantContext;
 
   useEffect(() => {
     // buyMatch1(match.params.id);
@@ -50,15 +51,19 @@ const BuyDetail = () => {
 
   useEffect(() => {
     if (buy1Data) {
-      if (
-        buy1Data.Order_StatusID === 34 ||
-        buy1Data.Order_StatusID === 1 ||
-        buy1Data.Order_StatusID === 99 ||
-        buy1Data.Order_StatusID === 98
-      )
-        setShowComplete(true);
+      if (buy1Data.Order_StatusID === 34 || buy1Data.Order_StatusID === 1) setShowComplete(true);
     }
+    // eslint-disable-next-line
   }, [buy1Data]);
+
+  useEffect(() => {
+    if (wsStatusData === 99 || wsStatusData === 98) {
+      alert('訂單已經取消');
+      setShowComplete(true);
+    }
+
+    // eslint-disable-next-line
+  }, [wsStatusData]);
 
   const handleClick = () => {
     buyMatch2(match.params.id);
