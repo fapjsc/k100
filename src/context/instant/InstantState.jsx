@@ -18,7 +18,6 @@ import {
   SET_STATUS_WS_CLIENT,
   SET_INSTANT_ONGOING_DATA,
 } from '../type';
-import { NULL } from 'node-sass';
 
 const InstantState = props => {
   // Http Error Context
@@ -127,7 +126,7 @@ const InstantState = props => {
       if (dataFromServer.data.length > 0) {
         setOnGoingData(dataFromServer.data);
       } else {
-        setOnGoingData(NULL);
+        setOnGoingData(null);
       }
       setHttpLoading(false);
     };

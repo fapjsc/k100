@@ -56,8 +56,8 @@ const TheInstant = () => {
         </div>
 
         {/* Content */}
-        {/* {tab === 'all' && instantData.length && !httpLoading ? <InstantAll /> : null}
-        {tab === 'onGoing' && instantData.length && !httpLoading ? <InstantOnGoing /> : null} */}
+        {tab === 'all' && instantData.length && !httpLoading ? <InstantAll /> : null}
+        {tab === 'onGoing' && instantData.length && !httpLoading ? <InstantOnGoing /> : null}
 
         {/* Loading */}
         {httpLoading && (
