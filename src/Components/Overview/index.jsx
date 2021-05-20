@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+
+// Context
+import AuthContext from '../../context/auth/AuthContext';
 
 // Components
 import TheInstant from '../Instant/TheInstant';
@@ -12,32 +15,9 @@ import Col from 'react-bootstrap/Col';
 import './index.scss';
 
 const OverView = () => {
-  const history = useHistory();
-
-  const [agent, setAgent] = useState(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) history.replace('/auth/login');
-    setAgent(localStorage.getItem('agent'));
-    // eslint-disable-next-line
-  }, []);
-
-  // state = {
-  //   agent: null,
-  // };
-  // componentDidMount() {
-  //   const token = localStorage.getItem('token');
-
-  //   if (!token) {
-  //     this.props.history.replace('/auth/login');
-  //     return;
-  //   }
-
-  //   this.setState({
-  //     agent: localStorage.getItem('agent'),
-  //   });
-  // }
+  // AuthContext
+  const authContext = useContext(AuthContext);
+  const { isAgent } = authContext;
 
   return (
     <Container style={{ maxWidth: '1140px' }} className="mt-4">
@@ -70,7 +50,7 @@ const OverView = () => {
         </Col>
       </Row>
 
-      {agent && (
+      {isAgent && (
         <Row className="mt-4">
           <Col lg={12}>
             <TheInstant />

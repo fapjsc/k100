@@ -146,7 +146,7 @@ const AuthState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
@@ -415,6 +415,7 @@ const AuthState = props => {
         login,
         setErrorText,
         logout,
+        setAgent,
       }}
     >
       {props.children}

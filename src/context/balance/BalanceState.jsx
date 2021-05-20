@@ -1,7 +1,7 @@
 import { useReducer, useContext } from 'react';
 import BalanceReducer from './BalanceReducer';
 import BalanceContext from './BalanceContext';
-import { SET_BALANCE } from '../type';
+import { SET_BALANCE, SET_TICK } from '../type';
 
 // Context
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
@@ -15,6 +15,7 @@ const BalanceState = props => {
   const initialState = {
     avb: null, //可提
     real: null, //結餘
+    tick: null,
   };
 
   // Get Header
@@ -58,9 +59,44 @@ const BalanceState = props => {
     setHttpLoading(false);
   };
 
+  // Get Tick
+  const getTick = async token => {
+    const headers = getHeader();
+
+    if (!token || !headers) return;
+
+    const getTickApi = '/j/ChkUpdate.aspx';
+
+    try {
+      const res = await fetch(getTickApi, {
+        headers,
+      });
+      const resData = await res.json();
+      if (resData.code === '91' || resData.code === '90') {
+        localStorage.removeItem('token');
+        alert('session過期，請重新登入 get tick');
+        return;
+      }
+
+      if (resData.code === 200) {
+        setTick(resData.data.UpdateTick);
+      } else {
+        handleHttpError(resData);
+      }
+
+      // const { UpdateTick: tick } = resData.data;
+    } catch (error) {
+      handleHttpError(error);
+    }
+  };
+
   // Set Balance
   const setBalance = data => {
     dispatch({ type: SET_BALANCE, payload: data });
+  };
+
+  const setTick = tick => {
+    dispatch({ type: SET_TICK, payload: tick });
   };
 
   const [state, dispatch] = useReducer(BalanceReducer, initialState);
@@ -70,9 +106,11 @@ const BalanceState = props => {
       value={{
         avb: state.avb,
         real: state.real,
+        tick: state.tick,
 
         getBalance,
         setBalance,
+        getTick,
       }}
     >
       {props.children}

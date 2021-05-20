@@ -21,6 +21,7 @@ export const GET_WS_CLIENT = 'GET_WS_CLIENT';
 
 // Balance
 export const SET_BALANCE = 'GET_BALANCE';
+export const SET_TICK = 'SET_TICK';
 
 // Chat
 export const SET_TRANSLATE = 'SET_TRANSLATE';

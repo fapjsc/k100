@@ -27,19 +27,23 @@ const HomeScreen = () => {
 
   // AuthContext
   const authContext = useContext(AuthContext);
-  const { logout } = authContext;
+  const { logout, setAgent } = authContext;
 
   // Init State
   const [token, setToken] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setToken(token);
+    const agent = localStorage.getItem('agent');
 
     if (!token) {
       history.replace('/auth/login');
       return;
     }
+
+    if (agent) setAgent(true);
+
+    setToken(token);
 
     if (location.pathname === '/home' || location.pathname === '/home/')
       history.replace('/home/overview');
