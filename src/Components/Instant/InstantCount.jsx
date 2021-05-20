@@ -47,7 +47,7 @@ const InstantCount = props => {
         <>
           <div className="txt_12 pt_20 mb-3 pl-1">即時買賣</div>
 
-          <div className="easy_info" style={{ float: 'inherit' }}>
+          <div className="easy_info mobile-width" style={{ float: 'inherit' }}>
             <div className="inline">
               <div className="txt_12_grey">匯率：</div>
               <span className="">{countData.exRate}</span>
@@ -61,23 +61,23 @@ const InstantCount = props => {
 
             <hr />
 
-            <div className="inline">
-              <div className="txt_12_grey">總價</div>
-              <span className="c_blue">{countData.cny} CNY</span>
+            <div className="inline ">
+              <div className="txt_12_grey mobile-text">總價</div>
+              <span className="c_blue mobile-text">{countData.cny} CNY</span>
             </div>
 
-            <div className="inline pl_40" style={{ float: 'right' }}>
-              <div className="txt_12_grey" style={{ textAlign: 'right' }}>
+            <div className="inline pl_40 " style={{ float: 'right' }}>
+              <div className="txt_12_grey mobile-text" style={{ textAlign: 'right' }}>
                 數量
               </div>
-              {countData.usdt.toFixed(2)} USDT
+              <span className="mobile-text">{countData.usdt.toFixed(2)} USDT</span>
             </div>
           </div>
 
           <Button
             onClick={() => handleClick(countData.type)}
             disabled={props.showPop}
-            className="easy-btn mw400"
+            className="easy-btn mw400 btn-sm-screen-100"
             style={{ marginTop: '4rem', marginBottom: '4rem' }}
           >
             即時交易

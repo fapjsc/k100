@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
@@ -9,9 +9,9 @@ import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 // Components
 import SellHeaders from './SellHeader';
 import SellDetail from './SellDetail';
-// import SellCompleted from './SellCompleted';
+import Pairing from './Pairing';
 
-import Chat from '../Chat';
+import TheChat from '../Chat/TheChat';
 import CompleteStatus from '../universal/CompleteStatus';
 import BaseSpinner from '../Ui/BaseSpinner';
 
@@ -21,7 +21,7 @@ import Button from 'react-bootstrap/Button';
 
 const SellInfo = () => {
   // Break Points
-  const lapTopBig = useMediaQuery({ query: '(max-width: 1200px)' });
+  const isMobile = useMediaQuery({ query: '(max-width: 1200px)' }); // 小於等於 1200 true
 
   // Router Props
   const history = useHistory();
@@ -33,15 +33,15 @@ const SellInfo = () => {
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsData, closeWebSocket, sellWebSocket, CleanAll, wsClient, sellStatus } = sellContext;
+  const { wsData, sellWebSocket, CleanAll, wsClient, sellStatus, wsPairing } = sellContext;
 
-  const [isChat, setIsChat] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     if (id) sellWebSocket(id);
+
     return () => {
       if (wsClient) wsClient.close();
-      if (id) closeWebSocket(id);
       CleanAll();
     };
     // eslint-disable-next-line
@@ -55,22 +55,30 @@ const SellInfo = () => {
     // eslint-disable-next-line
   }, [errorText]);
 
-  useEffect(() => {
-    if (sellStatus === 99 || sellStatus === 98) alert('訂單已經取消');
-  }, [sellStatus]);
-
   const backToHome = () => {
-    if (wsClient) wsClient.close();
-    closeWebSocket(id);
     history.replace('/home/overview');
-
+    if (wsClient) wsClient.close();
     CleanAll();
   };
 
-  // confirmSell 判斷要render sell info 還是 提交確認/交易完成組件
+  const onHide = () => {
+    if (wsClient) wsClient.close();
+    history.replace('/home/overview');
+    CleanAll();
+  };
+
   return (
     <>
       <SellHeaders />
+      <Pairing
+        onHide={onHide}
+        show={wsPairing && wsClient}
+        title="請稍等，現正整合交易者資料"
+        text={
+          wsData &&
+          `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`
+        }
+      />
 
       {(sellStatus === 33 || sellStatus === 34) && wsData ? (
         <SellDetail />
@@ -85,37 +93,31 @@ const SellInfo = () => {
         <BaseSpinner />
       )}
 
-      {/* 聊天室  --電腦版 1200px  */}
-      {wsData && !lapTopBig ? (
-        <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={true} />
+      {/* 聊天室  --電腦版 大於1200px  */}
+      {wsData && !isMobile ? <TheChat isChat={!isMobile} hash={wsData.Tx_HASH} /> : null}
+
+      {/* 聊天室 --手機版 小於1200px  */}
+      {isMobile && wsData ? (
+        <>
+          <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
+            <img
+              style={{
+                width: 15,
+                height: 20,
+                marginRight: 8,
+              }}
+              src={helpIcon}
+              alt="help icon"
+            />
+            幫助
+          </Button>
+
+          <TheChat hash={wsData.Tx_HASH} isChat={showChat} />
+        </>
       ) : null}
-
-      {/* 聊天室 --手機版 1200px  */}
-      <Button style={helpBtn} variant="primary" onClick={() => setIsChat(!isChat)}>
-        <img
-          style={{
-            width: 15,
-            height: 20,
-            marginRight: 8,
-          }}
-          src={helpIcon}
-          alt="help icon"
-        />
-        幫助
-      </Button>
-
-      {wsData ? <Chat Tx_HASH={wsData.Tx_HASH} orderToken={id} isChat={isChat} /> : null}
     </>
   );
 };
-
-// const cancelLink = {
-//   fontSize: 15,
-//   fontWeight: 'bold',
-//   borderBottom: '1px solid grey',
-//   display: 'inline-block',
-//   cursor: 'pointer',
-// };
 
 const helpBtn = {
   paddingLeft: 15,

@@ -72,16 +72,6 @@ const SellForm = () => {
     // eslint-disable-next-line
   }, []);
 
-  // 連接WebSocket
-  // useEffect(() => {
-  //   if (orderToken) {
-  //     sellWebSocket(orderToken);
-  //   }
-
-  //   return cleanOrderToken();
-  //   // eslint-disable-next-line
-  // }, [orderToken]);
-
   // 表單驗證後發送請求
   useEffect(() => {
     if (!formValid) return;
@@ -123,6 +113,8 @@ const SellForm = () => {
         isValid: true,
         error: '',
       });
+
+      if (!e.target.val) setShowBankWallet(false);
     }
 
     if (e.target.name === 'cny') {
@@ -145,6 +137,8 @@ const SellForm = () => {
         isValid: true,
         error: '',
       });
+
+      if (!e.target.val) setShowBankWallet(false);
     }
 
     if (e.target.name === 'name') {
@@ -183,10 +177,15 @@ const SellForm = () => {
   // 提取所有
   const fetchAll = async () => {
     setFetchLoading(true);
-    const balance = await getBalance();
+    await getBalance();
 
-    let usdtCount = balance.Avb_Balance.toFixed(2);
+    let usdtCount = Number(avb).toFixed(2);
     let cnyCount = (usdtCount * Number(exRate)).toFixed(2);
+
+    if (usdtCount <= 0) {
+      usdtCount = 0;
+      cnyCount = 0;
+    }
 
     setUsdt({
       val: usdtCount,
@@ -372,49 +371,39 @@ const SellForm = () => {
                 }}
               />
 
-              {/* {cny && (
-                                <Form.Text className="text-left my-2 h4">{cny.error}</Form.Text>
-                            )} */}
               <span style={inputText}>CNY</span>
             </Form.Group>
           </Form.Row>
 
-          {/* 手續費 */}
-          {/* <div className="d-flex justify-content-between">
-            <Form.Text className="text-left my-2">
-              <span className="text-dark">手續費: {transferHandle}</span>
-            </Form.Text>
-          </div> */}
+          {usdt.val && (
+            <Form.Row className="mt-4">
+              <Form.Group as={Col} className="mt-4">
+                <p className="txt_12">電子錢包</p>
+                <Button
+                  type="button"
+                  style={{
+                    marginTop: -8,
+                    marginRight: 15,
+                  }}
+                  className={showBankWallet ? 'walletBtnActive' : 'walletBtn'}
+                  onClick={() => setShowBankWallet(!showBankWallet)}
+                >
+                  銀行卡
+                </Button>
 
-          <Form.Row className="mt-4">
-            <Form.Group as={Col} className="mt-4">
-              <p className="txt_12">電子錢包</p>
-              <Button
-                type="button"
-                style={{
-                  marginTop: -8,
-                  marginRight: 15,
-                }}
-                // className="walletBtn"
-                // className="walletBtn"
-                className={showBankWallet ? 'walletBtnActive' : 'walletBtn'}
-                onClick={() => setShowBankWallet(!showBankWallet)}
-              >
-                銀行卡
-              </Button>
-
-              <Button
-                type="button"
-                className="disableWalletBtn"
-                style={{
-                  marginTop: -8,
-                }}
-              >
-                支付寶
-              </Button>
-              <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
-            </Form.Group>
-          </Form.Row>
+                <Button
+                  type="button"
+                  className="disableWalletBtn"
+                  style={{
+                    marginTop: -8,
+                  }}
+                >
+                  支付寶
+                </Button>
+                <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
+              </Form.Group>
+            </Form.Row>
+          )}
 
           {showBankWallet && (
             <>
@@ -454,7 +443,6 @@ const SellForm = () => {
                   controlId="account"
                   className="mt-20 input-fill-x"
                 >
-                  {/* <label className="input-label">收款帳號</label> */}
                   <Form.Control
                     className="easy-border input-fill"
                     placeholder="收款帳號"

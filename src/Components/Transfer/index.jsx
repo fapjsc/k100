@@ -282,7 +282,9 @@ const Transfer = () => {
         <Form.Row>
           <Form.Group as={Col} md={5} sm={12} controlId="transferUsdt" className="pb-0">
             <div className="mb-2 d-flex align-items-center" style={{ height: 30 }}>
-              <Form.Label className="mb-0 txt-primary-c">請選擇協議種類</Form.Label>
+              <Form.Label className="mb-0 txt-primary-c" style={{ fontSize: 12 }}>
+                請選擇協議種類
+              </Form.Label>
             </div>
             <div className="d-flex">
               <Button
@@ -358,7 +360,7 @@ const Transfer = () => {
                     fontSize: 12,
                   }}
                 >
-                  手續費: {transferHandle} USDT
+                  手續費: {transferHandle && Number(transferHandle).toFixed(2)} USDT
                 </span>
               </Form.Group>
 

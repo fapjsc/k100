@@ -12,10 +12,12 @@
   max-width: 1140px;
   margin: 0 auto;
   padding: 0;
+  height: 50px;
+  padding-left: 15px;
 
-  @media only screen and(max-width: 390px) {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-  }
+  // @media only screen and(max-width: 390px) {
+  //   display: flex;
+  //   flex-direction: column;
+  //   margin: 0;
+  // }
 }

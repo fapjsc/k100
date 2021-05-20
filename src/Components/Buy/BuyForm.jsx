@@ -25,6 +25,7 @@ const BuyForm = () => {
   const httpErrorContext = useContext(HttpErrorContext);
   const { setHttpError } = httpErrorContext;
 
+  // Init State
   const [usdtAmt, setUsdtAmt] = useState({
     val: '',
     isValid: true,
@@ -38,6 +39,10 @@ const BuyForm = () => {
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
+
+  //===========
+  // UseEffect
+  //===========
 
   // unMount後清除錯誤提示
   useEffect(() => {
@@ -103,6 +108,8 @@ const BuyForm = () => {
         isValid: true,
         error: '',
       });
+
+      if (!e.target.val) setShowBank(false);
     }
 
     if (e.target.name === 'rmbAmt') {
@@ -128,6 +135,8 @@ const BuyForm = () => {
         isValid: true,
         error: '',
       });
+
+      if (!e.target.val) setShowBank(false);
     }
   };
 
@@ -207,34 +216,36 @@ const BuyForm = () => {
         </Form.Group>
       </Form.Row>
 
-      <Form.Row className="mt-4">
-        <Form.Group as={Col} className="mt-4">
-          <p className="txt_12">電子錢包</p>
-          <Button
-            type="button"
-            style={{
-              marginTop: -8,
-              marginRight: 15,
-            }}
-            // className="walletBtn"
-            className={showBank ? 'walletBtnActive' : 'walletBtn'}
-            onClick={validCount}
-          >
-            銀行卡
-          </Button>
+      {usdtAmt.val && (
+        <Form.Row className="mt-4">
+          <Form.Group as={Col} className="mt-4">
+            <p className="txt_12">電子錢包</p>
+            <Button
+              type="button"
+              style={{
+                marginTop: -8,
+                marginRight: 15,
+              }}
+              // className="walletBtn"
+              className={showBank ? 'walletBtnActive' : 'walletBtn'}
+              onClick={validCount}
+            >
+              銀行卡
+            </Button>
 
-          <Button
-            type="button"
-            className="disableWalletBtn"
-            style={{
-              marginTop: -8,
-            }}
-          >
-            支付寶
-          </Button>
-          <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
-        </Form.Group>
-      </Form.Row>
+            <Button
+              type="button"
+              className="disableWalletBtn"
+              style={{
+                marginTop: -8,
+              }}
+            >
+              支付寶
+            </Button>
+            <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
+          </Form.Group>
+        </Form.Row>
+      )}
     </Form>
   );
 };

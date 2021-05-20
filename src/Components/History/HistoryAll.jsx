@@ -28,6 +28,7 @@ const HistoryAll = () => {
 
   // Init State
   const [show, setShow] = useState(false);
+  const [balance, setBalance] = useState(null);
 
   useEffect(() => {
     getHistoryAll();
@@ -35,8 +36,9 @@ const HistoryAll = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleClick = token => {
+  const handleClick = (token, balance) => {
     if (token) {
+      setBalance(balance);
       detailReq(token);
       setShow(true);
     } else {
@@ -47,16 +49,30 @@ const HistoryAll = () => {
   if (allHistory.length && !historyLoading) {
     return (
       <>
-        {singleDetail && <HistoryAllDetail show={show} onHide={() => setShow(false)} />}
+        {singleDetail && (
+          <HistoryAllDetail
+            show={show}
+            onHide={() => setShow(false)}
+            balance={balance && balance}
+          />
+        )}
         {/* <Button onClick={() => buyWsClient.close()}>test</Button> */}
         <Table responsive bordered hover className="mt-4">
           <thead>
             <tr>
-              <th></th>
-              <th className="theadTh">日期</th>
-              <th className="theadTh">交易額（USDT）</th>
-              <th className="theadTh">結餘（USDT）</th>
-              <th className="theadTh">狀態</th>
+              <th style={titleStyle} className="w8"></th>
+              <th style={titleStyle} className="w55">
+                日期
+              </th>
+              <th style={titleStyle} className="mw105">
+                交易額（USDT）
+              </th>
+              <th style={titleStyle} className="mw105">
+                結餘（USDT）
+              </th>
+              <th style={titleStyle} className="w8">
+                狀態
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -64,109 +80,47 @@ const HistoryAll = () => {
               return (
                 <tr
                   key={uuidv4()}
-                  onClick={() => handleClick(item.token)}
+                  onClick={() => handleClick(item.token, item.Balance.toFixed(2))}
                   style={{ cursor: 'pointer' }}
                 >
                   {/* 交易類別 */}
-                  {!isMobile ? (
-                    // - 桌面
-                    <td
-                      style={{
-                        maxWidth: 70,
-                        textAlign: 'center',
-                        fontWeight: 300,
-                      }}
-                      className={
+                  <td
+                    className={
+                      item.MasterType === 0
+                        ? 'txt18 text-center'
+                        : item.MasterType === 1
+                        ? 'txt18_r text-center'
+                        : 'txt18_p text-center'
+                    }
+                  >
+                    <img
+                      style={iconStyle}
+                      src={
                         item.MasterType === 0
-                          ? 'txt18'
+                          ? blueIcon
                           : item.MasterType === 1
-                          ? 'txt18_r'
-                          : 'txt18_p'
+                          ? redIcon
+                          : purpleIcon
                       }
-                    >
-                      <img
-                        src={
-                          item.MasterType === 0
-                            ? blueIcon
-                            : item.MasterType === 1
-                            ? redIcon
-                            : purpleIcon
-                        }
-                        alt="status icon"
-                        style={{
-                          height: 21,
-                          marginBottom: 3,
-                          marginRight: 8,
-                        }}
-                      />
-                      <span className="" style={{ letterSpacing: 1.5, fontSize: 17 }}>
-                        {item.MasterType === 0
-                          ? '買入'
-                          : item.MasterType === 1
-                          ? '賣出'
-                          : item.MasterType === 2
-                          ? '轉出'
-                          : '轉入'}
-                      </span>
-                    </td>
-                  ) : (
-                    // - 手機
-                    <td
-                      style={{
-                        maxWidth: 200,
-                        textAlign: 'center',
-                        fontWeight: 300,
-                        position: 'relative',
-                      }}
-                      className={
-                        item.MasterType === 0
-                          ? 'txt14_b '
-                          : item.MasterType === 1
-                          ? 'txt14_r'
-                          : 'txt14_p '
-                      }
-                    >
-                      {/* <img
-                        src={
-                          item.MasterType === 0
-                            ? blueIcon
-                            : item.MasterType === 1
-                            ? redIcon
-                            : purpleIcon
-                        }
-                        alt="status icon"
-                        style={{
-                          height: 10,
-                          position: 'absolute',
-                          top: 2,
-                          left: 7,
-                        }}
-                      /> */}
-                      <span className="">
-                        {item.MasterType === 0
-                          ? '買入'
-                          : item.MasterType === 1
-                          ? '賣出'
-                          : item.MasterType === 2
-                          ? '轉出'
-                          : '轉入'}
-                      </span>
-                    </td>
-                  )}
+                      alt="status icon"
+                    />
+                    <span className="" style={textStyle}>
+                      {item.MasterType === 0
+                        ? '買入'
+                        : item.MasterType === 1
+                        ? '賣出'
+                        : item.MasterType === 2
+                        ? '轉出'
+                        : '轉入'}
+                    </span>
+                  </td>
 
                   {/* 日期 */}
-                  <td
-                    style={{
-                      verticalAlign: 'middle',
-                    }}
-                  >
-                    {item.Date}
-                  </td>
+                  <td style={dateText}>{item.Date}</td>
+
                   {/* 交易額 */}
                   <td
-                    style={{
-                      verticalAlign: 'middle',
-                    }}
+                    style={transactionAmount}
                     className={
                       item.MasterType === 0 || item.MasterType === 3
                         ? 'c_green text-right pr-4'
@@ -177,34 +131,14 @@ const HistoryAll = () => {
                   </td>
 
                   {/* 餘額 */}
-                  <td
-                    className="text-right pr-4"
-                    style={{
-                      verticalAlign: 'middle',
-                    }}
-                  >
+                  <td style={avbStyle} className="text-right pr-4">
                     {item.Balance.toFixed(2)}
                   </td>
 
                   {/* 狀態 */}
-                  <td
-                    className="text-center"
-                    style={{
-                      verticalAlign: 'middle',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <span className={isMobile ? 'fs_ssm' : 'fs_sm'}>完成</span>
-                    <img
-                      className=""
-                      src={downIcon}
-                      alt="done icon"
-                      style={{
-                        width: 13,
-                        marginLeft: 5,
-                        marginBottom: 3,
-                      }}
-                    />
+                  <td style={statusStyle} className="text-center">
+                    <span className="mr-2">完成</span>
+                    <div className="i_down" />
                   </td>
                 </tr>
               );
@@ -218,6 +152,50 @@ const HistoryAll = () => {
   } else {
     return <BaseSpinner />;
   }
+};
+
+const iconStyle = {
+  height: 15,
+  width: 15,
+  marginRight: 4,
+};
+
+const titleStyle = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  color: '#646464',
+  fontWeight: 'normal',
+  verticalAlign: 'middle',
+};
+
+const textStyle = {
+  fontSize: '14px',
+  lineHeight: '1.7',
+};
+
+const dateText = {
+  fontSize: 11,
+  lineHeight: 1.4,
+  color: '#000',
+  verticalAlign: 'middle',
+};
+
+const transactionAmount = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  verticalAlign: 'middle',
+};
+
+const avbStyle = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  verticalAlign: 'middle',
+};
+
+const statusStyle = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  verticalAlign: 'middle',
 };
 
 export default HistoryAll;

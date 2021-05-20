@@ -97,7 +97,7 @@ const AuthState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 

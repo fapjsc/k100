@@ -232,6 +232,7 @@ const SellState = props => {
       // 配對中 Order_StatusID：31 or 32
       if (dataFromServer.data.Order_StatusID === 31) {
         setWsData(dataFromServer.data);
+        setWsPairing(true);
       }
 
       // 等待付款  Order_StatusID：33
@@ -386,7 +387,6 @@ const SellState = props => {
     setConfirmSell(false);
     setWsPairing(false);
     setCompleteStatus(false);
-    setWsClient(null);
     setSellStatus(null);
     setRateAllData(null);
     setTransferHandle(null);

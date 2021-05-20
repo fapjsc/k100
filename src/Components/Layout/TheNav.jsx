@@ -3,18 +3,31 @@ import { Link } from 'react-router-dom';
 
 // Context
 import BuyContext from '../../context/buy/BuyContext';
+import SellContext from '../../context/sell/SellContext';
+import InstantContext from '../../context/instant/InstantContext';
 
 // Style
 import { Nav } from 'react-bootstrap';
 import style from './Header.module.scss';
+import InstantCount from '../Instant/InstantCount';
 
 const TheNav = props => {
   // Buy Context
   const buyContext = useContext(BuyContext);
   const { buyWsClient } = buyContext;
 
+  // Sell Context
+  const sellContext = useContext(SellContext);
+  const { wsClient } = sellContext;
+
+  // Instant Context
+  const instantContext = useContext(InstantContext);
+  const { wsStatusClient } = instantContext;
+
   const handleClick = () => {
     if (buyWsClient) buyWsClient.close();
+    if (wsClient) wsClient.close();
+    if (wsStatusClient) wsStatusClient.close();
   };
 
   return (

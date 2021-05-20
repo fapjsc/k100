@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
 // Context
@@ -10,36 +10,39 @@ import SellDetail from './SellDetail';
 import BuyDetail from './BuyDetail';
 import TheChat from '../Chat/TheChat';
 import TheMobileChat from '../Chat/TheMobileChat';
+import BaseSpinner from '../Ui/BaseSpinner';
 
 // Style
 import helpIcon from '../../Assets/i_ask2.png';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 const InstantDetail = () => {
+  // Router Props
+  const match = useRouteMatch();
+
   // Media Query
   const isMobile = useMediaQuery({ query: '(max-width: 1200px)' }); // 小於等於 1200 true
 
-  // Router Props
-  const match = useRouteMatch();
-  const history = useHistory();
-
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { sell1Data, buy1Data, sellMatch1, buyMatch1, statusWs } = instantContext;
+  const { sell1Data, buy1Data, sellMatch1, buyMatch1, instantOngoingWsConnect } = instantContext;
 
   // Init State
-  const [showMobileChat, setShowMobileChat] = useState(false);
+  // const [showMobileChat, setShowMobileChat] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
-    // if (!sell1Data && !buy1Data) history.replace('/home/overview');
+    instantOngoingWsConnect();
+    const orderToken = match.params.id;
+    if (orderToken) {
+      if (match.params.type === 'buy') sellMatch1(orderToken);
+      if (match.params.type === 'sell') buyMatch1(orderToken);
+    }
+
+    return () => {};
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (sell1Data || buy1Data) statusWs(match.params.id);
-
-    // eslint-disable-next-line
-  }, [sell1Data, buy1Data]);
 
   if (sell1Data) {
     return (
@@ -47,29 +50,27 @@ const InstantDetail = () => {
         <SellDetail />
 
         {/* Chat --桌機版 */}
-        {sell1Data && <TheChat isChat={!isMobile} hash={sell1Data.Tx_HASH} />}
+        {!isMobile && sell1Data ? <TheChat isChat={!isMobile} hash={sell1Data.Tx_HASH} /> : null}
 
         {/* Chat --手機版  */}
         {isMobile && sell1Data ? (
-          <Button
-            style={helpBtn}
-            variant="primary"
-            onClick={() => setShowMobileChat(!showMobileChat)}
-          >
-            <img
-              style={{
-                width: 15,
-                height: 20,
-                marginRight: 8,
-              }}
-              src={helpIcon}
-              alt="help icon"
-            />
-            幫助
-          </Button>
-        ) : null}
+          <>
+            <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
+              <img
+                style={{
+                  width: 15,
+                  height: 20,
+                  marginRight: 8,
+                }}
+                src={helpIcon}
+                alt="help icon"
+              />
+              幫助
+            </Button>
 
-        {showMobileChat && <TheMobileChat hash={sell1Data.Tx_HASH} />}
+            <TheChat hash={sell1Data.Tx_HASH} isChat={showChat} />
+          </>
+        ) : null}
       </>
     );
   } else if (buy1Data) {
@@ -78,33 +79,34 @@ const InstantDetail = () => {
         <BuyDetail />
 
         {/* Chat --桌機版 */}
-        <TheChat isChat={!isMobile} hash={buy1Data.Tx_HASH} />
+        {!isMobile && buy1Data ? <TheChat isChat={!isMobile} hash={buy1Data.Tx_HASH} /> : null}
 
         {/* Chat --手機版  */}
         {isMobile && buy1Data ? (
-          <Button
-            style={helpBtn}
-            variant="primary"
-            onClick={() => setShowMobileChat(!showMobileChat)}
-          >
-            <img
-              style={{
-                width: 15,
-                height: 20,
-                marginRight: 8,
-              }}
-              src={helpIcon}
-              alt="help icon"
-            />
-            幫助
-          </Button>
+          <>
+            <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
+              <img
+                style={{
+                  width: 15,
+                  height: 20,
+                  marginRight: 8,
+                }}
+                src={helpIcon}
+                alt="help icon"
+              />
+              幫助
+            </Button>
+            <TheChat hash={buy1Data.Tx_HASH} isChat={showChat} />
+          </>
         ) : null}
-
-        {showMobileChat && <TheMobileChat hash={buy1Data.Tx_HASH} />}
       </>
     );
   } else {
-    return <h2>目前沒有交易..</h2>;
+    return (
+      <Card>
+        <BaseSpinner />
+      </Card>
+    );
   }
 };
 

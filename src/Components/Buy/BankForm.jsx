@@ -102,7 +102,7 @@ const BankFrom = () => {
   return (
     <>
       <Form className="confirmBuyContent">
-        <Form.Row className="justify-content-between align-items-center">
+        <Form.Row className="justify-content-between align-items-start">
           <Form.Group
             as={Col}
             md={6}
@@ -156,9 +156,9 @@ const BankFrom = () => {
           </Form.Group>
 
           {/* 購買資訊 */}
-          <Form.Group as={Col}>
-            <Form.Row className="confirmBuy-textContent px-4 ">
-              <Form.Group as={Col} xl={12} lg={12} className="">
+          <Form.Group as={Col} className="">
+            <Form.Row className="confirmBuy-textContent p-4">
+              <Form.Group as={Col} className="mb-0">
                 <div className="">
                   <p className="txt_12_grey mb-0">總價</p>
                   <p className="confirmBuy-text c_blue mb-0">
@@ -167,7 +167,7 @@ const BankFrom = () => {
                   </p>
                 </div>
               </Form.Group>
-              <Form.Group as={Col} xl={12} lg={12} className="">
+              <Form.Group as={Col} className=" text-right mb-0">
                 <p className="txt_12_grey mb-0">數量</p>
                 <p className="confirmBuy-text mb-0 text-dark">
                   {/* 小數第二位，千分逗號 */}

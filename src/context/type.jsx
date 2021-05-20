@@ -73,9 +73,10 @@ export const CLEAN_INSTANT_DATA = 'CLEAN_INSTANT_DATA';
 export const SET_COUNT_DATA = 'SET_COUNT_DATA';
 export const SET_SELL1_DATA = 'SET_SELL1_DATA';
 export const SET_BUY1_DATA = 'SET_BUY1_DATA';
-export const INSTANT_SET_WS_CLIENT = 'INSTANT_SET_WS_CLIENT';
+export const INSTANT_ALL_WS_CLIENT = 'INSTANT_ALL_WS_CLIENT'; // instant all client
+export const INSTANT_ON_GOING_WS_CLIENT = 'INSTANT_ON_GOING_WS_CLIENT'; // instant on going client
+export const SET_STATUS_WS_CLIENT = 'SET_STATUS_WS_CLIENT'; // 確認狀態的client
 export const SET_WS_STATUS_DATA = 'SET_WS_STATUS_DATA';
-export const SET_STATUS_WS_CLIENT = 'SET_STATUS_WS_CLIENT';
 export const SET_INSTANT_ONGOING_DATA = 'SET_INSTANT_ONGOING_DATA';
 export const SET_ACTION_TYPE = 'SET_ACTION_TYPE';
 

@@ -51,7 +51,6 @@ export default class MoneyRecord extends Component {
     } catch (error) {
       localStorage.removeItem('token');
       clearInterval(this.checkTickLoop);
-      alert('session過期，請重新登入 get balance catch');
       // history.replace('/auth/login');
     }
   };
@@ -63,8 +62,6 @@ export default class MoneyRecord extends Component {
   getTick = async token => {
     if (!token) {
       const { history } = this.props;
-
-      alert('請重新登入, get tick');
       localStorage.removeItem('token');
       history.replace('/auth/login');
     }
@@ -99,7 +96,6 @@ export default class MoneyRecord extends Component {
     } catch (error) {
       localStorage.removeItem('token');
       clearInterval(this.checkTickLoop);
-      alert('session過期，請重新登入 get tick catch');
       history.replace('/auth/login');
     }
   };
@@ -108,7 +104,6 @@ export default class MoneyRecord extends Component {
     if (!token) {
       const { history } = this.props;
 
-      alert('請重新登入, check tick');
       localStorage.removeItem('token');
       history.replace('/auth/login');
     }
@@ -146,7 +141,6 @@ export default class MoneyRecord extends Component {
     } catch (error) {
       localStorage.removeItem('token');
       clearInterval(this.checkTickLoop);
-      alert('session過期，請重新登入 check tick catch');
       history.replace('/auth/login');
     }
   };
@@ -189,17 +183,17 @@ export default class MoneyRecord extends Component {
   render() {
     const { Avb_Balance, Real_Balance, httpError } = this.state;
     return (
-      <section className="bg-white balance-box">
-        <div className="balance-width-box px-4">
-          <div className="balance mr-4">
-            結餘：
+      <section className="bg-white">
+        <div className="balance-width-box d-flex justify-context-start align-items-center">
+          <div className="mr-4">
+            <span style={{ color: '#707070' }}>結餘：</span>
             <span className="usdt mr_sm"></span>
             <span className="c_green mr_sm">USDT</span>
             <span className="c_green fs_20">{Number(Real_Balance).toFixed(2)}</span>
           </div>
 
-          <div className="balance">
-            可提：
+          <div className="">
+            <span style={{ color: '#707070' }}>可提：</span>
             <span className="usdt mr_sm"></span>
             <span className="c_green mr_sm">USDT</span>
             <span className="c_green fs_20">{Number(Avb_Balance).toFixed(2)}</span>

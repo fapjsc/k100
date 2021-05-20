@@ -31,9 +31,9 @@ const InstantScreen = () => {
     setActionType,
   } = instantContext;
 
-  // ==========
-  // UseEffect
-  // ==========
+  // ===========
+  //  UseEffect
+  // ===========
   useEffect(() => {
     return () => {
       setActionType('');

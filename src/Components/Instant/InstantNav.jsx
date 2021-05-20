@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 import BuyContext from '../../context/buy/BuyContext';
+import SellContext from '../../context/sell/SellContext';
 
 const InstantNva = props => {
   // Router Props
@@ -16,9 +17,14 @@ const InstantNva = props => {
   const buyContext = useContext(BuyContext);
   const { buyWsClient } = buyContext;
 
+  // Sell Context
+  const sellContext = useContext(SellContext);
+  const { wsClient } = sellContext;
+
   const handleClick = e => {
     if (buyWsClient) buyWsClient.close();
     if (wsStatusClient) wsStatusClient.close();
+    if (wsClient) wsClient.close();
 
     if (e.target.id === 'all') props.setTab('all');
     if (e.target.id === 'onGoing') props.setTab('onGoing');

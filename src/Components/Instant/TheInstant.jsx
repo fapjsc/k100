@@ -3,6 +3,7 @@ import { useEffect, useContext, useState } from 'react';
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import AuthContext from '../../context/auth/AuthContext';
 
 // Components
 import InstantNav from './InstantNav';
@@ -18,22 +19,33 @@ const TheInstant = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { connectInstantWs, instantOngoingWsConnect, cleanAll } = instantContext;
+  const { connectInstantWs, instantOngoingWsConnect, wsStatusData, cleanAll } = instantContext;
 
   // HttpError Context
   const httpError = useContext(HttpErrorContext);
   const { httpLoading } = httpError;
 
+  // Auth Context
+  const authContext = useContext(AuthContext);
+  const { isAgent } = authContext;
+  // ===========
+  //  useEffect
+  // ===========
   useEffect(() => {
     connectInstantWs();
     instantOngoingWsConnect();
-    return cleanAll();
+
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (wsStatusData) cleanAll();
+    // eslint-disable-next-line
+  }, [wsStatusData]);
+
   return (
     <div>
-      <p className="welcome_txt">即時買賣</p>
+      <p className="welcome_txt pl-0">即時買賣</p>
       <div className="contentbox">
         {/* Tab Link */}
         <InstantNav setTab={setTab} tab={tab} />

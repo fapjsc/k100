@@ -38,7 +38,7 @@ const SellDetail = () => {
 
   return (
     <Container>
-      <Row className="mb-2">
+      <Row className="mb-2 mt-4">
         <Col className="mt-4 pl-1">
           <p
             style={{
@@ -52,8 +52,8 @@ const SellDetail = () => {
         </Col>
       </Row>
 
-      <Row className=" mb-2 justify-content-between">
-        <Col xl={6} className="txt_12 lightblue_bg mb-4">
+      <Row className="mb-2 justify-content-between">
+        <Col xl={6} className="txt_12 lightblue_bg h-100">
           <p>
             收款金額： &emsp;
             <span
@@ -81,7 +81,7 @@ const SellDetail = () => {
           </Col>
         )}
       </Row>
-      <Row className="justify-content-center">
+      <Row className="justify-content-center mt-4">
         <Col className="mw400 text-center px-0">
           <Button
             onClick={handleSubmit}

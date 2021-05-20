@@ -4,7 +4,8 @@ import {
   SET_SELL1_DATA,
   SET_COUNT_DATA,
   SET_BUY1_DATA,
-  INSTANT_SET_WS_CLIENT,
+  INSTANT_ALL_WS_CLIENT,
+  INSTANT_ON_GOING_WS_CLIENT,
   SET_WS_STATUS_DATA,
   SET_STATUS_WS_CLIENT,
   SET_INSTANT_ONGOING_DATA,
@@ -33,10 +34,15 @@ const InstantReducer = (state, action) => {
         ...state,
         wsStatusData: action.payload,
       };
-    case INSTANT_SET_WS_CLIENT:
+    case INSTANT_ALL_WS_CLIENT:
       return {
         ...state,
-        wsClient: action.payload,
+        instantAllClient: action.payload,
+      };
+    case INSTANT_ON_GOING_WS_CLIENT:
+      return {
+        ...state,
+        instantOnGoingClient: action.payload,
       };
     case SET_BUY1_DATA:
       return {

@@ -56,10 +56,16 @@ const HistoryWait = () => {
       <Table responsive bordered hover className="mt-4">
         <thead>
           <tr>
-            <th></th>
-            <th className="theadTh">日期</th>
-            <th className="theadTh">交易額（USDT</th>
-            <th className="theadTh">狀態</th>
+            <th style={titleStyle} className="w8"></th>
+            <th style={titleStyle} className="w55">
+              日期
+            </th>
+            <th style={titleStyle} className="mw105">
+              交易額（USDT
+            </th>
+            <th style={titleStyle} className="w8">
+              狀態
+            </th>
           </tr>
         </thead>
 
@@ -67,82 +73,37 @@ const HistoryWait = () => {
           {waitList.map(h => (
             <tr key={uuidv4()} onClick={() => handleClick(h.token)} style={{ cursor: 'pointer' }}>
               {/* 交易類別 */}
-              {!isMobile ? (
-                // - 桌面
-                <td
-                  style={{
-                    maxWidth: 70,
-                    textAlign: 'center',
-                    fontWeight: 300,
-                  }}
-                  className={
+              <td
+                className={
+                  h.MasterType === '買入'
+                    ? 'txt18 text-center'
+                    : h.MasterType === '賣出'
+                    ? 'txt18_r text-center'
+                    : 'txt18_p text-center'
+                }
+              >
+                <img
+                  style={iconStyle}
+                  src={
                     h.MasterType === '買入'
-                      ? 'txt18'
+                      ? blueIcon
                       : h.MasterType === '賣出'
-                      ? 'txt18_r'
-                      : 'txt18_p'
+                      ? redIcon
+                      : purpleIcon
                   }
-                >
-                  <img
-                    src={
-                      h.MasterType === '買入'
-                        ? blueIcon
-                        : h.MasterType === '賣出'
-                        ? redIcon
-                        : purpleIcon
-                    }
-                    alt="status icon"
-                    style={{
-                      height: 21,
-                      marginBottom: 3,
-                      marginRight: 8,
-                    }}
-                  />
-                  {h.MasterType}
-                </td>
-              ) : (
-                // -手機
-                <td
-                  style={{
-                    maxWidth: 70,
-                    textAlign: 'center',
-                    fontWeight: 300,
-                  }}
-                  className={
-                    h.MasterType === '買入'
-                      ? 'txt14_b'
-                      : h.MasterType === '賣出'
-                      ? 'txt14_r'
-                      : 'txt14_p'
-                  }
-                >
-                  {/* <img
-                    src={
-                      h.MasterType === '買入'
-                        ? blueIcon
-                        : h.MasterType === '賣出'
-                        ? redIcon
-                        : purpleIcon
-                    }
-                    alt="status icon"
-                    style={{
-                      height: 21,
-                      marginBottom: 3,
-                      marginRight: 8,
-                    }}
-                  /> */}
-                  {h.MasterType}
-                </td>
-              )}
+                  alt="status icon"
+                />
+                <span style={textStyle}>{h.MasterType}</span>
+              </td>
 
               {/* 日期 */}
-              <td>{h.Date}</td>
+              <td className="" style={dateText}>
+                {h.Date}
+              </td>
 
               {/* 交易額 */}
               <td
-                style={{
-                  verticalAlign: 'middle',
-                }}
+                style={transactionAmount}
                 className={
                   h.MasterType === '買入' || h.MasterType === '轉入'
                     ? 'c_green text-right pr-4'
@@ -153,13 +114,7 @@ const HistoryWait = () => {
               </td>
 
               {/* 狀態 */}
-              <td
-                className="text-center"
-                style={{
-                  verticalAlign: 'middle',
-                  textAlign: 'center',
-                }}
-              >
+              <td className="text-center" style={statusStyle}>
                 {h.Order_StatusID === 34
                   ? '收款確認中'
                   : h.Order_StatusID === 33
@@ -178,6 +133,44 @@ const HistoryWait = () => {
   } else {
     return <BaseSpinner />;
   }
+};
+
+const iconStyle = {
+  height: 15,
+  width: 15,
+  marginRight: 4,
+};
+
+const titleStyle = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  color: '#646464',
+  fontWeight: 'normal',
+  verticalAlign: 'middle',
+};
+
+const textStyle = {
+  fontSize: '14px',
+  lineHeight: '1.7',
+};
+
+const dateText = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  color: '#000',
+  verticalAlign: 'middle',
+};
+
+const transactionAmount = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  verticalAlign: 'middle',
+};
+
+const statusStyle = {
+  fontSize: 12,
+  lineHeight: 1.4,
+  verticalAlign: 'middle',
 };
 
 export default HistoryWait;

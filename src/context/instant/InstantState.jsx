@@ -12,7 +12,8 @@ import {
   CLEAN_INSTANT_DATA,
   SET_SELL1_DATA,
   SET_COUNT_DATA,
-  INSTANT_SET_WS_CLIENT,
+  INSTANT_ALL_WS_CLIENT,
+  INSTANT_ON_GOING_WS_CLIENT,
   SET_BUY1_DATA,
   SET_WS_STATUS_DATA,
   SET_STATUS_WS_CLIENT,
@@ -33,6 +34,8 @@ const InstantState = props => {
     buy1Data: null,
     wsClient: null,
     wsStatusData: null,
+    instantAllClient: null,
+    instantOnGoingClient: null,
     wsStatusClient: null,
     actionType: '',
   };
@@ -67,7 +70,7 @@ const InstantState = props => {
 
     const client = new ReconnectingWebSocket(url);
 
-    setWsClient(client);
+    setAllClient(client);
 
     // 1.建立連接
     client.onopen = () => {
@@ -78,7 +81,7 @@ const InstantState = props => {
     client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got reply!', dataFromServer);
+      console.log('got reply!', dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setInstantData(dataFromServer.data);
@@ -112,7 +115,7 @@ const InstantState = props => {
 
     const client = new ReconnectingWebSocket(url);
 
-    setWsClient(client);
+    setOnGoingClient(client);
 
     // 1.建立連接
     client.onopen = () => {
@@ -123,7 +126,7 @@ const InstantState = props => {
     client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got reply!', dataFromServer);
+      console.log('got reply!', dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setOnGoingData(dataFromServer.data);
@@ -135,11 +138,11 @@ const InstantState = props => {
 
     // 3.錯誤處理
     client.onclose = function (message) {
-      // console.log('關閉連線.....');
+      console.log('關閉連線..... onGoing');
     };
   };
 
-  // Status Web Socket
+  // Status Web Socket  --確認狀態
   const statusWs = orderToken => {
     if (!orderToken) return;
 
@@ -151,12 +154,14 @@ const InstantState = props => {
     let url;
 
     if (window.location.protocol === 'http:') {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+      url = `${process.env.REACT_APP_WEBSOCKET_URL}${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
     const client = new W3CWebsocket(url);
+
+    console.log(client);
 
     if (client) {
       setWsStatusClient(client);
@@ -175,14 +180,18 @@ const InstantState = props => {
         if (dataFromServer) setWsStatusData(dataFromServer.data.Order_StatusID);
 
         // // 交易成功 Order_StatusID：1
-        if (dataFromServer.data.Order_StatusID === 1) {
+        if (
+          dataFromServer.data.Order_StatusID === 1 ||
+          dataFromServer.data.Order_StatusID === 99 ||
+          dataFromServer.data.Order_StatusID === 98
+        ) {
           client.close();
         }
       };
 
-      // 3.錯誤處理
+      // 3. 關閉提示
       client.onclose = function (message) {
-        console.log('關閉連線.....');
+        console.log('關閉ws status連線.....', message);
       };
     }
   };
@@ -215,6 +224,8 @@ const InstantState = props => {
     } catch (error) {
       handleHttpError(error);
     }
+
+    setHttpLoading(false);
   };
 
   // Sell Match --2
@@ -273,6 +284,8 @@ const InstantState = props => {
     } catch (error) {
       handleHttpError(error);
     }
+
+    setHttpLoading(false);
   };
 
   // Buy Match --2
@@ -328,19 +341,24 @@ const InstantState = props => {
     dispatch({ type: SET_BUY1_DATA, payload: data });
   };
 
-  // Set Web Socket Client
-  const setWsClient = value => {
-    dispatch({ type: INSTANT_SET_WS_CLIENT, payload: value });
+  // Set Web Socket Client -- Instant All
+  const setAllClient = value => {
+    dispatch({ type: INSTANT_ALL_WS_CLIENT, payload: value });
+  };
+
+  // Set Web Socket Client -- Instant On Going
+  const setOnGoingClient = value => {
+    dispatch({ type: INSTANT_ON_GOING_WS_CLIENT, payload: value });
+  };
+
+  // Set Web Socket Client  --Status
+  const setWsStatusClient = client => {
+    dispatch({ type: SET_STATUS_WS_CLIENT, payload: client });
   };
 
   // Set Ws Status Data
   const setWsStatusData = data => {
     dispatch({ type: SET_WS_STATUS_DATA, payload: data });
-  };
-
-  // Set Web Socket Client
-  const setWsStatusClient = client => {
-    dispatch({ type: SET_STATUS_WS_CLIENT, payload: client });
   };
 
   // Set Ws On Going Data
@@ -359,10 +377,6 @@ const InstantState = props => {
     setBuy1Data(null);
     setSell1Data(null);
     setCountData(null);
-    if (state.wsStatusClient) state.wsStatusClient.close();
-    if (state.wsClient) state.wsClient.close();
-    setWsStatusClient(null);
-    setWsClient(null);
   };
 
   const [state, dispatch] = useReducer(InstantReducer, initialState);
@@ -374,13 +388,14 @@ const InstantState = props => {
         sell1Data: state.sell1Data,
         countData: state.countData,
         buy1Data: state.buy1Data,
-        wsClient: state.wsClient,
-        wsStatusData: state.wsStatusData,
+        instantAllClient: state.instantAllClient,
+        instantOnGoingClient: state.instantOnGoingClient,
         wsStatusClient: state.wsStatusClient,
+        wsStatusData: state.wsStatusData,
         wsOnGoingData: state.wsOnGoingData,
         actionType: state.actionType,
 
-        connectInstantWs,
+        connectInstantWs, // 所有的instant web socket
         sellMatch1,
         sellMatch2,
         setCountData,
@@ -391,8 +406,9 @@ const InstantState = props => {
         statusWs,
         setWsStatusData,
         cleanAll,
-        instantOngoingWsConnect,
+        instantOngoingWsConnect, // 進行中的web socket
         setActionType,
+        setWsStatusClient,
       }}
     >
       {props.children}

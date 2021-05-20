@@ -32,14 +32,19 @@ const SellDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { sell1Data, setSell1Data, setCountData, sellMatch1, sellMatch2, wsStatusData, cleanAll } =
+  const { sell1Data, sellMatch1, sellMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll } =
     instantContext;
 
+  // ===========
+  //  useEffect
+  // ===========
   useEffect(() => {
-    sellMatch1(match.params.id);
+    statusWs(match.params.id);
+
+    if (!sell1Data) sellMatch1(match.params.id);
     return () => {
-      setSell1Data(null);
-      setCountData(null);
+      if (wsStatusClient) wsStatusClient.close();
+      cleanAll();
     };
     //eslint-disable-next-line
   }, []);
@@ -53,21 +58,19 @@ const SellDetail = () => {
   }, [errorText]);
 
   useEffect(() => {
-    if (sell1Data) {
-      if (sell1Data.Order_StatusID === 34 || sell1Data.Order_StatusID === 1) setShowComplete(true);
-    }
-    // eslint-disable-next-line
-  }, [sell1Data]);
-
-  useEffect(() => {
     if (wsStatusData === 99 || wsStatusData === 98) {
       setShowComplete(true);
       setShowCancel(false);
     }
 
+    if (wsStatusData === 34 || wsStatusData === 1) setShowComplete(true);
+
     // eslint-disable-next-line
   }, [wsStatusData]);
 
+  // ===========
+  //  function
+  // ===========
   const handleClick = () => {
     sellMatch2(match.params.id);
   };
@@ -78,6 +81,7 @@ const SellDetail = () => {
   };
 
   const backToHome = () => {
+    if (wsStatusClient) wsStatusClient.close();
     history.replace('/home/overview');
     cleanAll();
   };
@@ -94,84 +98,73 @@ const SellDetail = () => {
       />
       <div className="container h_88">
         <div className="row mt-4">
-          <div className="col-10">
-            <p className="welcome_txt pl-0">歡迎登入</p>
+          <div className="col-lg-10 col-12">
+            <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
+              歡迎登入
+            </p>
             <div className="contentbox">
               <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
-
-              <div id="buy" className="tabcontent">
+              <div className="txt_12 pt_20">即時買賣</div>
+              <div id="sell" className="tabcontent">
                 {sell1Data && !showComplete ? (
                   <>
-                    <div className="txt_12 pt_20">即時買賣</div>
-                    <div className="easy_info" style={{}}>
-                      <div className="inline">
-                        <div className="txt_12_grey">匯率：</div>
-                        <span className="">{sell1Data.D1.toFixed(2)}</span>
+                    <div className="d-flex justify-content-between flex-column-mobile">
+                      {/* Block-1  --pay info */}
+                      <div className="w45_m100 mobile-width">
+                        {/* Pay time */}
+                        <div className="easy_counter mt-4 d-flex justify-content-start mb-2">
+                          <span className="txt_12 mr-auto">收款方資料</span>
+                          {/* <span className="i_clock" />
+                          <span>剩餘支付時間：</span>
+                          <span className="c_yellow">15分40秒</span> */}
+                        </div>
+                        {/* 收款方資料 */}
+                        <div className="lightblue_bg txt_12 d-flex flex-column py-4">
+                          <span className="txt_12_grey mb-4">收款方姓名：{sell1Data.P2}</span>
+                          <span className="txt_12_grey mb-4">收款賬號：{sell1Data.P1}</span>
+                          <span className="txt_12_grey mb-4">開戶銀行：{sell1Data.P3}</span>
+                          <span className="txt_12_grey">所在省市：{sell1Data.P4}</span>
+                        </div>
+
+                        {/* 付款方資料 */}
+                        <div className="w45_m100 mobile-width w-100">
+                          <p className="txt_12 pt_20 mb-2">付款方資料</p>
+                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：周明</p>
+                        </div>
                       </div>
-                      {sell1Data.MasterType === 1 ? (
+
+                      {/* Block-2  --交易資料 */}
+                      <div className="easy_info mobile-width h-50 flex-order1-mobile p-4">
+                        <div className="inline">
+                          <div className="txt_12_grey">匯率：</div>
+                          <span className="">{sell1Data.D1.toFixed(2)}</span>
+                        </div>
+
                         <div className="right_txt16">
                           <span className="i_blue1" />
                           <span className="blue">買</span>
                         </div>
-                      ) : (
-                        <div className="right_txt16">
-                          <span className="i_red" />
-                          <span className="red">賣</span>
-                        </div>
-                      )}
 
-                      <hr />
+                        <hr />
 
-                      <div className="d-flex justify-content-between">
-                        <div>
-                          <p className="txt_12_grey mb-0">總價</p>
-                          <p className="c_blue">{sell1Data.D2.toFixed(2)} CNY</p>
-                        </div>
-                        <div>
-                          <p className="txt_12_grey text-right mb-0">數量</p>
-                          <p className="">{Math.abs(sell1Data.UsdtAmt).toFixed(2)} USDT</p>
+                        <div className="d-flex justify-content-between">
+                          <div>
+                            <p className="txt_12_grey mb-0">總價</p>
+                            <p className="c_blue">{sell1Data.D2.toFixed(2)} CNY</p>
+                          </div>
+                          <div>
+                            <p className="txt_12_grey text-right mb-0">數量</p>
+                            <p className="">{Math.abs(sell1Data.UsdtAmt).toFixed(2)} USDT</p>
+                          </div>
                         </div>
                       </div>
-
-                      {/* <div className="inline bg-info">
-                  <div className="txt_12_grey">總價</div>
-                  <span className="c_blue">6450.00 CNY</span>
-                </div>
-
-                <div className="inline pl_40 mt-4 bg-info" style={{ float: 'right' }}>
-                 
-                </div> */}
-                    </div>
-                    <div className="easy_counter mt-4 d-flex justify-content-between  w45_m100 mb-2">
-                      <div>
-                        <span className="txt_12 pt_20">收款方資料</span>
-                      </div>
-                      {/* <div>
-                      <span className="i_clock" />
-                      <span>剩餘支付時間：</span>
-                      <span className="c_yellow">15分40秒</span>
-                    </div> */}
                     </div>
 
-                    <div className="lightblue_bg txt_12 w45_m100 d-flex flex-column">
-                      <span className="txt_12_grey  mb-3">收款方姓名：{sell1Data.P2}</span>
-
-                      <span className="txt_12_grey  mb-3">收款賬號：{sell1Data.P1}</span>
-
-                      <span className="txt_12_grey  mb-3">開戶銀行：{sell1Data.P3}</span>
-
-                      <span className="txt_12_grey ">所在省市：{sell1Data.P4}</span>
-                    </div>
-
-                    <div className="txt_12 pt_20 mb-2">付款方資料</div>
-                    <div className="lightblue_bg txt_12 w45_m100">
-                      <span className="txt_12_grey">付款方姓名：周明</span>
-                    </div>
-
+                    {/* Button */}
                     {httpLoading ? (
                       <Button
                         variant="primary"
-                        className="easy-btn mw400"
+                        className="easy-btn mw400 mobile-width"
                         style={{ marginTop: 50 }}
                         disabled
                       >
@@ -187,7 +180,7 @@ const SellDetail = () => {
                     ) : (
                       <Button
                         onClick={handleClick}
-                        className="easy-btn mw400"
+                        className="easy-btn mw400 mobile-width"
                         style={{
                           marginTop: 50,
                         }}

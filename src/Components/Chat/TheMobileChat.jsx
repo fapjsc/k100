@@ -31,9 +31,9 @@ const TheChat = props => {
 
   //點擊後發送訊息到server
   const sendMessage = (value, e) => {
-    if (!instantChat || value === '') return;
+    if (value === '') return;
 
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 || e.target.id === 'sendIcon' || e.target.id === 'sendIcon1') {
       instantClient.send(
         JSON.stringify({
           Message_Type: 1,
@@ -91,11 +91,10 @@ const TheChat = props => {
   };
 
   useEffect(() => {
-    instantChat(match.params.id);
-
-    return () => {
-      if (instantClient) instantClient.close();
-    };
+    // instantChat(match.params.id);
+    // return () => {
+    //   if (instantClient) instantClient.close();
+    // };
     // eslint-disable-next-line
   }, []);
 
@@ -208,6 +207,7 @@ const TheChat = props => {
                 />
               </div>
               <span
+                id="sendIcon"
                 style={{ cursor: 'pointer' }}
                 className="send_icon"
                 onClick={e => sendMessage(userInput, e)}

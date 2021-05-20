@@ -9,12 +9,13 @@ import BuyContext from '../../context/buy/BuyContext';
 import BaseSpinner from '../Ui/BaseSpinner';
 import ExRate from './ExRate';
 import BuyDetail from './BuyDetail';
-// import BuyComplete from './BuyComplete';
 import FormFooter from '../Layout/FormFooter';
-import Chat from '../Chat';
-// import TheChat from '../Chat/TheChat';
-// import TheMobileChat from '../Chat/TheMobileChat';
+// import Chat from '../Chat';
 import CompleteStatus from '../universal/CompleteStatus';
+import Pairing from './Pairing';
+// import BuyComplete from './BuyComplete';
+import TheChat from '../Chat/TheChat';
+// import TheMobileChat from '../Chat/TheMobileChat';
 // import TheChat from '../Chat/TheChat';
 // import ChatMobile from '../Chat/ChatMobile';
 
@@ -26,23 +27,8 @@ const BuyInfo = () => {
   // Init State
   const [showChat, setShowChat] = useState(false);
 
-  // eslint-disable-next-line
-  const [state, setState] = useState({
-    messageList: [],
-    newMessagesCount: 0,
-    isOpen: false,
-    fileUpload: true,
-  });
-
-  // function onMessageWasSent(message) {
-  //   setState(state => ({
-  //     ...state,
-  //     messageList: [...state.messageList, message],
-  //   }));
-  // }
-
   // Media Query
-  const isDesktopOrLaptop = useMediaQuery({ query: '(max-width: 1200px)' }); // 小於等於 1200 true
+  const isMobile = useMediaQuery({ query: '(max-width: 1200px)' }); // 小於等於 1200 true
 
   // Router Props
   const match = useRouteMatch();
@@ -56,11 +42,17 @@ const BuyInfo = () => {
     setOrderToken,
     wsStatus,
     cleanAll,
-    // closeWebSocket,
     GetDeltaTime,
     buyWsClient,
+    buyPairing,
+    handlePairing,
+    buyCount,
+    // closeWebSocket,
   } = buyContext;
 
+  // ===========
+  //  useEffect
+  // ===========
   useEffect(() => {
     const orderToken = match.params.id;
     if (orderToken) {
@@ -71,26 +63,43 @@ const BuyInfo = () => {
     return () => {
       if (buyWsClient) buyWsClient.close();
       cleanAll();
-      // cleanAll();
     };
 
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
+    if (wsStatus === 31 || wsStatus === 32) {
+      handlePairing(true);
+    } else {
+      handlePairing(false);
+    }
+    // eslint-disable-next-line
+  }, [wsStatus]);
+
+  useEffect(() => {
     GetDeltaTime(match.params.id);
     // eslint-disable-next-line
   }, [showChat]);
 
+  // ===========
+  //  function
+  // ===========
   const backToHome = () => {
-    console.log(buyWsClient);
     history.replace('/home/overview');
     if (buyWsClient) buyWsClient.close();
     cleanAll();
   };
 
+  const onHide = () => {
+    handlePairing(false);
+    cleanAll();
+    history.replace('/home/overview');
+  };
+
   return (
-    <>
+    <div className="">
+      <Pairing show={buyPairing} onHide={onHide} usdt={buyCount.usdt} rmb={buyCount.rmb} />
       <ExRate />
 
       {wsStatus === 33 && buyWsData ? (
@@ -109,37 +118,33 @@ const BuyInfo = () => {
         <BaseSpinner />
       )}
 
-      {/* 桌機版聊天室 */}
-      {buyWsData && <Chat isChat={!isDesktopOrLaptop} Tx_HASH={buyWsData.hash} />}
-      {/* {buyWsData && !isDesktopOrLaptop ? <TheChat Tx_HASH={buyWsData.hash} /> : null} */}
-
-      {/* 手機版聊天室*/}
-      {isDesktopOrLaptop && buyWsData ? (
-        <>
-          <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
-            <img
-              style={{
-                width: 15,
-                height: 20,
-                marginRight: 8,
-              }}
-              src={helpIcon}
-              alt="help icon"
-            />
-            幫助
-          </Button>
-
-          {/* 手機版 */}
-          <Chat Tx_HASH={buyWsData.hash} isChat={showChat} />
-          {/* <TheMobileChat hash={buyWsData.hash} isChat={showChat} /> */}
-        </>
-      ) : null}
-
-      {/* 桌機版聊天室 */}
-      {buyWsData && <Chat isChat={!isDesktopOrLaptop} Tx_HASH={buyWsData.hash} />}
-      {/* {buyWsData && <TheChat isChat={!isDesktopOrLaptop} hash={buyWsData.hash} />} */}
       <FormFooter />
-    </>
+
+      <div>
+        {/* 桌機版聊天室 */}
+        {buyWsData && !isMobile ? <TheChat isChat={!isMobile} hash={buyWsData.hash} /> : null}
+
+        {/* 手機版聊天室*/}
+        {isMobile && buyWsData ? (
+          <>
+            <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
+              <img
+                style={{
+                  width: 15,
+                  height: 20,
+                  marginRight: 8,
+                }}
+                src={helpIcon}
+                alt="help icon"
+              />
+              幫助
+            </Button>
+
+            <TheChat hash={buyWsData.hash} isChat={showChat} />
+          </>
+        ) : null}
+      </div>
+    </div>
   );
 };
 

@@ -6,10 +6,11 @@ import HistoryContext from '../../context/history/HistoryContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
-// import All from './All'; // 舊版
-// import Wait from './Wait'; // 舊版
-import HistoryAll from './HistoryAll'; // 修正中
-import HistoryWait from './HistoryWait'; // 修正中
+
+import HistoryAll from './HistoryAll';
+import HistoryWait from './HistoryWait';
+// import HistoryAll from '../HistoryV2/HistoryAll';
+// import HistoryWait from '../HistoryV2/HistoryWait';
 
 // Style
 import style from './History.module.scss';
@@ -81,9 +82,11 @@ const History = () => {
                   待處理
                 </Link>
                 {waitList.length > 0 && (
-                  <Badge pill variant="danger" style={waitCount}>
-                    {waitList.length}
-                  </Badge>
+                  // <Badge pill variant="danger" style={waitCount}>
+                  //   {waitList.length}
+                  // </Badge>
+
+                  <span style={waitCount}>{waitList.length}</span>
                 )}
               </div>
             </div>
@@ -106,8 +109,16 @@ const waitBox = {
 
 const waitCount = {
   position: 'absolute',
-  top: -8,
+  top: -10,
   right: 13,
+  borderRadius: '50%',
+  height: '20px',
+  width: '20px',
+  backgroundColor: 'red',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
 };
 
 export default History;

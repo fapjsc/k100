@@ -1,22 +1,46 @@
+// .home_btn {
+//   background-color: #fff;
+//   border-radius: 5px;
+//   text-align: center;
+//   color: #242e47;
+//   padding: 20px;
+//   display: inline-block;
+//   font-size: 16px;
+//   letter-spacing: 2px;
+//   // width: 90%;
+//   max-width: 40rem;
+//   margin-bottom: 2rem;
+//   transition: 0.3s;
+//   -webkit-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.3);
+//   box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.3);
+
+//   @media only screen and(max-width: 430px) {
+//     padding: 0;
+//   }
+// }
+
+// .home_btn:hover {
+//   color: #3f80fa;
+//   text-decoration: none;
+//   -webkit-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
+//   box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
+// }
+
 .home_btn {
   background-color: #fff;
   border-radius: 5px;
   text-align: center;
   color: #242e47;
   padding: 20px;
-  display: inline-block;
+  display: block;
   font-size: 16px;
   letter-spacing: 2px;
-  width: 90%;
-  max-width: 40rem;
-  margin-bottom: 2rem;
+  // width: 90% !important;
+  max-width: 400px;
+  margin-bottom: 20px;
   transition: 0.3s;
   -webkit-box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.3);
-
-  @media only screen and(max-width: 430px) {
-    padding: 0;
-  }
 }
 
 .home_btn:hover {
@@ -71,4 +95,14 @@
   padding: 10px;
   font-size: 12px;
   margin-bottom: 0px;
+}
+
+@media only screen and(max-width: 550px) {
+  .home_btn {
+    padding: 1px;
+    display: block;
+    font-size: 16px;
+    letter-spacing: 2px;
+    width: 100%;
+  }
 }
