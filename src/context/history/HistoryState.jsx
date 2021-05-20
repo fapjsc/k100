@@ -34,7 +34,6 @@ const HistoryState = props => {
 
       return headers;
     } else {
-      alert('請重新登入');
       history.replace('/auth/login');
       return;
     }

@@ -51,7 +51,7 @@ const WalletState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      console.log(error);
+      handleHttpError(error);
     }
 
     setHttpLoading(false);

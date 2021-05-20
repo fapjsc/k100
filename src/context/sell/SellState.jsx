@@ -53,7 +53,6 @@ const SellState = props => {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      alert('請新登入');
       history.replace('/auth/login');
       return;
     }
@@ -68,7 +67,6 @@ const SellState = props => {
   const getExRate = async () => {
     const headers = getHeader();
     if (!headers) {
-      alert('請新登入');
       history.replace('/auth/login');
       return;
     }
@@ -99,7 +97,6 @@ const SellState = props => {
     const headers = getHeader();
 
     if (!headers) {
-      alert('請新登入');
       history.replace('/auth/login');
       return;
     }
@@ -316,13 +313,13 @@ const SellState = props => {
       dispatch({ type: SET_CANCEL_ORDER_DATA, payload: resData });
 
       if (resData.code === 200) {
-        alert('訂單已經取消');
+        // alert('訂單已經取消');
         history.replace('/home/overview');
       } else {
         alert(`訂單取消失敗`);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 

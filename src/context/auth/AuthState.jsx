@@ -37,15 +37,12 @@ const AuthState = props => {
   // Get Header
   const getHeader = () => {
     const token = localStorage.getItem('token');
-    if (token) {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('login_session', token);
+    if (!token) return;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('login_session', token);
 
-      return headers;
-    } else {
-      return;
-    }
+    return headers;
   };
 
   // loginLoading
@@ -96,6 +93,26 @@ const AuthState = props => {
       } else {
         handleHttpError(resData);
       }
+    } catch (error) {
+      handleHttpError(error);
+    }
+  };
+
+  // 登出
+  const logout = async () => {
+    window.confirm('確定要登出嗎');
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiresIn');
+    localStorage.removeItem('agent');
+    localStorage.removeItem('loglevel');
+
+    history.replace('/login');
+    const headers = getHeader();
+
+    let logoutApi = '/j/logout.aspx';
+    try {
+      fetch(logoutApi, { headers });
     } catch (error) {
       handleHttpError(error);
     }
@@ -397,6 +414,7 @@ const AuthState = props => {
         setCountDown,
         login,
         setErrorText,
+        logout,
       }}
     >
       {props.children}

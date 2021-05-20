@@ -223,7 +223,7 @@ const BuyState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
       handleBuyBtnLoading(false);
     }
   };
@@ -277,7 +277,7 @@ const BuyState = props => {
         history.replace('/home/overview');
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
       history.replace('/home/overview');
     }
 

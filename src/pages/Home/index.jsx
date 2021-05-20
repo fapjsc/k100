@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Route, Switch, Redirect, Link, useHistory, useLocation } from 'react-router-dom';
+
+// Context
+import AuthContext from '../../context/auth/AuthContext';
 
 // Components
 import Transaction from '../../pages/Transaction';
@@ -18,34 +21,16 @@ import InstantScreen from '../../pages/InstantScreen';
 import style from '../../Components/Layout/Header.module.scss';
 
 const HomeScreen = () => {
-  // Init State
-  const [token, setToken] = useState(null);
-
   // Router Props
   const history = useHistory();
   const location = useLocation();
 
-  const logout = async () => {
-    window.confirm('確定要登出嗎');
+  // AuthContext
+  const authContext = useContext(AuthContext);
+  const { logout } = authContext;
 
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiresIn');
-    localStorage.removeItem('agent');
-    localStorage.removeItem('loglevel');
-
-    history.replace('/login');
-
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('login_session', token);
-
-    let logoutApi = '/j/logout.aspx';
-    try {
-      fetch(logoutApi, { headers });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // Init State
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
