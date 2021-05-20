@@ -33,6 +33,9 @@ const TheChat = props => {
     setMessages,
   } = chatContext;
 
+  // ===========
+  //  function
+  // ===========
   const handleChange = e => {
     setUserInput(e.target.value);
   };
@@ -120,6 +123,9 @@ const TheChat = props => {
     }
   };
 
+  // ===========
+  //  UseEffect
+  // ===========
   useEffect(() => {
     if (client) client.close();
     if (instantClient) instantClient.close();
@@ -130,6 +136,7 @@ const TheChat = props => {
     return () => {
       setMessages([]);
       setInstantMessages([]);
+      if (client) client.close();
     };
     // eslint-disable-next-line
   }, []);

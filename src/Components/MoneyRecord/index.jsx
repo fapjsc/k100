@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BaseDialog from './../Ui/BaseDialog';
-import PubSub from 'pubsub-js';
+// import PubSub from 'pubsub-js';
 
 import './index.scss';
 
@@ -55,9 +55,9 @@ export default class MoneyRecord extends Component {
     }
   };
 
-  pubBalance = value => {
-    PubSub.publish('pubBalance', value);
-  };
+  // pubBalance = value => {
+  //   PubSub.publish('pubBalance', value);
+  // };
 
   getTick = async token => {
     if (!token) {

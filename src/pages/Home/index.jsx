@@ -34,16 +34,15 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
     setToken(token);
 
     if (!token) {
       history.replace('/auth/login');
-    } else {
-      if (location.pathname === '/home' || location.pathname === '/home/') {
-        history.replace('/home/overview');
-      }
+      return;
     }
+
+    if (location.pathname === '/home' || location.pathname === '/home/')
+      history.replace('/home/overview');
 
     // eslint-disable-next-line
   }, []);
