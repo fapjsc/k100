@@ -115,12 +115,14 @@ const HistoryAllDetail = props => {
 
           <div style={gridContent8}>
             <p className="txt_12_grey mb-0">兌換價</p>
-            <p className="mb-0">{singleDetail.exchangePrice.toFixed(2)}</p>
+            <p className="mb-0">
+              {singleDetail.exchangePrice && singleDetail.exchangePrice.toFixed(2)}
+            </p>
           </div>
 
           <div style={gridContent9}>
             <p className="txt_12_grey mb-0">RMB</p>
-            <p className="mb-0">{singleDetail.rmb.toFixed(2)}</p>
+            <p className="mb-0">{singleDetail.rmb && singleDetail.rmb.toFixed(2)}</p>
           </div>
 
           <div style={gridContent10}>
