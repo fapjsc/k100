@@ -43,31 +43,24 @@ const HomeScreen = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const agent = localStorage.getItem('agent');
-
     if (!token) {
       history.replace('/auth/login');
       return;
     }
-
     setToken(token);
-
     if (agent) {
       setAgent(true);
       autoLogout();
     }
-
     if (location.pathname === '/home' || location.pathname === '/home/')
       history.replace('/home/overview');
-
     // 每小時確認一次agent帳號的過期時間
     let checkAgentExpires = setInterval(() => {
       autoLogout();
     }, 1000 * 60 * 60);
-
     return () => {
       clearInterval(checkAgentExpires);
     };
-
     // eslint-disable-next-line
   }, []);
 

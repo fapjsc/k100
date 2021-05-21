@@ -96,7 +96,7 @@ const TheInstant = () => {
                 <div className="row bb1 mx-0">
                   <div className="lightblue_bg txt_16 col-md-8 col-12 d-flex align-items-center justify-content-between-mobile">
                     {/* Usdt */}
-                    <div className="ml-2 mobile-margin0" style={{ marginRight: 100 }}>
+                    <div className="ml-2 mobile-margin0 w-50" style={{ marginRight: 100 }}>
                       <span className="i_blue1" />
                       <span className="blue mobile-text-md">買&nbsp;&nbsp;</span>
                       <span className="bold_22 blue mobile-text-md">
@@ -108,7 +108,7 @@ const TheInstant = () => {
                     </div>
 
                     {/* Cny */}
-                    <div className="">
+                    <div className="w-50">
                       <span className="i_cny" />
                       <span className="mobile-text-md">付&nbsp;{el.D2.toFixed(2)} CNY</span>
                     </div>
@@ -143,7 +143,7 @@ const TheInstant = () => {
                 <div className="row bb1 mx-0">
                   <div className="lightblue_bg txt_16 col-md-8 col-12 d-flex align-items-center justify-content-between-mobile">
                     {/* Usdt */}
-                    <div className="ml-2 mobile-margin0" style={{ marginRight: 100 }}>
+                    <div className="ml-2 mobile-margin0 w-50" style={{ marginRight: 100 }}>
                       <span className="i_red" />
                       <span className="red mobile-text-md">賣&nbsp;&nbsp;</span>
                       <span className="bold_22 red mobile-text-md">
@@ -154,7 +154,7 @@ const TheInstant = () => {
                       </span>
                     </div>
                     {/* Cny */}
-                    <div className="">
+                    <div className="w-50">
                       <span className="i_cny" />
                       <span className="mobile-text-md">收&nbsp;{el.D2.toFixed(2)} CNY</span>
                     </div>

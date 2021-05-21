@@ -103,23 +103,29 @@ const AuthState = props => {
   // 登出
   const logout = async () => {
     const headers = getHeader();
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiresIn');
+    localStorage.removeItem('agent');
+    localStorage.removeItem('loglevel');
+
     let logoutApi = '/j/logout.aspx';
     try {
       const res = await fetch(logoutApi, { headers });
       const resData = await res.json();
 
       if (resData.code === 200) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('expiresIn');
-        localStorage.removeItem('agent');
-        localStorage.removeItem('loglevel');
-        history.replace('/login');
+        // localStorage.removeItem('token');
+        // localStorage.removeItem('expiresIn');
+        // localStorage.removeItem('agent');
+        // localStorage.removeItem('loglevel');
       } else {
         handleHttpError(resData);
       }
     } catch (error) {
       handleHttpError(error);
     }
+
+    history.replace('/auth/login');
   };
 
   // 自動登出

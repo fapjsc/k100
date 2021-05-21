@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import BuyContext from '../../context/buy/BuyContext';
 import SellContext from '../../context/sell/SellContext';
 import InstantContext from '../../context/instant/InstantContext';
+// import AuthContext from '../../context/auth/AuthContext';
 
 // Style
 import { Nav } from 'react-bootstrap';
@@ -23,6 +24,10 @@ const TheNav = props => {
   // Instant Context
   const instantContext = useContext(InstantContext);
   const { wsStatusClient } = instantContext;
+
+  // Auth Context
+  // const authContext = useContext(AuthContext);
+  // // const { setIsLogout } = authContext;
 
   const handleClick = () => {
     if (buyWsClient) buyWsClient.close();

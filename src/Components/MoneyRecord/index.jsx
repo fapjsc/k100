@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 
 // Context
 import BalanceContext from '../../context/balance/BalanceContext';
+// import AuthContext from '../../context/auth/AuthContext';
 // import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // import BaseDialog from './../Ui/BaseDialog';
@@ -13,6 +14,10 @@ const MoneyRecord = () => {
   // Balance Context
   const balanceContext = useContext(BalanceContext);
   const { getBalance, avb, real, getTick, tick } = balanceContext;
+
+  // Auth Context
+  // const authContext = useContext(AuthContext);
+  // const { isLogout } = authContext;
 
   // HttpError Context
   // const httpErrorContext = useContext(HttpErrorContext);

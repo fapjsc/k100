@@ -19,7 +19,14 @@ const TheInstant = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { connectInstantWs, instantOngoingWsConnect, wsStatusData, cleanAll } = instantContext;
+  const {
+    connectInstantWs,
+    instantOngoingWsConnect,
+    wsStatusData,
+    cleanAll,
+    instantAllClient,
+    instantOnGoingClient,
+  } = instantContext;
 
   // HttpError Context
   const httpError = useContext(HttpErrorContext);
@@ -35,8 +42,20 @@ const TheInstant = () => {
     connectInstantWs();
     instantOngoingWsConnect();
 
+    return () => {
+      if (instantOnGoingClient) instantOnGoingClient.close();
+      if (instantAllClient) instantAllClient.close();
+    };
+
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (tab === 'all') connectInstantWs();
+
+    if (tab === 'onGoing') instantOngoingWsConnect();
+    // eslint-disable-next-line
+  }, [tab]);
 
   useEffect(() => {
     if (wsStatusData) cleanAll();
@@ -45,7 +64,7 @@ const TheInstant = () => {
 
   return (
     <div>
-      <p className="welcome_txt pl-0">即時買賣</p>
+      <p className="welcome_txt pl-0 pb-1">即時買賣</p>
       <div className="contentbox">
         {/* Tab Link */}
         <InstantNav setTab={setTab} tab={tab} />
