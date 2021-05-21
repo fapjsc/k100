@@ -131,7 +131,11 @@ const HistoryWait = () => {
   } else if (!historyLoading && !waitList.length) {
     return <NoData />;
   } else {
-    return <BaseSpinner />;
+    return (
+      <div style={{ margin: '60px auto' }}>
+        <BaseSpinner />
+      </div>
+    );
   }
 };
 

@@ -4,6 +4,9 @@ import Zmage from 'react-zmage'; // 圖片縮放
 import Resizer from 'react-image-file-resizer'; // 圖片壓縮
 // import { v4 as uuidv4 } from 'uuid';
 
+import { PhotoProvider, PhotoConsumer } from 'react-photo-view';
+import 'react-photo-view/dist/index.css';
+
 // Context
 import ChatContext from '../../context/chat/ChatContext';
 
@@ -192,13 +195,31 @@ const TheChat = props => {
                             </div>
                           )}
 
-                          <Zmage
+                          <PhotoProvider>
+                            <PhotoConsumer key={index} src={el.Message}>
+                              <img
+                                style={{
+                                  cursor: 'zoom-in',
+                                }}
+                                src={el.Message}
+                                alt="send img"
+                                className={
+                                  el.Message_Role === 1 || el.Message_Role === 2
+                                    ? 'talk_l'
+                                    : 'talk_r'
+                                }
+                              />
+                            </PhotoConsumer>
+                          </PhotoProvider>
+
+                          {/* <Zmage
+                            zoom={true}
                             alt="send img"
                             src={el.Message}
                             className={
                               el.Message_Role === 1 || el.Message_Role === 2 ? 'talk_l' : 'talk_r'
                             }
-                          />
+                          /> */}
                         </>
                       )}
 
@@ -288,13 +309,30 @@ const TheChat = props => {
                             </div>
                           )}
 
-                          <Zmage
+                          {/* <Zmage
                             alt="send img"
                             src={el.Message}
                             className={
                               el.Message_Role === 3 || el.Message_Role === 2 ? 'talk_l' : 'talk_r'
                             }
-                          />
+                          /> */}
+
+                          <PhotoProvider>
+                            <PhotoConsumer key={index} src={el.Message}>
+                              <img
+                                src={el.Message}
+                                alt="send img"
+                                style={{
+                                  cursor: 'zoom-in',
+                                }}
+                                className={
+                                  el.Message_Role === 3 || el.Message_Role === 2
+                                    ? 'talk_l'
+                                    : 'talk_r'
+                                }
+                              />
+                            </PhotoConsumer>
+                          </PhotoProvider>
                         </>
                       )}
 

@@ -109,44 +109,52 @@ const HistoryAllDetail = props => {
           </div>
 
           <div style={gridContent7}>
-            <p className="txt_12_grey mb-0">
-              手續費
-              {singleDetail.type === 2 || singleDetail.type === 3 ? '(USDT)' : '%'}
-            </p>
-            <p className="mb-0">{singleDetail.charge}</p>
+            {singleDetail.type === 0 || singleDetail.type === 1 || singleDetail.type === 2 ? (
+              <>
+                <p className="txt_12_grey mb-0">
+                  手續費
+                  {singleDetail.type === 2 || singleDetail.type === 3 ? '(USDT)' : '%'}
+                </p>
+                <p className="mb-0">{singleDetail.charge}</p>
+              </>
+            ) : null}
           </div>
 
-          <div style={gridContent8}>
-            <p className="txt_12_grey mb-0">兌換價</p>
-            <p className="mb-0">
-              {singleDetail.exchangePrice && singleDetail.exchangePrice.toFixed(2)}
-            </p>
-          </div>
+          {singleDetail.type === 0 || singleDetail.type === 1 ? (
+            <>
+              <div style={gridContent8}>
+                <p className="txt_12_grey mb-0">兌換價</p>
+                <p className="mb-0">
+                  {singleDetail.exchangePrice && singleDetail.exchangePrice.toFixed(2)}
+                </p>
+              </div>
 
-          <div style={gridContent9}>
-            <p className="txt_12_grey mb-0">RMB</p>
-            <p className="mb-0">{singleDetail.rmb && singleDetail.rmb.toFixed(2)}</p>
-          </div>
+              <div style={gridContent9}>
+                <p className="txt_12_grey mb-0">RMB</p>
+                <p className="mb-0">{singleDetail.rmb && singleDetail.rmb.toFixed(2)}</p>
+              </div>
 
-          <div style={gridContent10}>
-            <p className="txt_12_grey mb-1">帳號</p>
-            <p className="mb-0">{singleDetail.account}</p>
-          </div>
+              <div style={gridContent10}>
+                <p className="txt_12_grey mb-1">帳號</p>
+                <p className="mb-0">{singleDetail.account}</p>
+              </div>
 
-          <div style={gridContent11}>
-            <p className="txt_12_grey mb-1">收款人</p>
-            <p className="mb-0">{singleDetail.payee}</p>
-          </div>
+              <div style={gridContent11}>
+                <p className="txt_12_grey mb-1">收款人</p>
+                <p className="mb-0">{singleDetail.payee}</p>
+              </div>
 
-          <div style={gridContent12}>
-            <p className="txt_12_grey mb-1">銀行</p>
-            <p className="mb-0">{singleDetail.bank}</p>
-          </div>
+              <div style={gridContent12}>
+                <p className="txt_12_grey mb-1">銀行</p>
+                <p className="mb-0">{singleDetail.bank}</p>
+              </div>
 
-          <div style={gridContent13}>
-            <p className="txt_12_grey mb-1">分行</p>
-            <p className="mb-0">{singleDetail.branch}</p>
-          </div>
+              <div style={gridContent13}>
+                <p className="txt_12_grey mb-1">分行</p>
+                <p className="mb-0">{singleDetail.branch}</p>
+              </div>
+            </>
+          ) : null}
         </div>
 
         <div className="mx-auto" style={{ maxWidth: '200px', marginTop: 22 }}>
@@ -245,7 +253,6 @@ const gridContent6 = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  borderBottom: 'none',
   margin: '0 -1px -1px 0',
   borderRight: 'none',
   padding: 10,
@@ -256,7 +263,6 @@ const gridContent7 = {
   gridColumn: '7 / -1',
   border: '1px solid #D9E2F1',
   margin: '0 0-1px 0',
-  borderBottom: 'none',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -274,6 +280,7 @@ const gridContent8 = {
   flexDirection: 'column',
   justifyContent: 'center',
   padding: 10,
+  borderTop: 'none',
 };
 
 // RMB
@@ -282,7 +289,7 @@ const gridContent9 = {
   border: '1px solid #D9E2F1',
   margin: '0 0 -1px 0',
   borderBottom: 'none',
-
+  borderTop: 'none',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

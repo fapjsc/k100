@@ -150,7 +150,11 @@ const HistoryAll = () => {
   } else if (!allHistory.length && !historyLoading) {
     return <NoData />;
   } else {
-    return <BaseSpinner />;
+    return (
+      <div style={{ margin: '60px auto' }}>
+        <BaseSpinner />
+      </div>
+    );
   }
 };
 
