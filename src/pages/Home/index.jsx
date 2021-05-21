@@ -3,6 +3,7 @@ import { Route, Switch, Redirect, Link, useHistory, useLocation } from 'react-ro
 
 // Context
 import AuthContext from '../../context/auth/AuthContext';
+import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
 import Transaction from '../../pages/Transaction';
@@ -25,13 +26,20 @@ const HomeScreen = () => {
   const history = useHistory();
   const location = useLocation();
 
+  // Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { errorText, setHttpError } = httpErrorContext;
+
   // AuthContext
   const authContext = useContext(AuthContext);
-  const { logout, setAgent } = authContext;
+  const { logout, setAgent, autoLogout } = authContext;
 
   // Init State
   const [token, setToken] = useState(null);
 
+  // ===========
+  //  UseEffect
+  // ===========
   useEffect(() => {
     const token = localStorage.getItem('token');
     const agent = localStorage.getItem('agent');
@@ -41,15 +49,35 @@ const HomeScreen = () => {
       return;
     }
 
-    if (agent) setAgent(true);
-
     setToken(token);
+
+    if (agent) {
+      setAgent(true);
+      autoLogout();
+    }
 
     if (location.pathname === '/home' || location.pathname === '/home/')
       history.replace('/home/overview');
 
+    // 每小時確認一次agent帳號的過期時間
+    let checkAgentExpires = setInterval(() => {
+      autoLogout();
+    }, 1000 * 60 * 60);
+
+    return () => {
+      clearInterval(checkAgentExpires);
+    };
+
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (errorText) alert(errorText);
+    return () => {
+      setHttpError('');
+    };
+    // eslint-disable-next-line
+  }, [errorText]);
 
   return (
     <>
@@ -59,7 +87,7 @@ const HomeScreen = () => {
         </Link>
         <TheNav logout={logout} />
       </Header>
-      <MoneyRecord history={history} />
+      <MoneyRecord />
       <Switch>
         <Route exact path="/home/overview" component={Overview} />
         <Route exact path="/home/wallet" component={TheWallet} />

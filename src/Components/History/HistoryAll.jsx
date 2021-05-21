@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
@@ -13,14 +13,14 @@ import NoData from '../NoData/';
 // Style
 import Table from 'react-bootstrap/Table';
 // import Button from 'react-bootstrap/Button';
-import downIcon from '../../Assets/i_usdt_down.png';
+// import downIcon from '../../Assets/i_usdt_down.png';
 import redIcon from '../../Assets/i_usdt_red.png';
 import blueIcon from '../../Assets/i_usdt_blue.png';
 import purpleIcon from '../../Assets/i_usdt_purple.png';
 
 const HistoryAll = () => {
   // Media Query
-  const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
+  // const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
 
   // History Context
   const historyContext = useContext(HistoryContext);

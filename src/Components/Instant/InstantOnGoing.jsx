@@ -7,6 +7,7 @@ import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
+import NoData from '../NoData';
 
 // Style
 import Spinner from 'react-bootstrap/Spinner';
@@ -189,7 +190,7 @@ const TheInstant = () => {
           }
         })}
 
-      {!wsOnGoingData.length && <h2 className="mt-4">目前沒有進行中的交易</h2>}
+      {!wsOnGoingData.length && <NoData />}
     </section>
   );
 };

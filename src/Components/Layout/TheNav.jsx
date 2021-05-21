@@ -9,7 +9,7 @@ import InstantContext from '../../context/instant/InstantContext';
 // Style
 import { Nav } from 'react-bootstrap';
 import style from './Header.module.scss';
-import InstantCount from '../Instant/InstantCount';
+// import InstantCount from '../Instant/InstantCount';
 
 const TheNav = props => {
   // Buy Context
@@ -28,6 +28,10 @@ const TheNav = props => {
     if (buyWsClient) buyWsClient.close();
     if (wsClient) wsClient.close();
     if (wsStatusClient) wsStatusClient.close();
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('確定要登出嗎？')) props.logout();
   };
 
   return (
@@ -63,7 +67,7 @@ const TheNav = props => {
         |
       </span>
 
-      <Link to="/" onClick={props.logout} className={style.navLink}>
+      <Link to="/" onClick={handleLogout} className={style.navLink}>
         登出
       </Link>
     </Nav>

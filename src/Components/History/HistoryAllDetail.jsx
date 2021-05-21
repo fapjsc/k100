@@ -109,7 +109,10 @@ const HistoryAllDetail = props => {
           </div>
 
           <div style={gridContent7}>
-            <p className="txt_12_grey mb-0">手續費%</p>
+            <p className="txt_12_grey mb-0">
+              手續費
+              {singleDetail.type === 2 || singleDetail.type === 3 ? '(USDT)' : '%'}
+            </p>
             <p className="mb-0">{singleDetail.charge}</p>
           </div>
 

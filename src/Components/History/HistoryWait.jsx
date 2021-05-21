@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
@@ -18,7 +18,7 @@ import purpleIcon from '../../Assets/i_usdt_purple.png';
 
 const HistoryWait = () => {
   // Media Query
-  const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
+  // const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
 
   // Router props
   const history = useHistory();

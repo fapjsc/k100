@@ -1481,3 +1481,12 @@ input.talkbox:focus {
     margin-top: 20px;
   }
 }
+
+// 去除input type number 的上下箭頭
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}

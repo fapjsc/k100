@@ -4,6 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 // Context
 import SellContext from '../../context/sell/SellContext';
 import BalanceContext from '../../context/balance/BalanceContext';
+import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
 import BaseSpinner from '../Ui/BaseSpinner';
@@ -19,11 +20,17 @@ import changeMoney from '../../Assets/i_twoways.png';
 const SellForm = () => {
   const mobileApp = useMediaQuery({ query: '(max-width: 1199px)' });
 
+  // Balance Context
   const balanceContext = useContext(BalanceContext);
   const { getBalance, wsPairing, avb } = balanceContext;
 
+  // Sell Context
   const sellContext = useContext(SellContext);
   const { getExRate, getOrderToken, exRate, setWsPairing } = sellContext;
+
+  // Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { errorText, setHttpError } = httpErrorContext;
 
   const [usdt, setUsdt] = useState({
     val: '',
@@ -68,9 +75,16 @@ const SellForm = () => {
   useEffect(() => {
     getExRate();
     getBalance();
-
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (errorText) alert(errorText);
+    return () => {
+      setHttpError('');
+    };
+    // eslint-disable-next-line
+  }, [errorText]);
 
   // 表單驗證後發送請求
   useEffect(() => {
@@ -198,6 +212,8 @@ const SellForm = () => {
       isValid: true,
       error: '',
     });
+
+    if (avb <= 0) setUsdt({ val: '', isValid: false, error: '可提不足' });
 
     setFetchLoading(false);
   };

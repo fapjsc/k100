@@ -27,7 +27,7 @@ const BuyInfoHeader = () => {
   }, [deltaTime]);
 
   return (
-    <div className="pl-0" style={pairTitleBox}>
+    <div className="pl-0 mobile-width " style={pairTitleBox}>
       <p
         style={{
           fontSize: '12px',
@@ -38,6 +38,7 @@ const BuyInfoHeader = () => {
       </p>
 
       <div
+        className=""
         style={{
           display: 'flex',
         }}

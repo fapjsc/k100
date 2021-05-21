@@ -85,7 +85,7 @@ const InfoDetail = props => {
       {!isHideBuyInfo && (
         <>
           <BuyInfoHeader />
-          <Row className="my-4 justify-content-between px-4">
+          <Row className="mb-4 justify-content-between px-4">
             <Col xl={6} className="txt_12 lightblue_bg pl-3 mt-4">
               {/* Cny */}
               <div className="d-flex align-items-center mb-3">

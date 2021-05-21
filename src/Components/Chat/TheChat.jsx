@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, Fragment } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import Zmage from 'react-zmage'; // 圖片縮放
 import Resizer from 'react-image-file-resizer'; // 圖片壓縮
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
 // Context
 import ChatContext from '../../context/chat/ChatContext';

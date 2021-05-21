@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import InstantContext from '../../context/instant/InstantContext';
 
 // Components
+import NoData from '../NoData';
 
 // Style
 
@@ -15,8 +16,7 @@ const TheInstant = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { instantData, setCountData, cleanAll, instantOngoingWsConnect, connectInstantWs } =
-    instantContext;
+  const { instantData, setCountData } = instantContext;
 
   const handleClick = (exRate, cny, usdt, type, token) => {
     const data = {
@@ -139,7 +139,7 @@ const TheInstant = () => {
           }
         })}
 
-      {!instantData.length && <h2 className="mt-4">目前沒有交易</h2>}
+      {!instantData.length && <NoData />}
     </section>
   );
 };

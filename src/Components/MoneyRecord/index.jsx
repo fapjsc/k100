@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 
 // Context
 import BalanceContext from '../../context/balance/BalanceContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+// import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // import BaseDialog from './../Ui/BaseDialog';
 // import PubSub from 'pubsub-js';
@@ -15,8 +15,8 @@ const MoneyRecord = () => {
   const { getBalance, avb, real, getTick, tick } = balanceContext;
 
   // HttpError Context
-  const httpErrorContext = useContext(HttpErrorContext);
-  const { errorText, setHttpError } = httpErrorContext;
+  // const httpErrorContext = useContext(HttpErrorContext);
+  // const { errorText, setHttpError } = httpErrorContext;
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -28,33 +28,19 @@ const MoneyRecord = () => {
     const checkTick = setInterval(() => {
       getTick(token);
     }, timer);
-
     return () => {
       clearInterval(checkTick);
     };
-
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (errorText) alert(errorText);
-    return () => {
-      setHttpError('');
-    };
-    // eslint-disable-next-line
-  }, [errorText]);
-
-  useEffect(() => {
-    if (tick) {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-      getBalance(token);
-      // getTick(token);
-    }
+    const token = localStorage.getItem('token');
+    if (!token || !tick) return;
+    getBalance(token);
     // eslint-disable-next-line
   }, [tick]);
 
-  // const { Avb_Balance, Real_Balance, httpError } = this.state;
   return (
     <section className="bg-white">
       <div className="balance-width-box d-flex justify-context-start align-items-center">

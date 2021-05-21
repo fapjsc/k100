@@ -88,6 +88,7 @@ const SellState = props => {
         handleHttpError(data);
       }
     } catch (error) {
+      alert(error);
       handleHttpError(error);
     }
   };

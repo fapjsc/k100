@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { w3cwebsocket as W3CWebsocket } from 'websocket';
+// import { w3cwebsocket as W3CWebsocket } from 'websocket';
 
 import ChatReducer from './ChatReducer';
 import ChatContext from './ChatContext';

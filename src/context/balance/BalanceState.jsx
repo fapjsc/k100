@@ -31,9 +31,9 @@ const BalanceState = props => {
   };
 
   // get avb and real
-  const getBalance = async () => {
+  const getBalance = async token => {
     const headers = getHeader();
-    if (!headers) return;
+    if (!headers || !token) return;
 
     setHttpLoading(true);
 
@@ -45,6 +45,7 @@ const BalanceState = props => {
       });
 
       const resData = await res.json();
+      console.log(resData);
 
       if (resData.code === 200) {
         const { data } = resData;
@@ -72,19 +73,12 @@ const BalanceState = props => {
         headers,
       });
       const resData = await res.json();
-      if (resData.code === '91' || resData.code === '90') {
-        localStorage.removeItem('token');
-        alert('session過期，請重新登入 get tick');
-        return;
-      }
 
       if (resData.code === 200) {
         setTick(resData.data.UpdateTick);
       } else {
         handleHttpError(resData);
       }
-
-      // const { UpdateTick: tick } = resData.data;
     } catch (error) {
       handleHttpError(error);
     }

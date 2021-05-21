@@ -17,8 +17,10 @@ import {
 } from '../type';
 
 const AuthState = props => {
+  // Router Props
   const history = useHistory();
 
+  // Init State
   const initialState = {
     loginLoading: false,
     errorText: '',
@@ -78,7 +80,7 @@ const AuthState = props => {
       if (resData.code === 200) {
         if (resData.data.isAgent) {
           setAgent(true);
-          const expiresStamp = 3000;
+          const expiresStamp = 1000 * 60 * 60 * 24; // 過期時間
           const expiresDate = new Date().getTime() + expiresStamp;
           localStorage.setItem('agent', expiresDate);
         }
@@ -100,22 +102,37 @@ const AuthState = props => {
 
   // 登出
   const logout = async () => {
-    window.confirm('確定要登出嗎');
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiresIn');
-    localStorage.removeItem('agent');
-    localStorage.removeItem('loglevel');
-
-    history.replace('/login');
     const headers = getHeader();
-
     let logoutApi = '/j/logout.aspx';
     try {
-      fetch(logoutApi, { headers });
+      const res = await fetch(logoutApi, { headers });
+      const resData = await res.json();
+
+      if (resData.code === 200) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('expiresIn');
+        localStorage.removeItem('agent');
+        localStorage.removeItem('loglevel');
+        history.replace('/login');
+      } else {
+        handleHttpError(resData);
+      }
     } catch (error) {
       handleHttpError(error);
     }
+  };
+
+  // 自動登出
+  const autoLogout = async () => {
+    const expiresDate = localStorage.getItem('agent');
+    if (!expiresDate) return;
+    const expiresIn = new Date().getTime() - expiresDate;
+
+    if (expiresIn <= 0) return;
+
+    alert('請重新登入');
+
+    logout();
   };
 
   // 忘記密碼之獲取手機驗證碼 step-1
@@ -368,6 +385,10 @@ const AuthState = props => {
 
     if (data.code === 'ˇ91') {
       alert('session過期，請重新登入');
+      history.replace('/auth/login');
+      localStorage.removeItem('token');
+      localStorage.removeItem('agent');
+      localStorage.removeItem('loglevel');
       return;
     }
   };
@@ -416,6 +437,7 @@ const AuthState = props => {
         setErrorText,
         logout,
         setAgent,
+        autoLogout,
       }}
     >
       {props.children}

@@ -15,7 +15,7 @@ import HistoryWait from './HistoryWait';
 // Style
 import style from './History.module.scss';
 import './index.scss';
-import Badge from 'react-bootstrap/Badge';
+// import Badge from 'react-bootstrap/Badge';
 
 const History = () => {
   // History Context

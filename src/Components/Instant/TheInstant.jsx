@@ -3,7 +3,7 @@ import { useEffect, useContext, useState } from 'react';
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
-import AuthContext from '../../context/auth/AuthContext';
+// import AuthContext from '../../context/auth/AuthContext';
 
 // Components
 import InstantNav from './InstantNav';
@@ -26,8 +26,8 @@ const TheInstant = () => {
   const { httpLoading } = httpError;
 
   // Auth Context
-  const authContext = useContext(AuthContext);
-  const { isAgent } = authContext;
+  // const authContext = useContext(AuthContext);
+  // const { isAgent } = authContext;
   // ===========
   //  useEffect
   // ===========

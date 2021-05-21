@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 // Components
 import OnLoading from './OnLoading';
 import FormFooter from '../Layout/FormFooter';
+import BaseSpinner from '../Ui/BaseSpinner';
 
 // Context
 import TransferContext from '../../context/transfer/TransferContext';
@@ -197,7 +198,15 @@ const Transfer = () => {
 
     // 錢包地址驗證 --TRC
     if (protocolType === 'trc') {
-      // do something...
+      if (transferAddress.val.length <= 0) {
+        setTransferAddress({
+          val: '',
+          isValid: false,
+          error: '錢包地址錯誤',
+        });
+        setFormIsValid(false);
+        setHttpLoading(false);
+      }
     }
 
     // 輸入的數量小數點超過兩位數
@@ -279,28 +288,44 @@ const Transfer = () => {
       <OnLoading show={isPairing} usdtCount={usdtCount} onHide={backToHome} />
 
       <Form className="text-center">
-        <Form.Row>
-          <Form.Group as={Col} md={5} sm={12} controlId="transferUsdt" className="pb-0">
-            <div className="mb-2 d-flex align-items-center" style={{ height: 30 }}>
-              <Form.Label className="mb-0 txt-primary-c" style={{ fontSize: 12 }}>
-                請選擇協議種類
-              </Form.Label>
-            </div>
-            <div className="d-flex">
-              <Button
-                className={protocolType === 'trc' ? 'walletBtnActive mr-4' : 'walletBtn mr-4'}
-                onClick={() => handleClick('trc')}
-              >
-                TRC20
-              </Button>
-              <Button
-                className={protocolType === 'erc' ? 'walletBtnActive' : 'walletBtn'}
-                onClick={() => handleClick('erc')}
-              >
-                ERC20
-              </Button>
-            </div>
-          </Form.Group>
+        <Form.Row className="">
+          {rateAllData ? (
+            <Form.Group as={Col} md={5} sm={12} controlId="transferUsdt" className="pb-0">
+              <div className="mb-2 d-flex align-items-center" style={{ height: 30 }}>
+                <Form.Label className="mb-0 txt-primary-c" style={{ fontSize: 12 }}>
+                  請選擇協議種類
+                </Form.Label>
+              </div>
+              <div className="d-flex">
+                <Button
+                  className={protocolType === 'trc' ? 'walletBtnActive mr-4' : 'walletBtn mr-4'}
+                  onClick={() => handleClick('trc')}
+                >
+                  TRC20
+                </Button>
+                <Button
+                  className={protocolType === 'erc' ? 'walletBtnActive' : 'walletBtn'}
+                  onClick={() => handleClick('erc')}
+                >
+                  ERC20
+                </Button>
+              </div>
+
+              {protocolType && (
+                <p
+                  className="mt-4 text-left"
+                  style={{
+                    color: '#262E45',
+                    fontSize: 12,
+                  }}
+                >
+                  手續費: {transferHandle && Number(transferHandle).toFixed(2)} USDT
+                </p>
+              )}
+            </Form.Group>
+          ) : (
+            <BaseSpinner />
+          )}
 
           {protocolType && (
             <>
@@ -351,7 +376,7 @@ const Transfer = () => {
                   </Form.Text>
                 ) : null}
               </Form.Group>
-
+              {/* 
               <Form.Group as={Col} md={12} className="text-left" style={{ marginBottom: 50 }}>
                 <span
                   className=""
@@ -362,66 +387,68 @@ const Transfer = () => {
                 >
                   手續費: {transferHandle && Number(transferHandle).toFixed(2)} USDT
                 </span>
-              </Form.Group>
+              </Form.Group> */}
 
-              <Form.Group
-                as={Col}
-                md={10}
-                sm={12}
-                controlId="transferAddress"
-                className="text-left"
-              >
-                <Form.Label
+              {transferCount.val && !transferCount.error ? (
+                <Form.Group
+                  as={Col}
+                  md={10}
+                  sm={12}
+                  controlId="transferAddress"
                   className="text-left"
-                  style={{
-                    color: '#262E45',
-                    fontSize: 12,
-                  }}
                 >
-                  轉帳地址
-                </Form.Label>
+                  <Form.Label
+                    className="text-left"
+                    style={{
+                      color: '#262E45',
+                      fontSize: 12,
+                    }}
+                  >
+                    轉帳地址
+                  </Form.Label>
 
-                <div
-                  style={{
-                    position: 'relative',
-                  }}
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="請輸入收款地址"
-                    className="p_sm-2 easy-border"
-                    onChange={onChange}
-                    value={transferAddress.val}
-                    autoComplete="off"
-                    name="transferAddress"
-                  />
-                </div>
+                  <div
+                    style={{
+                      position: 'relative',
+                    }}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="請輸入收款地址"
+                      className="p_sm-2 easy-border"
+                      onChange={onChange}
+                      value={transferAddress.val}
+                      autoComplete="off"
+                      name="transferAddress"
+                    />
+                  </div>
 
-                {/* 前端驗證錯誤提示 */}
-                {transferAddress.error ? (
-                  <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
-                    *{transferAddress.error}
-                  </Form.Text>
-                ) : null}
+                  {/* 前端驗證錯誤提示 */}
+                  {transferAddress.error ? (
+                    <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
+                      *{transferAddress.error}
+                    </Form.Text>
+                  ) : null}
 
-                {/* Http Error 提示 */}
-                {errorText && (
-                  <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
-                    *{errorText}
-                  </Form.Text>
-                )}
+                  {/* Http Error 提示 */}
+                  {errorText && (
+                    <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
+                      *{errorText}
+                    </Form.Text>
+                  )}
 
-                {transferErrText && (
-                  <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
-                    *{transferErrText}
-                  </Form.Text>
-                )}
-              </Form.Group>
+                  {transferErrText && (
+                    <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
+                      *{transferErrText}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+              ) : null}
             </>
           )}
         </Form.Row>
 
-        {protocolType && (
+        {protocolType && transferCount.val && !transferCount.error ? (
           <Button
             onClick={valid}
             className="easy-btn smScreen-btn mt-4"
@@ -434,7 +461,7 @@ const Transfer = () => {
             {httpLoading && <Spinner animation="grow" variant="danger" />}
             {httpLoading ? '處理中...' : '下一步'}
           </Button>
-        )}
+        ) : null}
       </Form>
 
       <FormFooter />

@@ -108,13 +108,21 @@ const HttpErrorState = props => {
     if (data.code === '91') {
       setHttpError('session過期，請重新登入');
       history.replace('/auth/login');
+      localStorage.removeItem('token');
+      localStorage.removeItem('expiresIn');
+      localStorage.removeItem('agent');
+      localStorage.removeItem('loglevel');
+      setHttpError('');
       return;
     }
 
     setHttpError('發生錯誤，請重新登入並重新嘗試');
-    localStorage.removeItem('token');
-    localStorage.removeItem('agent');
     history.replace('/auth/login');
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiresIn');
+    localStorage.removeItem('agent');
+    localStorage.removeItem('loglevel');
+    setHttpError('');
   };
 
   const [state, dispatch] = useReducer(HttpErrorReducer, initialState);
