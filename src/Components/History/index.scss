@@ -35,3 +35,53 @@
   justify-content: flex-start;
   align-items: center;
 }
+
+.paginationBtn {
+  // width: 80%;
+  // height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  color: #3e80f9;
+  max-width: 100%;
+}
+
+.paginationBtn a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: 1px solid #3e80f9;
+  color: #3e80f9;
+  cursor: pointer;
+
+  @media only screen and(max-width:360px) {
+    margin: 4px;
+  }
+}
+
+.paginationBtn a:hover {
+  color: white !important;
+  background-color: #3e80f9;
+}
+
+.paginationActive a {
+  color: white !important;
+  background-color: #3e80f9;
+}
+
+.paginationDisabled a {
+  color: grey;
+  background-color: grey;
+}
+
+.previousBtn {
+  @media only screen and(max-width:570px) {
+    display: none;
+  }
+}
+
+.nextBtn {
+  @media only screen and(max-width:570px) {
+    display: none;
+  }
+}

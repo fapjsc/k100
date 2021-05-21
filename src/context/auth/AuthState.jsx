@@ -14,7 +14,6 @@ import {
   LOGIN_SET_LOADING,
   SET_ERROR_TEXT,
   SET_AGENT,
-  SET_AUTHENTICATED,
 } from '../type';
 
 const AuthState = props => {
