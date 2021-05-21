@@ -151,7 +151,7 @@ const HistoryAll = () => {
     return <NoData />;
   } else {
     return (
-      <div style={{ margin: '60px auto' }}>
+      <div style={{ margin: '30px auto' }}>
         <BaseSpinner />
       </div>
     );

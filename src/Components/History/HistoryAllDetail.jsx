@@ -80,7 +80,7 @@ const HistoryAllDetail = props => {
                 singleDetail.type === 0 || singleDetail.type === 3 ? 'c_green mb-0' : 'c_red mb-0'
               }
             >
-              {Math.abs(singleDetail.usdtAmt).toFixed(2)}
+              {Number(singleDetail.usdtAmt).toFixed(2)}
             </p>
           </div>
 
@@ -109,15 +109,15 @@ const HistoryAllDetail = props => {
           </div>
 
           <div style={gridContent7}>
-            {singleDetail.type === 0 || singleDetail.type === 1 || singleDetail.type === 2 ? (
-              <>
-                <p className="txt_12_grey mb-0">
-                  手續費
-                  {singleDetail.type === 2 || singleDetail.type === 3 ? '(USDT)' : '%'}
-                </p>
-                <p className="mb-0">{singleDetail.charge}</p>
-              </>
-            ) : null}
+            <p className="txt_12_grey mb-0">
+              手續費
+              {singleDetail.type === 2 || singleDetail.type === 3 ? '(USDT)' : '%'}
+            </p>
+            {singleDetail.type === 3 ? (
+              <p className="mb-0">0</p>
+            ) : (
+              <p className="mb-0">{singleDetail.charge}</p>
+            )}
           </div>
 
           {singleDetail.type === 0 || singleDetail.type === 1 ? (
