@@ -153,21 +153,19 @@ const Transaction = () => {
           <TransactionNav location={location} />
 
           <Switch>
-            <>
-              {/* BUY */}
-              <Route exact path="/home/transaction/buy" component={TheBuy} />
-              <Route exact path="/home/transaction/buy/:id" component={BuyInfo} />
+            {/* BUY */}
+            <Route exact path="/home/transaction/buy" component={TheBuy} />
+            <Route exact path="/home/transaction/buy/:id" component={BuyInfo} />
 
-              {/* SELL */}
-              <Route exact path="/home/transaction/sell" component={Sell} />
-              <Route exact path="/home/transaction/sell/:id" component={SellInfo} />
+            {/* SELL */}
+            <Route exact path="/home/transaction/sell" component={Sell} />
+            <Route exact path="/home/transaction/sell/:id" component={SellInfo} />
 
-              {/* Transfer */}
-              <Route exact path="/home/transaction/transfer" component={Transfer} />
-              <Route exact path="/home/transaction/transfer/:id" component={TransferInfo} />
+            {/* Transfer */}
+            <Route exact path="/home/transaction/transfer" component={Transfer} />
+            <Route exact path="/home/transaction/transfer/:id" component={TransferInfo} />
 
-              <Redirect to="/home/transaction/buy" />
-            </>
+            <Redirect to="/home/transaction/buy" />
           </Switch>
         </div>
       </div>
