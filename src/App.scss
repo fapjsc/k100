@@ -1338,6 +1338,12 @@ hr {
   z-index: -1;
   position: absolute;
   top: 62px;
+
+  @media only screen and(max-width: 1920px) {
+    top: 72px;
+    height: 74%;
+  }
+
   @media only screen and(max-width: 375px) {
     top: 81px;
     height: 72.5%;
