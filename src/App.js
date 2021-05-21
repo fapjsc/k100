@@ -5,7 +5,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Auth from './Components/Auth';
 import Home from './pages/Home';
 import ForgetPassword from './Components/Auth/ForgetPassword';
-import { ProtectedRoute } from './router/ProtectedRoute';
+// import { ProtectedRoute } from './router/ProtectedRoute';
 
 // Context State
 import SellState from './context/sell/SellState';
