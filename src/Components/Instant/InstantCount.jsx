@@ -1,37 +1,47 @@
 import { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
+// Components
+import NoOrder from '../universal/NoOrder';
+
 // Style
 import Button from 'react-bootstrap/Button';
 
 const InstantCount = props => {
+  // Router Props
+  const history = useHistory();
+
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { errorText, setHttpError } = httpErrorContext;
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { countData, sellMatch1, buyMatch1 } = instantContext;
+  const { countData, sellMatch1, buyMatch1, orderExists, setOrderExists } = instantContext;
 
   // ============
   //  UseEffect
   // ============
-
-  useEffect(() => {}, []);
-
   useEffect(() => {
     if (errorText !== '') alert(errorText);
     return setHttpError('');
     // eslint-disable-next-line
   }, [errorText]);
 
+  useEffect(() => {
+    if (!orderExists) props.setShowPop(false);
+    //eslint-disable-next-line
+  }, [orderExists]);
+
   // ===========
   //  Function
   // ===========
   const handleClick = type => {
+    if (!orderExists) return;
     props.setShowPop(true);
 
     if (type === '買') {
@@ -41,8 +51,20 @@ const InstantCount = props => {
     }
   };
 
+  const onHide = () => {
+    setOrderExists(true);
+    history.replace('/home/overview');
+  };
+
   return (
     <div id="buy" className="tabcontent">
+      <NoOrder
+        show={!orderExists}
+        exRate={countData.exRate}
+        type={countData.type}
+        usdt={countData.usdt.toFixed(2)}
+        onHide={onHide}
+      />
       {countData ? (
         <>
           <div className="txt_12 pt_20 mb-3 pl-1">即時買賣</div>

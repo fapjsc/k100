@@ -10,10 +10,16 @@ import {
   SET_STATUS_WS_CLIENT,
   SET_INSTANT_ONGOING_DATA,
   SET_ACTION_TYPE,
+  ORDER_NOT_EXISTS,
 } from '../type';
 
 const InstantReducer = (state, action) => {
   switch (action.type) {
+    case ORDER_NOT_EXISTS:
+      return {
+        ...state,
+        orderExists: action.payload,
+      };
     case SET_ACTION_TYPE:
       return {
         ...state,

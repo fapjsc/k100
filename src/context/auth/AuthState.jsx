@@ -14,6 +14,7 @@ import {
   LOGIN_SET_LOADING,
   SET_ERROR_TEXT,
   SET_AGENT,
+  SET_AUTHENTICATED,
 } from '../type';
 
 const AuthState = props => {
@@ -202,7 +203,7 @@ const AuthState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
@@ -240,7 +241,7 @@ const AuthState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 
@@ -267,7 +268,7 @@ const AuthState = props => {
         alert('密碼已經更換');
       }
     } catch (error) {
-      alert(error);
+      handleHttpError(error);
     }
   };
 

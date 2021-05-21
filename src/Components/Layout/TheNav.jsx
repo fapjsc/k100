@@ -72,7 +72,7 @@ const TheNav = props => {
         |
       </span>
 
-      <Link to="/" onClick={handleLogout} className={style.navLink}>
+      <Link to="/" onClick={handleLogout} style={{ marginRight: 0 }} className={style.navLink}>
         登出
       </Link>
     </Nav>

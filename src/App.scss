@@ -1245,7 +1245,7 @@ hr {
 
   @media only screen and(max-width: 1024px) and(min-height: 1366px) {
     right: 40px;
-    top: 710px;
+    top: 510px;
   }
 
   @media only screen and(max-width: 800px) and(min-height: 600px) {
@@ -1263,14 +1263,14 @@ hr {
     top: 110px;
   }
 
-  @media only screen and(max-width: 414px) and(min-height: 720px) {
-    right: 20px;
-    top: 70px;
-  }
-
   @media only screen and(max-width: 411px) and(min-height: 731px) {
     right: 30px;
     top: 120px;
+  }
+
+  @media only screen and(max-width: 414px) and(min-height: 720px) {
+    right: 20px;
+    top: 70px;
   }
 
   @media only screen and(max-width: 375px) {
@@ -1278,7 +1278,6 @@ hr {
     top: 30px;
     width: 300px;
   }
-
   @media only screen and(max-width: 375px) and(min-height: 812px) {
     right: 25px;
     top: 100px;
@@ -1310,6 +1309,10 @@ hr {
   padding: 15px 15px 7px;
   border-radius: 10px 10px 0px 0px;
   word-wrap: break-word;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  min-height: 60px;
 }
 
 .chatbox .top span {
@@ -1329,13 +1332,24 @@ hr {
 }
 
 .talk {
-  height: 73.5%;
+  height: 76%;
   overflow: auto;
   padding: 10px;
-  z-index: 1;
+  z-index: -1;
+  position: absolute;
+  top: 62px;
+  @media only screen and(max-width: 375px) {
+    top: 81px;
+    height: 72.5%;
+  }
+
+  // @media only screen and(max-width: 360px) {
+  //   top: 81px;
+  //   height: 72.5%;
+  // }
 
   @media only screen and(max-width: 320px) {
-    height: 70.5%;
+    height: 69.5%;
   }
 }
 

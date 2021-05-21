@@ -19,6 +19,7 @@ import {
   SET_STATUS_WS_CLIENT,
   SET_INSTANT_ONGOING_DATA,
   SET_ACTION_TYPE,
+  ORDER_NOT_EXISTS,
 } from '../type';
 
 const InstantState = props => {
@@ -38,6 +39,7 @@ const InstantState = props => {
     instantOnGoingClient: null,
     wsStatusClient: null,
     actionType: '',
+    orderExists: true,
   };
 
   // Get Header
@@ -216,6 +218,11 @@ const InstantState = props => {
 
       console.log(resData, 'sell1');
 
+      if (resData.code === '16') {
+        setOrderExists(false);
+        return;
+      }
+
       if (resData.code === 200) {
         setSell1Data(resData.data);
       } else {
@@ -275,6 +282,11 @@ const InstantState = props => {
 
       const resData = await res.json();
       console.log(resData, 'buy1');
+
+      if (resData.code === '16') {
+        setOrderExists(false);
+        return;
+      }
 
       if (resData.code === 200) {
         setBuy1Data(resData.data);
@@ -371,6 +383,11 @@ const InstantState = props => {
     dispatch({ type: SET_ACTION_TYPE, payload: type });
   };
 
+  // Set Order Exists
+  const setOrderExists = value => {
+    dispatch({ type: ORDER_NOT_EXISTS, payload: value });
+  };
+
   // Clean All
   const cleanAll = () => {
     setWsStatusData(null);
@@ -394,6 +411,7 @@ const InstantState = props => {
         wsStatusData: state.wsStatusData,
         wsOnGoingData: state.wsOnGoingData,
         actionType: state.actionType,
+        orderExists: state.orderExists,
 
         connectInstantWs, // 所有的instant web socket
         sellMatch1,
@@ -409,6 +427,7 @@ const InstantState = props => {
         instantOngoingWsConnect, // 進行中的web socket
         setActionType,
         setWsStatusClient,
+        setOrderExists, // 訂單是否存在
       }}
     >
       {props.children}

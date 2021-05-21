@@ -171,7 +171,7 @@ const BankFrom = () => {
                 <p className="txt_12_grey mb-0">數量</p>
                 <p className="confirmBuy-text mb-0 text-dark">
                   {/* 小數第二位，千分逗號 */}
-                  {thousandBitSeparator(Number(buyCount.rmb).toFixed(2).toString())}
+                  {thousandBitSeparator(Number(buyCount.usdt).toFixed(2).toString())}
                   &nbsp; USDT
                 </p>
               </Form.Group>

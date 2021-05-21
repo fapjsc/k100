@@ -23,7 +23,7 @@ const ExRate = props => {
       </p>
       <div className="pay-info txt_12 mb-4">
         <p className="mb-0">
-          匯率 :<span>{buyRate && buyRate}</span>
+          匯率 :<span>{buyRate && Number(buyRate).toFixed(2)}</span>
         </p>
         <p className="mb-0">
           付款窗口 :<span>15分鐘</span>

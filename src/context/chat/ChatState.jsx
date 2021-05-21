@@ -113,7 +113,7 @@ const ChatState = props => {
     // 2.收到server回復
     client.onmessage = message => {
       console.log(message);
-      if (message.data === '') return;
+      if (message.data === '' || message.data.includes('login_session')) return;
 
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);

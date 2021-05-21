@@ -24,7 +24,7 @@ const SellHeader = () => {
       </p>
       <div className="pay-info txt_12">
         <p className="mb-0">
-          匯率 :<span>{exRate}</span>
+          匯率 :<span>{Number(exRate).toFixed(2)}</span>
         </p>
         <p className="mb-0">
           限額 :<span>USDT 100.00 - 10000.00</span>

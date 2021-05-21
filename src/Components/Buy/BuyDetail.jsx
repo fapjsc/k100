@@ -98,7 +98,7 @@ const InfoDetail = props => {
                       fontWeight: 'bold',
                     }}
                   >
-                    {buyWsData.cny}
+                    {Number(buyWsData.cny).toFixed(2)}
                     CNY
                   </span>
                 </p>

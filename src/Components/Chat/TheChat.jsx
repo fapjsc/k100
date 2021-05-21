@@ -157,7 +157,9 @@ const TheChat = props => {
         <div className="top">
           {/* <p>客服中心</p>
           {/* <span /> */}
-          <p className="mb-2">訂單號：</p>
+          <p className="mb-1" style={{ display: 'block' }}>
+            訂單號：
+          </p>
           <p className="">{props.hash}</p>
         </div>
 

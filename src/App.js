@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
+// Components
 import Auth from './Components/Auth';
 import Home from './pages/Home';
 import ForgetPassword from './Components/Auth/ForgetPassword';
-// import { ProtectedRoute } from './router/ProtectedRoute';
+import { ProtectedRoute } from './router/ProtectedRoute';
 
 // Context State
 import SellState from './context/sell/SellState';
@@ -50,6 +51,7 @@ function App() {
                           />
 
                           <Route path="/agreement" component={Agreement} />
+
                           <Route
                             isAuth={isAuth}
                             path="/home"

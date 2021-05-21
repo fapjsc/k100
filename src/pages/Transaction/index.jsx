@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
 
+// Context
+import AuthContext from '../../context/auth/AuthContext';
+
+// Components
 import TransactionNav from '../../Components/TransactionNav';
-// import Buy from '../../Components/Buy';
 import Sell from '../../Components/Sell/Sell';
 import SellInfo from '../../Components/Sell/SellInfo';
 import Transfer from '../../Components/Transfer';
 import TransferInfo from '../../Components/Transfer/TransferInfo';
-
 import TheBuy from '../../Components/Buy/TheBuy';
 import BuyInfo from '../../Components/Buy/BuyInfo';
 
+// Style
 import './index.scss';
 
 const Transaction = () => {
+  // Auth Context
+  const authContext = useContext(AuthContext);
+  const { isAuthenticated } = authContext;
+
   // eslint-disable-next-line
   const [Avb_Balance, setAvb_Balance] = useState(null);
   // eslint-disable-next-line
@@ -146,19 +153,21 @@ const Transaction = () => {
           <TransactionNav location={location} />
 
           <Switch>
-            {/* BUY */}
-            <Route exact path="/home/transaction/buy" component={TheBuy} />
-            <Route exact path="/home/transaction/buy/:id" component={BuyInfo} />
+            <>
+              {/* BUY */}
+              <Route exact path="/home/transaction/buy" component={TheBuy} />
+              <Route exact path="/home/transaction/buy/:id" component={BuyInfo} />
 
-            {/* SELL */}
-            <Route exact path="/home/transaction/sell" component={Sell} />
-            <Route exact path="/home/transaction/sell/:id" component={SellInfo} />
+              {/* SELL */}
+              <Route exact path="/home/transaction/sell" component={Sell} />
+              <Route exact path="/home/transaction/sell/:id" component={SellInfo} />
 
-            {/* Transfer */}
-            <Route exact path="/home/transaction/transfer" component={Transfer} />
-            <Route exact path="/home/transaction/transfer/:id" component={TransferInfo} />
+              {/* Transfer */}
+              <Route exact path="/home/transaction/transfer" component={Transfer} />
+              <Route exact path="/home/transaction/transfer/:id" component={TransferInfo} />
 
-            <Redirect to="/home/transaction/buy" />
+              <Redirect to="/home/transaction/buy" />
+            </>
           </Switch>
         </div>
       </div>
