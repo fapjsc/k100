@@ -3,6 +3,7 @@ import { useRouteMatch } from 'react-router-dom';
 
 // Context
 import SellContext from '../../context/sell/SellContext';
+import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
 import SetAccount from '../Buy/SetAccount';
@@ -14,6 +15,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
 
 const SellDetail = () => {
   // Router Props
@@ -26,6 +28,9 @@ const SellDetail = () => {
   const sellContext = useContext(SellContext);
   const { wsData, setConfirmSell, confirmSellAction, sellStatus } = sellContext;
 
+  // Http Error Context
+  const httpErrorContext = useContext(HttpErrorContext);
+  const { httpLoading } = httpErrorContext;
   // 確認收款
   const handleSubmit = () => {
     if (!isClick) {
@@ -83,25 +88,32 @@ const SellDetail = () => {
       </Row>
       <Row className="justify-content-center mt-4">
         <Col className="mw400 text-center px-0">
-          <Button
-            onClick={handleSubmit}
-            className=""
-            block
-            style={sellStatus === 34 ? infoBtn : infoBtnDisabled}
-          >
-            {sellStatus === 33 && (
-              <img
-                src={btnWait}
-                alt="btn wait"
-                style={{
-                  height: 25,
-                  marginRight: 10,
-                }}
-              />
-            )}
+          {!httpLoading ? (
+            <Button
+              onClick={handleSubmit}
+              className=""
+              block
+              style={sellStatus === 34 ? infoBtn : infoBtnDisabled}
+            >
+              {sellStatus === 33 && (
+                <img
+                  src={btnWait}
+                  alt="btn wait"
+                  style={{
+                    height: 25,
+                    marginRight: 10,
+                  }}
+                />
+              )}
 
-            <span className="">{sellStatus === 34 ? ' 買家已付款，確認收款' : '對方準備中'}</span>
-          </Button>
+              <span className="">{sellStatus === 34 ? ' 買家已付款，確認收款' : '對方準備中'}</span>
+            </Button>
+          ) : (
+            <Button variant="secondary" disabled style={infoBtnDisabled}>
+              <Spinner as="span" animation="grow" size="md" role="status" aria-hidden="true" />
+              Loading...
+            </Button>
+          )}
         </Col>
       </Row>
 

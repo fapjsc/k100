@@ -46,7 +46,7 @@ const SellState = props => {
   const history = useHistory();
 
   const httpErrorContext = useContext(HttpErrorContext);
-  const { handleHttpError } = httpErrorContext;
+  const { handleHttpError, setHttpLoading } = httpErrorContext;
 
   // Get Header
   const getHeader = () => {
@@ -141,6 +141,8 @@ const SellState = props => {
 
     if (!orderToken || !headers) return;
 
+    setHttpLoading(true);
+
     const sell2Api = `/j/Req_Sell2.aspx`;
 
     try {
@@ -154,8 +156,6 @@ const SellState = props => {
 
       const resData = await res.json();
 
-      console.log(resData);
-
       if (resData.code === 200) {
         // setConfirmSell(true);
       } else {
@@ -164,6 +164,8 @@ const SellState = props => {
     } catch (error) {
       handleHttpError(error);
     }
+
+    setHttpLoading(false);
   };
 
   // get order detail

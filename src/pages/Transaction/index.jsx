@@ -1,8 +1,8 @@
-import { useState, useEffect, useContext } from 'react';
-import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
+// import { useState, useEffect, useContext } from 'react';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
 // Context
-import AuthContext from '../../context/auth/AuthContext';
+// import AuthContext from '../../context/auth/AuthContext';
 
 // Components
 import TransactionNav from '../../Components/TransactionNav';
@@ -18,100 +18,98 @@ import './index.scss';
 
 const Transaction = () => {
   // Auth Context
-  const authContext = useContext(AuthContext);
-  const { isAuthenticated } = authContext;
+  // const authContext = useContext(AuthContext);
+  // const { isAuthenticated } = authContext;
 
   // eslint-disable-next-line
-  const [Avb_Balance, setAvb_Balance] = useState(null);
+  // const [Avb_Balance, setAvb_Balance] = useState(null);
   // eslint-disable-next-line
-  const [exRate, setExRate] = useState(null);
+  // const [exRate, setExRate] = useState(null);
 
-  const history = useHistory();
+  // const history = useHistory();
   const location = useLocation();
 
   // 獲取匯率
-  const getExRate = async headers => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('token 過期');
-    }
+  // const getExRate = async headers => {
+  //   const token = localStorage.getItem('token');
+  //   if (!token) return;
 
-    const exRateApi = `/j/ChkExRate.aspx`;
+  //   const exRateApi = `/j/ChkExRate.aspx`;
 
-    try {
-      const res = await fetch(exRateApi, {
-        headers,
-      });
+  //   try {
+  //     const res = await fetch(exRateApi, {
+  //       headers,
+  //     });
 
-      const resData = await res.json();
+  //     const resData = await res.json();
 
-      const { data } = resData;
+  //     const { data } = resData;
 
-      setExRate(data);
-    } catch (error) {
-      alert(error, 'getExRate');
-    }
-  };
+  //     setExRate(data);
+  //   } catch (error) {
+  //     alert(error, 'getExRate');
+  //   }
+  // };
 
-  const getBalance = async token => {
-    if (!token) {
-      alert('請重新登入, get balance');
-      localStorage.removeItem('token');
-      history.replace('/auth/login');
+  // const getBalance = async token => {
+  //   if (!token) {
+  //     alert('請重新登入, get balance');
+  //     localStorage.removeItem('token');
+  //     history.replace('/auth/login');
 
-      return;
-    }
+  //     return;
+  //   }
 
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('login_session', token);
+  //   let headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   headers.append('login_session', token);
 
-    const balanceApi = '/j/ChkBalance.aspx';
+  //   const balanceApi = '/j/ChkBalance.aspx';
 
-    try {
-      const res = await fetch(balanceApi, {
-        headers: headers,
-      });
+  //   try {
+  //     const res = await fetch(balanceApi, {
+  //       headers: headers,
+  //     });
 
-      const resData = await res.json();
+  //     const resData = await res.json();
 
-      if (resData.code === '91' || resData.code === '90') {
-        localStorage.removeItem('token');
-        window.confirm('session過期，請重新登入 get balance !res.ok');
+  //     if (resData.code === '91' || resData.code === '90') {
+  //       localStorage.removeItem('token');
+  //       window.confirm('session過期，請重新登入 get balance !res.ok');
 
-        history.replace('/auth/login');
-        // clearInterval(this.checkTickLoop);
-        return;
-      }
+  //       history.replace('/auth/login');
+  //       // clearInterval(this.checkTickLoop);
+  //       return;
+  //     }
 
-      const { Avb_Balance } = resData.data;
+  //     const { Avb_Balance } = resData.data;
 
-      setAvb_Balance(Avb_Balance);
-      // setReal_Balance(Real_Balance);
-    } catch (error) {
-      localStorage.removeItem('token');
-      // clearInterval(this.checkTickLoop);
-      alert('session過期，請重新登入 get balance catch');
-      history.replace('/auth/login');
-    }
-  };
+  //     setAvb_Balance(Avb_Balance);
+  //     // setReal_Balance(Real_Balance);
+  //   } catch (error) {
+  //     localStorage.removeItem('token');
+  //     // clearInterval(this.checkTickLoop);
+  //     alert('session過期，請重新登入 get balance catch');
+  //     history.replace('/auth/login');
+  //   }
+  // };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('login_session', token);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     let headers = new Headers();
+  //     headers.append('Content-Type', 'application/json');
+  //     headers.append('login_session', token);
 
-      getExRate(headers);
+  //     getExRate(headers);
 
-      getBalance(token);
-    } else {
-      return;
-    }
+  //     getBalance(token);
+  //   } else {
+  //     return;
+  //   }
 
-    // eslint-disable-next-line
-  }, []);
+  //   // eslint-disable-next-line
+  // }, []);
 
   return (
     <section className="transaction">
