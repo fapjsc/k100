@@ -105,7 +105,7 @@ const HistoryAll = () => {
             containerClassName={'paginationBtn'}
             previousLinkClassName={'previousBtn'}
             nextLinkClassName={'nextBtn'}
-            // disabledClassName={'paginationDisabled'}
+            disabledClassName={'paginationDisabled'}
             activeClassName={'paginationActive'}
           />
         </div>

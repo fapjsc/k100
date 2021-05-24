@@ -41,11 +41,6 @@ const HomeScreen = () => {
   //  UseEffect
   // ===========
   useEffect(() => {
-    // if (!isAuthenticated) {
-    //   localStorage.removeItem('token');
-    //   localStorage.removeItem('agent');
-    //   history.replace('/auth/login');
-    // }
     const token = localStorage.getItem('token');
     const agent = localStorage.getItem('agent');
     if (!token) {
@@ -76,6 +71,10 @@ const HomeScreen = () => {
     };
     // eslint-disable-next-line
   }, [errorText]);
+
+  // ===========
+  //  function
+  // ===========
 
   return (
     <>

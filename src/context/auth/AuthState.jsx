@@ -273,77 +273,57 @@ const AuthState = props => {
 
   const handleHttpError = data => {
     if (data.code === '1') {
-      // alert('系統錯誤');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '系統錯誤' });
       setErrorText('系統錯誤');
       return;
     }
 
     if (data.code === '10') {
-      // alert('帳號或密碼錯誤');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '帳號或密碼錯誤' });
       setErrorText('帳號或密碼錯誤');
       return;
     }
 
     if (data.code === '11') {
-      // alert('此帳號已經註冊過');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '此帳號已經註冊過' });
       setErrorText('此帳號已經註冊過');
 
       return;
     }
 
     if (data.code === '12') {
-      // alert('此帳號無法註冊，可能被列入黑名單');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '此帳號無法註冊' });
       setErrorText('此帳號無法註冊');
 
       return;
     }
 
     if (data.code === '13') {
-      // alert('json格式錯誤');
-      // dispatch({ type: SET_ERROR_TEXT, payload: 'json格式錯誤' });
       setErrorText('json格式錯誤');
 
       return;
     }
     if (data.code === '14') {
-      // alert('json格式錯誤');
-      // dispatch({ type: SET_ERROR_TEXT, payload: 'json格式錯誤' });
       setErrorText('json格式錯誤');
 
       return;
     }
 
     if (data.code === '15') {
-      // alert('無效的token');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '無效的token' });
       setErrorText('無效的token');
 
       return;
     }
 
     if (data.code === '16') {
-      // alert('錯誤的操作');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '錯誤的操作' });
       setErrorText('錯誤的操作');
 
       return;
     }
 
     if (data.code === '17') {
-      // alert('帳號未註冊');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '帳號未註冊' });
       setErrorText('帳號未註冊');
 
       return;
     }
 
     if (data.code === '20') {
-      // alert('數據格式錯誤');
-      // dispatch({ type: SET_ERROR_TEXT, payload: '數據格式錯誤' });
       setErrorText('數據格式錯誤');
 
       return;
@@ -355,10 +335,8 @@ const AuthState = props => {
         payload: { show: true, text: '請勿連續發送請求', status: 'fail' },
       });
 
-      // dispatch({ type: SET_ERROR_TEXT, payload: '請勿連續發送請求' });
       setErrorText('請勿連續發送請求');
 
-      // alert('請勿連續發送請求');
       return;
     }
 
@@ -367,9 +345,7 @@ const AuthState = props => {
         type: SHOW_ERROR_MODAL,
         payload: { show: true, text: '驗證碼錯誤', status: 'fail' },
       });
-      // dispatch({ type: SET_ERROR_TEXT, payload: '驗證碼錯誤' });
       setErrorText('驗證碼錯誤');
-      // alert('驗證碼錯誤');
 
       return;
     }
@@ -390,7 +366,7 @@ const AuthState = props => {
     }
 
     if (data.code === 'ˇ91') {
-      alert('session過期，請重新登入');
+      alert('請重新登入');
       history.replace('/auth/login');
       localStorage.removeItem('token');
       localStorage.removeItem('agent');

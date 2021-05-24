@@ -45,7 +45,6 @@ const BalanceState = props => {
       });
 
       const resData = await res.json();
-      console.log(resData);
 
       if (resData.code === 200) {
         const { data } = resData;
