@@ -127,6 +127,8 @@ const HistoryState = props => {
 
       console.log(resData);
 
+      // console.log(resData);
+
       if (resData.code === 200) {
         const { data } = resData;
 

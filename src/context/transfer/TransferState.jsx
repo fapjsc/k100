@@ -60,19 +60,19 @@ const TransferState = props => {
 
     // 1.建立連接
     client.onopen = () => {
-      console.log('websocket transfer connected sell');
+      // console.log('websocket transfer connected sell');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
       const dataFromServer = JSON.parse(message.data);
-      console.log('got transfer reply!', dataFromServer);
+      // console.log('got transfer reply!', dataFromServer);
       dispatch({ type: SET_TRANSFER_STATUS, payload: dataFromServer.data.Order_StatusID });
     };
 
     // 3.錯誤處理
     client.onclose = message => {
-      console.log('關閉連線.....');
+      // console.log('關閉連線.....');
     };
   };
 
@@ -229,7 +229,7 @@ const TransferState = props => {
       });
       const resData = await res.json();
 
-      console.log(resData, 'detail req ====');
+      // console.log(resData, 'detail req ====');
 
       if (resData.code === 200) {
         setUsdtCount(Math.abs(resData.data.UsdtAmt));

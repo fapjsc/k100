@@ -117,11 +117,12 @@ const HttpErrorState = props => {
     }
 
     setHttpError('發生錯誤，請重新登入並重新嘗試');
-    history.replace('/auth/login');
     localStorage.removeItem('token');
     localStorage.removeItem('expiresIn');
     localStorage.removeItem('agent');
     localStorage.removeItem('loglevel');
+    history.replace('/auth/login');
+
     setHttpError('');
   };
 

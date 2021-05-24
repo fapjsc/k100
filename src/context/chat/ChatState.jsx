@@ -53,16 +53,16 @@ const ChatState = props => {
 
     // 2.收到server回復
     client.onmessage = message => {
-      console.log(message);
+      // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      console.log('got Chat reply!', dataFromServer);
+      // console.log('got Chat reply!', dataFromServer);
 
       setMessages(dataFromServer);
     };
 
     // 3.錯誤處理
     client.onclose = message => {
-      console.log('聊天室關閉');
+      // console.log('聊天室關閉');
     };
   };
 
@@ -112,19 +112,19 @@ const ChatState = props => {
 
     // 2.收到server回復
     client.onmessage = message => {
-      console.log(message);
+      // console.log(message);
       if (message.data === '' || message.data.includes('login_session')) return;
 
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      console.log('got Chat reply!', dataFromServer);
+      // console.log('got Chat reply!', dataFromServer);
 
       setInstantMessages(dataFromServer);
     };
 
     // 3.錯誤處理
     client.onclose = message => {
-      console.log('聊天室關閉');
+      // console.log('聊天室關閉');
     };
   };
 

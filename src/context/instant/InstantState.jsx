@@ -76,14 +76,14 @@ const InstantState = props => {
 
     // 1.建立連接
     client.onopen = () => {
-      console.log('websocket client connected instant');
+      // console.log('websocket client connected instant');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // console.log('got reply!', dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setInstantData(dataFromServer.data);
@@ -121,14 +121,14 @@ const InstantState = props => {
 
     // 1.建立連接
     client.onopen = () => {
-      console.log('websocket client connected instant on going');
+      // console.log('websocket client connected instant on going');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // console.log('got reply!', dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setOnGoingData(dataFromServer.data);
@@ -140,7 +140,7 @@ const InstantState = props => {
 
     // 3.錯誤處理
     client.onclose = function (message) {
-      console.log('關閉連線..... onGoing');
+      // console.log('關閉連線..... onGoing');
     };
   };
 
@@ -163,21 +163,19 @@ const InstantState = props => {
 
     const client = new W3CWebsocket(url);
 
-    console.log(client);
-
     if (client) {
       setWsStatusClient(client);
 
       // 1.建立連接
       client.onopen = () => {
-        console.log('websocket client connected instant status');
+        // console.log('websocket client connected instant status');
       };
 
       // 2.收到server回復
       client.onmessage = message => {
         if (!message.data) return;
         const dataFromServer = JSON.parse(message.data);
-        console.log('got reply!', dataFromServer);
+        // console.log('got reply!', dataFromServer);
 
         if (dataFromServer) setWsStatusData(dataFromServer.data.Order_StatusID);
 
@@ -193,7 +191,7 @@ const InstantState = props => {
 
       // 3. 關閉提示
       client.onclose = function (message) {
-        console.log('關閉ws status連線.....', message);
+        // console.log('關閉ws status連線.....');
       };
     }
   };
@@ -204,7 +202,7 @@ const InstantState = props => {
     if (!headers) return;
     setHttpLoading(true);
     try {
-      const match1 = `j/Req_SellMatch1.aspx`;
+      const match1 = `/j/Req_SellMatch1.aspx`;
 
       const res = await fetch(match1, {
         method: 'POST',
@@ -216,7 +214,7 @@ const InstantState = props => {
 
       const resData = await res.json();
 
-      console.log(resData, 'sell1');
+      // console.log(resData, 'sell1');
 
       if (resData.code === '16') {
         setOrderExists(false);
@@ -241,7 +239,7 @@ const InstantState = props => {
     if (!headers) return;
     setHttpLoading(true);
     try {
-      const match2 = `j/Req_SellMatch2.aspx`;
+      const match2 = `/j/Req_SellMatch2.aspx`;
 
       const res = await fetch(match2, {
         method: 'POST',
@@ -270,7 +268,7 @@ const InstantState = props => {
     if (!headers) return;
     setHttpLoading(true);
     try {
-      const match1 = `j/Req_BuyMatch1.aspx`;
+      const match1 = `/j/Req_BuyMatch1.aspx`;
 
       const res = await fetch(match1, {
         method: 'POST',
@@ -294,6 +292,7 @@ const InstantState = props => {
         handleHttpError(resData);
       }
     } catch (error) {
+      console.log('hi');
       handleHttpError(error);
     }
 
@@ -305,7 +304,7 @@ const InstantState = props => {
     const headers = getHeader();
     setHttpLoading(true);
     try {
-      const match2 = `j/Req_BuyMatch2.aspx`;
+      const match2 = `/j/Req_BuyMatch2.aspx`;
 
       const res = await fetch(match2, {
         method: 'POST',

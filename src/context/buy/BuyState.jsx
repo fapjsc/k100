@@ -110,11 +110,11 @@ const BuyState = props => {
     // console.log(client);
 
     if (client) setWsClient(client);
-    console.log(token);
+    // console.log(token);
 
     // 1.建立連接
     client.onopen = () => {
-      console.log('websocket client connected buy');
+      // console.log('websocket client connected buy');
     };
 
     // 2.收到server回復
@@ -122,7 +122,7 @@ const BuyState = props => {
       // console.log(message);
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // console.log('got reply!', dataFromServer);
       setWsStatus(dataFromServer.data.Order_StatusID);
       setDeltaTime(dataFromServer.data.DeltaTime);
 
@@ -194,7 +194,7 @@ const BuyState = props => {
 
     //3. 連線關閉
     client.onclose = message => {
-      console.log('關閉連線', message);
+      // console.log('關閉連線', message);
       // setWsClient(null);
     };
   };
@@ -218,7 +218,7 @@ const BuyState = props => {
 
       const resData = await res.json();
       if (resData.code === 200) {
-        console.log(resData);
+        // console.log(resData);
       } else {
         handleHttpError(resData);
       }
@@ -259,7 +259,7 @@ const BuyState = props => {
     const headers = getHeader();
     const cancelApi = `/j/Req_CancelOrder.aspx`;
     try {
-      console.log(orderToken);
+      // console.log(orderToken);
 
       const res = await fetch(cancelApi, {
         method: 'POST',

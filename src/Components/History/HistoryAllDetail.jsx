@@ -80,7 +80,9 @@ const HistoryAllDetail = props => {
                 singleDetail.type === 0 || singleDetail.type === 3 ? 'c_green mb-0' : 'c_red mb-0'
               }
             >
-              {Number(singleDetail.usdtAmt).toFixed(2)}
+              {singleDetail.type === 0 || singleDetail.type === 3
+                ? Math.abs(Number(singleDetail.usdtAmt).toFixed(2))
+                : Number(singleDetail.usdtAmt).toFixed(2)}
             </p>
           </div>
 

@@ -36,8 +36,6 @@ const HistoryWait = () => {
   const handleClick = orderToken => {
     const item = waitList.find(el => el.token === orderToken);
 
-    console.log(item);
-
     if (item.MasterType === '買入') {
       history.push(`/home/transaction/buy/${orderToken}`);
     }

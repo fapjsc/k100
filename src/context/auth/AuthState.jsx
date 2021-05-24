@@ -73,7 +73,7 @@ const AuthState = props => {
       });
 
       const resData = await res.json();
-      console.log(resData);
+      // console.log(resData);
 
       handleLoginLoading(false);
 

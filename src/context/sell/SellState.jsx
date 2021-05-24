@@ -104,7 +104,7 @@ const SellState = props => {
 
     if (!data) return;
 
-    const getOrderApi = `j/req_sell1.aspx`;
+    const getOrderApi = `/j/req_sell1.aspx`;
 
     try {
       const res = await fetch(getOrderApi, {
@@ -219,14 +219,14 @@ const SellState = props => {
 
     // 1.建立連接
     client.onopen = () => {
-      console.log('websocket client connected sell');
+      // console.log('websocket client connected sell');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer);
+      // console.log('got reply!', dataFromServer);
       setSellStatus(dataFromServer.data.Order_StatusID);
 
       // 配對中 Order_StatusID：31 or 32
@@ -264,7 +264,7 @@ const SellState = props => {
 
     // 3.錯誤處理
     client.onclose = function (message) {
-      console.log('關閉連線.....', message);
+      // console.log('關閉連線.....', message);
     };
   };
 
