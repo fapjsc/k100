@@ -35,7 +35,7 @@ const AuthState = props => {
     },
     expiredTime: null,
     isAgent: false,
-    accountIsExists: false,
+    accountIsExists: 'notYetConfirm',
   };
 
   // Get Header
@@ -395,12 +395,12 @@ const AuthState = props => {
       console.log(resData);
 
       if (resData.code === '11') {
-        setAccountExists(true);
+        setAccountExists('exists');
         return;
       }
 
       if (resData.code === 200) {
-        setAccountExists(false);
+        setAccountExists('notExists');
       } else {
         handleHttpError(resData);
       }
@@ -461,6 +461,7 @@ const AuthState = props => {
         setAgent,
         autoLogout,
         checkAccountExists,
+        setAccountExists,
       }}
     >
       {props.children}

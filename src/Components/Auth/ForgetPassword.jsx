@@ -21,10 +21,11 @@ import Spinner from 'react-bootstrap/Spinner';
 import Fade from 'react-bootstrap/Fade';
 
 const ForgetPassword = () => {
-  const authContext = useContext(AuthContext);
-
+  // Router Props
   const history = useHistory();
 
+  // Auth Context
+  const authContext = useContext(AuthContext);
   const {
     getValidCode,
     isSendValidCode,
@@ -38,8 +39,13 @@ const ForgetPassword = () => {
     expiredTime,
     checkAccountExists,
     accountIsExists,
+    setAccountExists,
+    setErrorText,
+    removeValidToken,
   } = authContext;
 
+  // Init State
+  const [errText, setErrText] = useState('');
   const [showNewPw, setShowNewPw] = useState(false);
 
   // phone Data
@@ -87,6 +93,8 @@ const ForgetPassword = () => {
 
   const handleChange = e => {
     if (e.target.name === 'countryCode') {
+      setAccountExists('notYetConfirm');
+
       if (e.target.value.includes('中國')) {
         setCountryCode({
           val: 86,
@@ -113,6 +121,7 @@ const ForgetPassword = () => {
     }
 
     if (e.target.name === 'phoneNumber') {
+      setAccountExists('notYetConfirm');
       setPhoneNumber({
         val: e.target.value,
         isValid: true,
@@ -213,12 +222,34 @@ const ForgetPassword = () => {
 
   const goToLogin = () => {
     cleanErr();
+    // setAccountExists('notYetConfirm');
+    // setErrorText('');
+    // setShowNewPw(false);
     history.replace('/auth/login');
   };
 
   // ===========
   //  UseEffect
   // ===========
+  useEffect(() => {
+    return () => {
+      setAccountExists('notYetConfirm');
+      setErrorText('');
+      setShowNewPw(false);
+      removeValidToken();
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (accountIsExists === 'notExists') setErrText('此帳號未註冊');
+    if (accountIsExists === 'exists' || accountIsExists === 'notYetConfirm') setErrText('');
+  }, [accountIsExists]);
+
+  useEffect(() => {
+    if (errText) setPhoneValid(false);
+  }, [errText]);
+
   useEffect(() => {
     if (phoneValid) {
       // 驗證帳號是否已經註冊
@@ -350,6 +381,11 @@ const ForgetPassword = () => {
                     >
                       繼續
                     </Button>
+                    {errText && (
+                      <Form.Text style={{ marginBottom: 10, fontSize: 12, color: 'red' }}>
+                        *{errText}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Form.Row>
 
@@ -378,7 +414,7 @@ const ForgetPassword = () => {
                   </div>
                 </Collapse>
 
-                <Collapse in={phoneValid && !showNewPw}>
+                <Collapse in={accountIsExists === 'exists' && !showNewPw}>
                   <Form.Row className="mx-auto justify-content-between align-items-center mb-4">
                     <Form.Group as={Col} xl={8} className="">
                       <Form.Control
