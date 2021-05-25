@@ -121,4 +121,36 @@ const waitCount = {
   color: '#fff',
 };
 
+const linkStyle = {
+  backgroundColor: 'inherit',
+  borderBottom: 'none',
+  outline: 'none',
+  cursor: 'pointer',
+  padding: '14px 16px',
+  fontSize: '17px',
+  color: '#707070',
+
+  marginRight: '1rem',
+
+  display: 'inline-block',
+  width: '10rem',
+  textAlign: 'center',
+};
+
+const linkActive = {
+  backgroundColor: 'inherit',
+  border: 'none',
+  outline: 'none',
+  cursor: 'pointer',
+  padding: '14px 16px',
+  fontSize: '17px',
+
+  color: '#3f80fa',
+  borderBottom: '2px solid #3f80fa',
+
+  marginRight: '1rem',
+  display: 'inline-block',
+  width: '10rem',
+  textAlign: 'center',
+};
 export default History;

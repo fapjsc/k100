@@ -8,10 +8,16 @@ import {
   LOGIN_SET_LOADING,
   SET_ERROR_TEXT,
   SET_AGENT,
+  SET_ACCOUNT_EXISTS,
 } from '../type';
 
 const AuthReducer = (state, action) => {
   switch (action.type) {
+    case SET_ACCOUNT_EXISTS:
+      return {
+        ...state,
+        accountIsExists: action.payload,
+      };
     case SET_AGENT:
       return {
         ...state,

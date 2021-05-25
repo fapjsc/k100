@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import AuthReducer from './AuthReducer';
@@ -14,6 +14,7 @@ import {
   LOGIN_SET_LOADING,
   SET_ERROR_TEXT,
   SET_AGENT,
+  SET_ACCOUNT_EXISTS,
 } from '../type';
 
 const AuthState = props => {
@@ -34,6 +35,7 @@ const AuthState = props => {
     },
     expiredTime: null,
     isAgent: false,
+    accountIsExists: false,
   };
 
   // Get Header
@@ -375,6 +377,38 @@ const AuthState = props => {
     }
   };
 
+  // 驗證帳號是否存在
+  const checkAccountExists = async data => {
+    console.log(data);
+    const checkAccount = `/j/ChkLoginExists.aspx`;
+
+    try {
+      const res = await fetch(checkAccount, {
+        method: 'POST',
+        body: JSON.stringify({
+          reg_countrycode: data.countryCode,
+          reg_tel: data.phoneNumber,
+        }),
+      });
+
+      const resData = await res.json();
+      console.log(resData);
+
+      if (resData.code === '11') {
+        setAccountExists(true);
+        return;
+      }
+
+      if (resData.code === 200) {
+        setAccountExists(false);
+      } else {
+        handleHttpError(resData);
+      }
+    } catch (error) {
+      handleHttpError(error);
+    }
+  };
+
   // set countdown btn
   const setCountDown = value => {
     dispatch({ type: IS_SEND_VALID_CODE, payload: value });
@@ -393,6 +427,11 @@ const AuthState = props => {
     dispatch({ type: SET_AGENT, payload: value });
   };
 
+  // 帳號是否已經存在
+  const setAccountExists = value => {
+    dispatch({ type: SET_ACCOUNT_EXISTS, payload: value });
+  };
+
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   return (
@@ -406,6 +445,7 @@ const AuthState = props => {
         loginLoading: state.loginLoading,
         errorText: state.errorText,
         isAgent: state.isAgent,
+        accountIsExists: state.accountIsExists,
 
         handleHttpError,
         changePw,
@@ -420,6 +460,7 @@ const AuthState = props => {
         logout,
         setAgent,
         autoLogout,
+        checkAccountExists,
       }}
     >
       {props.children}

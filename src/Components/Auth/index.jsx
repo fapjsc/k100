@@ -119,7 +119,7 @@ export default class Auth extends Component {
     const { formState, isLoading, httpError, showModal, loginErr, status } = this.state;
     const { location } = this.props;
     return (
-      <div className="" style={{}}>
+      <div className="authBg" style={{}}>
         <Header>
           <div className={style.logo}></div>
         </Header>

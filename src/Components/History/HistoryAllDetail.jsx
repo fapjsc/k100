@@ -17,6 +17,7 @@ const HistoryAllDetail = props => {
   const { singleDetail, setSingleDetail } = historyContext;
 
   useEffect(() => {
+    console.log(singleDetail);
     return () => {
       setSingleDetail(null);
     };
@@ -81,7 +82,7 @@ const HistoryAllDetail = props => {
               }
             >
               {singleDetail.type === 0 || singleDetail.type === 3
-                ? Math.abs(Number(singleDetail.usdtAmt).toFixed(2))
+                ? Math.abs(Number(singleDetail.usdtAmt)).toFixed(2)
                 : Number(singleDetail.usdtAmt).toFixed(2)}
             </p>
           </div>

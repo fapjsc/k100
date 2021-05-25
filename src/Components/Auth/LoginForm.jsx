@@ -134,122 +134,115 @@ const LoginForm = () => {
   };
 
   return (
-    <Fragment>
-      <div className="form-container">
-        <Form>
-          <Form.Row>
-            <Form.Group as={Col} md="4" controlId="CountryCode">
-              <Form.Control
-                style={{
-                  fontSize: '17px',
-                  color: '#495057',
-                }}
-                as="select"
-                defaultValue="區號"
-                className="form-select mb-4 pl-3"
-                name="countryCode"
-                onChange={onChange}
-                isInvalid={countryCode.error}
-              >
-                <option disabled>區號</option>
-                <option>中國＋86</option>
-                <option>台灣＋886</option>
-                <option>香港＋852</option>
-              </Form.Control>
-              {countryCode.error && (
-                <Form.Text
-                  className="mb-4"
-                  style={{ fontSize: '12px' }}
-                >{`*${countryCode.error}`}</Form.Text>
-              )}
-            </Form.Group>
-
-            <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
-              <Form.Control
-                isInvalid={phoneNumber.error}
-                className="form-select mb-4"
-                name="phoneNumber"
-                size="lg"
-                type="tel"
-                placeholder="手機號碼"
-                onChange={onChange}
-                value={phoneNumber.val}
-                // onChange={this.setPhoneNumber}
-                autoComplete="off"
-              />
-              {phoneNumber.error && (
-                <Form.Text
-                  className="mb-4"
-                  style={{ fontSize: '12px' }}
-                >{`*${phoneNumber.error}`}</Form.Text>
-              )}
-            </Form.Group>
-          </Form.Row>
-
-          <Form.Row>
-            <Form.Group as={Col} xl={12} controlId="formBasicPassword">
-              <Form.Control
-                isInvalid={password.error}
-                className="form-select mb-4"
-                name="password"
-                size="lg"
-                type="password"
-                placeholder="密碼"
-                onChange={onChange}
-                value={password.val}
-                onKeyUp={handleKeyUp}
-                autoComplete="off"
-              />
-              {password.error && (
-                <Form.Text
-                  className="mb-4"
-                  style={{ fontSize: '12px' }}
-                >{`*${password.error}`}</Form.Text>
-              )}
-
-              {errorText && (
-                <Form.Text
-                  className="mb-4"
-                  style={{ fontSize: '12px' }}
-                >{`*${errorText}`}</Form.Text>
-              )}
-            </Form.Group>
-          </Form.Row>
-
-          <Button
-            onClick={validateForm}
+    <Form>
+      <Form.Row>
+        <Form.Group as={Col} md="4" controlId="CountryCode">
+          <Form.Control
             style={{
-              display: 'block',
-              width: '100%',
-              background: loginLoading ? 'grey' : '#3e80f9',
-              cursor: loginLoading ? 'auto' : 'pointer',
+              fontSize: '17px',
+              color: '#495057',
             }}
-            disabled={loginLoading}
-            className="easy-btn"
-            type="button"
+            as="select"
+            defaultValue="區號"
+            className="form-select mb-4 pl-3"
+            name="countryCode"
+            onChange={onChange}
+            isInvalid={countryCode.error}
           >
-            {loginLoading && (
-              <Spinner
-                as="span"
-                animation="border"
-                size="lg"
-                role="status"
-                aria-hidden="true"
-                className="mr-2"
-              />
-            )}
+            <option disabled>區號</option>
+            <option>中國＋86</option>
+            <option>台灣＋886</option>
+            <option>香港＋852</option>
+          </Form.Control>
+          {countryCode.error && (
+            <Form.Text
+              className="mb-4"
+              style={{ fontSize: '12px' }}
+            >{`*${countryCode.error}`}</Form.Text>
+          )}
+        </Form.Group>
 
-            <span>{loginLoading ? '處理中' : '登入'}</span>
-          </Button>
-          <div className="forget_pw-box">
-            <Link to="/forget-pw" className="forget_pw-link">
-              <span className="forget_pw"></span>
-              <u>忘記密碼</u>
-            </Link>
-          </div>
-        </Form>
+        <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
+          <Form.Control
+            isInvalid={phoneNumber.error}
+            className="form-select mb-4"
+            name="phoneNumber"
+            size="lg"
+            type="tel"
+            placeholder="手機號碼"
+            onChange={onChange}
+            value={phoneNumber.val}
+            // onChange={this.setPhoneNumber}
+            autoComplete="off"
+          />
+          {phoneNumber.error && (
+            <Form.Text
+              className="mb-4"
+              style={{ fontSize: '12px' }}
+            >{`*${phoneNumber.error}`}</Form.Text>
+          )}
+        </Form.Group>
+      </Form.Row>
+
+      <Form.Row>
+        <Form.Group as={Col} xl={12} controlId="formBasicPassword">
+          <Form.Control
+            isInvalid={password.error}
+            className="form-select mb-4"
+            name="password"
+            size="lg"
+            type="password"
+            placeholder="密碼"
+            onChange={onChange}
+            value={password.val}
+            onKeyUp={handleKeyUp}
+            autoComplete="off"
+          />
+          {password.error && (
+            <Form.Text
+              className="mb-4"
+              style={{ fontSize: '12px' }}
+            >{`*${password.error}`}</Form.Text>
+          )}
+
+          {errorText && (
+            <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${errorText}`}</Form.Text>
+          )}
+        </Form.Group>
+      </Form.Row>
+
+      <Button
+        onClick={validateForm}
+        style={{
+          display: 'block',
+          width: '100%',
+          background: loginLoading ? 'grey' : '#3e80f9',
+          cursor: loginLoading ? 'auto' : 'pointer',
+        }}
+        disabled={loginLoading}
+        className="easy-btn"
+        type="button"
+      >
+        {loginLoading && (
+          <Spinner
+            as="span"
+            animation="border"
+            size="lg"
+            role="status"
+            aria-hidden="true"
+            className="mr-2"
+          />
+        )}
+
+        <span>{loginLoading ? '處理中' : '登入'}</span>
+      </Button>
+      <div className="forget_pw-box">
+        <Link to="/forget-pw" className="forget_pw-link">
+          <span className="forget_pw"></span>
+          <u>忘記密碼</u>
+        </Link>
       </div>
-    </Fragment>
+    </Form>
   );
 };
 

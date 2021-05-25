@@ -1,10 +1,14 @@
+.authBg {
+  background-color: #242e47;
+  max-height: 200vh;
+}
+
 .user-auth {
   background-image: url(../../Assets//easy_bg.jpg);
-  // background-image: url(../../Assets//257796.jpg);
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
   padding: 10rem 0;
-  height: 100vh;
+  min-height: 100vh;
   h4 {
     font-size: 2.5rem;
   }

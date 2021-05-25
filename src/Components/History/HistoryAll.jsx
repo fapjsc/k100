@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 // import { v4 as uuidv4 } from 'uuid';
 // import { useMediaQuery } from 'react-responsive';
@@ -25,6 +26,9 @@ const HistoryAll = () => {
   // Media Query
   // const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
 
+  // Router Props
+  const history = useHistory();
+  const match = useRouteMatch();
   // History Context
   const historyContext = useContext(HistoryContext);
   const { getHistoryAll, allHistory, detailReq, singleDetail, historyLoading } = historyContext;
@@ -37,7 +41,6 @@ const HistoryAll = () => {
 
   useEffect(() => {
     getHistoryAll();
-
     // eslint-disable-next-line
   }, []);
 
@@ -59,6 +62,7 @@ const HistoryAll = () => {
   };
 
   const changePage = ({ selected }) => {
+    history.push(pageNumber);
     setPageNumber(selected);
   };
 
@@ -72,7 +76,6 @@ const HistoryAll = () => {
             balance={balance && balance}
           />
         )}
-        {/* <Button onClick={() => buyWsClient.close()}>test</Button> */}
         <Table responsive bordered hover className="mt-4">
           <thead>
             <tr>
@@ -107,6 +110,7 @@ const HistoryAll = () => {
             nextLinkClassName={'nextBtn'}
             disabledClassName={'paginationDisabled'}
             activeClassName={'paginationActive'}
+            initialPage={pageNumber}
           />
         </div>
       </>

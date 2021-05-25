@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Context
@@ -18,6 +18,8 @@ const OverView = () => {
   // AuthContext
   const authContext = useContext(AuthContext);
   const { isAgent } = authContext;
+
+  useEffect(() => {}, [isAgent]);
 
   return (
     <Container style={{ maxWidth: '1140px' }} className="mt-4">

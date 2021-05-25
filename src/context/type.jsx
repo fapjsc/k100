@@ -39,6 +39,7 @@ export const SHOW_ERROR_MODAL = 'SHOW_ERROR_MODAL';
 export const REMOVE_VALID_TOKEN = 'REMOVE_VALID_TOKEN';
 export const SET_EXPIRED_TIME = 'SET_EXPIRED_TIME';
 export const SET_AGENT = 'SET_AGENT';
+export const SET_ACCOUNT_EXISTS = 'SET_ACCOUNT_EXISTS';
 
 // History
 export const SET_ALL_HISTORY = 'SET_ALL_HISTORY';
