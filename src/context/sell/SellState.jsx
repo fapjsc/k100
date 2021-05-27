@@ -1,10 +1,13 @@
 import { useReducer, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import HttpErrorContext from '../httpError/HttpErrorContext';
-
 import SellContext from './SellContext';
 import SellReducer from './SellReducer';
+
+// Context
+import HttpErrorContext from '../httpError/HttpErrorContext';
+import BalanceContext from '../../context/balance/BalanceContext';
+
 import {
   SET_SELL_COMPLETED,
   SET_RMB_SELL_RATE,
@@ -18,6 +21,8 @@ import {
   SET_SELL_STATUS,
   SET_RATE_DATA,
   SET_TRANSFER_HANDLE,
+  SET_SELL_COUNT,
+  SET_SHOW_SELL_BANK,
 } from '../type';
 
 // import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -41,12 +46,20 @@ const SellState = props => {
     sellCurrentToken: null,
     sellStatus: null,
     rateAllData: null,
+    sellCount: null,
+    showBank: false,
   };
 
+  // Router Props
   const history = useHistory();
 
+  // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { handleHttpError, setHttpLoading } = httpErrorContext;
+
+  // Balance Context
+  const balanceContext = useContext(BalanceContext);
+  const { getBalance } = balanceContext;
 
   // Get Header
   const getHeader = () => {
@@ -249,6 +262,7 @@ const SellState = props => {
 
       // 交易成功 Order_StatusID：1
       if (dataFromServer.data.Order_StatusID === 1) {
+        getBalance();
         // dispatch({ type: SET_SELL_COMPLETED, payload: true });
         setWsData(dataFromServer.data);
         setCompleteStatus(true);
@@ -312,6 +326,8 @@ const SellState = props => {
       });
 
       const resData = await res.json();
+
+      console.log(resData);
 
       dispatch({ type: SET_CANCEL_ORDER_DATA, payload: resData });
 
@@ -381,6 +397,16 @@ const SellState = props => {
     dispatch({ type: SET_TRANSFER_HANDLE, payload: num });
   };
 
+  // Set Sell Count
+  const setSellCount = data => {
+    dispatch({ type: SET_SELL_COUNT, payload: data });
+  };
+
+  // Set Show Bank
+  const setShowBank = value => {
+    dispatch({ type: SET_SHOW_SELL_BANK, payload: value });
+  };
+
   // Clean All
   const CleanAll = () => {
     if (state.wsClient) state.wsClient.close();
@@ -390,6 +416,9 @@ const SellState = props => {
     setSellStatus(null);
     setRateAllData(null);
     setTransferHandle(null);
+    setShowBank(false);
+    setWsClient(null);
+    cleanOrderToken();
   };
 
   // useReducer
@@ -412,6 +441,8 @@ const SellState = props => {
         wsClient: state.wsClient,
         sellStatus: state.sellStatus,
         rateAllData: state.rateAllData,
+        sellCount: state.sellCount,
+        showBank: state.showBank,
 
         getExRate,
         getOrderToken,
@@ -425,6 +456,8 @@ const SellState = props => {
         CleanAll,
         setConfirmSell,
         setTransferHandle,
+        setSellCount,
+        setShowBank,
       }}
     >
       {props.children}

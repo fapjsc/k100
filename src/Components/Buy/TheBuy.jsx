@@ -34,6 +34,7 @@ const TheBuy = () => {
     buyConnectWs,
     cleanAll,
     wsStatus,
+    cancelOrder,
     // setWsStatus,
   } = buyContext;
 
@@ -54,6 +55,7 @@ const TheBuy = () => {
   }, [buyOrderToken]);
 
   const onHide = () => {
+    if (buyOrderToken) cancelOrder(buyOrderToken);
     handlePairing(false);
     cleanAll();
     history.replace('/home/overview');

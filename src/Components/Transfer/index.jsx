@@ -1,5 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import QrReader from 'modern-react-qr-reader';
 
 // Components
 import OnLoading from './OnLoading';
@@ -18,6 +20,8 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 
 const Transfer = () => {
+  // Media Query
+  const isMobile = useMediaQuery({ query: '(max-width: 900px)' }); // 小於等於 900 true
   // Router Props
   const history = useHistory();
 
@@ -49,6 +53,7 @@ const Transfer = () => {
   const { httpLoading, setHttpLoading, errorText, setHttpError } = httpErrorContext;
 
   // Init State
+  const [scanResultWebCam, setScanResultWebCam] = useState('');
   const [transferCount, setTransferCount] = useState({
     val: '',
     isValid: true,
@@ -69,9 +74,7 @@ const Transfer = () => {
 
   const [protocolType, setProtocolType] = useState('');
 
-  const handleClick = type => {
-    setProtocolType(type);
-  };
+  const [showCamera, setShowCamera] = useState(false);
 
   //=========
   // Effect
@@ -83,6 +86,19 @@ const Transfer = () => {
     setHttpError('');
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (scanResultWebCam) {
+      setTransferAddress({
+        val: scanResultWebCam,
+        error: '',
+        isValid: true,
+      });
+    }
+    return () => {
+      setScanResultWebCam('');
+    };
+  }, [scanResultWebCam]);
 
   // Type  --手續費，清空input及error
   useEffect(() => {
@@ -274,6 +290,10 @@ const Transfer = () => {
     history.replace('/home/overview');
   };
 
+  const handleClick = type => {
+    setProtocolType(type);
+  };
+
   const inputText = {
     color: '#D7E2F3',
     position: 'absolute',
@@ -281,6 +301,16 @@ const Transfer = () => {
     transform: 'translateY(56%)',
     right: 45,
     fontSize: 17,
+  };
+
+  const handleErrorWebCam = error => {
+    console.log(error);
+  };
+  const handleScanWebCam = result => {
+    if (result) {
+      setScanResultWebCam(result);
+      setShowCamera(false);
+    }
   };
 
   return (
@@ -423,6 +453,9 @@ const Transfer = () => {
                     />
                   </div>
 
+                  {/* <h3>Qr Code Scan by Web Cam</h3> */}
+
+                  {/* <h3>Scanned By WebCam Code: {scanResultWebCam}</h3> */}
                   {/* 前端驗證錯誤提示 */}
                   {transferAddress.error ? (
                     <Form.Text className="text-muted text-left" style={{ fontSize: '12px' }}>
@@ -449,24 +482,48 @@ const Transfer = () => {
         </Form.Row>
 
         {protocolType && transferCount.val && !transferCount.error ? (
-          <Button
-            onClick={valid}
-            className="easy-btn smScreen-btn mt-4"
-            disabled={httpLoading || transferErrText}
-            style={{
-              cursor: httpLoading || transferErrText ? 'auto' : 'pointer',
-              backgroundColor: httpLoading || transferErrText ? 'grey' : '#3e80f9',
-            }}
-          >
-            {httpLoading && <Spinner animation="grow" variant="danger" />}
-            {httpLoading ? '處理中...' : '下一步'}
-          </Button>
+          <>
+            <div className="text-left mt-4">
+              <span style={showCameraText} onClick={() => setShowCamera(!showCamera)}>
+                開啟相機掃描QR Code?
+              </span>
+            </div>
+            {showCamera && (
+              <QrReader
+                delay={300}
+                style={{ maxWidth: '360px', margin: '30px auto' }}
+                onError={handleErrorWebCam}
+                onScan={handleScanWebCam}
+                facingMode={'environment'}
+              />
+            )}
+
+            <Button
+              onClick={valid}
+              className="easy-btn smScreen-btn mt-4"
+              disabled={httpLoading || transferErrText}
+              style={{
+                cursor: httpLoading || transferErrText ? 'auto' : 'pointer',
+                backgroundColor: httpLoading || transferErrText ? 'grey' : '#3e80f9',
+              }}
+            >
+              {httpLoading && <Spinner animation="grow" variant="danger" />}
+              {httpLoading ? '處理中...' : '下一步'}
+            </Button>
+          </>
         ) : null}
       </Form>
 
       <FormFooter />
     </div>
   );
+};
+
+const showCameraText = {
+  color: '#3e80f9',
+  cursor: 'pointer',
+  borderBottom: '1px solid #3e80f9',
+  fontSize: 12,
 };
 
 export default Transfer;

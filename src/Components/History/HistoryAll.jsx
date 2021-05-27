@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 // import { v4 as uuidv4 } from 'uuid';
 // import { useMediaQuery } from 'react-responsive';
@@ -28,7 +28,6 @@ const HistoryAll = () => {
 
   // Router Props
   const history = useHistory();
-  const match = useRouteMatch();
   // History Context
   const historyContext = useContext(HistoryContext);
   const { getHistoryAll, allHistory, detailReq, singleDetail, historyLoading } = historyContext;

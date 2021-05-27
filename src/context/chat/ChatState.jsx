@@ -12,6 +12,7 @@ import {
   CHAT_SET_ORDER_TOKEN,
   SET_INSTANT_CLIENT,
   SET_INSTANT_MESSAGES,
+  SET_CHAT_LOADING,
 } from '../type';
 
 const ChatState = props => {
@@ -22,6 +23,7 @@ const ChatState = props => {
     client: null,
     instantClient: null,
     instantMessages: [],
+    chatLoading: false,
   };
 
   const setTranslate = value => {
@@ -55,7 +57,8 @@ const ChatState = props => {
     client.onmessage = message => {
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got Chat reply!', dataFromServer);
+      console.log('got Chat reply!', dataFromServer);
+      setChatLoading(false);
 
       setMessages(dataFromServer);
     };
@@ -117,7 +120,8 @@ const ChatState = props => {
 
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got Chat reply!', dataFromServer);
+      console.log('got Chat reply!', dataFromServer);
+      setChatLoading(false);
 
       setInstantMessages(dataFromServer);
     };
@@ -151,6 +155,11 @@ const ChatState = props => {
     dispatch({ type: SET_CHAT_WS_CLIENT, payload: client });
   };
 
+  // Set Chat Loading
+  const setChatLoading = value => {
+    dispatch({ type: SET_CHAT_LOADING, payload: value });
+  };
+
   const [state, dispatch] = useReducer(ChatReducer, initialState);
 
   return (
@@ -162,6 +171,7 @@ const ChatState = props => {
         client: state.client,
         instantClient: state.instantClient,
         instantMessages: state.instantMessages,
+        chatLoading: state.chatLoading,
 
         setTranslate,
         chatConnect,
@@ -172,6 +182,7 @@ const ChatState = props => {
         setInstantClient,
         setMessages,
         setInstantMessages,
+        setChatLoading,
       }}
     >
       {props.children}

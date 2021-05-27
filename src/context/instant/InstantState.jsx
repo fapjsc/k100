@@ -4,8 +4,9 @@ import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import InstantReducer from './InstantReducer';
 import InstantContext from './InstantContext';
 
-// Http Error Context
+// Context
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import BalanceContext from '../../context/balance/BalanceContext';
 
 import {
   SET_INSTANT_WS_DATA,
@@ -27,6 +28,11 @@ const InstantState = props => {
   const httpErrorContext = useContext(HttpErrorContext);
   const { handleHttpError, setHttpLoading } = httpErrorContext;
 
+  // Balance Context
+  const balanceContext = useContext(BalanceContext);
+  const { getBalance } = balanceContext;
+
+  // Init State
   const initialState = {
     instantData: [],
     wsOnGoingData: [],
@@ -185,6 +191,7 @@ const InstantState = props => {
           dataFromServer.data.Order_StatusID === 99 ||
           dataFromServer.data.Order_StatusID === 98
         ) {
+          getBalance();
           client.close();
         }
       };

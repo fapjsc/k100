@@ -1,4 +1,4 @@
-import { useReducer, useContext } from 'react';
+import { useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import AuthReducer from './AuthReducer';

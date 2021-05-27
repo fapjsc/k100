@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-
-import SuccessRegister from '../successRegister';
+import React, { Component, Fragment } from 'react';
 import Countdown from 'react-countdown';
 
+// Components
+import SuccessRegister from '../successRegister';
 import ButtonTimer from './ButtonTimer';
 import Spinner from '../../../Ui/BaseSpinner';
 
-import { Form, Button, Col } from 'react-bootstrap';
-// import iAsk from '../../../../Assets/i_ask.png';
+// Style
+import { Form, Button, Col, InputGroup } from 'react-bootstrap';
 import './index.scss';
-import { Fragment } from 'react';
 
 export default class ValidCode extends Component {
   state = {
@@ -334,15 +333,21 @@ export default class ValidCode extends Component {
             <Form.Row className="align-items-center">
               <Form.Group as={Col} sm={12} controlId="formBasicValidCode" className="">
                 <Form.Label className="mb-4 fs_15">點擊按鈕後發送驗證碼</Form.Label>
-                <Form.Control
-                  placeholder="一次性驗證碼"
-                  className="form-input mb-0"
-                  onChange={this.setValidNum}
-                  value={validNum.val}
-                  autoComplete="off"
-                  type="number"
-                  isValid={formIsValid}
-                />
+                <InputGroup className="mb-2 mr-sm-2">
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>VEK&nbsp;-</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    placeholder="一次性驗證碼"
+                    className="form-input mb-0"
+                    onChange={this.setValidNum}
+                    value={validNum.val}
+                    autoComplete="off"
+                    type="number"
+                    isValid={formIsValid}
+                  />
+                </InputGroup>
+
                 {error ? <Form.Text className="text-muted">{error}</Form.Text> : null}
               </Form.Group>
 

@@ -7,14 +7,22 @@ import SellContext from '../../context/sell/SellContext';
 // Components
 import SellHeaders from './SellHeader';
 import SellForm from './SellForm';
+import SellBankForm from './SellBankForm';
 import Pairing from './Pairing';
 import FormFooter from '../Layout/FormFooter';
 
 const Sell = () => {
+  // Router Props
   const history = useHistory();
-  const sellContext = useContext(SellContext);
-  const { wsPairing, wsData, CleanAll, wsClient, sellStatus, orderToken } = sellContext;
 
+  // Sell Context
+  const sellContext = useContext(SellContext);
+  const { wsPairing, wsData, CleanAll, wsClient, sellStatus, orderToken, showBank, cancelOrder } =
+    sellContext;
+
+  // ===========
+  //  UseEffect
+  // ===========
   useEffect(() => {
     if (wsClient) wsClient.close();
     return () => {
@@ -30,7 +38,8 @@ const Sell = () => {
     // eslint-disable-next-line
   }, [sellStatus]);
 
-  const backHome = () => {
+  const onHide = () => {
+    if (orderToken) cancelOrder(orderToken);
     if (wsClient) wsClient.close();
     // setWsPairing(false);
     history.replace('/home/overview');
@@ -41,10 +50,11 @@ const Sell = () => {
     <Fragment>
       <SellHeaders />
       <SellForm />
+      {showBank && <SellBankForm />}
       <FormFooter />
       <Pairing
         show={wsPairing && wsClient}
-        onHide={backHome}
+        onHide={onHide}
         title="請稍等，現正整合交易者資料"
         text={
           wsData &&

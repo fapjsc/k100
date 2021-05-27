@@ -18,7 +18,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import Spinner from 'react-bootstrap/Spinner';
-import Fade from 'react-bootstrap/Fade';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const ForgetPassword = () => {
   // Router Props
@@ -95,7 +95,7 @@ const ForgetPassword = () => {
     if (e.target.name === 'countryCode') {
       setAccountExists('notYetConfirm');
 
-      if (e.target.value.includes('中國')) {
+      if (e.target.value === '86') {
         setCountryCode({
           val: 86,
           isValid: true,
@@ -103,7 +103,7 @@ const ForgetPassword = () => {
         });
       }
 
-      if (e.target.value.includes('台灣')) {
+      if (e.target.value === '886') {
         setCountryCode({
           val: 886,
           isValid: true,
@@ -111,7 +111,7 @@ const ForgetPassword = () => {
         });
       }
 
-      if (e.target.value.includes('香港')) {
+      if (e.target.value === '852') {
         setCountryCode({
           val: 852,
           isValid: true,
@@ -174,6 +174,39 @@ const ForgetPassword = () => {
         val: '區號',
         isValid: false,
         error: '請選擇區號',
+      });
+
+      setPhoneValid(false);
+    }
+
+    // 驗證中國手機是否為11碼
+    if (countryCode.val === 86 && phoneNumber.val.length !== 11) {
+      setPhoneNumber({
+        val: '',
+        isValid: false,
+        error: '請輸入有效的電話號碼',
+      });
+
+      setPhoneValid(false);
+    }
+
+    // 驗證香港手機是否為8碼
+    if (countryCode.val === 852 && phoneNumber.val.length !== 8) {
+      setPhoneNumber({
+        val: '',
+        isValid: false,
+        error: '請輸入有效的電話號碼',
+      });
+
+      setPhoneValid(false);
+    }
+
+    // 驗證台灣手機是否為或10碼
+    if (countryCode.val === 886 && phoneNumber.val.length !== 10) {
+      setPhoneNumber({
+        val: '',
+        isValid: false,
+        error: '請輸入有效的電話號碼',
       });
 
       setPhoneValid(false);
@@ -337,10 +370,12 @@ const ForgetPassword = () => {
                       name="countryCode"
                       onChange={handleChange}
                     >
-                      <option disabled>區號</option>
-                      <option>中國＋86</option>
-                      <option>台灣＋886</option>
-                      <option>香港＋852</option>
+                      <option disabled value="區號">
+                        區號
+                      </option>
+                      <option value="86">中國＋86</option>
+                      <option value="886">台灣＋886</option>
+                      <option value="852">香港＋852</option>
                     </Form.Control>
                     {countryCode.error && (
                       <Form.Text style={{ fontSize: 12 }}>*{countryCode.error}</Form.Text>
@@ -417,15 +452,20 @@ const ForgetPassword = () => {
                 <Collapse in={accountIsExists === 'exists' && !showNewPw}>
                   <Form.Row className="mx-auto justify-content-between align-items-center mb-4">
                     <Form.Group as={Col} xl={8} className="">
-                      <Form.Control
-                        className="form-select "
-                        type="number"
-                        placeholder="輸入驗證碼"
-                        autoComplete="off"
-                        name="validCode"
-                        value={validCode.val}
-                        onChange={handleChange}
-                      />
+                      <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                          <InputGroup.Text id="basic-addon3">VEK&nbsp;-</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control
+                          className="form-select "
+                          type="number"
+                          placeholder="輸入驗證碼"
+                          autoComplete="off"
+                          name="validCode"
+                          value={validCode.val}
+                          onChange={handleChange}
+                        />
+                      </InputGroup>
                     </Form.Group>
                     <Form.Group as={Col} className="mb-4" xl={4}>
                       {isSendValidCode && expiredTime ? (

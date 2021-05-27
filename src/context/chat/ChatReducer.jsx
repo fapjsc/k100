@@ -5,10 +5,16 @@ import {
   CHAT_SET_ORDER_TOKEN,
   SET_INSTANT_CLIENT,
   SET_INSTANT_MESSAGES,
+  SET_CHAT_LOADING,
 } from '../type';
 
 const ChatReducer = (state, action) => {
   switch (action.type) {
+    case SET_CHAT_LOADING:
+      return {
+        ...state,
+        chatLoading: action.payload,
+      };
     case SET_INSTANT_MESSAGES:
       if (!Array.isArray(action.payload)) {
         return {

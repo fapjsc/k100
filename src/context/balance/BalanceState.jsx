@@ -31,9 +31,9 @@ const BalanceState = props => {
   };
 
   // get avb and real
-  const getBalance = async token => {
+  const getBalance = async () => {
     const headers = getHeader();
-    if (!headers || !token) return;
+    if (!headers) return;
 
     setHttpLoading(true);
 

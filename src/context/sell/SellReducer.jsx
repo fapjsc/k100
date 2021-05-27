@@ -11,10 +11,22 @@ import {
   SET_SELL_STATUS,
   SET_RATE_DATA,
   SET_TRANSFER_HANDLE,
+  SET_SELL_COUNT,
+  SET_SHOW_SELL_BANK,
 } from '../type';
 
 const SellReducer = (state, action) => {
   switch (action.type) {
+    case SET_SHOW_SELL_BANK:
+      return {
+        ...state,
+        showBank: action.payload,
+      };
+    case SET_SELL_COUNT:
+      return {
+        ...state,
+        sellCount: action.payload,
+      };
     case SET_TRANSFER_HANDLE:
       return {
         ...state,

@@ -68,7 +68,7 @@ const SellDetail = () => {
                 fontWeight: 'bold',
               }}
             >
-              {wsData && wsData.D2 + ` CNY`}
+              {wsData && wsData.D2.toFixed(2) + ` CNY`}
             </span>
           </p>
           <p>收款姓名：{wsData && wsData.P2}</p>

@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState, Fragment } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-// import Zmage from 'react-zmage'; // 圖片縮放
 import Resizer from 'react-image-file-resizer'; // 圖片壓縮
+import { PhotoProvider, PhotoConsumer } from 'react-photo-view'; // 圖片檢視
+// import Zmage from 'react-zmage'; // 圖片縮放
 // import { v4 as uuidv4 } from 'uuid';
 
-import { PhotoProvider, PhotoConsumer } from 'react-photo-view';
 import 'react-photo-view/dist/index.css';
 
 // Context
@@ -34,6 +34,8 @@ const TheChat = props => {
     instantChat,
     setInstantMessages,
     setMessages,
+    chatLoading,
+    setChatLoading,
   } = chatContext;
 
   // ===========
@@ -76,8 +78,8 @@ const TheChat = props => {
     new Promise(resolve => {
       Resizer.imageFileResizer(
         file,
-        300,
-        300,
+        1024,
+        1024,
         'JPEG',
         100,
         0,
@@ -89,6 +91,7 @@ const TheChat = props => {
     });
 
   const sendImg = async e => {
+    setChatLoading(true);
     try {
       const file = e.target.files[0]; // get image
 
@@ -117,6 +120,7 @@ const TheChat = props => {
       }
     } catch (error) {
       alert(error);
+      setChatLoading(false);
     }
   };
 
@@ -248,6 +252,11 @@ const TheChat = props => {
                   </div>
                 );
               })}
+              {chatLoading && (
+                <div className="text-center">
+                  <Spinner animation="border" role="status" />
+                </div>
+              )}
             </div>
 
             {/* Chat Bottom */}
@@ -288,6 +297,7 @@ const TheChat = props => {
                 return (
                   <div className="mb-2" key={index}>
                     {/* CS  === 2 , instant === 3, */}
+
                     <div>
                       {/* messages */}
                       {el.Message_Type === 1 ? (
@@ -361,6 +371,12 @@ const TheChat = props => {
                   </div>
                 );
               })}
+
+              {chatLoading && (
+                <div className="text-center">
+                  <Spinner animation="border" role="status" />
+                </div>
+              )}
             </div>
 
             {/* Chat Bottom */}

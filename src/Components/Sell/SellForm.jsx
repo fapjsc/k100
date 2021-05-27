@@ -22,11 +22,11 @@ const SellForm = () => {
 
   // Balance Context
   const balanceContext = useContext(BalanceContext);
-  const { getBalance, wsPairing, avb } = balanceContext;
+  const { getBalance, avb } = balanceContext;
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { getExRate, getOrderToken, exRate, setWsPairing } = sellContext;
+  const { getExRate, exRate, setSellCount, setShowBank } = sellContext;
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -44,30 +44,6 @@ const SellForm = () => {
     error: '',
   });
 
-  const [name, setName] = useState({
-    val: '',
-    isValid: true,
-    error: '',
-  });
-
-  const [bank, setBank] = useState({
-    val: '',
-    isValid: true,
-    error: '',
-  });
-
-  const [account, setAccount] = useState({
-    val: '',
-    isValid: true,
-    error: '',
-  });
-
-  const [city, setCity] = useState({
-    val: '',
-    isValid: true,
-    error: '',
-  });
-
   const [formValid, setFormValid] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
   const [showBankWallet, setShowBankWallet] = useState(false);
@@ -79,6 +55,23 @@ const SellForm = () => {
   }, []);
 
   useEffect(() => {
+    const data = {
+      usdt: usdt.val,
+      cny: cny.val,
+    };
+    setSellCount(data);
+    // eslint-disable-next-line
+  }, [usdt, cny]);
+
+  useEffect(() => {
+    if (formValid) {
+      setShowBank(true);
+    }
+    return setFormValid(false);
+    // eslint-disable-next-line
+  }, [formValid]);
+
+  useEffect(() => {
     if (errorText) alert(errorText);
     return () => {
       setHttpError('');
@@ -86,26 +79,8 @@ const SellForm = () => {
     // eslint-disable-next-line
   }, [errorText]);
 
-  // 表單驗證後發送請求
-  useEffect(() => {
-    if (!formValid) return;
-
-    const data = {
-      usdt: usdt.val,
-      name: name.val,
-      bank: bank.val,
-      account: account.val,
-      city: city.val,
-    };
-
-    setWsPairing(true);
-    getOrderToken(data);
-    setFormValid(false);
-
-    //eslint-disable-next-line
-  }, [formValid]);
-
   const onChange = e => {
+    if (!e.target.val) setShowBank(false);
     if (e.target.name === 'usdt') {
       if (e.target.value < 0 || e.target.value === 'e') {
         setUsdt({
@@ -153,38 +128,6 @@ const SellForm = () => {
       });
 
       if (!e.target.val) setShowBankWallet(false);
-    }
-
-    if (e.target.name === 'name') {
-      setName({
-        val: e.target.value.trim(),
-        isValid: true,
-        error: '',
-      });
-    }
-
-    if (e.target.name === 'bank') {
-      setBank({
-        val: e.target.value.trim(),
-        isValid: true,
-        error: '',
-      });
-    }
-
-    if (e.target.name === 'account') {
-      setAccount({
-        val: e.target.value.trim(),
-        isValid: true,
-        error: '',
-      });
-    }
-
-    if (e.target.name === 'city') {
-      setCity({
-        val: e.target.value.trim(),
-        isValid: true,
-        error: '',
-      });
     }
   };
 
@@ -252,56 +195,34 @@ const SellForm = () => {
       setFormValid(false);
     }
 
-    if (name.val === '') {
-      setName({
+    // 有1~2位小数的正數，且不能為0或0開頭
+    let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
+    if (!rule.test(usdt.val) || !rule.test(cny.val)) {
+      setUsdt({
         val: '',
         isValid: false,
-        error: '請輸入收款人姓名',
+        error: '請輸入有效數量, (不能為0，最多小數第二位)',
       });
 
-      setFormValid(false);
-    }
-
-    if (bank.val === '') {
-      setBank({
+      setCny({
         val: '',
-        isValid: false,
-        error: '請輸入開戶銀行',
-      });
-
-      setFormValid(false);
-    }
-
-    if (account.val === '') {
-      setAccount({
-        val: '',
-        isValid: false,
-        error: '請輸入收款帳號',
-      });
-
-      setFormValid(false);
-    }
-
-    if (city.val === '') {
-      setCity({
-        val: '',
-        isValid: false,
-        error: '請輸入所在省市',
+        isValid: true,
+        error: '',
       });
 
       setFormValid(false);
     }
   };
 
-  const onSubmit = e => {
-    e.preventDefault();
-    validForm();
-  };
+  // const onSubmit = e => {
+  //   e.preventDefault();
+  //   validForm();
+  // };
 
   return (
     <Fragment>
       {exRate ? (
-        <Form onSubmit={onSubmit}>
+        <Form>
           {/* sell count */}
           <Form.Row
             className="mt-4"
@@ -402,7 +323,7 @@ const SellForm = () => {
                     marginRight: 15,
                   }}
                   className={showBankWallet ? 'walletBtnActive' : 'walletBtn'}
-                  onClick={() => setShowBankWallet(!showBankWallet)}
+                  onClick={validForm}
                 >
                   銀行卡
                 </Button>
@@ -417,139 +338,6 @@ const SellForm = () => {
                   支付寶
                 </Button>
                 <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
-              </Form.Group>
-            </Form.Row>
-          )}
-
-          {showBankWallet && (
-            <>
-              <Form.Row className="mt-20">
-                <Form.Group
-                  as={Col}
-                  xl={6}
-                  sm={12}
-                  controlId="name"
-                  className="input-fill-x  mt-20"
-                >
-                  <Form.Control
-                    placeholder="收款姓名"
-                    name="name"
-                    isInvalid={!name.isValid}
-                    value={name.val}
-                    onChange={onChange}
-                    autoComplete="off"
-                    className="easy-border input-fill"
-                    style={{
-                      padding: 30,
-                      fontSize: 20,
-                    }}
-                  />
-                  <Form.Label className="input-label">收款姓名</Form.Label>
-
-                  {name.error && (
-                    <Form.Text className="" style={{ fontSize: '12px' }}>
-                      *{name.error}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-                <Form.Group
-                  as={Col}
-                  xl={6}
-                  sm={12}
-                  controlId="account"
-                  className="mt-20 input-fill-x"
-                >
-                  <Form.Control
-                    className="easy-border input-fill"
-                    placeholder="收款帳號"
-                    name="account"
-                    isInvalid={!account.isValid}
-                    value={account.val}
-                    onChange={onChange}
-                    autoComplete="off"
-                    style={{
-                      padding: 30,
-                      fontSize: 20,
-                    }}
-                  />
-                  <Form.Label className="input-label">收款帳號</Form.Label>
-
-                  {account.error && (
-                    <Form.Text className="" style={{ fontSize: '12px' }}>
-                      *{account.error}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-              </Form.Row>
-
-              <Form.Row className="">
-                <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-20 input-fill-x">
-                  <Form.Control
-                    className="easy-border input-fill"
-                    placeholder="開戶銀行"
-                    name="bank"
-                    isInvalid={!bank.isValid}
-                    value={bank.val}
-                    onChange={onChange}
-                    autoComplete="off"
-                    style={{
-                      padding: 30,
-                      fontSize: 20,
-                    }}
-                  />
-                  <Form.Label className="input-label">開戶銀行</Form.Label>
-
-                  {bank.error && (
-                    <Form.Text className="" style={{ fontSize: '12px' }}>
-                      *{bank.error}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-                <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-20 input-fill-x">
-                  <Form.Control
-                    className="easy-border input-fill"
-                    placeholder="所在省市"
-                    name="city"
-                    isInvalid={!city.isValid}
-                    value={city.val}
-                    onChange={onChange}
-                    autoComplete="off"
-                    style={{
-                      padding: 30,
-                      fontSize: 20,
-                    }}
-                  />
-                  <Form.Label className="input-label">所在省市</Form.Label>
-
-                  {city.error && (
-                    <Form.Text
-                      className=""
-                      style={{
-                        fontSize: '12px',
-                      }}
-                    >
-                      *{city.error}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-              </Form.Row>
-            </>
-          )}
-
-          {/* info */}
-          <br />
-          <br />
-          {showBankWallet && (
-            <Form.Row className="justify-content-center">
-              <Form.Group as={Col} className="mw400 px-0">
-                <Button
-                  type="submit"
-                  disabled={wsPairing}
-                  block
-                  className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
-                >
-                  下一步
-                </Button>
               </Form.Group>
             </Form.Row>
           )}

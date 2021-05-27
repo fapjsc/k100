@@ -6,7 +6,9 @@ import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import BuyReducer from './BuyReducer';
 import BuyContext from './BuyContext';
 
+// Context
 import HttpErrorContext from '../httpError/HttpErrorContext';
+import BalanceContext from '../../context/balance/BalanceContext';
 
 import {
   BUY_BTN_LOADING,
@@ -26,9 +28,13 @@ const BuyState = props => {
   // Router Props
   const history = useHistory();
 
-  // http error context
+  // Http error context
   const httpErrorContext = useContext(HttpErrorContext);
   const { handleHttpError, setHttpError, setHttpLoading } = httpErrorContext;
+
+  // Balance Context
+  const balanceContext = useContext(BalanceContext);
+  const { getBalance } = balanceContext;
 
   // Init State
   const initialState = {
@@ -173,6 +179,7 @@ const BuyState = props => {
 
       // 交易完成
       if (dataFromServer.data.Order_StatusID === 1) {
+        getBalance();
         const wsData = {
           cny: dataFromServer.data.D2,
           name: dataFromServer.data.P2,
@@ -259,8 +266,6 @@ const BuyState = props => {
     const headers = getHeader();
     const cancelApi = `/j/Req_CancelOrder.aspx`;
     try {
-      // console.log(orderToken);
-
       const res = await fetch(cancelApi, {
         method: 'POST',
         headers,
