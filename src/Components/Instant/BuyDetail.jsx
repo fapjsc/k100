@@ -1,15 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
+import Countdown from 'react-countdown';
 
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import BuyContext from '../../context/buy/BuyContext';
 
 // Components
 import FromFooter from '../Layout/FormFooter';
 import BaseSpinner from '../Ui/BaseSpinner';
 import CompleteStatus from '../universal/CompleteStatus';
 import InstantNav from './InstantNav';
+import CountDownTimer from '../universal/countDownTimer';
 
 // Style
 import Spinner from 'react-bootstrap/Spinner';
@@ -20,29 +23,42 @@ const BuyDetail = () => {
   const match = useRouteMatch();
   const history = useHistory();
 
-  // Init State
-  const [showComplete, setShowComplete] = useState(false);
-  const [tab, setTab] = useState('all');
-
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { errorText, setHttpError, httpLoading } = httpErrorContext;
 
+  // Buy Context
+  const buyContext = useContext(BuyContext);
+  const { deltaTime, GetDeltaTime } = buyContext;
+
   // Instant Context
   const instantContext = useContext(InstantContext);
   const { buy1Data, buyMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll } = instantContext;
+
+  // Init State
+  const [showComplete, setShowComplete] = useState(false);
+  const [tab, setTab] = useState('all');
+  const [timeLeft, setTimeLeft] = useState(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
+  const [overTime, setOverTime] = useState(false);
 
   // ===========
   //  UseEffect
   // ===========
   useEffect(() => {
     statusWs(match.params.id);
+    GetDeltaTime(match.params.id);
     return () => {
       if (wsStatusClient) wsStatusClient.close();
+      setOverTime(false);
+      setTimeLeft(null);
       cleanAll();
     };
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setTimeLeft(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
+  }, [deltaTime]);
 
   useEffect(() => {
     if (errorText) alert(errorText);
@@ -80,15 +96,28 @@ const BuyDetail = () => {
   };
 
   return (
-    <>
-      <div className="container h_88">
-        <div className="row mt-4">
-          <div className="col-lg-10 col-12">
-            <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
-              歡迎登入
-            </p>
-            <div className="contentbox">
-              <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
+    <div className="row mt-4">
+      <div className="col-xl-8 col-12">
+        <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
+          歡迎登入
+        </p>
+        <div className="contentbox">
+          <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
+          {overTime ? (
+            <div>
+              <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
+                交易已逾時
+              </h2>
+              <Button
+                onClick={backToHome}
+                className="easy-btn mw400 mobile-width"
+                variant="primary"
+              >
+                回首頁
+              </Button>
+            </div>
+          ) : (
+            <>
               <div className="txt_12 pt_20">即時買賣</div>
               <div id="buy" className="tabcontent">
                 {buy1Data && !showComplete ? (
@@ -97,11 +126,16 @@ const BuyDetail = () => {
                       {/* Block-1  --pay info */}
                       <div className="w45_m100 mobile-width">
                         {/* Pay Timer */}
-                        <div className="easy_counter mt-4 d-flex justify-content-start mb-2">
+                        <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
                           <span className="txt_12 mr-auto">收款方資料</span>
-                          {/* <span className="i_clock" /> */}
-                          {/* <span>剩餘支付時間：</span>
-                          <span className="c_yellow">15分40秒</span> */}
+                          <span className="i_clock mr-1 mb-1" />
+                          <span className="txt_12">剩餘支付時間：</span>
+                          {/* <span className="c_yellow">15分40秒</span> */}
+                          <Countdown
+                            onComplete={() => setOverTime(true)}
+                            renderer={CountDownTimer}
+                            date={timeLeft}
+                          />
                         </div>
                         {/* 收款方資料 */}
                         <div className="lightblue_bg txt_12 d-flex flex-column py-4">
@@ -113,7 +147,7 @@ const BuyDetail = () => {
                         {/* 付款方資料 */}
                         <div className="w45_m100 mobile-width w-100">
                           <p className="txt_12 pt_20 mb-2">付款方資料</p>
-                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：周明</p>
+                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：{buy1Data.P5}</p>
                         </div>
                       </div>
 
@@ -155,7 +189,7 @@ const BuyDetail = () => {
                     {wsStatusData === 34 && !httpLoading ? (
                       <Button
                         onClick={handleClick}
-                        className="easy-btn mw400 mobile-width "
+                        className="easy-btn mw400 mobile-width"
                         style={{}}
                       >
                         確認到帳
@@ -189,11 +223,11 @@ const BuyDetail = () => {
                   <BaseSpinner />
                 )}
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

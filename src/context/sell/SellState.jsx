@@ -408,7 +408,7 @@ const SellState = props => {
   };
 
   // Clean All
-  const CleanAll = () => {
+  const cleanAll = () => {
     if (state.wsClient) state.wsClient.close();
     setConfirmSell(false);
     setWsPairing(false);
@@ -453,7 +453,7 @@ const SellState = props => {
         setWsPairing,
         confirmSellAction,
         getOrderDetail,
-        CleanAll,
+        cleanAll,
         setConfirmSell,
         setTransferHandle,
         setSellCount,

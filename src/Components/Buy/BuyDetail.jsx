@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import Countdown from 'react-countdown';
 import copy from 'copy-to-clipboard';
 
@@ -20,6 +21,9 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 
 const InfoDetail = props => {
+  // Router Props
+  const match = useRouteMatch();
+
   // Buy Context
   const buyContext = useContext(BuyContext);
   const {
@@ -37,10 +41,10 @@ const InfoDetail = props => {
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   // eslint-disable-next-line
-  const { errorText, setHttpError } = httpErrorContext;
+  const { errorText } = httpErrorContext;
 
   // Init State
-  const [timeLeft, setTimeLeft] = useState(1800);
+  const [timeLeft, setTimeLeft] = useState(Date.now() + (1000 * 60 * 30 - deltaTime * 1000));
   const [overTime, setOverTime] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
 
@@ -55,21 +59,20 @@ const InfoDetail = props => {
   };
 
   useEffect(() => {
+    GetDeltaTime(match.params.id);
     return () => {
       setDeltaTime(null);
+      setOverTime(false);
+      setHideBuyInfo(false);
     };
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (deltaTime <= 900) setHideBuyInfo(false);
-
     if (deltaTime > 900) setHideBuyInfo(true);
-
     if (deltaTime > 1800) setOverTime(true);
-
-    setTimeLeft((1800 - deltaTime) * 1000);
-
+    setTimeLeft(Date.now() + (1000 * 60 * 30 - deltaTime * 1000));
     // eslint-disable-next-line
   }, [deltaTime]);
 
@@ -203,29 +206,41 @@ const InfoDetail = props => {
           )}
           <Row className="justify-content-center">
             <Col className="mw400 text-center">
-              <Button
-                disabled={buyBtnLoading || overTime}
-                //   className="easy-btn w-100"
-                className={buyBtnLoading || overTime ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
-                onClick={() => BuyerAlreadyPay(buyOrderToken)}
-              >
-                <Countdown
-                  onComplete={() => setOverTime(true)}
-                  renderer={Timer}
-                  date={Date.now() + timeLeft}
-                />
-                <br />
-                {buyBtnLoading && <Spinner animation="grow" variant="danger" />}
-                {buyBtnLoading ? '處理中...' : '已完成付款'}
-              </Button>
-              <p
+              {!overTime ? (
+                <Button
+                  disabled={buyBtnLoading || overTime}
+                  //   className="easy-btn w-100"
+                  className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
+                  onClick={() => BuyerAlreadyPay(buyOrderToken)}
+                >
+                  <Countdown
+                    onComplete={() => setOverTime(true)}
+                    renderer={Timer}
+                    date={timeLeft}
+                  />
+                  <br />
+                  {buyBtnLoading && <Spinner animation="grow" variant="danger" />}
+                  {buyBtnLoading ? '處理中...' : '已完成付款'}
+                </Button>
+              ) : (
+                <Button className="disable-easy-btn w-100" disabled variant="secondary">
+                  已逾時
+                </Button>
+              )}
+
+              <span
                 style={{
                   cursor: 'pointer',
+                  paddingBottom: '2px',
+                  borderBottom: '1px solid #262e45',
+                  borderColor: '#262e45',
+                  fontSize: 12,
+                  color: '#262e45',
                 }}
                 onClick={() => setShowCancel(true)}
               >
                 取消訂單
-              </p>
+              </span>
             </Col>
           </Row>
         </>

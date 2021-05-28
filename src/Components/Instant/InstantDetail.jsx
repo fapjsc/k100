@@ -46,15 +46,19 @@ const InstantDetail = () => {
 
   if (sell1Data) {
     return (
-      <>
+      <div className="container h_88" style={{ position: 'relative' }}>
         <SellDetail />
 
         {/* Chat --桌機版 */}
-        {!isMobile && sell1Data ? <TheChat isChat={!isMobile} hash={sell1Data.Tx_HASH} /> : null}
+        {!isMobile && sell1Data ? (
+          <div style={chatContainer}>
+            <TheChat isChat={!isMobile} hash={sell1Data.Tx_HASH} />
+          </div>
+        ) : null}
 
         {/* Chat --手機版  */}
         {isMobile && sell1Data ? (
-          <>
+          <div style={MobileChatContainer}>
             <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
               <img
                 style={{
@@ -69,21 +73,25 @@ const InstantDetail = () => {
             </Button>
 
             <TheChat hash={sell1Data.Tx_HASH} isChat={showChat} />
-          </>
+          </div>
         ) : null}
-      </>
+      </div>
     );
   } else if (buy1Data) {
     return (
-      <>
+      <div className="container h_88" style={{ position: 'relative' }}>
         <BuyDetail />
 
         {/* Chat --桌機版 */}
-        {!isMobile && buy1Data ? <TheChat isChat={!isMobile} hash={buy1Data.Tx_HASH} /> : null}
+        {!isMobile && buy1Data ? (
+          <div style={chatContainer}>
+            <TheChat isChat={!isMobile} hash={buy1Data.Tx_HASH} />
+          </div>
+        ) : null}
 
         {/* Chat --手機版  */}
         {isMobile && buy1Data ? (
-          <>
+          <div style={MobileChatContainer}>
             <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
               <img
                 style={{
@@ -97,9 +105,9 @@ const InstantDetail = () => {
               幫助
             </Button>
             <TheChat hash={buy1Data.Tx_HASH} isChat={showChat} />
-          </>
+          </div>
         ) : null}
-      </>
+      </div>
     );
   } else {
     return (
@@ -118,15 +126,28 @@ const helpBtn = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-
   padding: '1rem 2rem',
   fontSize: '1.5rem',
   fontWeight: 300,
   borderRadius: '10rem',
-  position: 'fixed',
+  position: 'absolute',
   bottom: '5%',
-  right: '5%',
+  right: 0,
   backgroundColor: '#F80FA',
+};
+
+const MobileChatContainer = {
+  height: 600,
+  width: 100,
+  position: 'fixed',
+  bottom: 25,
+  right: 10,
+};
+
+const chatContainer = {
+  position: 'absolute',
+  top: 62,
+  right: 0,
 };
 
 export default InstantDetail;

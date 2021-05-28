@@ -25,15 +25,6 @@ const Timer = ({ minutes, seconds, phoneValid, setExpirTime }) => {
       </span>
     </Button>
   );
-
-  //   return (
-  //     <Button className="" variant="secondary" disabled>
-  //       發送驗證碼
-  //       <span>
-  //         {minutes}:{seconds}
-  //       </span>
-  //     </Button>
-  //   );
 };
 
 export default Timer;

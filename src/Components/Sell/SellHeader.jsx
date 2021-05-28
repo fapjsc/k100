@@ -1,40 +1,84 @@
-import { Fragment, useContext, useEffect } from 'react';
-import SellContext from '../../context/sell/SellContext';
+import { useState, useContext, useEffect } from 'react';
+import Countdown from 'react-countdown';
 
-const SellHeader = () => {
-  const sellContext = useContext(SellContext);
-  const { exRate, getExRate } = sellContext;
+// Context
+import BuyContext from '../../context/buy/BuyContext';
 
+// Components
+import CountDownTimer from '../universal/countDownTimer';
+
+// Style
+import clockIcon from '../../Assets/i_clock.png';
+
+const SellHeader = ({ setOverTime }) => {
+  // Buy Context
+  const buyContext = useContext(BuyContext);
+  const { deltaTime } = buyContext;
+
+  // Init State
+  const [timeLeft, setTimeLeft] = useState(Date.now() + (1000 * 60 * 30 - deltaTime * 1000));
+
+  // ===========
+  //  UseEffect
+  // ===========
   useEffect(() => {
-    getExRate();
-
+    setTimeLeft(Date.now() + (1000 * 60 * 30 - deltaTime * 1000));
     // eslint-disable-next-line
-  }, [exRate]);
+  }, [deltaTime]);
+
+  // ==========
+  //  Function
+  // ==========
+  const handleComplete = () => {
+    setOverTime(true);
+  };
 
   return (
-    <Fragment>
+    <div className="pl-0 mobile-width " style={pairTitleBox}>
       <p
         style={{
-          letterSpacing: '1.5px',
-          color: '#3242e47',
           fontSize: '12px',
+          fontWeight: 'bold',
         }}
       >
-        出售USDT
+        轉帳資料
       </p>
-      <div className="pay-info txt_12">
-        <p className="mb-0">
-          匯率 :<span>{Number(exRate).toFixed(2)}</span>
+
+      <div
+        className=""
+        style={{
+          display: 'flex',
+        }}
+      >
+        <img style={clockStyle} src={clockIcon} alt="clock icon" />
+        <p
+          style={{
+            fontSize: '12px',
+            fontWeight: 'bold',
+          }}
+        >
+          剩餘支付時間：
         </p>
-        <p className="mb-0">
-          限額 :<span>USDT 100.00 - 10000.00</span>
-        </p>
-        <p className="mb-0">
-          付款窗口 :<span>15分鐘</span>
-        </p>
+        <span className="payTime c_yellow">
+          <Countdown renderer={CountDownTimer} onComplete={handleComplete} date={timeLeft} />
+        </span>
       </div>
-    </Fragment>
+    </div>
   );
+};
+
+const pairTitleBox = {
+  width: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: '-17px',
+  marginTop: 30,
+};
+
+const clockStyle = {
+  height: 17,
+  marginRight: 3,
 };
 
 export default SellHeader;

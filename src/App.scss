@@ -1214,14 +1214,14 @@ hr {
 
 // Chat Box
 .easy_help span {
-  background-image: url(./Assets/i_ask2.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 17px;
-  width: 23px;
-  display: inline-block;
-  position: relative;
-  top: 3px;
+  // background-image: url(./Assets/i_ask2.png);
+  // background-size: contain;
+  // background-repeat: no-repeat;
+  // height: 17px;
+  // width: 23px;
+  // display: inline-block;
+  // position: relative;
+  // top: 3px;
 }
 
 .chatbox {
@@ -1231,42 +1231,42 @@ hr {
   height: 500px;
   // width: 27.6vw;
   // height: 47vh;
-  position: fixed;
+  position: absolute;
   // float: right;
   // top: 37vh;
-  top: 168px;
-  right: 150px;
-  z-index: 10;
+  z-index: 20;
+  top: 0px;
+  right: 0px;
   box-shadow: 3px 4px 12px 5px rgba(0, 0, 0, 0.2);
 
-  @media only screen and(max-width: 1500px) {
-    right: 80px;
-  }
+  // @media only screen and(max-width: 1500px) {
+  //   right: 80px;
+  // }
 
-  @media only screen and(max-width: 1024px) and(min-height: 1366px) {
-    right: 40px;
-    top: 510px;
-  }
+  // @media only screen and(max-width: 1024px) and(min-height: 1366px) {
+  //   right: 40px;
+  //   top: 510px;
+  // }
 
-  @media only screen and(max-width: 800px) and(min-height: 600px) {
-    right: 40px;
-    top: 10px;
-  }
+  // @media only screen and(max-width: 800px) and(min-height: 600px) {
+  //   right: 40px;
+  //   top: 10px;
+  // }
 
-  @media only screen and(max-width: 768px) and(min-height: 1024px) {
-    right: 40px;
-    top: 410px;
-  }
+  // @media only screen and(max-width: 768px) and(min-height: 1024px) {
+  //   right: 40px;
+  //   top: 410px;
+  // }
 
-  @media only screen and(max-width: 540px) and(min-height: 720px) {
-    right: 40px;
-    top: 110px;
-  }
+  // @media only screen and(max-width: 540px) and(min-height: 720px) {
+  //   right: 40px;
+  //   top: 110px;
+  // }
 
-  @media only screen and(max-width: 411px) and(min-height: 731px) {
-    right: 30px;
-    top: 120px;
-  }
+  // @media only screen and(max-width: 411px) and(min-height: 731px) {
+  //   right: 30px;
+  //   top: 120px;
+  // }
 
   @media only screen and(max-width: 414px) and(min-height: 720px) {
     right: 20px;
@@ -1274,33 +1274,33 @@ hr {
   }
 
   @media only screen and(max-width: 375px) {
-    right: 30px;
-    top: 30px;
+    // right: 30px;
+    // top: 30px;
     width: 300px;
   }
-  @media only screen and(max-width: 375px) and(min-height: 812px) {
-    right: 25px;
-    top: 100px;
-    width: 300px;
-  }
+  // @media only screen and(max-width: 375px) and(min-height: 812px) {
+  //   // right: 25px;
+  //   // top: 100px;
+  //   width: 300px;
+  // }
 
-  @media only screen and(max-width: 360px) {
-    right: 30px;
-    top: 40px;
-    width: 300px;
-  }
+  // @media only screen and(max-width: 360px) {
+  //   right: 30px;
+  //   top: 40px;
+  //   width: 300px;
+  // }
 
   @media only screen and(max-width: 320px) {
-    right: 30px;
-    top: 20px;
+    // right: 30px;
+    // top: 20px;
     width: 250px;
     height: 450px;
   }
 
-  @media only screen and(max-width: 280px) {
-    right: 15px;
-    top: 90px;
-  }
+  // @media only screen and(max-width: 280px) {
+  //   right: 15px;
+  //   top: 90px;
+  // }
 }
 
 .chatbox .top {

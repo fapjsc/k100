@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
+import Countdown from 'react-countdown';
 
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import BuyContext from '../../context/buy/BuyContext';
 
 // Components
 import FromFooter from '../Layout/FormFooter';
@@ -11,6 +13,8 @@ import BaseSpinner from '../Ui/BaseSpinner';
 import CompleteStatus from '../universal/CompleteStatus';
 import Cancel from '../universal/Cancel';
 import InstantNav from '../Instant/InstantNav';
+import CountDownTimer from '../universal/countDownTimer';
+import Timer from '../Buy/Timer';
 
 // Style
 import Spinner from 'react-bootstrap/Spinner';
@@ -21,33 +25,50 @@ const SellDetail = () => {
   const match = useRouteMatch();
   const history = useHistory();
 
-  // Init State
-  const [showComplete, setShowComplete] = useState(false);
-  const [showCancel, setShowCancel] = useState(false);
-  const [tab, setTab] = useState('all');
-
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { errorText, setHttpError, httpLoading } = httpErrorContext;
+
+  // Buy Context
+  const buyContext = useContext(BuyContext);
+  const { deltaTime, GetDeltaTime, setDeltaTime } = buyContext;
 
   // Instant Context
   const instantContext = useContext(InstantContext);
   const { sell1Data, sellMatch1, sellMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll } =
     instantContext;
 
+  // Init State
+  const [overTime1, setOvertime1] = useState(false);
+  const [overTime2, setOvertime2] = useState(false);
+  const [showComplete, setShowComplete] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
+  const [tab, setTab] = useState('all');
+  const [timeLeft, setTimeLeft] = useState(Date.now() + 1000 * 60 * 15 - deltaTime * 1000);
+  const [timeLeft2, setTimeLeft2] = useState(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
+
   // ===========
   //  useEffect
   // ===========
   useEffect(() => {
     statusWs(match.params.id);
+    GetDeltaTime(match.params.id);
 
     if (!sell1Data) sellMatch1(match.params.id);
     return () => {
       if (wsStatusClient) wsStatusClient.close();
+      setDeltaTime(null);
       cleanAll();
     };
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setTimeLeft(Date.now() + 1000 * 60 * 15 - deltaTime * 1000);
+    setTimeLeft2(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
+
+    if (deltaTime > 1800) setOvertime2(true);
+  }, [deltaTime]);
 
   useEffect(() => {
     if (errorText) alert(errorText);
@@ -76,19 +97,28 @@ const SellDetail = () => {
   };
 
   const handleCancel = () => {
-    // setOrderToken(match.params.id);
     setShowCancel(true);
+  };
+
+  const handleCountDownComplete = () => {
+    setOvertime1(true);
+  };
+
+  const handleCountDownComplete2 = () => {
+    setOvertime2(true);
   };
 
   const backToHome = () => {
     if (wsStatusClient) wsStatusClient.close();
     history.replace('/home/overview');
+    setOvertime1(false);
+    setOvertime2(false);
+    setDeltaTime(null);
     cleanAll();
   };
 
   return (
     <>
-      {/* {sell1Data && <Cancel show={showCancel} onHide={() => setShowCancel(false)} />} */}
       <Cancel
         show={showCancel}
         onHide={() => setShowCancel(false)}
@@ -96,27 +126,31 @@ const SellDetail = () => {
         token={match.params.id}
         type="instant"
       />
-      <div className="container h_88">
-        <div className="row mt-4">
-          <div className="col-lg-10 col-12">
-            <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
-              歡迎登入
-            </p>
-            <div className="contentbox">
-              <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
-              <div className="txt_12 pt_20">即時買賣</div>
-              <div id="sell" className="tabcontent">
-                {sell1Data && !showComplete ? (
-                  <>
+      <div className="row mt-4">
+        <div className="col-xl-8 col-12">
+          <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
+            歡迎登入
+          </p>
+          <div className="contentbox">
+            <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
+            <div className="txt_12 pt_20">即時買賣</div>
+            <div id="sell" className="tabcontent">
+              {sell1Data && !showComplete ? (
+                <>
+                  {/* 第一階段倒數結束前 */}
+                  {!overTime1 && (
                     <div className="d-flex justify-content-between flex-column-mobile">
                       {/* Block-1  --pay info */}
                       <div className="w45_m100 mobile-width">
-                        {/* Pay time */}
-                        <div className="easy_counter mt-4 d-flex justify-content-start mb-2">
+                        <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
                           <span className="txt_12 mr-auto">收款方資料</span>
-                          {/* <span className="i_clock" />
-                          <span>剩餘支付時間：</span>
-                          <span className="c_yellow">15分40秒</span> */}
+                          <span className="i_clock mr-1 mb-1" />
+                          <span className="txt_12">剩餘支付時間：</span>
+                          <Countdown
+                            onComplete={handleCountDownComplete}
+                            renderer={CountDownTimer}
+                            date={timeLeft}
+                          />
                         </div>
                         {/* 收款方資料 */}
                         <div className="lightblue_bg txt_12 d-flex flex-column py-4">
@@ -159,65 +193,125 @@ const SellDetail = () => {
                         </div>
                       </div>
                     </div>
+                  )}
 
-                    {/* Button */}
-                    {httpLoading ? (
+                  {/* 第二階段倒數結束 */}
+                  {overTime2 && (
+                    <div>
+                      <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
+                        交易已逾時
+                      </h2>
                       <Button
+                        onClick={backToHome}
+                        className="easy-btn mw400 mobile-width"
                         variant="primary"
-                        className="easy-btn mw400 mobile-width"
-                        style={{ marginTop: 50 }}
-                        disabled
                       >
-                        <Spinner
-                          as="span"
-                          animation="grow"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        Loading...
+                        回首頁
                       </Button>
-                    ) : (
-                      <Button
-                        onClick={handleClick}
-                        className="easy-btn mw400 mobile-width"
-                        style={{
-                          marginTop: 50,
-                        }}
-                      >
-                        已完成付款
-                      </Button>
-                    )}
-                    <div className="text-center">
-                      <span
-                        style={{
-                          cursor: 'pointer',
-                          paddingBottom: '2px',
-                          borderBottom: '1px solid #262e45',
-                          fontSize: 12,
-                          color: '#262e45',
-                          borderColor: '#262e45',
-                        }}
-                        // onClick={() => setShowCancel(true)}
-                        onClick={handleCancel}
-                      >
-                        取消訂單
-                      </span>
                     </div>
+                  )}
 
-                    <FromFooter />
-                  </>
-                ) : sell1Data && showComplete ? (
-                  <CompleteStatus
-                    wsStatus={wsStatusData}
-                    backToHome={backToHome}
-                    hash={sell1Data.Tx_HASH}
-                    type="buy"
-                  />
-                ) : (
-                  <BaseSpinner />
-                )}
-              </div>
+                  {/* Button --正常 */}
+                  {!overTime1 && (
+                    <>
+                      {httpLoading ? (
+                        <Button
+                          variant="secondary"
+                          className="easy-btn mw400 mobile-width"
+                          style={{ marginTop: 50 }}
+                          disabled
+                        >
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          Loading...
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={handleClick}
+                          className="easy-btn mw400 mobile-width"
+                          style={{
+                            marginTop: 50,
+                          }}
+                        >
+                          已完成付款
+                        </Button>
+                      )}
+                    </>
+                  )}
+
+                  {/* Button --倒數 */}
+                  {overTime1 && !overTime2 ? (
+                    <>
+                      {httpLoading ? (
+                        <Button
+                          variant="secondary"
+                          className="easy-btn mw400 mobile-width"
+                          style={{ marginTop: 50 }}
+                          disabled
+                        >
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          Loading...
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={handleClick}
+                          disabled={overTime2}
+                          className="easy-btn mw400 mobile-width"
+                          style={{
+                            marginTop: 50,
+                          }}
+                        >
+                          <Countdown
+                            onComplete={handleCountDownComplete2}
+                            renderer={Timer}
+                            date={timeLeft2}
+                          />
+                          &nbsp; 已完成付款
+                        </Button>
+                      )}
+                    </>
+                  ) : null}
+
+                  <div className="text-center">
+                    <span
+                      style={{
+                        cursor: 'pointer',
+                        paddingBottom: '2px',
+                        borderBottom: '1px solid #262e45',
+                        fontSize: 12,
+                        color: '#262e45',
+                        borderColor: '#262e45',
+                      }}
+                      // onClick={() => setShowCancel(true)}
+                      onClick={handleCancel}
+                    >
+                      取消訂單
+                    </span>
+                  </div>
+                  <FromFooter />
+                </>
+              ) : sell1Data && showComplete ? (
+                // 交易結果
+                <CompleteStatus
+                  wsStatus={wsStatusData}
+                  backToHome={backToHome}
+                  hash={sell1Data.Tx_HASH}
+                  type="buy"
+                />
+              ) : (
+                <BaseSpinner />
+              )}
             </div>
           </div>
         </div>

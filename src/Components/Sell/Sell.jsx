@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import SellContext from '../../context/sell/SellContext';
 
 // Components
-import SellHeaders from './SellHeader';
+import SellExRate from './SellExRate';
 import SellForm from './SellForm';
 import SellBankForm from './SellBankForm';
 import Pairing from './Pairing';
@@ -17,7 +17,7 @@ const Sell = () => {
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsPairing, wsData, CleanAll, wsClient, sellStatus, orderToken, showBank, cancelOrder } =
+  const { wsPairing, wsData, cleanAll, wsClient, sellStatus, orderToken, showBank, cancelOrder } =
     sellContext;
 
   // ===========
@@ -27,7 +27,7 @@ const Sell = () => {
     if (wsClient) wsClient.close();
     return () => {
       if (wsClient) wsClient.close();
-      CleanAll();
+      cleanAll();
     };
 
     // eslint-disable-next-line
@@ -43,12 +43,12 @@ const Sell = () => {
     if (wsClient) wsClient.close();
     // setWsPairing(false);
     history.replace('/home/overview');
-    CleanAll();
+    cleanAll();
   };
 
   return (
     <Fragment>
-      <SellHeaders />
+      <SellExRate />
       <SellForm />
       {showBank && <SellBankForm />}
       <FormFooter />

@@ -1,13 +1,16 @@
-import { useContext, useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { useContext, useState, useEffect } from 'react';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 
 // Context
 import SellContext from '../../context/sell/SellContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import BuyContext from '../../context/buy/BuyContext';
 
 // Components
 import SetAccount from '../Buy/SetAccount';
 import FormFooter from '../Layout/FormFooter';
+import SellHeader from './SellHeader';
+import BaseSpinner from '../Ui/BaseSpinner';
 
 // Style
 import btnWait from '../../Assets/btn_wait.png';
@@ -20,17 +23,48 @@ import Spinner from 'react-bootstrap/Spinner';
 const SellDetail = () => {
   // Router Props
   const match = useRouteMatch();
-
-  // Init State
-  const [isClick, setIsClick] = useState(false);
+  const history = useHistory();
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsData, setConfirmSell, confirmSellAction, sellStatus } = sellContext;
+  const { wsData, setConfirmSell, confirmSellAction, sellStatus, cleanAll } = sellContext;
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { httpLoading } = httpErrorContext;
+
+  // Buy Context
+  const buyContext = useContext(BuyContext);
+  const { GetDeltaTime, setDeltaTime, deltaTime } = buyContext;
+
+  // Init State
+  const [isClick, setIsClick] = useState(false);
+  const [overTime, setOverTime] = useState(false);
+
+  // ===========
+  //  UseEffect
+  // ===========
+  useEffect(() => {
+    if (!match.params.id) history.replace('/home/overview');
+    GetDeltaTime(match.params.id);
+
+    return () => {
+      setDeltaTime(null);
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (deltaTime > 1800) {
+      setOverTime(true);
+    } else {
+      setOverTime(false);
+    }
+  }, [deltaTime]);
+
+  // ===========
+  //  Function
+  // ===========
   // 確認收款
   const handleSubmit = () => {
     if (!isClick) {
@@ -41,81 +75,96 @@ const SellDetail = () => {
     setIsClick(true);
   };
 
+  const backToHome = () => {
+    history.replace('/home/overview');
+    cleanAll();
+  };
+
   return (
-    <Container>
-      <Row className="mb-2 mt-4">
-        <Col className="mt-4 pl-1">
-          <p
-            style={{
-              fontSize: '12px',
-              fontWeight: 'bold',
-            }}
-            className="mb-0"
-          >
-            提交資料
-          </p>
-        </Col>
-      </Row>
+    <Container className="">
+      {overTime ? (
+        <div>
+          <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
+            交易已逾時
+          </h2>
+          <Button onClick={backToHome} className="easy-btn mw400 mobile-width" variant="primary">
+            回首頁
+          </Button>
+        </div>
+      ) : !overTime ? (
+        <>
+          <Row className="mb-2 mt-4">
+            <Col className="mt-4 pl-1 mb-2">
+              <SellHeader setOverTime={setOverTime} />
+            </Col>
+          </Row>
 
-      <Row className="mb-2 justify-content-between">
-        <Col xl={6} className="txt_12 lightblue_bg h-100">
-          <p>
-            收款金額： &emsp;
-            <span
-              style={{
-                color: '#3e80f9',
-                fontSize: '17px',
-                fontWeight: 'bold',
-              }}
-            >
-              {wsData && wsData.D2.toFixed(2) + ` CNY`}
-            </span>
-          </p>
-          <p>收款姓名：{wsData && wsData.P2}</p>
-          <p>付款帳號：{wsData && wsData.P1}</p>
-          <p>開戶銀行：{wsData && wsData.P3}</p>
-          <p>所在省市：{wsData && wsData.P4}</p>
-        </Col>
-
-        {wsData && (
-          <Col xl={5} className="pl-4">
-            <SetAccount
-              usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
-              rmbAmt={wsData.D2.toFixed(2)}
-            />
-          </Col>
-        )}
-      </Row>
-      <Row className="justify-content-center mt-4">
-        <Col className="mw400 text-center px-0">
-          {!httpLoading ? (
-            <Button
-              onClick={handleSubmit}
-              className=""
-              block
-              style={sellStatus === 34 ? infoBtn : infoBtnDisabled}
-            >
-              {sellStatus === 33 && (
-                <img
-                  src={btnWait}
-                  alt="btn wait"
+          <Row className="mb-2 justify-content-between">
+            <Col xl={6} className="txt_12 lightblue_bg h-100">
+              <p>
+                收款金額： &emsp;
+                <span
                   style={{
-                    height: 25,
-                    marginRight: 10,
+                    color: '#3e80f9',
+                    fontSize: '17px',
+                    fontWeight: 'bold',
                   }}
-                />
-              )}
+                >
+                  {wsData && wsData.D2.toFixed(2) + ` CNY`}
+                </span>
+              </p>
+              <p>收款姓名：{wsData && wsData.P2}</p>
+              <p>付款帳號：{wsData && wsData.P1}</p>
+              <p>開戶銀行：{wsData && wsData.P3}</p>
+              <p>所在省市：{wsData && wsData.P4}</p>
+            </Col>
 
-              <span className="">{sellStatus === 34 ? ' 買家已付款，確認收款' : '對方準備中'}</span>
-            </Button>
-          ) : (
-            <Button variant="secondary" disabled style={infoBtnDisabled}>
-              <Spinner as="span" animation="grow" size="md" role="status" aria-hidden="true" />
-              Loading...
-            </Button>
-          )}
-        </Col>
-      </Row>
+            {wsData && (
+              <Col xl={5} className="pl-4">
+                <SetAccount
+                  usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
+                  rmbAmt={wsData.D2.toFixed(2)}
+                />
+              </Col>
+            )}
+          </Row>
+          <Row className="justify-content-center mt-4">
+            <Col className="mw400 text-center px-0">
+              {!httpLoading ? (
+                <Button
+                  disabled={overTime}
+                  onClick={handleSubmit}
+                  className=""
+                  block
+                  style={sellStatus === 34 ? infoBtn : infoBtnDisabled}
+                >
+                  {sellStatus === 33 && (
+                    <img
+                      src={btnWait}
+                      alt="btn wait"
+                      style={{
+                        height: 25,
+                        marginRight: 10,
+                      }}
+                    />
+                  )}
+
+                  <span className="">
+                    {sellStatus === 34 ? ' 買家已付款，確認收款' : '對方準備中'}
+                  </span>
+                </Button>
+              ) : (
+                <Button variant="secondary" disabled style={infoBtnDisabled}>
+                  <Spinner as="span" animation="grow" size="md" role="status" aria-hidden="true" />
+                  Loading...
+                </Button>
+              )}
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <BaseSpinner />
+      )}
 
       <FormFooter />
     </Container>

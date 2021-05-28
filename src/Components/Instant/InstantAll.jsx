@@ -1,6 +1,5 @@
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
 // Context
 import InstantContext from '../../context/instant/InstantContext';
@@ -31,22 +30,17 @@ const TheInstant = () => {
     history.replace('/home/instant');
   };
 
-  useEffect(() => {
-    // connectInstantWs();
-    // instantOngoingWsConnect();
-    // eslint-disable-next-line
-  }, []);
-
-  return (
-    <section>
-      {instantData.length > 0 &&
-        instantData.map(el => {
-          return <InstantAllItem key={uuidv4()} el={el} handleClick={handleClick} />;
+  if (!instantData.length) {
+    return <NoData />;
+  } else {
+    return (
+      <div>
+        {instantData.map(el => {
+          return <InstantAllItem key={el.token} el={el} handleClick={handleClick} />;
         })}
-
-      {!instantData.length && <NoData />}
-    </section>
-  );
+      </div>
+    );
+  }
 };
 
 export default TheInstant;

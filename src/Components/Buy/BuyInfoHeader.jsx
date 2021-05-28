@@ -16,15 +16,20 @@ const BuyInfoHeader = () => {
   const { deltaTime, setHideBuyInfo } = buyContext;
 
   // Init State
-  const [timeLeft, setTimeLeft] = useState(900);
+  const [timeLeft, setTimeLeft] = useState(Date.now() + (1000 * 60 * 15 - deltaTime * 1000));
 
   useEffect(() => {
-    if (deltaTime <= 900) setHideBuyInfo(false);
-    if (deltaTime > 900) setHideBuyInfo(true);
-    setTimeLeft((900 - deltaTime) * 1000);
-
+    setTimeLeft(Date.now() + (1000 * 60 * 15 - deltaTime * 1000));
     // eslint-disable-next-line
   }, [deltaTime]);
+
+  // ==========
+  //  Function
+  // ==========
+  const handleComplete = () => {
+    setHideBuyInfo(true);
+    console.log('complete!!');
+  };
 
   return (
     <div className="pl-0 mobile-width " style={pairTitleBox}>
@@ -55,8 +60,8 @@ const BuyInfoHeader = () => {
         <span className="payTime c_yellow">
           <Countdown
             renderer={Timer}
-            onComplete={() => setHideBuyInfo(true)}
-            date={Date.now() + timeLeft}
+            onComplete={handleComplete}
+            date={timeLeft}
             // date={Date.now() + 5000}
           />
         </span>

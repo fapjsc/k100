@@ -7,10 +7,9 @@ import SellContext from '../../context/sell/SellContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Components
-import SellHeaders from './SellHeader';
+import SellExRate from './SellExRate';
 import SellDetail from './SellDetail';
 import Pairing from './Pairing';
-
 import TheChat from '../Chat/TheChat';
 import CompleteStatus from '../universal/CompleteStatus';
 import BaseSpinner from '../Ui/BaseSpinner';
@@ -33,7 +32,7 @@ const SellInfo = () => {
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsData, sellWebSocket, CleanAll, wsClient, sellStatus, wsPairing } = sellContext;
+  const { wsData, sellWebSocket, cleanAll, wsClient, sellStatus, wsPairing } = sellContext;
 
   const [showChat, setShowChat] = useState(false);
 
@@ -42,7 +41,7 @@ const SellInfo = () => {
 
     return () => {
       if (wsClient) wsClient.close();
-      CleanAll();
+      cleanAll();
     };
     // eslint-disable-next-line
   }, []);
@@ -58,18 +57,17 @@ const SellInfo = () => {
   const backToHome = () => {
     history.replace('/home/overview');
     if (wsClient) wsClient.close();
-    CleanAll();
+    cleanAll();
   };
 
   const onHide = () => {
     if (wsClient) wsClient.close();
     history.replace('/home/overview');
-    CleanAll();
+    cleanAll();
   };
 
   return (
-    <>
-      <SellHeaders />
+    <div className="" style={{ position: 'relative' }}>
       <Pairing
         onHide={onHide}
         show={wsPairing && wsClient}
@@ -79,7 +77,7 @@ const SellInfo = () => {
           `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`
         }
       />
-
+      <SellExRate />
       {(sellStatus === 33 || sellStatus === 34) && wsData ? (
         <SellDetail />
       ) : sellStatus === 1 || sellStatus === 99 || (sellStatus === 98 && wsData) ? (
@@ -94,11 +92,15 @@ const SellInfo = () => {
       )}
 
       {/* 聊天室  --電腦版 大於1200px  */}
-      {wsData && !isMobile ? <TheChat isChat={!isMobile} hash={wsData.Tx_HASH} /> : null}
+      {wsData && !isMobile ? (
+        <div style={chatContainer}>
+          <TheChat isChat={!isMobile} hash={wsData.Tx_HASH} />
+        </div>
+      ) : null}
 
       {/* 聊天室 --手機版 小於1200px  */}
       {isMobile && wsData ? (
-        <>
+        <div style={MobileChatContainer}>
           <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
             <img
               style={{
@@ -113,9 +115,9 @@ const SellInfo = () => {
           </Button>
 
           <TheChat hash={wsData.Tx_HASH} isChat={showChat} />
-        </>
+        </div>
       ) : null}
-    </>
+    </div>
   );
 };
 
@@ -127,15 +129,29 @@ const helpBtn = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-
   padding: '1rem 2rem',
   fontSize: '1.5rem',
   fontWeight: 300,
   borderRadius: '10rem',
-  position: 'fixed',
+  position: 'absolute',
   bottom: '5%',
-  right: '5%',
+  right: 0,
   backgroundColor: '#F80FA',
+};
+
+const MobileChatContainer = {
+  height: 600,
+  width: 100,
+  position: 'fixed',
+  bottom: 25,
+  right: 10,
+};
+
+const chatContainer = {
+  backgroundColor: 'red',
+  position: 'absolute',
+  top: -95,
+  right: '-50%',
 };
 
 export default SellInfo;

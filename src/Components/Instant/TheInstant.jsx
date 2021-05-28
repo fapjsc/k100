@@ -22,10 +22,12 @@ const TheInstant = () => {
   const {
     connectInstantWs,
     instantOngoingWsConnect,
-    wsStatusData,
+    // wsStatusData,
     cleanAll,
     instantAllClient,
     instantOnGoingClient,
+    instantData,
+    wsOnGoingData,
   } = instantContext;
 
   // HttpError Context
@@ -39,28 +41,30 @@ const TheInstant = () => {
   //  useEffect
   // ===========
   useEffect(() => {
+    if (instantOnGoingClient) instantOnGoingClient.close();
+    if (instantAllClient) instantAllClient.close();
     connectInstantWs();
     instantOngoingWsConnect();
 
     return () => {
       if (instantOnGoingClient) instantOnGoingClient.close();
       if (instantAllClient) instantAllClient.close();
+      cleanAll();
     };
 
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (tab === 'all') connectInstantWs();
-
-    if (tab === 'onGoing') instantOngoingWsConnect();
+    // if (tab === 'all') connectInstantWs();
+    // if (tab === 'onGoing') instantOngoingWsConnect();
     // eslint-disable-next-line
   }, [tab]);
 
-  useEffect(() => {
-    if (wsStatusData) cleanAll();
-    // eslint-disable-next-line
-  }, [wsStatusData]);
+  // useEffect(() => {
+  //   if (wsStatusData) cleanAll();
+  //   // eslint-disable-next-line
+  // }, [wsStatusData]);
 
   return (
     <div>
@@ -70,8 +74,9 @@ const TheInstant = () => {
         <InstantNav setTab={setTab} tab={tab} />
 
         {/* Content */}
-        {tab === 'all' && !httpLoading ? <InstantAll /> : null}
-        {tab === 'onGoing' && !httpLoading ? <InstantOnGoing /> : null}
+
+        {tab === 'all' && !httpLoading && instantData ? <InstantAll /> : null}
+        {tab === 'onGoing' && !httpLoading && wsOnGoingData ? <InstantOnGoing /> : null}
 
         {/* Loading */}
         {httpLoading && (

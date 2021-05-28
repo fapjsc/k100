@@ -109,6 +109,7 @@ const AuthState = props => {
     localStorage.removeItem('expiresIn');
     localStorage.removeItem('agent');
     localStorage.removeItem('loglevel');
+    setAgent(false);
 
     let logoutApi = '/j/logout.aspx';
     try {

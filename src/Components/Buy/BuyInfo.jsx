@@ -98,14 +98,12 @@ const BuyInfo = () => {
   };
 
   return (
-    <div className="">
+    <div className="" style={{ position: 'relative' }}>
       <Pairing show={buyPairing} onHide={onHide} usdt={buyCount.usdt} rmb={buyCount.rmb} />
       <ExRate />
 
       {wsStatus === 33 && buyWsData ? (
-        <>
-          <BuyDetail />
-        </>
+        <BuyDetail />
       ) : (wsStatus === 34 || wsStatus === 1 || wsStatus === 99 || wsStatus === 98) && buyWsData ? (
         // <BuyComplete wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
         <CompleteStatus
@@ -120,30 +118,32 @@ const BuyInfo = () => {
 
       <FormFooter />
 
-      <div>
-        {/* 桌機版聊天室 */}
-        {buyWsData && !isMobile ? <TheChat isChat={!isMobile} hash={buyWsData.hash} /> : null}
+      {/* 桌機版聊天室 */}
+      {buyWsData && !isMobile ? (
+        <div style={chatContainer}>
+          <TheChat isChat={!isMobile} hash={buyWsData.hash} />
+        </div>
+      ) : null}
 
-        {/* 手機版聊天室*/}
-        {isMobile && buyWsData ? (
-          <>
-            <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
-              <img
-                style={{
-                  width: 15,
-                  height: 20,
-                  marginRight: 8,
-                }}
-                src={helpIcon}
-                alt="help icon"
-              />
-              幫助
-            </Button>
+      {/* 手機版聊天室*/}
+      {isMobile && buyWsData ? (
+        <div style={MobileChatContainer}>
+          <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
+            <img
+              style={{
+                width: 15,
+                height: 20,
+                marginRight: 8,
+              }}
+              src={helpIcon}
+              alt="help icon"
+            />
+            幫助
+          </Button>
 
-            <TheChat hash={buyWsData.hash} isChat={showChat} />
-          </>
-        ) : null}
-      </div>
+          <TheChat hash={buyWsData.hash} isChat={showChat} />
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -156,15 +156,29 @@ const helpBtn = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-
   padding: '1rem 2rem',
   fontSize: '1.5rem',
   fontWeight: 300,
   borderRadius: '10rem',
-  position: 'fixed',
+  position: 'absolute',
   bottom: '5%',
-  right: '5%',
+  right: 0,
   backgroundColor: '#F80FA',
+};
+
+const MobileChatContainer = {
+  height: 600,
+  width: 100,
+  position: 'fixed',
+  bottom: 25,
+  right: 10,
+};
+
+const chatContainer = {
+  backgroundColor: 'red',
+  position: 'absolute',
+  top: -95,
+  right: '-50%',
 };
 
 export default BuyInfo;

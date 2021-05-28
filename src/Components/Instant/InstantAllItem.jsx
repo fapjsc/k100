@@ -1,17 +1,6 @@
-import { useEffect, useState } from 'react';
+import StopWatch from '../universal/StopWatch';
 
 const InstantAllItem = ({ el, handleClick }) => {
-  const [num, setNum] = useState(el.DeltaTime);
-
-  useEffect(() => {
-    let number = el.DeltaTime;
-    setInterval(() => {
-      number = number + 1;
-      setNum(number);
-    }, 1000);
-    // eslint-disable-next-line
-  }, []);
-
   if (el.MType === 2) {
     return (
       <div id="sell" className="tabcontent mt-4">
@@ -21,7 +10,8 @@ const InstantAllItem = ({ el, handleClick }) => {
           <span className="i_clock" />
           <span className="">累計時間：</span>
           {/* <span className="c_yellow">8秒</span> */}
-          <span className="c_yellow">{num} 秒</span>
+          {/* <span className="c_yellow">{num} 秒</span> */}
+          <StopWatch deltaTime={el.DeltaTime} />
         </div>
 
         {/* Body */}
@@ -68,7 +58,8 @@ const InstantAllItem = ({ el, handleClick }) => {
           <span className="txt_12 mr-auto">匯率：{el.D1.toFixed(2)}</span>
           <span className="i_clock mr-1" />
           <span className="">累計時間：</span>
-          <span className="c_yellow">{num} 秒</span>
+          {/* <span className="c_yellow">{num} 秒</span> */}
+          <StopWatch deltaTime={el.DeltaTime} />
         </div>
         {/* Body */}
         <div className="row bb1 mx-0">

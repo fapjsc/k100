@@ -50,7 +50,7 @@ const ChatState = props => {
 
     // 1.建立連接
     client.onopen = message => {
-      // console.log('chat connect');
+      console.log('chat connect');
     };
 
     // 2.收到server回復
@@ -65,7 +65,7 @@ const ChatState = props => {
 
     // 3.錯誤處理
     client.onclose = message => {
-      // console.log('聊天室關閉');
+      console.log('聊天室關閉');
     };
   };
 
@@ -110,7 +110,7 @@ const ChatState = props => {
     // 1.建立連接
     client.onopen = message => {
       setInstantClient(client);
-      // console.log('chat connect');
+      console.log('instant chat connect');
     };
 
     // 2.收到server回復
@@ -128,7 +128,7 @@ const ChatState = props => {
 
     // 3.錯誤處理
     client.onclose = message => {
-      // console.log('聊天室關閉');
+      console.log('instant聊天室關閉');
     };
   };
 
