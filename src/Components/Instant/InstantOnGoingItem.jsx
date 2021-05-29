@@ -51,8 +51,6 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
               />
             </span>
           )}
-
-          {/* <span className="c_yellow">{el.DeltaTime} 秒</span> */}
         </div>
 
         {/* Body */}
@@ -94,10 +92,19 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
         {/* header */}
         <div className="d-flex align-items-center mt-4" style={{ maxWidth: 186 }}>
           <span className="txt_12 mr-auto">匯率：{el.D1.toFixed(2)}</span>
-          <span className="i_clock" />
+          <span className="i_clock mr-1 mb-1" />
           <span className="">限時時間：</span>
-          <span className="c_yellow">8秒</span>
-          {/* <span className="c_yellow">{el.DeltaTime} 秒</span> */}
+          {overTime ? (
+            <span style={{ color: '#707070' }}>已逾時</span>
+          ) : (
+            <span className="c_yellow">
+              <Countdown
+                onComplete={handleCountDownComplete}
+                renderer={CountDownTimer}
+                date={timeLeft}
+              />
+            </span>
+          )}
         </div>
 
         {/* Body */}

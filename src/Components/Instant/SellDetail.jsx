@@ -68,6 +68,7 @@ const SellDetail = () => {
     setTimeLeft2(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
 
     if (deltaTime > 1800) setOvertime2(true);
+    if (deltaTime > 900 && deltaTime <= 1800) setOvertime1(true);
   }, [deltaTime]);
 
   useEffect(() => {
@@ -233,6 +234,7 @@ const SellDetail = () => {
                       ) : (
                         <Button
                           onClick={handleClick}
+                          disabled={overTime1}
                           className="easy-btn mw400 mobile-width"
                           style={{
                             marginTop: 50,

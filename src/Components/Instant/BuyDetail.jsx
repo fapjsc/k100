@@ -58,6 +58,7 @@ const BuyDetail = () => {
 
   useEffect(() => {
     setTimeLeft(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
+    if (deltaTime > 1800) setOverTime(true);
   }, [deltaTime]);
 
   useEffect(() => {

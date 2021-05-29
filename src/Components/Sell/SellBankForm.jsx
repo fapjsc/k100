@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 
 // Context
 import SellContext from '../../context/sell/SellContext';
-import BalanceContext from '../../context/balance/BalanceContext';
+// import BalanceContext from '../../context/balance/BalanceContext';
 // import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
 // Style
@@ -38,13 +38,13 @@ const SellBankForm = () => {
 
   const [formValid, setFormValid] = useState(false);
 
-  // Balance Context
-  const balanceContext = useContext(BalanceContext);
-  const { wsPairing } = balanceContext;
+  // // Balance Context
+  // const balanceContext = useContext(BalanceContext);
+  // const { wsPairing } = balanceContext;
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { getOrderToken, setWsPairing, sellCount } = sellContext;
+  const { getOrderToken, setWsPairing, sellCount, wsPairing } = sellContext;
 
   //   // Http Error Context
   //   const httpErrorContext = useContext(HttpErrorContext);
@@ -146,8 +146,6 @@ const SellBankForm = () => {
       account: account.val,
       city: city.val,
     };
-
-    console.log(data);
 
     setWsPairing(true);
     getOrderToken(data);

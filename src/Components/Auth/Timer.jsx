@@ -21,7 +21,7 @@ const Timer = ({ minutes, seconds, phoneValid, setExpirTime }) => {
     >
       驗證碼已發送
       <span>
-        {minutes}:{seconds}
+        {('0' + minutes).slice(-2)}:{('0' + seconds).slice(-2)}
       </span>
     </Button>
   );

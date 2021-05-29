@@ -418,7 +418,6 @@ const SellState = props => {
     setTransferHandle(null);
     setShowBank(false);
     setWsClient(null);
-    cleanOrderToken();
   };
 
   // useReducer

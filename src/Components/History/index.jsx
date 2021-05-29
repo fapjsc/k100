@@ -109,7 +109,7 @@ const waitBox = {
 
 const waitCount = {
   position: 'absolute',
-  top: -10,
+  top: -5,
   right: 13,
   borderRadius: '50%',
   height: '20px',
