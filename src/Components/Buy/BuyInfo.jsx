@@ -167,10 +167,10 @@ const helpBtn = {
 };
 
 const MobileChatContainer = {
-  height: 600,
+  height: '600px',
   width: 100,
   position: 'fixed',
-  bottom: 25,
+  bottom: -15,
   right: 10,
 };
 

@@ -1234,7 +1234,7 @@ hr {
   position: absolute;
   // float: right;
   // top: 37vh;
-  z-index: 20;
+  z-index: 10;
   top: 0px;
   right: 0px;
   box-shadow: 3px 4px 12px 5px rgba(0, 0, 0, 0.2);
@@ -1277,6 +1277,8 @@ hr {
     // right: 30px;
     // top: 30px;
     width: 300px;
+    height: 460px;
+    top: 55px;
   }
   // @media only screen and(max-width: 375px) and(min-height: 812px) {
   //   // right: 25px;
@@ -1295,6 +1297,7 @@ hr {
     // top: 20px;
     width: 250px;
     height: 450px;
+    top: 55px;
   }
 
   // @media only screen and(max-width: 280px) {
@@ -1346,7 +1349,7 @@ hr {
 
   @media only screen and(max-width: 375px) {
     top: 81px;
-    height: 72.5%;
+    height: 70%;
   }
 
   // @media only screen and(max-width: 360px) {

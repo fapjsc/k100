@@ -33,7 +33,7 @@ const BuyDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { buy1Data, buyMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll } = instantContext;
+  const { buy1Data, buyMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll, paymentName } = instantContext;
 
   // Init State
   const [showComplete, setShowComplete] = useState(false);
@@ -109,11 +109,7 @@ const BuyDetail = () => {
               <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
                 交易已逾時
               </h2>
-              <Button
-                onClick={backToHome}
-                className="easy-btn mw400 mobile-width"
-                variant="primary"
-              >
+              <Button onClick={backToHome} className="easy-btn mw400 mobile-width" variant="primary">
                 回首頁
               </Button>
             </div>
@@ -132,11 +128,7 @@ const BuyDetail = () => {
                           <span className="i_clock mr-1 mb-1" />
                           <span className="txt_12">剩餘支付時間：</span>
                           {/* <span className="c_yellow">15分40秒</span> */}
-                          <Countdown
-                            onComplete={() => setOverTime(true)}
-                            renderer={CountDownTimer}
-                            date={timeLeft}
-                          />
+                          <Countdown onComplete={() => setOverTime(true)} renderer={CountDownTimer} date={timeLeft} />
                         </div>
                         {/* 收款方資料 */}
                         <div className="lightblue_bg txt_12 d-flex flex-column py-4">
@@ -148,7 +140,7 @@ const BuyDetail = () => {
                         {/* 付款方資料 */}
                         <div className="w45_m100 mobile-width w-100">
                           <p className="txt_12 pt_20 mb-2">付款方資料</p>
-                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：{buy1Data.P5}</p>
+                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：{paymentName}</p>
                         </div>
                       </div>
 
@@ -188,24 +180,14 @@ const BuyDetail = () => {
                     ) : null}
 
                     {wsStatusData === 34 && !httpLoading ? (
-                      <Button
-                        onClick={handleClick}
-                        className="easy-btn mw400 mobile-width"
-                        style={{}}
-                      >
+                      <Button onClick={handleClick} className="easy-btn mw400 mobile-width" style={{}}>
                         確認到帳
                       </Button>
                     ) : null}
 
                     {wsStatusData === 34 && httpLoading ? (
                       <Button className="disable-easy-btn mobile-width mw400" disabled>
-                        <Spinner
-                          as="span"
-                          animation="grow"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
+                        <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
                         Loading...
                       </Button>
                     ) : null}
@@ -214,12 +196,7 @@ const BuyDetail = () => {
                   </>
                 ) : buy1Data && showComplete ? (
                   // 交易結果
-                  <CompleteStatus
-                    wsStatus={wsStatusData}
-                    backToHome={backToHome}
-                    hash={buy1Data.Tx_HASH}
-                    type="sell"
-                  />
+                  <CompleteStatus wsStatus={wsStatusData} backToHome={backToHome} hash={buy1Data.Tx_HASH} type="sell" />
                 ) : (
                   <BaseSpinner />
                 )}

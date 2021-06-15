@@ -11,8 +11,9 @@ import TheInstant from '../Instant/TheInstant';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import './index.scss';
+
+import backImg2 from '../../Assets/1.jpg';
 
 const OverView = () => {
   // AuthContext
@@ -26,7 +27,7 @@ const OverView = () => {
       <p className="welcome_txt text-left pl-0">歡迎登入</p>
       <Row className="">
         <Col className="" as={Col} md={3} xs={6}>
-          <Link className="home_btn w-100" to="/home/transaction/buy">
+          <Link className="home_btn w-100" style={backImg1} to="/home/transaction/buy">
             <div className="trade"></div>
             <p>買賣</p>
           </Link>
@@ -61,6 +62,11 @@ const OverView = () => {
       )}
     </Container>
   );
+};
+
+const backImg1 = {
+  backgroundImage: 'url(../../Assets/1.jpg)',
+  backgroundSize: 'contain',
 };
 
 export default OverView;

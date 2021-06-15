@@ -11,10 +11,16 @@ import {
   SET_INSTANT_ONGOING_DATA,
   SET_ACTION_TYPE,
   ORDER_NOT_EXISTS,
+  SET_PAYMENT_NAME,
 } from '../type';
 
 const InstantReducer = (state, action) => {
   switch (action.type) {
+    case SET_PAYMENT_NAME:
+      return {
+        ...state,
+        paymentName: action.payload,
+      };
     case ORDER_NOT_EXISTS:
       return {
         ...state,

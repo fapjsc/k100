@@ -35,8 +35,7 @@ const SellDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { sell1Data, sellMatch1, sellMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll } =
-    instantContext;
+  const { sell1Data, sellMatch1, sellMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll, paymentName } = instantContext;
 
   // Init State
   const [overTime1, setOvertime1] = useState(false);
@@ -120,13 +119,7 @@ const SellDetail = () => {
 
   return (
     <>
-      <Cancel
-        show={showCancel}
-        onHide={() => setShowCancel(false)}
-        hash={sell1Data.Tx_HASH}
-        token={match.params.id}
-        type="instant"
-      />
+      <Cancel show={showCancel} onHide={() => setShowCancel(false)} hash={sell1Data.Tx_HASH} token={match.params.id} type="instant" />
       <div className="row mt-4">
         <div className="col-xl-8 col-12">
           <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
@@ -147,11 +140,7 @@ const SellDetail = () => {
                           <span className="txt_12 mr-auto">收款方資料</span>
                           <span className="i_clock mr-1 mb-1" />
                           <span className="txt_12">剩餘支付時間：</span>
-                          <Countdown
-                            onComplete={handleCountDownComplete}
-                            renderer={CountDownTimer}
-                            date={timeLeft}
-                          />
+                          <Countdown onComplete={handleCountDownComplete} renderer={CountDownTimer} date={timeLeft} />
                         </div>
                         {/* 收款方資料 */}
                         <div className="lightblue_bg txt_12 d-flex flex-column py-4">
@@ -164,7 +153,7 @@ const SellDetail = () => {
                         {/* 付款方資料 */}
                         <div className="w45_m100 mobile-width w-100">
                           <p className="txt_12 pt_20 mb-2">付款方資料</p>
-                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：周明</p>
+                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：{paymentName}</p>
                         </div>
                       </div>
 
@@ -202,11 +191,7 @@ const SellDetail = () => {
                       <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
                         交易已逾時
                       </h2>
-                      <Button
-                        onClick={backToHome}
-                        className="easy-btn mw400 mobile-width"
-                        variant="primary"
-                      >
+                      <Button onClick={backToHome} className="easy-btn mw400 mobile-width" variant="primary">
                         回首頁
                       </Button>
                     </div>
@@ -216,19 +201,8 @@ const SellDetail = () => {
                   {!overTime1 && (
                     <>
                       {httpLoading ? (
-                        <Button
-                          variant="secondary"
-                          className="easy-btn mw400 mobile-width"
-                          style={{ marginTop: 50 }}
-                          disabled
-                        >
-                          <Spinner
-                            as="span"
-                            animation="grow"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
+                        <Button variant="secondary" className="easy-btn mw400 mobile-width" style={{ marginTop: 50 }} disabled>
+                          <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
                           Loading...
                         </Button>
                       ) : (
@@ -250,19 +224,8 @@ const SellDetail = () => {
                   {overTime1 && !overTime2 ? (
                     <>
                       {httpLoading ? (
-                        <Button
-                          variant="secondary"
-                          className="easy-btn mw400 mobile-width"
-                          style={{ marginTop: 50 }}
-                          disabled
-                        >
-                          <Spinner
-                            as="span"
-                            animation="grow"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
+                        <Button variant="secondary" className="easy-btn mw400 mobile-width" style={{ marginTop: 50 }} disabled>
+                          <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
                           Loading...
                         </Button>
                       ) : (
@@ -274,11 +237,7 @@ const SellDetail = () => {
                             marginTop: 50,
                           }}
                         >
-                          <Countdown
-                            onComplete={handleCountDownComplete2}
-                            renderer={Timer}
-                            date={timeLeft2}
-                          />
+                          <Countdown onComplete={handleCountDownComplete2} renderer={Timer} date={timeLeft2} />
                           &nbsp; 已完成付款
                         </Button>
                       )}
@@ -305,12 +264,7 @@ const SellDetail = () => {
                 </>
               ) : sell1Data && showComplete ? (
                 // 交易結果
-                <CompleteStatus
-                  wsStatus={wsStatusData}
-                  backToHome={backToHome}
-                  hash={sell1Data.Tx_HASH}
-                  type="buy"
-                />
+                <CompleteStatus wsStatus={wsStatusData} backToHome={backToHome} hash={sell1Data.Tx_HASH} type="buy" />
               ) : (
                 <BaseSpinner />
               )}

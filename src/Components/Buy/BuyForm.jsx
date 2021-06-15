@@ -96,6 +96,7 @@ const BuyForm = () => {
       }
 
       let rmb = Number(e.target.value * buyRate).toFixed(2);
+      console.log(buyRate);
 
       setUsdtAmt({
         val: e.target.value.trim(),

@@ -143,7 +143,7 @@ const MobileChatContainer = {
   height: 600,
   width: 100,
   position: 'fixed',
-  bottom: 25,
+  bottom: -15,
   right: 10,
 };
 
