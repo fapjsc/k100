@@ -50,7 +50,7 @@ const TheWallet = () => {
   };
 
   return (
-    <section className="wallet bg_grey">
+    <section className="wallet">
       <div className="container h_88">
         <div className="row">
           <div className="col-12">

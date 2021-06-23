@@ -52,8 +52,7 @@ const HomeScreen = () => {
       setAgent(true);
       autoLogout();
     }
-    if (location.pathname === '/home' || location.pathname === '/home/')
-      history.replace('/home/overview');
+    if (location.pathname === '/home' || location.pathname === '/home/') history.replace('/home/overview');
     // 每小時確認一次agent帳號的過期時間
     let checkAgentExpires = setInterval(() => {
       autoLogout();

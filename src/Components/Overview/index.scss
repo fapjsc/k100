@@ -91,10 +91,11 @@
 }
 
 .welcome_txt {
-  color: #707070;
+  // color: #707070;
   padding: 10px;
   font-size: 12px;
   margin-bottom: 0px;
+  color: #fff !important;
 }
 
 @media only screen and(max-width: 550px) {

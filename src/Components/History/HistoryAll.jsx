@@ -68,13 +68,7 @@ const HistoryAll = () => {
   if (allHistory.length && !historyLoading) {
     return (
       <>
-        {singleDetail && (
-          <HistoryAllDetail
-            show={show}
-            onHide={() => setShow(false)}
-            balance={balance && balance}
-          />
-        )}
+        {singleDetail && <HistoryAllDetail show={show} onHide={() => setShow(false)} balance={balance && balance} />}
         <Table responsive bordered hover className="mt-4">
           <thead>
             <tr>
@@ -125,12 +119,6 @@ const HistoryAll = () => {
   }
 };
 
-// const iconStyle = {
-//   height: 15,
-//   width: 15,
-//   marginRight: 4,
-// };
-
 const titleStyle = {
   fontSize: 12,
   lineHeight: 1.4,
@@ -138,35 +126,5 @@ const titleStyle = {
   fontWeight: 'normal',
   verticalAlign: 'middle',
 };
-
-// const textStyle = {
-//   fontSize: '14px',
-//   lineHeight: '1.7',
-// };
-
-// const dateText = {
-//   fontSize: 11,
-//   lineHeight: 1.4,
-//   color: '#000',
-//   verticalAlign: 'middle',
-// };
-
-// const transactionAmount = {
-//   fontSize: 12,
-//   lineHeight: 1.4,
-//   verticalAlign: 'middle',
-// };
-
-// const avbStyle = {
-//   fontSize: 12,
-//   lineHeight: 1.4,
-//   verticalAlign: 'middle',
-// };
-
-// const statusStyle = {
-//   fontSize: 12,
-//   lineHeight: 1.4,
-//   verticalAlign: 'middle',
-// };
 
 export default HistoryAll;

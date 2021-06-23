@@ -13,8 +13,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './index.scss';
 
-import backImg2 from '../../Assets/1.jpg';
-
 const OverView = () => {
   // AuthContext
   const authContext = useContext(AuthContext);
