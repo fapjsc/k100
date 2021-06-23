@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { FormattedMessage, IntlProvider } from 'react-intl';
 
 // Components
 import Auth from './Components/Auth';
@@ -35,39 +34,37 @@ function App() {
     }
   };
   return (
-    <IntlProvider>
-      <HttpErrorState>
-        <AuthState>
-          <BalanceState>
-            <InstantState>
-              <TransferState>
-                <SellState>
-                  <HistoryState>
-                    <BuyState>
-                      <WalletState>
-                        <ChatState>
-                          <Switch>
-                            <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
+    <HttpErrorState>
+      <AuthState>
+        <BalanceState>
+          <InstantState>
+            <TransferState>
+              <SellState>
+                <HistoryState>
+                  <BuyState>
+                    <WalletState>
+                      <ChatState>
+                        <Switch>
+                          <Route path="/auth" component={props => <Auth {...props} setAuth={setAuth} />} />
 
-                            <Route path="/agreement" component={Agreement} />
+                          <Route path="/agreement" component={Agreement} />
 
-                            <Route isAuth={isAuth} path="/home" component={props => <Home {...props} setAuth={setAuth} />} />
+                          <Route isAuth={isAuth} path="/home" component={props => <Home {...props} setAuth={setAuth} />} />
 
-                            <Route exact path="/forget-pw" component={ForgetPassword} />
+                          <Route exact path="/forget-pw" component={ForgetPassword} />
 
-                            <Redirect to="/auth/login" />
-                          </Switch>
-                        </ChatState>
-                      </WalletState>
-                    </BuyState>
-                  </HistoryState>
-                </SellState>
-              </TransferState>
-            </InstantState>
-          </BalanceState>
-        </AuthState>
-      </HttpErrorState>
-    </IntlProvider>
+                          <Redirect to="/auth/login" />
+                        </Switch>
+                      </ChatState>
+                    </WalletState>
+                  </BuyState>
+                </HistoryState>
+              </SellState>
+            </TransferState>
+          </InstantState>
+        </BalanceState>
+      </AuthState>
+    </HttpErrorState>
   );
 }
 
