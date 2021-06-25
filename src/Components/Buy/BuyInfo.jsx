@@ -10,14 +10,9 @@ import BaseSpinner from '../Ui/BaseSpinner';
 import ExRate from './ExRate';
 import BuyDetail from './BuyDetail';
 import FormFooter from '../Layout/FormFooter';
-// import Chat from '../Chat';
 import CompleteStatus from '../universal/CompleteStatus';
 import Pairing from './Pairing';
-// import BuyComplete from './BuyComplete';
-import TheChat from '../Chat/TheChat';
-// import TheMobileChat from '../Chat/TheMobileChat';
-// import TheChat from '../Chat/TheChat';
-// import ChatMobile from '../Chat/ChatMobile';
+import TheChat from '../Chat/TheChat.js';
 
 // Style
 import helpIcon from '../../Assets/i_ask2.png';
@@ -106,12 +101,7 @@ const BuyInfo = () => {
         <BuyDetail />
       ) : (wsStatus === 34 || wsStatus === 1 || wsStatus === 99 || wsStatus === 98) && buyWsData ? (
         // <BuyComplete wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
-        <CompleteStatus
-          wsStatus={wsStatus}
-          hash={buyWsData.hash}
-          backToHome={backToHome}
-          type="buy"
-        />
+        <CompleteStatus wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} type="buy" />
       ) : (
         <BaseSpinner />
       )}

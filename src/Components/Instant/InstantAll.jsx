@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Context
@@ -10,7 +10,7 @@ import InstantAllItem from './InstantAllItem';
 
 // Style
 
-const TheInstant = () => {
+const InstantAll = ({ stop }) => {
   // Route Props
   const history = useHistory();
 
@@ -19,6 +19,7 @@ const TheInstant = () => {
   const { instantData, setCountData } = instantContext;
 
   const handleClick = (exRate, cny, usdt, type, token) => {
+    stop();
     const data = {
       exRate,
       cny,
@@ -43,4 +44,4 @@ const TheInstant = () => {
   }
 };
 
-export default TheInstant;
+export default InstantAll;

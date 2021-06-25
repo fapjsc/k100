@@ -1,5 +1,6 @@
 import React from 'react';
-import I18nContext, { I18nContextProps } from './I18nContext';
+// import I18nContext, { I18nContextProps } from './I18nContext';
+import I18nContext from './I18nContext';
 
 export const withI18n = () => {
   return WrappedComponent => {

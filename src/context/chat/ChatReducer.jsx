@@ -1,15 +1,12 @@
-import {
-  SET_TRANSLATE,
-  SET_MESSAGES,
-  SET_CHAT_WS_CLIENT,
-  CHAT_SET_ORDER_TOKEN,
-  SET_INSTANT_CLIENT,
-  SET_INSTANT_MESSAGES,
-  SET_CHAT_LOADING,
-} from '../type';
+import { SET_TRANSLATE, SET_MESSAGES, SET_CHAT_WS_CLIENT, CHAT_SET_ORDER_TOKEN, SET_INSTANT_CLIENT, SET_INSTANT_MESSAGES, SET_CHAT_LOADING, SET_NEW_MESSAGE } from '../type';
 
 const ChatReducer = (state, action) => {
   switch (action.type) {
+    case SET_NEW_MESSAGE:
+      return {
+        ...state,
+        newMessage: action.payload,
+      };
     case SET_CHAT_LOADING:
       return {
         ...state,

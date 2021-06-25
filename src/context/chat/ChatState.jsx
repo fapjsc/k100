@@ -5,15 +5,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import ChatReducer from './ChatReducer';
 import ChatContext from './ChatContext';
 
-import {
-  SET_TRANSLATE,
-  SET_MESSAGES,
-  SET_CHAT_WS_CLIENT,
-  CHAT_SET_ORDER_TOKEN,
-  SET_INSTANT_CLIENT,
-  SET_INSTANT_MESSAGES,
-  SET_CHAT_LOADING,
-} from '../type';
+import { SET_TRANSLATE, SET_MESSAGES, SET_CHAT_WS_CLIENT, CHAT_SET_ORDER_TOKEN, SET_INSTANT_CLIENT, SET_INSTANT_MESSAGES, SET_CHAT_LOADING, SET_NEW_MESSAGE } from '../type';
 
 const ChatState = props => {
   const initialState = {
@@ -24,10 +16,7 @@ const ChatState = props => {
     instantClient: null,
     instantMessages: [],
     chatLoading: false,
-  };
-
-  const setTranslate = value => {
-    dispatch({ type: SET_TRANSLATE, payload: value });
+    newMessage: false,
   };
 
   // Chat WebSocket
@@ -46,6 +35,8 @@ const ChatState = props => {
 
     const client = new ReconnectingWebSocket(url);
 
+    console.log(client);
+
     setClient(client);
 
     // 1.建立連接
@@ -58,6 +49,7 @@ const ChatState = props => {
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
       console.log('got Chat reply!', dataFromServer);
+
       setChatLoading(false);
 
       setMessages(dataFromServer);
@@ -120,9 +112,13 @@ const ChatState = props => {
 
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      console.log('got Chat reply!', dataFromServer);
+      console.log('instant got Chat reply!', dataFromServer);
       setChatLoading(false);
 
+      if (dataFromServer.Message_Role === 1) {
+        setNewMessage(true);
+        console.log('new message');
+      }
       setInstantMessages(dataFromServer);
     };
 
@@ -130,6 +126,10 @@ const ChatState = props => {
     client.onclose = message => {
       console.log('instant聊天室關閉');
     };
+  };
+
+  const setTranslate = value => {
+    dispatch({ type: SET_TRANSLATE, payload: value });
   };
 
   const setMessages = message => {
@@ -160,6 +160,11 @@ const ChatState = props => {
     dispatch({ type: SET_CHAT_LOADING, payload: value });
   };
 
+  // Set New Message
+  const setNewMessage = value => {
+    dispatch({ type: SET_NEW_MESSAGE, payload: value });
+  };
+
   const [state, dispatch] = useReducer(ChatReducer, initialState);
 
   return (
@@ -172,6 +177,7 @@ const ChatState = props => {
         instantClient: state.instantClient,
         instantMessages: state.instantMessages,
         chatLoading: state.chatLoading,
+        newMessage: state.newMessage,
 
         setTranslate,
         chatConnect,
@@ -183,6 +189,7 @@ const ChatState = props => {
         setMessages,
         setInstantMessages,
         setChatLoading,
+        setNewMessage,
       }}
     >
       {props.children}

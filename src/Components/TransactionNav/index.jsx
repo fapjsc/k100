@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 // Context
 import BuyContext from '../../context/buy/BuyContext';
+import { useI18n } from '../../lang';
 
 // eslint-disable-next-line
 import index from './index.scss';
@@ -10,6 +11,9 @@ import index from './index.scss';
 const TransactionNav = () => {
   // Router Props
   const location = useLocation();
+
+  // Lang Context
+  const { t } = useI18n();
 
   // Buy Context
   const buyContext = useContext(BuyContext);
@@ -21,45 +25,15 @@ const TransactionNav = () => {
 
   return (
     <div className="transactionNav  pt-3" style={linkBox}>
-      <Link
-        onClick={handleClick}
-        className="transactionLink"
-        to="/home/transaction/buy"
-        style={location.pathname.includes(`/home/transaction/buy`) ? linkActive : linkStyle}
-        // className={
-        //   location.pathname.includes(`/home/transaction/buy`)
-        //     ? 'history-link history-link-active'
-        //     : 'history-link'
-        // }
-      >
-        購買
+      <Link onClick={handleClick} className="transactionLink" to="/home/transaction/buy" style={location.pathname.includes(`/home/transaction/buy`) ? linkActive : linkStyle}>
+        {t('transaction_nav_buy')}
       </Link>
-      <Link
-        onClick={handleClick}
-        className="transactionLink"
-        to="/home/transaction/sell"
-        style={location.pathname.includes('/home/transaction/sell') ? linkActive : linkStyle}
-        //   className={
-        //     location.pathname.includes('/home/transaction/sell')
-        //       ? 'history-link history-link-active'
-        //       : 'history-link'
-        //   }
-      >
-        出售
+      <Link onClick={handleClick} className="transactionLink" to="/home/transaction/sell" style={location.pathname.includes('/home/transaction/sell') ? linkActive : linkStyle}>
+        {t('transaction_nav_sell')}
       </Link>
 
-      <Link
-        onClick={handleClick}
-        className="transactionLink"
-        to="/home/transaction/transfer"
-        style={location.pathname.includes('/home/transaction/transfer') ? linkActive : linkStyle}
-        //   className={
-        //     location.pathname.includes('/home/transaction/transfer')
-        //       ? 'history-link history-link-active'
-        //       : 'history-link'
-        //   }
-      >
-        轉帳
+      <Link onClick={handleClick} className="transactionLink" to="/home/transaction/transfer" style={location.pathname.includes('/home/transaction/transfer') ? linkActive : linkStyle}>
+        {t('transaction_nav_transfer')}
       </Link>
     </div>
   );

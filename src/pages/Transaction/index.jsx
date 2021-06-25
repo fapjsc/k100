@@ -1,8 +1,7 @@
-// import { useState, useEffect, useContext } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
 // Context
-// import AuthContext from '../../context/auth/AuthContext';
+import { useI18n } from '../../lang';
 
 // Components
 import TransactionNav from '../../Components/TransactionNav';
@@ -17,7 +16,11 @@ import BuyInfo from '../../Components/Buy/BuyInfo';
 import './index.scss';
 
 const Transaction = () => {
+  // Router Props
   const location = useLocation();
+
+  // lang Context
+  const { t } = useI18n();
 
   return (
     <section className="transaction">
@@ -40,7 +43,7 @@ const Transaction = () => {
                 : '0 0 0 -45px',
           }}
         >
-          歡迎登入
+          {t('welcome_text')}
         </p>
         <div
           className="col-xl-9 transaction-card"

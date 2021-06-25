@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 import QrReader from 'modern-react-qr-reader';
 
 // Components
@@ -21,24 +21,13 @@ import Spinner from 'react-bootstrap/Spinner';
 
 const Transfer = () => {
   // Media Query
-  const isMobile = useMediaQuery({ query: '(max-width: 900px)' }); // 小於等於 900 true
+  // const isMobile = useMediaQuery({ query: '(max-width: 900px)' }); // 小於等於 900 true
   // Router Props
   const history = useHistory();
 
   // Transfer Context
   const transferContext = useContext(TransferContext);
-  const {
-    transferOrderToken,
-    transferWebSocket,
-    transferStatus,
-    detailReq,
-    usdtCount,
-    closeWebSocket,
-    setUsdtCount,
-    transferErrText,
-    checkErcAddress,
-    checkTrcAddress,
-  } = transferContext;
+  const { transferOrderToken, transferWebSocket, transferStatus, detailReq, usdtCount, closeWebSocket, setUsdtCount, transferErrText, checkErcAddress, checkTrcAddress } = transferContext;
 
   // Balance Context
   const balanceContext = useContext(BalanceContext);
@@ -156,6 +145,7 @@ const Transfer = () => {
     }
 
     if (transferStatus === 1) {
+      getBalance();
       setIsPairing(false);
       history.replace(`/home/transaction/transfer/${transferOrderToken}`);
       closeWebSocket();
@@ -327,16 +317,10 @@ const Transfer = () => {
                 </Form.Label>
               </div>
               <div className="d-flex">
-                <Button
-                  className={protocolType === 'trc' ? 'walletBtnActive mr-4' : 'walletBtn mr-4'}
-                  onClick={() => handleClick('trc')}
-                >
+                <Button className={protocolType === 'trc' ? 'walletBtnActive mr-4' : 'walletBtn mr-4'} onClick={() => handleClick('trc')}>
                   TRC20
                 </Button>
-                <Button
-                  className={protocolType === 'erc' ? 'walletBtnActive' : 'walletBtn'}
-                  onClick={() => handleClick('erc')}
-                >
+                <Button className={protocolType === 'erc' ? 'walletBtnActive' : 'walletBtn'} onClick={() => handleClick('erc')}>
                   ERC20
                 </Button>
               </div>
@@ -365,23 +349,11 @@ const Transfer = () => {
 
                   {transferLoading ? (
                     <Button variant="secondary" disabled className="" style={{}}>
-                      <Spinner
-                        as="span"
-                        animation="grow"
-                        size="lg"
-                        role="status"
-                        aria-hidden="true"
-                      />
+                      <Spinner as="span" animation="grow" size="lg" role="status" aria-hidden="true" />
                       Loading...
                     </Button>
                   ) : (
-                    <Button
-                      onClick={getAll}
-                      className=""
-                      disabled={transferLoading}
-                      variant="outline-primary"
-                      size="lg"
-                    >
+                    <Button onClick={getAll} className="" disabled={transferLoading} variant="outline-primary" size="lg">
                       提取所有
                     </Button>
                   )}
@@ -420,13 +392,7 @@ const Transfer = () => {
               </Form.Group> */}
 
               {transferCount.val && !transferCount.error ? (
-                <Form.Group
-                  as={Col}
-                  md={10}
-                  sm={12}
-                  controlId="transferAddress"
-                  className="text-left"
-                >
+                <Form.Group as={Col} md={10} sm={12} controlId="transferAddress" className="text-left">
                   <Form.Label
                     className="text-left"
                     style={{
@@ -442,15 +408,7 @@ const Transfer = () => {
                       position: 'relative',
                     }}
                   >
-                    <Form.Control
-                      type="text"
-                      placeholder="請輸入收款地址"
-                      className="p_sm-2 easy-border"
-                      onChange={onChange}
-                      value={transferAddress.val}
-                      autoComplete="off"
-                      name="transferAddress"
-                    />
+                    <Form.Control type="text" placeholder="請輸入收款地址" className="p_sm-2 easy-border" onChange={onChange} value={transferAddress.val} autoComplete="off" name="transferAddress" />
                   </div>
 
                   {/* <h3>Qr Code Scan by Web Cam</h3> */}
@@ -488,15 +446,7 @@ const Transfer = () => {
                 開啟相機掃描QR Code?
               </span>
             </div>
-            {showCamera && (
-              <QrReader
-                delay={300}
-                style={{ maxWidth: '360px', margin: '30px auto' }}
-                onError={handleErrorWebCam}
-                onScan={handleScanWebCam}
-                facingMode={'environment'}
-              />
-            )}
+            {showCamera && <QrReader delay={300} style={{ maxWidth: '360px', margin: '30px auto' }} onError={handleErrorWebCam} onScan={handleScanWebCam} facingMode={'environment'} />}
 
             <Button
               onClick={valid}

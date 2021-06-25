@@ -22,7 +22,7 @@ import WalletState from './context/wallet/WalletState';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.scss';
-import Agreement from './Components/Auth/Agreement';
+import Agreement from './Components/Auth/Agreement.js';
 function App() {
   const [isAuth, setIsAuth] = useState(false);
 

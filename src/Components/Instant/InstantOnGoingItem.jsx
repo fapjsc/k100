@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Countdown from 'react-countdown';
 
 // Context
-import BuyContext from '../../context/buy/BuyContext';
+// import BuyContext from '../../context/buy/BuyContext';
 
 // Components
 import CountDownTimer from '../universal/countDownTimer';
@@ -44,11 +44,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
             <span style={{ color: '#707070' }}>已逾時</span>
           ) : (
             <span className="c_yellow">
-              <Countdown
-                onComplete={handleCountDownComplete}
-                renderer={CountDownTimer}
-                date={timeLeft}
-              />
+              <Countdown onComplete={handleCountDownComplete} renderer={CountDownTimer} date={timeLeft} />
             </span>
           )}
         </div>
@@ -76,10 +72,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
           <div className="col-md-1" />
 
           <div className="col-md-3 col-12 px-0 mobile-marginTop mw400 mx-auto">
-            <button
-              onClick={() => handleClick(el.token, 'sell')}
-              className="easy-btn margin0 w-100"
-            >
+            <button onClick={() => handleClick(el.token, 'sell')} className="easy-btn margin0 w-100">
               詳細
             </button>
           </div>
@@ -98,11 +91,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
             <span style={{ color: '#707070' }}>已逾時</span>
           ) : (
             <span className="c_yellow">
-              <Countdown
-                onComplete={handleCountDownComplete}
-                renderer={CountDownTimer}
-                date={timeLeft}
-              />
+              <Countdown onComplete={handleCountDownComplete} renderer={CountDownTimer} date={timeLeft} />
             </span>
           )}
         </div>
@@ -136,10 +125,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
                 Loading...
               </Button>
             ) : (
-              <button
-                onClick={() => handleClick(el.token, 'buy')}
-                className="easy-btn margin0 w-100"
-              >
+              <button onClick={() => handleClick(el.token, 'buy')} className="easy-btn margin0 w-100">
                 詳細
               </button>
             )}

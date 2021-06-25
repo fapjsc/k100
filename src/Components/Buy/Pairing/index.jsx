@@ -1,10 +1,14 @@
-import React from 'react';
+// Style
 import Modal from 'react-bootstrap/Modal';
 import './index.scss';
 import searchIcon from '../../../Assets/icon_search.gif';
 import closeBtn from '../../../Assets/blue_close_btn.png';
 
+// Context
+import { useI18n } from '../../../lang';
+
 const Paring = props => {
+  const { t } = useI18n();
   return (
     <Modal {...props} size="sm" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Body className="text-right">
@@ -18,9 +22,9 @@ const Paring = props => {
         />
         <div className="text-center">
           <img src={searchIcon} alt="icon" className="" />
-          <h3 style={{ color: '#3F80FA' }}>請稍等，現正整合交易者資料</h3>
+          <h3 style={{ color: '#3F80FA' }}>{t('please_wait')}</h3>
           <p>
-            購買訂單：{Number(props.usdt).toFixed(2)} USDT = ${Number(props.rmb).toFixed(2)} CNY
+            {t('buy_order')}：{Number(props.usdt).toFixed(2)} USDT = ${Number(props.rmb).toFixed(2)} CNY
           </p>
         </div>
       </Modal.Body>

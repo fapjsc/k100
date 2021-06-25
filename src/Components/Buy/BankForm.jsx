@@ -1,21 +1,25 @@
 import { useContext, useState, useEffect } from 'react';
 
-// context
+// Context
 import BuyContext from '../../context/buy/BuyContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import { useI18n } from '../../lang';
 
-// css
+// Style
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 
 const BankFrom = () => {
-  // buy context
+  // Lang Context
+  const { t } = useI18n();
+
+  // Buy Context
   const buyContext = useContext(BuyContext);
   const { buyBtnLoading, buyCount, setErrorText, confirmBuy } = buyContext;
 
-  // http error context
+  // Http Error context
   const httpErrorContext = useContext(HttpErrorContext);
   const { errorText, setHttpError } = httpErrorContext;
 
@@ -73,14 +77,16 @@ const BankFrom = () => {
       setAccountName({
         val: '',
         isValid: false,
-        error: '必須填寫銀行卡持有人的姓名',
+        // error: '必須填寫銀行卡持有人的姓名',
+        error: t('no_account_name'),
       });
 
       setFormIsValid(false);
     }
 
     if (usdt <= 0 || usdt === '' || rmb <= 0 || rmb === '') {
-      setErrorText('請輸入有效的購買數量');
+      // setErrorText('請輸入有效的購買數量');
+      setErrorText(t('invalid_number'));
       setFormIsValid(false);
     }
   };
@@ -103,15 +109,10 @@ const BankFrom = () => {
     <>
       <Form className="confirmBuyContent">
         <Form.Row className="justify-content-between align-items-start">
-          <Form.Group
-            as={Col}
-            md={6}
-            sm={12}
-            className="mr-4 mt-0 d-flex flex-column justify-content-center px-0"
-            controlId="formBasicClientName"
-          >
+          <Form.Group as={Col} md={6} sm={12} className="mr-4 mt-0 d-flex flex-column justify-content-center px-0" controlId="formBasicClientName">
             <Form.Control
-              placeholder="請輸入銀行卡持有人姓名"
+              // placeholder="請輸入銀行卡持有人姓名"
+              placeholder={t('account_name_placeholder')}
               onChange={onChange}
               value={accountName.val}
               className="confirmBuyInput easy-border"
@@ -151,7 +152,8 @@ const BankFrom = () => {
               }}
               className=""
             >
-              *請輸入轉帳銀行卡持有人的真實姓名
+              {/* *請輸入轉帳銀行卡持有人的真實姓名 */}
+              {t('account_name_prompt')}
             </p>
           </Form.Group>
 
@@ -160,7 +162,7 @@ const BankFrom = () => {
             <Form.Row className="confirmBuy-textContent p-4">
               <Form.Group as={Col} className="mb-0">
                 <div className="">
-                  <p className="txt_12_grey mb-0">總價</p>
+                  <p className="txt_12_grey mb-0">{t('buy_total')}</p>
                   <p className="confirmBuy-text c_blue mb-0">
                     {thousandBitSeparator(Number(buyCount.rmb).toFixed(2).toString())}
                     &nbsp; CNY
@@ -168,7 +170,7 @@ const BankFrom = () => {
                 </div>
               </Form.Group>
               <Form.Group as={Col} className=" text-right mb-0">
-                <p className="txt_12_grey mb-0">數量</p>
+                <p className="txt_12_grey mb-0">{t('buy_quantity')}</p>
                 <p className="confirmBuy-text mb-0 text-dark">
                   {/* 小數第二位，千分逗號 */}
                   {thousandBitSeparator(Number(buyCount.usdt).toFixed(2).toString())}
@@ -181,18 +183,16 @@ const BankFrom = () => {
 
         <Form.Row className="justify-content-center mt-4">
           <Form.Group as={Col} className="mw400 px-0">
-            <Button
-              className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
-              disabled={buyBtnLoading}
-              onClick={validForm}
-            >
+            <Button className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'} disabled={buyBtnLoading} onClick={validForm}>
               {buyBtnLoading ? (
                 <>
                   <Spinner animation="grow" variant="danger" />
-                  配對中...
+                  {/* 配對中... */}
+                  {t('btn_pairing')}
                 </>
               ) : (
-                '開始配對'
+                // '開始配對'
+                t('btn_pair_start')
               )}
             </Button>
           </Form.Group>

@@ -58,13 +58,7 @@ const InstantCount = props => {
 
   return (
     <div id="buy" className="tabcontent">
-      <NoOrder
-        show={!orderExists}
-        exRate={countData.exRate}
-        type={countData.type}
-        usdt={countData.usdt.toFixed(2)}
-        onHide={onHide}
-      />
+      {countData && <NoOrder show={!orderExists} exRate={countData.exRate} type={countData.type} usdt={countData.usdt.toFixed(2)} onHide={onHide} />}
       {countData ? (
         <>
           <div className="txt_12 pt_20 mb-3 pl-1">即時買賣</div>
@@ -96,12 +90,7 @@ const InstantCount = props => {
             </div>
           </div>
 
-          <Button
-            onClick={() => handleClick(countData.type)}
-            disabled={props.showPop}
-            className="easy-btn mw400 btn-sm-screen-100"
-            style={{ marginTop: '4rem', marginBottom: '4rem' }}
-          >
+          <Button onClick={() => handleClick(countData.type)} disabled={props.showPop} className="easy-btn mw400 btn-sm-screen-100" style={{ marginTop: '4rem', marginBottom: '4rem' }}>
             即時交易
           </Button>
         </>

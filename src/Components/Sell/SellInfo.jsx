@@ -10,7 +10,7 @@ import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 import SellExRate from './SellExRate';
 import SellDetail from './SellDetail';
 import Pairing from './Pairing';
-import TheChat from '../Chat/TheChat';
+import TheChat from '../Chat/TheChat.js';
 import CompleteStatus from '../universal/CompleteStatus';
 import BaseSpinner from '../Ui/BaseSpinner';
 
@@ -72,21 +72,13 @@ const SellInfo = () => {
         onHide={onHide}
         show={wsPairing && wsClient}
         title="請稍等，現正整合交易者資料"
-        text={
-          wsData &&
-          `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`
-        }
+        text={wsData && `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`}
       />
       <SellExRate />
       {(sellStatus === 33 || sellStatus === 34) && wsData ? (
         <SellDetail />
       ) : sellStatus === 1 || sellStatus === 99 || (sellStatus === 98 && wsData) ? (
-        <CompleteStatus
-          wsStatus={sellStatus}
-          hash={wsData && wsData.Tx_HASH}
-          backToHome={backToHome}
-          type="sell"
-        />
+        <CompleteStatus wsStatus={sellStatus} hash={wsData && wsData.Tx_HASH} backToHome={backToHome} type="sell" />
       ) : (
         <BaseSpinner />
       )}

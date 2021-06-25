@@ -1,9 +1,12 @@
 import { useContext, useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+
+// Context
 import TransferContext from '../../../context/transfer/TransferContext';
+
+// Style
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
-
 import errorIcon from '../../../Assets/icon-error-new.png';
 import transIcon from '../../../Assets/icon_load02.gif';
 import completeIcon from '../../../Assets/i_complete.png';
@@ -12,17 +15,7 @@ const TransferInfo = () => {
   const history = useHistory();
   const match = useRouteMatch();
   const transferContext = useContext(TransferContext);
-  const {
-    orderDetail,
-    closeWebSocket,
-    transferStatus,
-    detailReq,
-    transferWebSocket,
-    cleanStatus,
-    setOrderToken,
-    setUsdtCount,
-    transferOrderToken,
-  } = transferContext;
+  const { orderDetail, closeWebSocket, transferStatus, detailReq, transferWebSocket, cleanStatus, setOrderToken, setUsdtCount, transferOrderToken } = transferContext;
 
   const backToHome = () => {
     history.replace('/home/overview');

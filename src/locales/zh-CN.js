@@ -168,9 +168,77 @@ export default {
   ],
   table_3_td_8: ['8', '被司法调证：用户被司法机构要求调取本平台账户资料，包括但不限于：司法调证、咨询等形式。', '本平台将视情况限制此类用户的账户及关联账户的部分功能。'],
 
+  // ========
+  //   Utils
+  // ========
   // Form Label
   understand_agreement: '我了解协议内容',
+  e_wallet: '电子钱包',
+  choose_e_wallet: '*请选择电子钱包',
 
   // Button Text
   btn_confirm: '确定',
+  btn_return: '返回',
+  btn_pair_start: '开始配对',
+  btn_pairing: '配对中',
+
+  btn_bank: '银行卡',
+  btn_aliPay: '支付宝',
+
+  // WelCome Text
+  welcome_text: '欢迎登入',
+
+  // ExRate Text
+  exRate: '汇率',
+  payment_contact: '付款窗口',
+  limit: '限额',
+
+  // Dialog
+  please_wait: '请稍等，现正整合交易者资料',
+  buy_order: '购买订单',
+
+  // ========
+  //   User
+  // ========
+  // Navigation
+  nav_transaction: '交易',
+  nav_history: '纪录',
+  nav_wallet: '钱包',
+  nav_logout: '登出',
+  nav_logout_alert: '确定要登出吗？',
+
+  // Balance
+  balance_avb: '可提',
+  balance_real: '结余',
+
+  // Over View
+  overView_transaction: '买卖',
+  overView_transfer: '转账',
+  overView_wallet: '我的钱包',
+  overView_history: '交易纪录',
+
+  // Slogan
+  slogan_title: '最值得信赖的加密货币交易平台',
+  slogan_sub_text_1: '只要简单几个步骤即可创建您自己的加密钱包',
+  slogan_sub_text_2: '您可以安全地购买，出售，和交易您的加密货币!!',
+
+  // Transaction Navigation
+  transaction_nav_buy: '购买',
+  transaction_nav_sell: '出售',
+  transaction_nav_transfer: '转帐',
+
+  // Transaction Buy
+  buy_usdt: '购买USDT',
+
+  // Buy Form
+  // Error Text
+  no_account_name: '必须填写银行卡持有人的姓名',
+  invalid_number: '请输入有效的购买数量',
+
+  // Form Text
+  please_enter_quantity: '请输入购买数量',
+  account_name_placeholder: '请输入银行卡持有人姓名',
+  account_name_prompt: '*请输入转帐银行卡持有人的真实姓名',
+  buy_total: '总价',
+  buy_quantity: '数量',
 };

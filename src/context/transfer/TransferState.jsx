@@ -2,16 +2,11 @@ import { useReducer, useContext } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import TransferContext from './TransferContext';
 import TransferReducer from './TransferReducer';
-import {
-  SET_TRANSFER_ORDER_TOKEN,
-  SET_TRANSFER_STATUS,
-  SET_USDT_COUNT,
-  SET_ORDER_DETAIL,
-  GET_WS_CLIENT,
-} from '../type';
+import { SET_TRANSFER_ORDER_TOKEN, SET_TRANSFER_STATUS, SET_USDT_COUNT, SET_ORDER_DETAIL, GET_WS_CLIENT } from '../type';
 
 // Context
 import HttpErrorContext from '../httpError/HttpErrorContext';
+// import BalanceContext from '../balance/BalanceContext';
 
 const TransferState = props => {
   // Http Error Context

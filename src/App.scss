@@ -1213,221 +1213,221 @@ hr {
 }
 
 // Chat Box
-.easy_help span {
-  // background-image: url(./Assets/i_ask2.png);
-  // background-size: contain;
-  // background-repeat: no-repeat;
-  // height: 17px;
-  // width: 23px;
-  // display: inline-block;
-  // position: relative;
-  // top: 3px;
-}
+// .easy_help span {
+//   background-image: url(./Assets/i_ask2.png);
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   height: 17px;
+//   width: 23px;
+//   display: inline-block;
+//   position: relative;
+//   top: 3px;
+// }
 
-.chatbox {
-  background-color: #fff;
-  border-radius: 10px;
-  width: 360px;
-  height: 500px;
-  // width: 27.6vw;
-  // height: 47vh;
-  position: absolute;
-  // float: right;
-  // top: 37vh;
-  z-index: 10;
-  top: 0px;
-  right: 0px;
-  box-shadow: 3px 4px 12px 5px rgba(0, 0, 0, 0.2);
+// .chatbox {
+//   background-color: #fff;
+//   border-radius: 10px;
+//   width: 360px;
+//   height: 500px;
+//   // width: 27.6vw;
+//   // height: 47vh;
+//   position: absolute;
+//   // float: right;
+//   // top: 37vh;
+//   z-index: 10;
+//   top: 0px;
+//   right: 0px;
+//   box-shadow: 3px 4px 12px 5px rgba(0, 0, 0, 0.2);
 
-  // @media only screen and(max-width: 1500px) {
-  //   right: 80px;
-  // }
+//   // @media only screen and(max-width: 1500px) {
+//   //   right: 80px;
+//   // }
 
-  // @media only screen and(max-width: 1024px) and(min-height: 1366px) {
-  //   right: 40px;
-  //   top: 510px;
-  // }
+//   // @media only screen and(max-width: 1024px) and(min-height: 1366px) {
+//   //   right: 40px;
+//   //   top: 510px;
+//   // }
 
-  // @media only screen and(max-width: 800px) and(min-height: 600px) {
-  //   right: 40px;
-  //   top: 10px;
-  // }
+//   // @media only screen and(max-width: 800px) and(min-height: 600px) {
+//   //   right: 40px;
+//   //   top: 10px;
+//   // }
 
-  // @media only screen and(max-width: 768px) and(min-height: 1024px) {
-  //   right: 40px;
-  //   top: 410px;
-  // }
+//   // @media only screen and(max-width: 768px) and(min-height: 1024px) {
+//   //   right: 40px;
+//   //   top: 410px;
+//   // }
 
-  // @media only screen and(max-width: 540px) and(min-height: 720px) {
-  //   right: 40px;
-  //   top: 110px;
-  // }
+//   // @media only screen and(max-width: 540px) and(min-height: 720px) {
+//   //   right: 40px;
+//   //   top: 110px;
+//   // }
 
-  // @media only screen and(max-width: 411px) and(min-height: 731px) {
-  //   right: 30px;
-  //   top: 120px;
-  // }
+//   // @media only screen and(max-width: 411px) and(min-height: 731px) {
+//   //   right: 30px;
+//   //   top: 120px;
+//   // }
 
-  @media only screen and(max-width: 414px) and(min-height: 720px) {
-    right: 20px;
-    top: 70px;
-  }
+//   @media only screen and(max-width: 414px) and(min-height: 720px) {
+//     right: 20px;
+//     top: 70px;
+//   }
 
-  @media only screen and(max-width: 375px) {
-    // right: 30px;
-    // top: 30px;
-    width: 300px;
-    height: 460px;
-    top: 55px;
-  }
-  // @media only screen and(max-width: 375px) and(min-height: 812px) {
-  //   // right: 25px;
-  //   // top: 100px;
-  //   width: 300px;
-  // }
+//   @media only screen and(max-width: 375px) {
+//     // right: 30px;
+//     // top: 30px;
+//     width: 300px;
+//     height: 460px;
+//     top: 55px;
+//   }
+//   // @media only screen and(max-width: 375px) and(min-height: 812px) {
+//   //   // right: 25px;
+//   //   // top: 100px;
+//   //   width: 300px;
+//   // }
 
-  // @media only screen and(max-width: 360px) {
-  //   right: 30px;
-  //   top: 40px;
-  //   width: 300px;
-  // }
+//   // @media only screen and(max-width: 360px) {
+//   //   right: 30px;
+//   //   top: 40px;
+//   //   width: 300px;
+//   // }
 
-  @media only screen and(max-width: 320px) {
-    // right: 30px;
-    // top: 20px;
-    width: 250px;
-    height: 450px;
-    top: 55px;
-  }
+//   @media only screen and(max-width: 320px) {
+//     // right: 30px;
+//     // top: 20px;
+//     width: 250px;
+//     height: 450px;
+//     top: 55px;
+//   }
 
-  // @media only screen and(max-width: 280px) {
-  //   right: 15px;
-  //   top: 90px;
-  // }
-}
+//   // @media only screen and(max-width: 280px) {
+//   //   right: 15px;
+//   //   top: 90px;
+//   // }
+// }
 
-.chatbox .top {
-  background-color: #3f80fa;
-  color: #fff;
-  padding: 15px 15px 7px;
-  border-radius: 10px 10px 0px 0px;
-  word-wrap: break-word;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  min-height: 60px;
-}
+// .chatbox .top {
+//   background-color: #3f80fa;
+//   color: #fff;
+//   padding: 15px 15px 7px;
+//   border-radius: 10px 10px 0px 0px;
+//   word-wrap: break-word;
+//   position: absolute;
+//   top: 0;
+//   width: 100%;
+//   min-height: 60px;
+// }
 
-.chatbox .top span {
-  background-image: url(./Assets/i_logo.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 30px;
-  width: 30px;
-  display: inline-block;
-  margin-right: 12px;
-}
+// .chatbox .top span {
+//   background-image: url(./Assets/i_logo.png);
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   height: 30px;
+//   width: 30px;
+//   display: inline-block;
+//   margin-right: 12px;
+// }
 
-.chatbox .top p {
-  display: inline;
-  position: relative;
-  margin-bottom: 2px;
-}
+// .chatbox .top p {
+//   display: inline;
+//   position: relative;
+//   margin-bottom: 2px;
+// }
 
-.talk {
-  height: 76%;
-  overflow: auto;
-  padding: 10px;
-  z-index: -1;
-  position: absolute;
-  top: 62px;
+// .talk {
+//   height: 76%;
+//   overflow: auto;
+//   padding: 10px;
+//   z-index: -1;
+//   position: absolute;
+//   top: 62px;
 
-  @media only screen and(max-width: 1920px) {
-    top: 72px;
-    height: 74%;
-  }
+//   @media only screen and(max-width: 1920px) {
+//     top: 72px;
+//     height: 74%;
+//   }
 
-  @media only screen and(max-width: 375px) {
-    top: 81px;
-    height: 70%;
-  }
+//   @media only screen and(max-width: 375px) {
+//     top: 81px;
+//     height: 70%;
+//   }
 
-  // @media only screen and(max-width: 360px) {
-  //   top: 81px;
-  //   height: 72.5%;
-  // }
+//   // @media only screen and(max-width: 360px) {
+//   //   top: 81px;
+//   //   height: 72.5%;
+//   // }
 
-  @media only screen and(max-width: 320px) {
-    height: 69.5%;
-  }
-}
+//   @media only screen and(max-width: 320px) {
+//     height: 69.5%;
+//   }
+// }
 
-.talk_l {
-  background-color: #d7e2f3;
-  color: #707070;
-  border-radius: 5px;
-  font-size: 12px;
-  padding: 15px 10px;
-  width: 85%;
-}
-.talk_r {
-  background-color: #f6f6f6;
-  color: #707070;
-  border-radius: 5px;
-  font-size: 12px;
-  padding: 15px 15px;
-  width: 85%;
-  margin-left: 15%;
-}
-.talk_time {
-  color: #707070;
-  font-size: 10px;
-  margin-bottom: 10px;
-}
-.a_right {
-  text-align: right;
-}
+// .talk_l {
+//   background-color: #d7e2f3;
+//   color: #707070;
+//   border-radius: 5px;
+//   font-size: 12px;
+//   padding: 15px 10px;
+//   width: 85%;
+// }
+// .talk_r {
+//   background-color: #f6f6f6;
+//   color: #707070;
+//   border-radius: 5px;
+//   font-size: 12px;
+//   padding: 15px 15px;
+//   width: 85%;
+//   margin-left: 15%;
+// }
+// .talk_time {
+//   color: #707070;
+//   font-size: 10px;
+//   margin-bottom: 10px;
+// }
+// .a_right {
+//   text-align: right;
+// }
 
-.attach_icon {
-  background-image: url(./Assets/attach_icon.png);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 20px;
-  width: 15px;
-  display: inline-block;
-  margin-left: 10px;
-}
+// .attach_icon {
+//   background-image: url(./Assets/attach_icon.png);
+//   background-size: contain;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   height: 20px;
+//   width: 15px;
+//   display: inline-block;
+//   margin-left: 10px;
+// }
 
-.send_icon {
-  background-image: url(./Assets/send_icon.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 22px;
-  width: 20px;
-  display: inline-block;
-  background-position: center;
-  margin-left: 5px;
-}
+// .send_icon {
+//   background-image: url(./Assets/send_icon.png);
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   height: 22px;
+//   width: 20px;
+//   display: inline-block;
+//   background-position: center;
+//   margin-left: 5px;
+// }
 
-.chatbox .bottom {
-  padding: 10px;
-  border-top: 1px solid #d7e2f3;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-input.talkbox {
-  background-color: transparent;
-  margin: 0px;
-  padding: 5px;
-}
-input.talkbox:focus {
-  outline-width: 0;
-  box-shadow: none;
-  border: none;
-  outline: none;
-}
+// .chatbox .bottom {
+//   padding: 10px;
+//   border-top: 1px solid #d7e2f3;
+//   position: absolute;
+//   bottom: 0;
+//   width: 100%;
+// }
+// input.talkbox {
+//   background-color: transparent;
+//   margin: 0px;
+//   padding: 5px;
+// }
+// input.talkbox:focus {
+//   outline-width: 0;
+//   box-shadow: none;
+//   border: none;
+//   outline: none;
+// }
 
 .w_77 {
   width: 77%;

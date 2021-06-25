@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import BuyContext from '../../context/buy/BuyContext';
 import SellContext from '../../context/sell/SellContext';
 import InstantContext from '../../context/instant/InstantContext';
-// import AuthContext from '../../context/auth/AuthContext';
+import { useI18n } from '../../lang/index';
 
 // Style
 import { Nav } from 'react-bootstrap';
@@ -13,6 +13,9 @@ import style from './Header.module.scss';
 // import InstantCount from '../Instant/InstantCount';
 
 const TheNav = props => {
+  // Lang Context
+  const { t } = useI18n();
+
   // Buy Context
   const buyContext = useContext(BuyContext);
   const { buyWsClient } = buyContext;
@@ -36,13 +39,13 @@ const TheNav = props => {
   };
 
   const handleLogout = () => {
-    if (window.confirm('確定要登出嗎？')) props.logout();
+    if (window.confirm(t('nav_logout_alert'))) props.logout();
   };
 
   return (
     <Nav className={style.navList}>
       <Link to="/home/transaction" className={style.navLink} onClick={handleClick}>
-        交易
+        {t('nav_transaction')}
       </Link>
       <span
         style={{
@@ -52,7 +55,7 @@ const TheNav = props => {
         |
       </span>
       <Link to="/home/history/all" className={style.navLink} onClick={handleClick}>
-        紀錄
+        {t('nav_history')}
       </Link>
       <span
         style={{
@@ -62,7 +65,7 @@ const TheNav = props => {
         |
       </span>
       <Link to="/home/wallet" className={style.navLink} onClick={handleClick}>
-        錢包
+        {t('nav_wallet')}
       </Link>
       <span
         style={{
@@ -73,7 +76,7 @@ const TheNav = props => {
       </span>
 
       <Link to="/" onClick={handleLogout} style={{ marginRight: 0 }} className={style.navLink}>
-        登出
+        {t('nav_logout')}
       </Link>
     </Nav>
   );

@@ -10,7 +10,7 @@ import BalanceContext from '../../context/balance/BalanceContext';
 
 import {
   SET_INSTANT_WS_DATA,
-  CLEAN_INSTANT_DATA,
+  // CLEAN_INSTANT_DATA,
   SET_SELL1_DATA,
   SET_COUNT_DATA,
   INSTANT_ALL_WS_CLIENT,
@@ -24,7 +24,7 @@ import {
   SET_PAYMENT_NAME,
 } from '../type';
 
-const InstantState = (props) => {
+const InstantState = props => {
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { handleHttpError, setHttpLoading } = httpErrorContext;
@@ -88,7 +88,7 @@ const InstantState = (props) => {
     };
 
     // 2.收到server回復
-    client.onmessage = (message) => {
+    client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       console.log('got reply all!', dataFromServer);
@@ -133,7 +133,7 @@ const InstantState = (props) => {
     };
 
     // 2.收到server回復
-    client.onmessage = (message) => {
+    client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       console.log('got reply onGoing!', dataFromServer);
@@ -153,7 +153,7 @@ const InstantState = (props) => {
   };
 
   // Status Web Socket  --確認狀態
-  const statusWs = (orderToken) => {
+  const statusWs = orderToken => {
     if (!orderToken) return;
 
     const loginSession = localStorage.getItem('token');
@@ -180,7 +180,7 @@ const InstantState = (props) => {
       };
 
       // 2.收到server回復
-      client.onmessage = (message) => {
+      client.onmessage = message => {
         if (!message.data) return;
         const dataFromServer = JSON.parse(message.data);
         console.log('got reply status!', dataFromServer);
@@ -205,7 +205,7 @@ const InstantState = (props) => {
   };
 
   // Sell Match --1
-  const sellMatch1 = async (token) => {
+  const sellMatch1 = async token => {
     const headers = getHeader();
     if (!headers) return;
     setHttpLoading(true);
@@ -242,7 +242,7 @@ const InstantState = (props) => {
   };
 
   // Sell Match --2
-  const sellMatch2 = async (token) => {
+  const sellMatch2 = async token => {
     const headers = getHeader();
     if (!headers) return;
     setHttpLoading(true);
@@ -271,7 +271,7 @@ const InstantState = (props) => {
   };
 
   // Buy Match --1
-  const buyMatch1 = async (token) => {
+  const buyMatch1 = async token => {
     const headers = getHeader();
     if (!headers) return;
     setHttpLoading(true);
@@ -308,7 +308,7 @@ const InstantState = (props) => {
   };
 
   // Buy Match --2
-  const buyMatch2 = async (token) => {
+  const buyMatch2 = async token => {
     const headers = getHeader();
     setHttpLoading(true);
     try {
@@ -335,68 +335,68 @@ const InstantState = (props) => {
   };
 
   // Set Instant Data
-  const setInstantData = (data) => {
+  const setInstantData = data => {
     dispatch({ type: SET_INSTANT_WS_DATA, payload: data });
   };
 
   // Clean Instant Data
-  const cleanInstantData = () => {
-    dispatch({ type: CLEAN_INSTANT_DATA });
-  };
+  // const cleanInstantData = () => {
+  //   dispatch({ type: CLEAN_INSTANT_DATA });
+  // };
 
   // Set Count Data
-  const setCountData = (data) => {
+  const setCountData = data => {
     if (!data) return;
     dispatch({ type: SET_COUNT_DATA, payload: data });
   };
 
   // Set Sell--1 Data
-  const setSell1Data = (data) => {
+  const setSell1Data = data => {
     dispatch({ type: SET_SELL1_DATA, payload: data });
   };
 
   // Set Buy --1 Data
-  const setBuy1Data = (data) => {
+  const setBuy1Data = data => {
     dispatch({ type: SET_BUY1_DATA, payload: data });
   };
 
   // Set Web Socket Client -- Instant All
-  const setAllClient = (value) => {
+  const setAllClient = value => {
     dispatch({ type: INSTANT_ALL_WS_CLIENT, payload: value });
   };
 
   // Set Web Socket Client -- Instant On Going
-  const setOnGoingClient = (value) => {
+  const setOnGoingClient = value => {
     dispatch({ type: INSTANT_ON_GOING_WS_CLIENT, payload: value });
   };
 
   // Set Web Socket Client  --Status
-  const setWsStatusClient = (client) => {
+  const setWsStatusClient = client => {
     dispatch({ type: SET_STATUS_WS_CLIENT, payload: client });
   };
 
   // Set Ws Status Data
-  const setWsStatusData = (data) => {
+  const setWsStatusData = data => {
     dispatch({ type: SET_WS_STATUS_DATA, payload: data });
   };
 
   // Set Ws On Going Data
-  const setOnGoingData = (data) => {
+  const setOnGoingData = data => {
     dispatch({ type: SET_INSTANT_ONGOING_DATA, payload: data });
   };
 
   // Set Action Type
-  const setActionType = (type) => {
+  const setActionType = type => {
     dispatch({ type: SET_ACTION_TYPE, payload: type });
   };
 
   // Set Order Exists
-  const setOrderExists = (value) => {
+  const setOrderExists = value => {
     dispatch({ type: ORDER_NOT_EXISTS, payload: value });
   };
 
   // Set Payment Name
-  const setPaymentName = (name) => {
+  const setPaymentName = name => {
     dispatch({ type: SET_PAYMENT_NAME, payload: name });
   };
 

@@ -1,19 +1,21 @@
-import { useContext, useEffect, useState, Fragment } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import Resizer from 'react-image-file-resizer'; // 圖片壓縮
 import { PhotoProvider, PhotoConsumer } from 'react-photo-view'; // 圖片檢視
-// import Zmage from 'react-zmage'; // 圖片縮放
-// import { v4 as uuidv4 } from 'uuid';
-
 import 'react-photo-view/dist/index.css';
 
 // Context
 import ChatContext from '../../context/chat/ChatContext';
 
+// Play Sound
+import useSound from 'use-sound';
+import newMessageSound from '../../Assets/mp3/newMessage.mp3';
+
 // Style
-import './TheChat.css';
 import Spinner from 'react-bootstrap/Spinner';
 import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
+import classes from './TheChat.module.scss';
 
 const TheChat = props => {
   // Router Props
@@ -22,21 +24,16 @@ const TheChat = props => {
   // Init State
   const [userInput, setUserInput] = useState('');
   const [messagesEnd, setMessagesEnd] = useState(null);
+  const [isAgent, setIsAgent] = useState(false);
+
+  // Play Sound State
+  const [play, { stop }] = useSound(newMessageSound, { interrupt: false });
+  const [loop, setLoop] = useState();
+  const [soundState, setSoundState] = useState(true);
 
   // Chat Context
   const chatContext = useContext(ChatContext);
-  const {
-    instantClient,
-    client,
-    instantMessages,
-    messages,
-    chatConnect,
-    instantChat,
-    setInstantMessages,
-    setMessages,
-    chatLoading,
-    setChatLoading,
-  } = chatContext;
+  const { instantClient, client, instantMessages, messages, chatConnect, instantChat, setInstantMessages, setMessages, chatLoading, setChatLoading, newMessage, setNewMessage } = chatContext;
 
   // ===========
   //  function
@@ -130,6 +127,13 @@ const TheChat = props => {
     }
   };
 
+  const handleStopSound = () => {
+    stop();
+    clearInterval(loop);
+    setSoundState(!soundState);
+    setNewMessage(false);
+  };
+
   // ===========
   //  UseEffect
   // ===========
@@ -140,6 +144,8 @@ const TheChat = props => {
     if (match.path.includes('instant')) instantChat(match.params.id);
     if (match.path.includes('transaction')) chatConnect(match.params.id);
 
+    if (localStorage.getItem('agent')) setIsAgent(true);
+
     return () => {
       setMessages([]);
       setInstantMessages([]);
@@ -149,21 +155,47 @@ const TheChat = props => {
   }, []);
 
   useEffect(() => {
+    if (soundState && newMessage) {
+      // 新訊息聲音提示
+      play();
+      const soundLoop = setInterval(() => {
+        play();
+      }, 7000);
+      setLoop(soundLoop);
+    }
+
+    return () => {
+      if (loop) {
+        stop();
+        clearInterval(loop);
+      }
+    };
+
+    // eslint-disable-next-line
+  }, [newMessage]);
+
+  useEffect(() => {
     scrollToBottom();
   });
 
   return (
     <>
       <div
-        className="chatbox"
+        className={classes.chatBox}
         style={{
           display: props.isChat ? 'block' : 'none',
         }}
       >
+        {isAgent && (
+          <div className={classes.soundBtnBox}>
+            <Button className={soundState ? 'btn-info' : 'btn-danger'} onClick={handleStopSound}>
+              {!soundState ? '提示音已關閉' : '提示音已開啟'}
+            </Button>
+          </div>
+        )}
+
         {/* Chat Header */}
-        <div className="top">
-          {/* <p>客服中心</p>
-          {/* <span /> */}
+        <div className={classes.top}>
           <p className="mb-1" style={{ display: 'block' }}>
             訂單號：
           </p>
@@ -173,7 +205,7 @@ const TheChat = props => {
         {instantClient ? (
           <>
             {/* Chat Body */}
-            <div className="talk">
+            <div className={classes.talk}>
               {instantMessages.map((el, index) => {
                 return (
                   <div className="mb-2" key={index}>
@@ -183,13 +215,7 @@ const TheChat = props => {
                       {el.Message_Type === 1 ? (
                         <>
                           {el.Message_Role === 2 && <Badge variant="danger">客服</Badge>}
-                          <p
-                            className={
-                              el.Message_Role === 1 || el.Message_Role === 2 ? 'talk_l' : 'talk_r'
-                            }
-                          >
-                            {el.Message}
-                          </p>
+                          <p className={el.Message_Role === 1 || el.Message_Role === 2 ? classes.talk_l : classes.talk_r}>{el.Message}</p>
                         </>
                       ) : (
                         <>
@@ -207,40 +233,16 @@ const TheChat = props => {
                                 }}
                                 src={el.Message}
                                 alt="send img"
-                                className={
-                                  el.Message_Role === 1 || el.Message_Role === 2
-                                    ? 'talk_l'
-                                    : 'talk_r'
-                                }
+                                className={el.Message_Role === 1 || el.Message_Role === 2 ? classes.talk_l : classes.talk_r}
                               />
                             </PhotoConsumer>
                           </PhotoProvider>
-
-                          {/* <Zmage
-                            zoom={true}
-                            alt="send img"
-                            src={el.Message}
-                            className={
-                              el.Message_Role === 1 || el.Message_Role === 2 ? 'talk_l' : 'talk_r'
-                            }
-                          /> */}
                         </>
                       )}
 
                       {/* 日期 */}
-                      <div
-                        className={
-                          el.Message_Role === 1 || el.Message_Role === 2
-                            ? 'talk_time'
-                            : 'talk_time a_right'
-                        }
-                      >
-                        {el.Sysdate.split(' ')
-                          .splice(1, 1)
-                          .join()
-                          .split(':')
-                          .splice(0, 2)
-                          .join(':')}
+                      <div className={el.Message_Role === 1 || el.Message_Role === 2 ? classes.talk_time : `${classes.talk_time} ${classes.a_right}`}>
+                        {el.Sysdate.split(' ').splice(1, 1).join().split(':').splice(0, 2).join(':')}
                       </div>
                     </div>
                     <div
@@ -260,19 +262,15 @@ const TheChat = props => {
             </div>
 
             {/* Chat Bottom */}
-            <div className="bottom">
-              <label className="attach-iconBox">
-                <input
-                  id="upload_img"
-                  style={{ display: 'none' }}
-                  type="file"
-                  onChange={e => sendImg(e)}
-                />
-                <div className="attach_icon" style={{ cursor: 'pointer' }} />
+            <div className={classes.bottom}>
+              {/* attach-iconBox */}
+              <label className="">
+                <input id="upload_img" style={{ display: 'none' }} type="file" onChange={e => sendImg(e)} />
+                <div className={classes.attach_icon} style={{ cursor: 'pointer' }} />
               </label>
               <div className="w_77">
                 <input
-                  className="easy-input talkbox"
+                  className={`easy-input ${classes.talkBox}`}
                   type="text"
                   name="talk"
                   placeholder="對話......"
@@ -281,18 +279,13 @@ const TheChat = props => {
                   onKeyUp={e => sendMessage(userInput, e)}
                 />
               </div>
-              <span
-                id="sendIcon"
-                style={{ cursor: 'pointer' }}
-                className="send_icon"
-                onClick={e => sendMessage(userInput, e)}
-              />
+              <span id="sendIcon" style={{ cursor: 'pointer' }} className={classes.send_icon} onClick={e => sendMessage(userInput, e)} />
             </div>
           </>
         ) : client ? (
           <>
             {/* Chat Body */}
-            <div className="talk">
+            <div className={classes.talk}>
               {messages.map((el, index) => {
                 return (
                   <div className="mb-2" key={index}>
@@ -303,13 +296,7 @@ const TheChat = props => {
                       {el.Message_Type === 1 ? (
                         <>
                           {el.Message_Role === 2 && <Badge variant="danger">客服</Badge>}
-                          <p
-                            className={
-                              el.Message_Role === 2 || el.Message_Role === 3 ? 'talk_l' : 'talk_r'
-                            }
-                          >
-                            {el.Message}
-                          </p>
+                          <p className={el.Message_Role === 2 || el.Message_Role === 3 ? classes.talk_l : classes.talk_r}>{el.Message}</p>
                         </>
                       ) : (
                         <>
@@ -319,14 +306,6 @@ const TheChat = props => {
                             </div>
                           )}
 
-                          {/* <Zmage
-                            alt="send img"
-                            src={el.Message}
-                            className={
-                              el.Message_Role === 3 || el.Message_Role === 2 ? 'talk_l' : 'talk_r'
-                            }
-                          /> */}
-
                           <PhotoProvider>
                             <PhotoConsumer key={index} src={el.Message}>
                               <img
@@ -335,11 +314,7 @@ const TheChat = props => {
                                 style={{
                                   cursor: 'zoom-in',
                                 }}
-                                className={
-                                  el.Message_Role === 3 || el.Message_Role === 2
-                                    ? 'talk_l'
-                                    : 'talk_r'
-                                }
+                                className={el.Message_Role === 3 || el.Message_Role === 2 ? classes.talk_l : classes.talk_r}
                               />
                             </PhotoConsumer>
                           </PhotoProvider>
@@ -347,19 +322,8 @@ const TheChat = props => {
                       )}
 
                       {/* 日期 */}
-                      <div
-                        className={
-                          el.Message_Role === 3 || el.Message_Role === 2
-                            ? 'talk_time'
-                            : 'talk_time a_right'
-                        }
-                      >
-                        {el.Sysdate.split(' ')
-                          .splice(1, 1)
-                          .join()
-                          .split(':')
-                          .splice(0, 2)
-                          .join(':')}
+                      <div className={el.Message_Role === 3 || el.Message_Role === 2 ? classes.talk_time : `${classes.talk_time} ${classes.a_right}`}>
+                        {el.Sysdate.split(' ').splice(1, 1).join().split(':').splice(0, 2).join(':')}
                       </div>
                     </div>
                     <div
@@ -380,19 +344,15 @@ const TheChat = props => {
             </div>
 
             {/* Chat Bottom */}
-            <div className="bottom d-flex align-items-center">
-              <label className="attach-iconBox mt-2">
-                <input
-                  id="upload_img"
-                  style={{ display: 'none' }}
-                  type="file"
-                  onChange={e => sendImg(e)}
-                />
-                <div className="attach_icon" style={{ cursor: 'pointer' }} />
+            <div className={`${classes.bottom} d-flex align-items-center`}>
+              {/* attach-iconBox  label className */}
+              <label className="mt-2">
+                <input id="upload_img" style={{ display: 'none' }} type="file" onChange={e => sendImg(e)} />
+                <div className={classes.attach_icon} style={{ cursor: 'pointer' }} />
               </label>
               <div className="w_77">
                 <input
-                  className="easy-input talkbox"
+                  className={`easy-input ${classes.talkBox}`}
                   type="text"
                   name="talk"
                   placeholder="對話......"
@@ -401,12 +361,7 @@ const TheChat = props => {
                   onKeyUp={e => sendMessage(userInput, e)}
                 />
               </div>
-              <span
-                id="sendIcon1"
-                style={{ cursor: 'pointer' }}
-                className="send_icon"
-                onClick={e => sendMessage(userInput, e)}
-              />
+              <span id="sendIcon1" style={{ cursor: 'pointer' }} className={classes.send_icon} onClick={e => sendMessage(userInput, e)} />
             </div>
           </>
         ) : (

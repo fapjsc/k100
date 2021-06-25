@@ -8,8 +8,7 @@ import InstantContext from '../../context/instant/InstantContext';
 // Components
 import SellDetail from './SellDetail';
 import BuyDetail from './BuyDetail';
-import TheChat from '../Chat/TheChat';
-// import TheMobileChat from '../Chat/TheMobileChat';
+import TheChat from '../Chat/TheChat.js';
 import BaseSpinner from '../Ui/BaseSpinner';
 
 // Style

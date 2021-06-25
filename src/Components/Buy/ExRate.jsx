@@ -1,7 +1,14 @@
 import { useContext, useEffect } from 'react';
+
+// Context
+import { useI18n } from '../../lang';
 import SellContext from '../../context/sell/SellContext';
 
 const ExRate = props => {
+  // Lang Context
+  const { t } = useI18n();
+
+  // Sell Context
   const sellContext = useContext(SellContext);
   const { getExRate, buyRate } = sellContext;
   const { title } = props;
@@ -23,13 +30,13 @@ const ExRate = props => {
       </p>
       <div className="pay-info txt_12 mb-4">
         <p className="mb-0">
-          匯率 :<span>{buyRate && Number(buyRate).toFixed(2)}</span>
+          {t('exRate')} :<span>{buyRate && Number(buyRate).toFixed(2)}</span>
         </p>
         <p className="mb-0">
-          付款窗口 :<span>15分鐘</span>
+          {t('payment_contact')} :<span>15分鐘</span>
         </p>
         <p className="mb-0">
-          限額 :<span>USDT 100.00 - 10000.00</span>
+          {t('limit')} :<span>USDT 100.00 - 10000.00</span>
         </p>
       </div>
     </>

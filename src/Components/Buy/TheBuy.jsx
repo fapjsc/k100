@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 // Context
 import BuyContext from '../../context/buy/BuyContext';
 import SellContext from '../../context/sell/SellContext';
+import { useI18n } from '../../lang';
 
 // component
 import Pairing from './Pairing';
@@ -14,10 +15,11 @@ import BankForm from './BankForm';
 import FormFooter from '../Layout/FormFooter';
 
 const TheBuy = () => {
-  // Init State
-
   // Get Router Props
   const history = useHistory();
+
+  // Lang Context
+  const { t } = useI18n();
 
   // Sell Context
   const sellContext = useContext(SellContext);
@@ -62,7 +64,7 @@ const TheBuy = () => {
   };
   return (
     <>
-      <ExRate title="購買USDT" />
+      <ExRate title={t('buy_usdt')} />
       {buyRate ? <BuyForm /> : <BaseSpinner />}
       {showBank && <BankForm />}
       <FormFooter />

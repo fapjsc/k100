@@ -9,9 +9,10 @@ import SellContext from '../../context/sell/SellContext';
 const InstantNva = props => {
   // Router Props
   const history = useHistory();
+
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { wsOnGoingData, wsStatusClient } = instantContext;
+  const { wsOnGoingData, wsStatusClient, instantData } = instantContext;
 
   // Buy Context
   const buyContext = useContext(BuyContext);
@@ -32,23 +33,16 @@ const InstantNva = props => {
     if (props.jumpTo) history.replace('home/overview');
   };
   return (
-    <nav className="tab ">
-      <div>
-        <button
-          id="all"
-          className={props.tab === 'all' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'}
-          onClick={e => handleClick(e)}
-        >
+    <nav className="tab">
+      <div className="onGoing">
+        {instantData.length ? <span className="red_dot">{instantData.length}</span> : null}
+        <button id="all" className={props.tab === 'all' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'} onClick={e => handleClick(e)}>
           即時買賣
         </button>
       </div>
       <div className="onGoing">
         {wsOnGoingData.length ? <span className="red_dot">{wsOnGoingData.length}</span> : null}
-        <button
-          id="onGoing"
-          className={props.tab === 'onGoing' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'}
-          onClick={e => handleClick(e)}
-        >
+        <button id="onGoing" className={props.tab === 'onGoing' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'} onClick={e => handleClick(e)}>
           進行中
         </button>
       </div>

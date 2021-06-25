@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import SellContext from '../../context/sell/SellContext';
 import BuyContext from '../../context/buy/BuyContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import { useI18n } from '../../lang';
 
 // Style
 import Button from 'react-bootstrap/Button';
@@ -13,6 +14,9 @@ import changeMoney from '../../Assets/i_twoways.png';
 import './index.scss';
 
 const BuyForm = () => {
+  // Lang Context
+  const { t } = useI18n();
+
   // sell context
   const sellContext = useContext(SellContext);
   const { buyRate } = sellContext;
@@ -159,12 +163,14 @@ const BuyForm = () => {
   };
   return (
     <Form style={formStyle}>
+      {/* <button onClick={() => setLocale('zh-HK')}>繁體</button>
+      <button onClick={() => setLocale('zh-CN')}>簡體</button> */}
       <Form.Row className="align-items-center">
         <Form.Group as={Col} xl={5} controlId="usdt" className="">
           <Form.Control
             style={formInput}
             className="align-self-center easy-border"
-            placeholder="請輸入購買數量"
+            placeholder={t('please_enter_quantity')}
             value={buyCount.usdt}
             onChange={onChange}
             name="usdtAmt"
@@ -220,7 +226,7 @@ const BuyForm = () => {
       {usdtAmt.val && (
         <Form.Row className="mt-4">
           <Form.Group as={Col} className="mt-4">
-            <p className="txt_12">電子錢包</p>
+            <p className="txt_12">{t('e_wallet')}</p>
             <Button
               type="button"
               style={{
@@ -231,7 +237,7 @@ const BuyForm = () => {
               className={showBank ? 'walletBtnActive' : 'walletBtn'}
               onClick={validCount}
             >
-              銀行卡
+              {t('btn_bank')}
             </Button>
 
             <Button
@@ -241,9 +247,9 @@ const BuyForm = () => {
                 marginTop: -8,
               }}
             >
-              支付寶
+              {t('btn_aliPay')}
             </Button>
-            <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
+            <Form.Text style={{ fontSize: 12 }}>{t('choose_e_wallet')}</Form.Text>
           </Form.Group>
         </Form.Row>
       )}
