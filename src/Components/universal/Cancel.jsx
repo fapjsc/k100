@@ -4,6 +4,9 @@ import { useContext } from 'react';
 import BuyContext from '../../context/buy/BuyContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -13,6 +16,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import errorIcon from '../../Assets/icon-error-new.png';
 
 const Cancel = props => {
+  // Lang Context
+  const { t } = useI18n();
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { httpLoading, setHttpLoading } = httpErrorContext;
@@ -43,7 +48,7 @@ const Cancel = props => {
             color: '#3e80f9',
           }}
         >
-          確定取消訂單嗎？
+          {t('cancel_component_title')}
         </Modal.Title>
 
         <div
@@ -53,7 +58,7 @@ const Cancel = props => {
             padding: 10,
           }}
         >
-          <p className="mb-0">訂單號：</p>
+          <p className="mb-0">{t('order_number')}：</p>
           <p
             style={{
               wordBreak: 'break-all',
@@ -67,16 +72,16 @@ const Cancel = props => {
       </Modal.Body>
       <Modal.Footer className="" style={{ border: 'none' }}>
         <Button className="mr-3" variant="secondary" onClick={props.onHide}>
-          返回
+          {t('btn_return')}
         </Button>
         {httpLoading ? (
           <Button variant="primary" disabled>
             <Spinner animation="grow" variant="danger" />
-            Loading...
+            {t('btn_loading')}...
           </Button>
         ) : (
           <Button variant="primary" onClick={handleCancel}>
-            確定取消訂單
+            {t('btn_confirm_cancel')}
           </Button>
         )}
       </Modal.Footer>

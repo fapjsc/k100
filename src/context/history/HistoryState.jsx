@@ -54,7 +54,7 @@ const HistoryState = props => {
 
       if (resData.code === 200) {
         const { data } = resData;
-        // console.log(data);
+        console.log(data);
 
         const newData = data.map(h => {
           if (h.MasterType === 0) {

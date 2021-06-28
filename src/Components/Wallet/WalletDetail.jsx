@@ -7,11 +7,16 @@ import WalletContext from '../../context/wallet/WalletContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 import BalanceContext from '../../context/balance/BalanceContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import FromFooter from '../Layout/FormFooter';
 import BaseSpinner from '../Ui/BaseSpinner';
 
 const WalletDetail = () => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const history = useHistory();
 
@@ -28,6 +33,7 @@ const WalletDetail = () => {
   const { httpLoading, errorText, setHttpError } = httpErrorContext;
 
   useEffect(() => {
+    if (!walletData) history.replace('/home');
     return () => {
       setWalletType('');
     };
@@ -55,17 +61,17 @@ const WalletDetail = () => {
     copy(value);
 
     if (copy(value)) {
-      alert('複製成功');
+      alert(t('btn_copy'));
     } else {
-      alert('複製失敗，請手動複製');
+      alert(t('btn_copy_fail'));
     }
   };
   return (
-    <section className="wallet bg_grey">
+    <section className="wallet">
       <div className="container h_88">
         <div className="row">
           <div className="col-12">
-            <p className="welcome_txt pl-0">歡迎登入</p>
+            <p className="welcome_txt pl-0">{t('welcome_text')}</p>
             <div className="content-box">
               {httpLoading ? (
                 <div style={{ margin: '15rem' }}>
@@ -78,15 +84,10 @@ const WalletDetail = () => {
                   {/* image */}
                   <div className="row">
                     {/* COl */}
-                    <div className="txt18 pt_20 col-12 pl-0 mb-4">
-                      {walletType === 'trc20' ? 'TRC20' : 'ERC20'}
-                    </div>
+                    <div className="txt18 pt_20 col-12 pl-0 mb-4">{walletType === 'trc20' ? 'TRC20' : 'ERC20'}</div>
 
                     {/* Col */}
-                    <div
-                      className="col-md-3 col-12 center_p20"
-                      style={{ backgroundColor: '#1f7eff', marginBottom: 40 }}
-                    >
+                    <div className="col-md-3 col-12 center_p20" style={{ backgroundColor: '#1f7eff', marginBottom: 40 }}>
                       {walletType === 'trc20' ? (
                         <img
                           className="qrCode-img"
@@ -97,46 +98,30 @@ const WalletDetail = () => {
                           }}
                         ></img>
                       ) : (
-                        <img
-                          className="qrCode-img"
-                          src={`data:image/png;base64,${walletData.Qr_img}`}
-                          alt="qr code"
-                        ></img>
+                        <img className="qrCode-img" src={`data:image/png;base64,${walletData.Qr_img}`} alt="qr code"></img>
                       )}
                     </div>
 
                     {/* Col */}
                     <div className="col-md-8 col-12">
                       <div className="walletAddress-box">
-                        <span className="easy_link">
-                          {walletType === 'trc20'
-                            ? walletData.WalletAddress2
-                            : walletData.WalletAddress}
-                        </span>
+                        <span className="easy_link">{walletType === 'trc20' ? walletData.WalletAddress2 : walletData.WalletAddress}</span>
                         {walletType === 'trc20' ? (
-                          <div
-                            className="i_copy2"
-                            onClick={() => handleCopy(walletData.WalletAddress2)}
-                          ></div>
+                          <div className="i_copy2" onClick={() => handleCopy(walletData.WalletAddress2)}></div>
                         ) : (
-                          <div
-                            className="i_copy2"
-                            onClick={() => handleCopy(walletData.WalletAddress)}
-                          ></div>
+                          <div className="i_copy2" onClick={() => handleCopy(walletData.WalletAddress)}></div>
                         )}
                       </div>
                       <div className="pt_20">
                         <div className="balance">
-                          結餘：
-                          <span className="usdt mr_sm"></span>
+                          {t('balance_real')}：<span className="usdt mr_sm"></span>
                           <span className="c_green mr_sm">USDT</span>
                           <span className="c_green fs_20">{real}</span>
                         </div>
                       </div>
                       <div>
                         <div className="balance">
-                          可提：
-                          <span className="usdt mr_sm"></span>
+                          {t('balance_avb')}：<span className="usdt mr_sm"></span>
                           <span className="c_green mr_sm">USDT</span>
                           <span className="c_green fs_20">{avb}</span>
                         </div>
@@ -148,7 +133,7 @@ const WalletDetail = () => {
                   <div className="row mt-4">
                     <div className="col-12 text-center">
                       <button onClick={handleClick} className="easy-btn mw400">
-                        返回
+                        {t('btn_return')}
                       </button>
                     </div>
                   </div>
@@ -159,7 +144,7 @@ const WalletDetail = () => {
                   <div className="row">
                     <div className="col-12">
                       <button onClick={handleClick} className="easy-btn">
-                        返回
+                        {t('btn_return')}
                       </button>
                     </div>
                   </div>

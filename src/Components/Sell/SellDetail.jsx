@@ -6,6 +6,9 @@ import SellContext from '../../context/sell/SellContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 import BuyContext from '../../context/buy/BuyContext';
 
+// lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import SetAccount from '../Buy/SetAccount';
 import FormFooter from '../Layout/FormFooter';
@@ -21,6 +24,8 @@ import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 
 const SellDetail = () => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const match = useRouteMatch();
   const history = useHistory();
@@ -85,10 +90,10 @@ const SellDetail = () => {
       {overTime ? (
         <div>
           <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
-            交易已逾時
+            {t('sell_over_time')}
           </h2>
           <Button onClick={backToHome} className="easy-btn mw400 mobile-width" variant="primary">
-            回首頁
+            {t('btn_back_home')}
           </Button>
         </div>
       ) : !overTime ? (
@@ -102,7 +107,7 @@ const SellDetail = () => {
           <Row className="mb-2 justify-content-between">
             <Col xl={6} className="txt_12 lightblue_bg h-100">
               <p>
-                收款金額： &emsp;
+                {t('sell_detail_amount')}： &emsp;
                 <span
                   style={{
                     color: '#3e80f9',
@@ -113,31 +118,30 @@ const SellDetail = () => {
                   {wsData && wsData.D2.toFixed(2) + ` CNY`}
                 </span>
               </p>
-              <p>收款姓名：{wsData && wsData.P2}</p>
-              <p>付款帳號：{wsData && wsData.P1}</p>
-              <p>開戶銀行：{wsData && wsData.P3}</p>
-              <p>所在省市：{wsData && wsData.P4}</p>
+              <p>
+                {t('sell_detail_payee')}：{wsData && wsData.P2}
+              </p>
+              <p>
+                {t('sell_detail_payee_account')}：{wsData && wsData.P1}
+              </p>
+              <p>
+                {t('sell_detail_payee_bank')}：{wsData && wsData.P3}
+              </p>
+              <p>
+                {t('sell_detail_payee_city')}：{wsData && wsData.P4}
+              </p>
             </Col>
 
             {wsData && (
               <Col xl={5} className="pl-4">
-                <SetAccount
-                  usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
-                  rmbAmt={wsData.D2.toFixed(2)}
-                />
+                <SetAccount usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)} rmbAmt={wsData.D2.toFixed(2)} />
               </Col>
             )}
           </Row>
           <Row className="justify-content-center mt-4">
             <Col className="mw400 text-center px-0">
               {!httpLoading ? (
-                <Button
-                  disabled={overTime}
-                  onClick={handleSubmit}
-                  className=""
-                  block
-                  style={sellStatus === 34 ? infoBtn : infoBtnDisabled}
-                >
+                <Button disabled={overTime} onClick={handleSubmit} className="" block style={sellStatus === 34 ? infoBtn : infoBtnDisabled}>
                   {sellStatus === 33 && (
                     <img
                       src={btnWait}
@@ -149,14 +153,12 @@ const SellDetail = () => {
                     />
                   )}
 
-                  <span className="">
-                    {sellStatus === 34 ? ' 買家已付款，確認收款' : '對方準備中'}
-                  </span>
+                  <span className="">{sellStatus === 34 ? t('btn_buyer_already_pay') : t('btn_preparing')}</span>
                 </Button>
               ) : (
                 <Button variant="secondary" disabled style={infoBtnDisabled}>
                   <Spinner as="span" animation="grow" size="md" role="status" aria-hidden="true" />
-                  Loading...
+                  {t('btn_loading')}...
                 </Button>
               )}
             </Col>

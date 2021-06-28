@@ -6,6 +6,9 @@ import WalletContext from '../../context/wallet/WalletContext';
 import BalanceContext from '../../context/balance/BalanceContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import FromFooter from '../Layout/FormFooter';
 import BaseSpinner from '../Ui/BaseSpinner';
@@ -14,6 +17,8 @@ import BaseSpinner from '../Ui/BaseSpinner';
 import './index.scss';
 
 const TheWallet = () => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const history = useHistory();
 
@@ -54,7 +59,7 @@ const TheWallet = () => {
       <div className="container h_88">
         <div className="row">
           <div className="col-12">
-            <p className="welcome_txt pl-0 mt-3">歡迎登入</p>
+            <p className="welcome_txt pl-0 mt-3">{t('welcome_text')}</p>
             <div className="content-box" style={{ paddingLeft: 30 }}>
               {/* Balance */}
 
@@ -66,17 +71,15 @@ const TheWallet = () => {
                 <>
                   <div className="row mt-4">
                     <div className="col-md-8 col-12">
-                      <p className="txt_12 mb-0">我的錢包</p>
+                      <p className="txt_12 mb-0">{t('overView_wallet')}</p>
                       <div className="balance">
-                        結餘：
-                        <span className="usdt mr_sm"></span>
+                        {t('balance_real')}：<span className="usdt mr_sm"></span>
                         <span className="c_green mr_sm">USDT</span>
                         <span className="c_green fs_20">{real}</span>
                       </div>
 
                       <div className="balance">
-                        可提：
-                        <span className="usdt mr_sm"></span>
+                        {t('balance_avb')}：<span className="usdt mr_sm"></span>
                         <span className="c_green mr_sm">USDT</span>
                         <span className="c_green fs_20">{avb}</span>
                       </div>
@@ -86,7 +89,7 @@ const TheWallet = () => {
                   {/* Wallet chose button */}
                   <div className="row mt-4">
                     <div className="col-12">
-                      <p className="txt_12">充值地址</p>
+                      <p className="txt_12">{t('wallet_address')}</p>
                     </div>
                     <div className="col-md-6 col-12 text-center">
                       <button onClick={() => handleClick('trc20')} className="easy-btn w-75">

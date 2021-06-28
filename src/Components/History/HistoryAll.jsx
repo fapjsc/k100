@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-// import { v4 as uuidv4 } from 'uuid';
-// import { useMediaQuery } from 'react-responsive';
 
 // Context
 import HistoryContext from '../../context/history/HistoryContext';
+
+// Lang Context
+import { useI18n } from '../../lang';
 
 // Components
 import HistoryAllDetail from './HistoryAllDetail';
@@ -15,16 +16,10 @@ import HistoryPaginate from './HistoryPaginate';
 
 // Style
 import Table from 'react-bootstrap/Table';
-// import Button from 'react-bootstrap/Button';
-// import downIcon from '../../Assets/i_usdt_down.png';
-// import redIcon from '../../Assets/i_usdt_red.png';
-// import blueIcon from '../../Assets/i_usdt_blue.png';
-// import purpleIcon from '../../Assets/i_usdt_purple.png';
-// import Pagination from 'react-bootstrap/Pagination';
 
 const HistoryAll = () => {
-  // Media Query
-  // const isMobile = useMediaQuery({ query: '(max-width: 610px)' }); // 大於610px => false
+  // Lang Context
+  const { t } = useI18n();
 
   // Router Props
   const history = useHistory();
@@ -56,7 +51,7 @@ const HistoryAll = () => {
       detailReq(token);
       setShow(true);
     } else {
-      alert('沒有Token');
+      alert(t('no_token'));
     }
   };
 
@@ -74,16 +69,16 @@ const HistoryAll = () => {
             <tr>
               <th style={titleStyle} className="w8"></th>
               <th style={titleStyle} className="w55">
-                日期
+                {t('history_date')}
               </th>
               <th style={titleStyle} className="mw105">
-                交易額（USDT）
+                {t('history_transaction_deal')}
               </th>
               <th style={titleStyle} className="mw105">
-                結餘（USDT）
+                {t('history_transaction_real')}
               </th>
               <th style={titleStyle} className="w8">
-                狀態
+                {t('history_transaction_status')}
               </th>
             </tr>
           </thead>
@@ -94,8 +89,8 @@ const HistoryAll = () => {
 
         <div className="d-flex justify-content-center py-4 mt-4">
           <ReactPaginate
-            previousLabel={'上一頁'}
-            nextLabel={'下一頁'}
+            previousLabel={t('history_previousLabel')}
+            nextLabel={t('history_nextLabel')}
             pageCount={pageCount}
             onPageChange={changePage}
             containerClassName={'paginationBtn'}

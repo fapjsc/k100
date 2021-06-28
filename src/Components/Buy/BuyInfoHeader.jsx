@@ -4,6 +4,9 @@ import Countdown from 'react-countdown';
 // Context
 import BuyContext from '../../context/buy/BuyContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import Timer from './Timer';
 
@@ -11,6 +14,9 @@ import Timer from './Timer';
 import clockIcon from '../../Assets/i_clock.png';
 
 const BuyInfoHeader = () => {
+  // Lang Context
+  const { t } = useI18n();
+
   // Buy Context
   const buyContext = useContext(BuyContext);
   const { deltaTime, setHideBuyInfo } = buyContext;
@@ -39,7 +45,7 @@ const BuyInfoHeader = () => {
           fontWeight: 'bold',
         }}
       >
-        轉帳資料
+        {t('transfer_data')}
       </p>
 
       <div
@@ -55,7 +61,7 @@ const BuyInfoHeader = () => {
             fontWeight: 'bold',
           }}
         >
-          剩餘支付時間：
+          {t('limit_time')}：
         </p>
         <span className="payTime c_yellow">
           <Countdown

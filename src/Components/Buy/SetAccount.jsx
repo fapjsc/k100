@@ -1,9 +1,17 @@
 import React from 'react';
 
+// Style
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 const SetAccount = props => {
+  // Lang Context
+  const { t } = useI18n();
+
+  // 千分位加逗號
   const thousandBitSeparator = num => {
     return (
       num &&
@@ -21,7 +29,7 @@ const SetAccount = props => {
   return (
     <Row style={confirmBuyTextBox} className="px-2 justify-content-between pl-4">
       <Col className="pl-0" xl={12} lg={12} sm={12}>
-        <p className="txt_12_grey mb-0">總價</p>
+        <p className="txt_12_grey mb-0">{t('buy_total')}</p>
         <p className="c_blue">
           {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
           &nbsp; CNY
@@ -29,7 +37,7 @@ const SetAccount = props => {
       </Col>
 
       <Col className="pl-0" xl={12} lg={12} sm={12}>
-        <p className="txt_12_grey mb-0">數量</p>
+        <p className="txt_12_grey mb-0">{t('buy_quantity')}</p>
         <p className=" mb-0">
           {/* 小數第二位，千分逗號 */}
           {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}

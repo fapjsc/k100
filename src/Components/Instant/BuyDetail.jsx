@@ -7,6 +7,9 @@ import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 import BuyContext from '../../context/buy/BuyContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import FromFooter from '../Layout/FormFooter';
 import BaseSpinner from '../Ui/BaseSpinner';
@@ -19,6 +22,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 
 const BuyDetail = () => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const match = useRouteMatch();
   const history = useHistory();
@@ -100,22 +105,22 @@ const BuyDetail = () => {
     <div className="row mt-4">
       <div className="col-xl-8 col-12">
         <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
-          歡迎登入
+          {t('welcome_text')}
         </p>
         <div className="contentbox">
           <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
           {overTime ? (
             <div>
               <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
-                交易已逾時
+                {t('instant_over_time')}
               </h2>
               <Button onClick={backToHome} className="easy-btn mw400 mobile-width" variant="primary">
-                回首頁
+                {t('btn_back_home')}
               </Button>
             </div>
           ) : (
             <>
-              <div className="txt_12 pt_20">即時買賣</div>
+              <div className="txt_12 pt_20">{t('instant_transaction')}</div>
               <div id="buy" className="tabcontent">
                 {buy1Data && !showComplete ? (
                   <>
@@ -124,48 +129,58 @@ const BuyDetail = () => {
                       <div className="w45_m100 mobile-width">
                         {/* Pay Timer */}
                         <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
-                          <span className="txt_12 mr-auto">收款方資料</span>
+                          <span className="txt_12 mr-auto">{t('instant_payee_data')}</span>
                           <span className="i_clock mr-1 mb-1" />
-                          <span className="txt_12">剩餘支付時間：</span>
+                          <span className="txt_12">{t('instant_pay_time')}：</span>
                           {/* <span className="c_yellow">15分40秒</span> */}
                           <Countdown onComplete={() => setOverTime(true)} renderer={CountDownTimer} date={timeLeft} />
                         </div>
                         {/* 收款方資料 */}
                         <div className="lightblue_bg txt_12 d-flex flex-column py-4">
-                          <span className="txt_12_grey mb-4">收款方姓名：{buy1Data.P2}</span>
-                          <span className="txt_12_grey mb-4">收款賬號：{buy1Data.P1}</span>
-                          <span className="txt_12_grey mb-4">開戶銀行：{buy1Data.P3}</span>
-                          <span className="txt_12_grey">所在省市：{buy1Data.P4}</span>
+                          <span className="txt_12_grey mb-4">
+                            {t('instant_payee_name')}：{buy1Data.P2}
+                          </span>
+                          <span className="txt_12_grey mb-4">
+                            {t('instant_payee_account')}：{buy1Data.P1}
+                          </span>
+                          <span className="txt_12_grey mb-4">
+                            {t('instant_bank')}：{buy1Data.P3}
+                          </span>
+                          <span className="txt_12_grey">
+                            {t('instant_city')}：{buy1Data.P4}
+                          </span>
                         </div>
                         {/* 付款方資料 */}
                         <div className="w45_m100 mobile-width w-100">
-                          <p className="txt_12 pt_20 mb-2">付款方資料</p>
-                          <p className="txt_12_grey lightblue_bg py-4">付款方姓名：{paymentName}</p>
+                          <p className="txt_12 pt_20 mb-2">{t('instant_payer_data')}</p>
+                          <p className="txt_12_grey lightblue_bg py-4">
+                            {t('instant_payer_name')}：{paymentName}
+                          </p>
                         </div>
                       </div>
 
                       {/* Block-2  --交易資料 */}
                       <div className="easy_info mobile-width h-50 flex-order1-mobile p-4">
                         <div className="inline">
-                          <div className="txt_12_grey">匯率：</div>
+                          <div className="txt_12_grey">{t('instant_exRate')}：</div>
                           <span className="">{buy1Data.D1.toFixed(2)}</span>
                         </div>
 
                         <div className="right_txt16">
                           <span className="i_red" />
-                          <span className="red">賣</span>
+                          <span className="red">{t('instant_sell')}</span>
                         </div>
 
                         <hr />
 
                         <div className="d-flex justify-content-between">
                           <div>
-                            <p className="txt_12_grey mb-0 ">總價</p>
+                            <p className="txt_12_grey mb-0 ">{t('instant_price')}</p>
                             <p className="c_blue ">{buy1Data.D2.toFixed(2)} CNY</p>
                           </div>
 
                           <div>
-                            <p className="txt_12_grey text-right mb-0 ">數量</p>
+                            <p className="txt_12_grey text-right mb-0 ">{t('instant_qua')}</p>
                             <p className="">{Math.abs(buy1Data.UsdtAmt).toFixed(2)} USDT</p>
                           </div>
                         </div>
@@ -175,20 +190,21 @@ const BuyDetail = () => {
                     {/* Button */}
                     {wsStatusData === 33 ? (
                       <button className="mw400 disable-easy-btn mobile-width">
-                        <span className="i_ready"></span>對方準備中
+                        <span className="i_ready"></span>
+                        {t('btn_preparing')}
                       </button>
                     ) : null}
 
                     {wsStatusData === 34 && !httpLoading ? (
                       <Button onClick={handleClick} className="easy-btn mw400 mobile-width" style={{}}>
-                        確認到帳
+                        {t('btn_buyer_already_pay')}
                       </Button>
                     ) : null}
 
                     {wsStatusData === 34 && httpLoading ? (
                       <Button className="disable-easy-btn mobile-width mw400" disabled>
                         <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-                        Loading...
+                        {t('btn_loading')}...
                       </Button>
                     ) : null}
 

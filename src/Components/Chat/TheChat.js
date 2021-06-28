@@ -7,6 +7,9 @@ import 'react-photo-view/dist/index.css';
 // Context
 import ChatContext from '../../context/chat/ChatContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Play Sound
 import useSound from 'use-sound';
 import newMessageSound from '../../Assets/mp3/newMessage.mp3';
@@ -18,6 +21,8 @@ import Button from 'react-bootstrap/Button';
 import classes from './TheChat.module.scss';
 
 const TheChat = props => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const match = useRouteMatch();
 
@@ -189,7 +194,7 @@ const TheChat = props => {
         {isAgent && (
           <div className={classes.soundBtnBox}>
             <Button className={soundState ? 'btn-info' : 'btn-danger'} onClick={handleStopSound}>
-              {!soundState ? '提示音已關閉' : '提示音已開啟'}
+              {!soundState ? t('chat_sound_close') : t('chat_sound_open')}
             </Button>
           </div>
         )}
@@ -197,7 +202,7 @@ const TheChat = props => {
         {/* Chat Header */}
         <div className={classes.top}>
           <p className="mb-1" style={{ display: 'block' }}>
-            訂單號：
+            {t('chat_order_number')}：
           </p>
           <p className="">{props.hash}</p>
         </div>
@@ -214,14 +219,14 @@ const TheChat = props => {
                       {/* messages */}
                       {el.Message_Type === 1 ? (
                         <>
-                          {el.Message_Role === 2 && <Badge variant="danger">客服</Badge>}
+                          {el.Message_Role === 2 && <Badge variant="danger">{t('chat_customer_server')}</Badge>}
                           <p className={el.Message_Role === 1 || el.Message_Role === 2 ? classes.talk_l : classes.talk_r}>{el.Message}</p>
                         </>
                       ) : (
                         <>
                           {el.Message_Role === 2 && (
                             <div>
-                              <Badge variant="danger">客服</Badge>
+                              <Badge variant="danger">{t('chat_customer_server')}</Badge>
                             </div>
                           )}
 
@@ -273,7 +278,7 @@ const TheChat = props => {
                   className={`easy-input ${classes.talkBox}`}
                   type="text"
                   name="talk"
-                  placeholder="對話......"
+                  placeholder={`${t('chat_send_message')}...`}
                   value={userInput}
                   onChange={handleChange}
                   onKeyUp={e => sendMessage(userInput, e)}
@@ -295,14 +300,14 @@ const TheChat = props => {
                       {/* messages */}
                       {el.Message_Type === 1 ? (
                         <>
-                          {el.Message_Role === 2 && <Badge variant="danger">客服</Badge>}
+                          {el.Message_Role === 2 && <Badge variant="danger">{t('chat_customer_server')}</Badge>}
                           <p className={el.Message_Role === 2 || el.Message_Role === 3 ? classes.talk_l : classes.talk_r}>{el.Message}</p>
                         </>
                       ) : (
                         <>
                           {el.Message_Role === 2 && (
                             <div>
-                              <Badge variant="danger">客服</Badge>
+                              <Badge variant="danger">{t('chat_customer_server')}</Badge>
                             </div>
                           )}
 
@@ -355,7 +360,7 @@ const TheChat = props => {
                   className={`easy-input ${classes.talkBox}`}
                   type="text"
                   name="talk"
-                  placeholder="對話......"
+                  placeholder={`${t('chat_send_message')}...`}
                   value={userInput}
                   onChange={handleChange}
                   onKeyUp={e => sendMessage(userInput, e)}

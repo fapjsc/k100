@@ -1,8 +1,13 @@
+// Lang Context
+import { useI18n } from '../../lang';
+
+// Style
 import Modal from 'react-bootstrap/Modal';
 import errorIcon from '../../Assets/icon-error-new.png';
 import closeBtn from '../../Assets/blue_close_btn.png';
 
 const NoOrder = props => {
+  const { t } = useI18n();
   return (
     <Modal {...props} size="sm" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Body className="text-right">
@@ -17,12 +22,14 @@ const NoOrder = props => {
         <div className="text-center">
           <img src={errorIcon} alt="icon" className="" style={iconStyle} />
           <h3 className="" style={titleStyle}>
-            訂單不存在
+            {t('no_order')}
           </h3>
           <div className="">
-            <span style={textStyle}>匯率：{props.exRate}</span>
+            <span style={textStyle}>
+              {t('exRate')}：{props.exRate}
+            </span>
             <span style={textStyle}>&nbsp;&nbsp;I&nbsp;&nbsp;</span>
-            <span style={textStyle}>{props.type}</span>
+            <span style={textStyle}>{props.type === '買' ? t('no_order_buy') : t('no_order_sell')}</span>
             <span style={textStyle}>&nbsp;{props.usdt}&nbsp;USDT</span>
           </div>
         </div>

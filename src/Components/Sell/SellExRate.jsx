@@ -1,7 +1,16 @@
 import { Fragment, useContext, useEffect } from 'react';
+
+// Context
 import SellContext from '../../context/sell/SellContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 const SellHeader = () => {
+  // Lang Context
+  const { t } = useI18n();
+
+  // Sell Context
   const sellContext = useContext(SellContext);
   const { exRate, getExRate } = sellContext;
 
@@ -20,17 +29,17 @@ const SellHeader = () => {
           fontSize: '12px',
         }}
       >
-        出售USDT
+        {t('sell_usdt')}
       </p>
       <div className="pay-info txt_12">
         <p className="mb-0">
-          匯率 :<span>{Number(exRate).toFixed(2)}</span>
+          {t('exRate')} :<span>{Number(exRate).toFixed(2)}</span>
         </p>
         <p className="mb-0">
-          限額 :<span>USDT 100.00 - 10000.00</span>
+          {t('payment_contact')}:<span>{t('payment_contact_time')}</span>
         </p>
         <p className="mb-0">
-          付款窗口 :<span>15分鐘</span>
+          {t('limit')} :<span>USDT 100.00 - 10000.00</span>
         </p>
       </div>
     </Fragment>

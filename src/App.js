@@ -18,11 +18,11 @@ import BuyState from './context/buy/BuyState';
 import ChatState from './context/chat/ChatState';
 import InstantState from './context/instant/InstantState';
 import WalletState from './context/wallet/WalletState';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Agreement from './Components/Auth/Agreement.js';
 
 import './App.scss';
-import Agreement from './Components/Auth/Agreement.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
   const [isAuth, setIsAuth] = useState(false);
 

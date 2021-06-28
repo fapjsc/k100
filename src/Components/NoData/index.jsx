@@ -1,9 +1,11 @@
 import './index.scss';
+import { useI18n } from '../../lang';
 
 const NoData = () => {
+  const { t } = useI18n();
   return (
     <div className="nodata-imgBox">
-      <p>目前還沒有資料</p>
+      <p>{t('no_data')}</p>
     </div>
   );
 };

@@ -5,6 +5,9 @@ import { useRouteMatch } from 'react-router-dom';
 import HistoryContext from '../../context/history/HistoryContext';
 import InstantContext from '../../context/instant/InstantContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import HistoryDetail from '../History/HistoryAllDetail';
 
@@ -12,6 +15,9 @@ import HistoryDetail from '../History/HistoryAllDetail';
 import Card from 'react-bootstrap/Card';
 
 const CompleteStatus = props => {
+  // Lang Context
+  const { t } = useI18n();
+
   // Router Props
   const match = useRouteMatch();
 
@@ -83,18 +89,16 @@ const CompleteStatus = props => {
     return (
       <Card className="border-0 text-center pb-4">
         <div className="i_notyet mt-4" />
-        <h4 className="c_blue">已提交，等待確認中</h4>
+        <h4 className="c_blue">{t('wait_confirm')}</h4>
         <br />
-        <p className="txt_12_grey text-break">交易回執： {props.hash}</p>
-        {props.type === 'buy' && (
-          <p className="txt_12_grey text-break">
-            購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址
-          </p>
-        )}
+        <p className="txt_12_grey text-break">
+          {t('transaction_hash')}： {props.hash}
+        </p>
+        {props.type === 'buy' && <p className="txt_12_grey text-break">{t('complete_text')}</p>}
 
         <br />
         <button onClick={props.backToHome} className="easy-btn mw400">
-          返回主頁
+          {t('btn_back_home')}
         </button>
       </Card>
     );
@@ -107,20 +111,18 @@ const CompleteStatus = props => {
 
         <Card className="border-0 text-center pb-4">
           <div className="i_done mt-4" />
-          <h4 className="c_blue">交易完成</h4>
+          <h4 className="c_blue">{t('transaction_done')}</h4>
           <br />
-          <p className="txt_12_grey text-break">交易回執： {props.hash}</p>
-          {props.type === 'buy' && (
-            <p className="txt_12_grey text-break">
-              購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址
-            </p>
-          )}
+          <p className="txt_12_grey text-break">
+            {t('transaction_hash')}： {props.hash}
+          </p>
+          {props.type === 'buy' && <p className="txt_12_grey text-break">{t('transaction_text')}</p>}
           <br />
           <button onClick={props.backToHome} className="easy-btn mw400">
-            返回主頁
+            {t('btn_back_home')}
           </button>
           <span className="txt_12_grey" style={{ cursor: 'pointer' }} onClick={handleClick}>
-            詳細交易紀錄
+            {t('btn_transaction_detail')}
           </span>
         </Card>
       </>
@@ -131,12 +133,14 @@ const CompleteStatus = props => {
     return (
       <Card className="border-0 text-center pb-4">
         <div className="i_error mt-4" />
-        <h4 className="c_blue mt-4">交易取消</h4>
+        <h4 className="c_blue mt-4">{t('transaction_cancel')}</h4>
         <br />
-        <p className="txt_12_grey text-break">交易回執： {props.hash}</p>
+        <p className="txt_12_grey text-break">
+          {t('transaction_hash')}： {props.hash}
+        </p>
         <br />
         <button onClick={props.backToHome} className="easy-btn mw400">
-          返回主頁
+          {t('btn_back_home')}
         </button>
       </Card>
     );
@@ -146,12 +150,14 @@ const CompleteStatus = props => {
     return (
       <Card className="border-0 text-center pb-4">
         <div className="i_error mt-4" />
-        <h4 className="c_blue mt-4">交易超時</h4>
+        <h4 className="c_blue mt-4">{t('transaction_over_time')}</h4>
         <br />
-        <p className="txt_12_grey text-break">交易回執： {props.hash}</p>
+        <p className="txt_12_grey text-break">
+          {t('transaction_hash')}： {props.hash}
+        </p>
         <br />
         <button onClick={props.backToHome} className="easy-btn mw400">
-          返回主頁
+          {t('btn_back_home')}
         </button>
       </Card>
     );

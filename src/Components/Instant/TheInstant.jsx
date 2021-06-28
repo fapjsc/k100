@@ -8,6 +8,9 @@ import newOrderSound from '../../Assets/mp3/newOrder.mp3';
 import InstantContext from '../../context/instant/InstantContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import InstantNav from './InstantNav';
 import InstantAll from './InstantAll';
@@ -18,6 +21,8 @@ import BaseSpinner from '../Ui/BaseSpinner';
 import Button from 'react-bootstrap/Button';
 
 const TheInstant = () => {
+  // Lang Context
+  const { t } = useI18n();
   // Init State
   const [tab, setTab] = useState('all');
   const [play, { stop }] = useSound(newOrderSound, { interrupt: false });
@@ -103,10 +108,10 @@ const TheInstant = () => {
     <div className="mt-4">
       <div className="d-flex justify-content-between align-items-center">
         <p className="mb-0" style={{ fontSize: 12, color: '#fff' }}>
-          即時買賣
+          {t('instant_transaction')}
         </p>
         <Button className={soundState ? 'btn-info' : 'btn-danger'} onClick={handleClick}>
-          {!soundState ? '提示音已關閉' : '提示音已開啟'}
+          {!soundState ? t('instant_sound_close') : t('instant_sound_open')}
         </Button>
       </div>
       <div className="contentbox">

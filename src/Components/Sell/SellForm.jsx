@@ -6,6 +6,9 @@ import SellContext from '../../context/sell/SellContext';
 import BalanceContext from '../../context/balance/BalanceContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import BaseSpinner from '../Ui/BaseSpinner';
 
@@ -19,6 +22,9 @@ import changeMoney from '../../Assets/i_twoways.png';
 
 const SellForm = () => {
   const mobileApp = useMediaQuery({ query: '(max-width: 1199px)' });
+
+  // Lang Context
+  const { t } = useI18n();
 
   // Balance Context
   const balanceContext = useContext(BalanceContext);
@@ -156,7 +162,7 @@ const SellForm = () => {
       error: '',
     });
 
-    if (avb <= 0) setUsdt({ val: '', isValid: false, error: '可提不足' });
+    if (avb <= 0) setUsdt({ val: '', isValid: false, error: t('avb_insufficient') });
 
     setFetchLoading(false);
   };
@@ -169,7 +175,7 @@ const SellForm = () => {
       setUsdt({
         val: usdt.val,
         isValid: false,
-        error: '超過最大可提',
+        error: t('avb_over_limit'),
       });
 
       setFormValid(false);
@@ -179,7 +185,7 @@ const SellForm = () => {
       setUsdt({
         val: '',
         isValid: false,
-        error: '請輸入有效數量',
+        error: t('sell_error_invalid_number'),
       });
 
       setFormValid(false);
@@ -189,7 +195,7 @@ const SellForm = () => {
       setCny({
         val: '',
         isValid: false,
-        error: '請輸入有效數量',
+        error: t('sell_error_invalid_number'),
       });
 
       setFormValid(false);
@@ -201,7 +207,7 @@ const SellForm = () => {
       setUsdt({
         val: '',
         isValid: false,
-        error: '請輸入有效數量, (不能為0，最多小數第二位)',
+        error: t('sell_error_invalid_number'),
       });
 
       setCny({
@@ -234,18 +240,11 @@ const SellForm = () => {
               {fetchLoading ? (
                 <Button variant="secondary" disabled className="" style={{}}>
                   <Spinner as="span" animation="grow" size="lg" role="status" aria-hidden="true" />
-                  Loading...
+                  {t('btn_loading')}...
                 </Button>
               ) : (
-                <Button
-                  disabled={fetchLoading}
-                  variant="outline-primary"
-                  size="lg"
-                  className=""
-                  onClick={fetchAll}
-                  style={{}}
-                >
-                  提取所有
+                <Button disabled={fetchLoading} variant="outline-primary" size="lg" className="" onClick={fetchAll} style={{}}>
+                  {t('btn_fetch_all')}
                 </Button>
               )}
             </Form.Group>
@@ -256,7 +255,7 @@ const SellForm = () => {
               <Form.Control
                 onWheel={event => event.currentTarget.blur()}
                 className="easy-border"
-                placeholder="請輸入出售數量"
+                placeholder={t('sell_enter_qua')}
                 autoComplete="off"
                 type="number"
                 step="number"
@@ -283,12 +282,7 @@ const SellForm = () => {
 
             {/* img */}
             <Form.Group as={Col} className=" my-3 d-flex align-items-start justify-content-center">
-              <img
-                className=""
-                src={changeMoney}
-                alt="change money"
-                style={mobileApp ? changeMoneyIconMobile : changeMoneyIcon}
-              />
+              <img className="" src={changeMoney} alt="change money" style={mobileApp ? changeMoneyIconMobile : changeMoneyIcon} />
             </Form.Group>
 
             <Form.Group as={Col} xl={5} controlId="cny" className="m-0 p-0">
@@ -315,7 +309,7 @@ const SellForm = () => {
           {usdt.val && (
             <Form.Row className="mt-4">
               <Form.Group as={Col} className="mt-4">
-                <p className="txt_12">電子錢包</p>
+                <p className="txt_12">{t('e_wallet')}</p>
                 <Button
                   type="button"
                   style={{
@@ -325,7 +319,7 @@ const SellForm = () => {
                   className={showBankWallet ? 'walletBtnActive' : 'walletBtn'}
                   onClick={validForm}
                 >
-                  銀行卡
+                  {t('btn_bank')}
                 </Button>
 
                 <Button
@@ -335,9 +329,9 @@ const SellForm = () => {
                     marginTop: -8,
                   }}
                 >
-                  支付寶
+                  {t('btn_aliPay')}
                 </Button>
-                <Form.Text style={{ fontSize: 12 }}>*請選擇電子錢包</Form.Text>
+                <Form.Text style={{ fontSize: 12 }}>{t('choose_e_wallet')}</Form.Text>
               </Form.Group>
             </Form.Row>
           )}

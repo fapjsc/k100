@@ -2,8 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 
 // Context
 import SellContext from '../../context/sell/SellContext';
-// import BalanceContext from '../../context/balance/BalanceContext';
-// import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+
+// Lang Context
+import { useI18n } from '../../lang';
 
 // Style
 import Col from 'react-bootstrap/Col';
@@ -11,6 +12,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const SellBankForm = () => {
+  // Lang Context
+  const { t } = useI18n();
+
   // Init State
   const [name, setName] = useState({
     val: '',
@@ -38,17 +42,9 @@ const SellBankForm = () => {
 
   const [formValid, setFormValid] = useState(false);
 
-  // // Balance Context
-  // const balanceContext = useContext(BalanceContext);
-  // const { wsPairing } = balanceContext;
-
   // Sell Context
   const sellContext = useContext(SellContext);
   const { getOrderToken, setWsPairing, sellCount, wsPairing } = sellContext;
-
-  //   // Http Error Context
-  //   const httpErrorContext = useContext(HttpErrorContext);
-  //   const { errorText, setHttpError } = httpErrorContext;
 
   // ===========
   //  Function
@@ -95,7 +91,7 @@ const SellBankForm = () => {
       setName({
         val: '',
         isValid: false,
-        error: '請輸入收款人姓名',
+        error: t('sell_error_enter_payee'),
       });
 
       setFormValid(false);
@@ -105,7 +101,7 @@ const SellBankForm = () => {
       setBank({
         val: '',
         isValid: false,
-        error: '請輸入開戶銀行',
+        error: t('sell_error_enter_bank'),
       });
 
       setFormValid(false);
@@ -115,7 +111,7 @@ const SellBankForm = () => {
       setAccount({
         val: '',
         isValid: false,
-        error: '請輸入收款帳號',
+        error: t('sell_error_enter_payee_account'),
       });
 
       setFormValid(false);
@@ -125,7 +121,7 @@ const SellBankForm = () => {
       setCity({
         val: '',
         isValid: false,
-        error: '請輸入所在省市',
+        error: t('sell_error_enter_city'),
       });
 
       setFormValid(false);
@@ -159,7 +155,7 @@ const SellBankForm = () => {
       <Form.Row className="mt-20">
         <Form.Group as={Col} xl={6} sm={12} controlId="name" className="input-fill-x  mt-20">
           <Form.Control
-            placeholder="收款姓名"
+            placeholder={t('sell_payee')}
             name="name"
             isInvalid={!name.isValid}
             value={name.val}
@@ -171,7 +167,7 @@ const SellBankForm = () => {
               fontSize: 20,
             }}
           />
-          <Form.Label className="input-label">收款姓名</Form.Label>
+          <Form.Label className="input-label">{t('sell_payee')}</Form.Label>
 
           {name.error && (
             <Form.Text className="" style={{ fontSize: '12px' }}>
@@ -182,7 +178,7 @@ const SellBankForm = () => {
         <Form.Group as={Col} xl={6} sm={12} controlId="account" className="mt-20 input-fill-x">
           <Form.Control
             className="easy-border input-fill"
-            placeholder="收款帳號"
+            placeholder={t('sell_payee_account')}
             name="account"
             isInvalid={!account.isValid}
             value={account.val}
@@ -193,7 +189,7 @@ const SellBankForm = () => {
               fontSize: 20,
             }}
           />
-          <Form.Label className="input-label">收款帳號</Form.Label>
+          <Form.Label className="input-label">{t('sell_payee_account')}</Form.Label>
 
           {account.error && (
             <Form.Text className="" style={{ fontSize: '12px' }}>
@@ -207,7 +203,7 @@ const SellBankForm = () => {
         <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-20 input-fill-x">
           <Form.Control
             className="easy-border input-fill"
-            placeholder="開戶銀行"
+            placeholder={t('sell_bank')}
             name="bank"
             isInvalid={!bank.isValid}
             value={bank.val}
@@ -218,7 +214,7 @@ const SellBankForm = () => {
               fontSize: 20,
             }}
           />
-          <Form.Label className="input-label">開戶銀行</Form.Label>
+          <Form.Label className="input-label">{t('sell_bank')}</Form.Label>
 
           {bank.error && (
             <Form.Text className="" style={{ fontSize: '12px' }}>
@@ -229,7 +225,7 @@ const SellBankForm = () => {
         <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-20 input-fill-x">
           <Form.Control
             className="easy-border input-fill"
-            placeholder="所在省市"
+            placeholder={t('sell_city')}
             name="city"
             isInvalid={!city.isValid}
             value={city.val}
@@ -240,7 +236,7 @@ const SellBankForm = () => {
               fontSize: 20,
             }}
           />
-          <Form.Label className="input-label">所在省市</Form.Label>
+          <Form.Label className="input-label">{t('sell_city')}</Form.Label>
 
           {city.error && (
             <Form.Text
@@ -257,13 +253,8 @@ const SellBankForm = () => {
 
       <Form.Row className="justify-content-center">
         <Form.Group as={Col} className="mw400 px-0">
-          <Button
-            onClick={validForm}
-            disabled={wsPairing}
-            block
-            className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
-          >
-            下一步
+          <Button onClick={validForm} disabled={wsPairing} block className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}>
+            {t('btn_next')}
           </Button>
         </Form.Group>
       </Form.Row>

@@ -4,6 +4,9 @@ import Countdown from 'react-countdown';
 // Context
 import BuyContext from '../../context/buy/BuyContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import CountDownTimer from '../universal/countDownTimer';
 
@@ -11,6 +14,8 @@ import CountDownTimer from '../universal/countDownTimer';
 import clockIcon from '../../Assets/i_clock.png';
 
 const SellHeader = ({ setOverTime }) => {
+  // Lang Context
+  const { t } = useI18n();
   // Buy Context
   const buyContext = useContext(BuyContext);
   const { deltaTime } = buyContext;
@@ -41,7 +46,7 @@ const SellHeader = ({ setOverTime }) => {
           fontWeight: 'bold',
         }}
       >
-        轉帳資料
+        {t('sell_info_transfer_data')}
       </p>
 
       <div
@@ -57,7 +62,7 @@ const SellHeader = ({ setOverTime }) => {
             fontWeight: 'bold',
           }}
         >
-          剩餘支付時間：
+          {t('sell_info_limit_time')}：
         </p>
         <span className="payTime c_yellow">
           <Countdown renderer={CountDownTimer} onComplete={handleComplete} date={timeLeft} />

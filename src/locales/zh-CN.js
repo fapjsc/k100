@@ -176,11 +176,38 @@ export default {
   e_wallet: '电子钱包',
   choose_e_wallet: '*请选择电子钱包',
 
+  // No Data
+  no_data: '目前还没有资料',
+
+  // No Order
+  no_order: '订单不存在',
+  no_order_buy: '买',
+  no_order_sell: '卖',
+
+  // Alert text
+  no_token: '没有Token',
+
   // Button Text
   btn_confirm: '确定',
   btn_return: '返回',
   btn_pair_start: '开始配对',
   btn_pairing: '配对中',
+  btn_loading: '处理中',
+  btn_already_pay: '已完成付款',
+  btn_cancel_order: '取消订单',
+  btn_over_time: '已逾时',
+  btn_copy: '复制成功',
+  btn_copy_fail: '复制失败，请手动复制',
+  btn_back_home: '返回主页',
+  btn_transaction_detail: '详细交易纪录',
+  btn_confirm_cancel: '确定取消订单',
+  btn_fetch_all: '提取所有',
+  btn_next: '下一步',
+  btn_buyer_already_pay: '买家已付款，确认收款',
+  btn_preparing: '对方准备中',
+  btn_close: '关闭',
+  btn_detail: '详细',
+  btn_instant: '即时交易',
 
   btn_bank: '银行卡',
   btn_aliPay: '支付宝',
@@ -192,6 +219,7 @@ export default {
   exRate: '汇率',
   payment_contact: '付款窗口',
   limit: '限额',
+  payment_contact_time: '15分钟',
 
   // Dialog
   please_wait: '请稍等，现正整合交易者资料',
@@ -227,7 +255,16 @@ export default {
   transaction_nav_sell: '出售',
   transaction_nav_transfer: '转帐',
 
-  // Transaction Buy
+  // =========
+  //  Balance
+  // =========
+  // Error Text
+  avb_insufficient: '可提不足',
+  avb_over_limit: '超过最大可提',
+
+  // =======
+  //  Buy
+  // =======
   buy_usdt: '购买USDT',
 
   // Buy Form
@@ -241,4 +278,177 @@ export default {
   account_name_prompt: '*请输入转帐银行卡持有人的真实姓名',
   buy_total: '总价',
   buy_quantity: '数量',
+
+  // Buy Info Header
+  transfer_data: '转帐资料',
+  limit_time: '剩余支付时间',
+
+  // Buy Detail
+  amount: '付款金额',
+  payee: '收款姓名',
+  payee_account: '付款帐号',
+  bank: '开户银行',
+  city: '所在省市',
+
+  // =======
+  //  Sell
+  // =======
+  // Sell Pairing
+  pair_title: '请稍等，现正整合交易者资料',
+  pair_text: '出售订单',
+
+  // Sell ExRate
+  sell_usdt: '出售USDT',
+
+  // Sell Error Text
+  sell_error_invalid_number: '请输入有效数量',
+  sell_error_enter_payee: '请输入收款人姓名',
+  sell_error_enter_bank: '请输入开户银行',
+  sell_error_enter_payee_account: '请输入收款帐号',
+  sell_error_enter_city: '请输入所在省市',
+
+  // Sell Form
+  sell_enter_qua: '请输入出售数量',
+
+  // Sell Bank Form
+  sell_payee: '收款姓名',
+  sell_payee_account: '收款帐号',
+  sell_bank: '开户银行',
+  sell_city: '所在省市',
+
+  // Sell Header
+  sell_info_transfer_data: '转帐资料',
+  sell_info_limit_time: '剩余支付时间',
+
+  // Sell Detail
+  sell_over_time: '交易已逾时',
+  sell_detail_amount: '收款金额',
+  sell_detail_payee: '收款姓名',
+  sell_detail_payee_account: '付款帐号',
+  sell_detail_payee_bank: '开户银行',
+  sell_detail_payee_city: '所在省市',
+
+  // ==========
+  //  Transfer
+  // ==========
+  // Error Text
+  transfer_address_error: '钱包地址错误',
+  transfer_error_invalid_number: '请输入有效数量',
+
+  // Transfer Header
+  select_protocol: '请选择协议种类',
+  protocol_trc20: 'TRC20',
+  protocol_erc20: 'ERC20',
+  transfer_charge: '手续费',
+  transfer_title: '转帐USDT',
+  transfer_address: '转帐地址',
+  open_camera: '开启相机扫描QR Code?',
+
+  // Transfer Form
+  transfer_enter_number: '请输入数量',
+  transfer_enter_address: '请输入收款地址',
+
+  // Complete State
+  wait_confirm: '已提交，等待确认中',
+  transaction_hash: '交易回执',
+  complete_text: '购买成功后，数字货币预计15~30分钟内到达你的钱包地址',
+  transaction_done: '交易完成',
+  transaction_cancel: '交易取消',
+  transaction_over_time: '交易超時',
+
+  // Cancel Order Component
+  cancel_component_title: '确定取消订单吗？',
+  order_number: '订单号',
+
+  // Form Footer
+  form_footer_text_1: '本平台目前只提供USDT交易，其他数字货币交易将不予受理。',
+  form_footer_text_2: '本平台钱包地址充值或转出，都是经由 USDT区块链系统网络确认。',
+  form_footer_text_3: '本平台钱包地址可以重复充值或转出；如因系统更新，我们会通过网站或口讯通知。',
+  form_footer_text_4: '请勿向钱包地址充值任何非USDT资产，否则资产将不可找回。',
+  form_footer_text_5: '最小充值金额：100USDT，小于最小金额的充值将不会上账且无法退回。',
+  form_footer_text_6: '请务必确认电脑及浏览器安全，防止信息被篡改或泄露。',
+  form_footer_text_7: '如有其他问题或要求提出争议，可透过网页上的客服对话窗联络我们。',
+
+  // ==========
+  //  History
+  // ==========
+  // History nav
+  history_all: '所有纪录',
+  history_wait: '待处理',
+  history_date: '日期',
+  history_transaction_deal: '交易额（USDT)',
+  history_transaction_real: '结余（USDT)',
+  history_transaction_status: '状态',
+  history_transaction_complete: '完成',
+  history_previousLabel: '上一页',
+  history_nextLabel: '下一页',
+
+  // History All Detail
+  history_buy: '买入',
+  history_sell: '卖出',
+  history_transfer_in: '转入',
+  history_transfer_out: '转出',
+  history_transaction_hash: '交易回执',
+  history_transaction_charge: '手续费',
+  history_transaction_price: '兑换价',
+  history_RMB: 'RMB',
+  history_account: '帐号',
+  history_payee: '收款人',
+  history_bank: '银行',
+  history_branch: '分行',
+
+  // History Wait
+  history_wait_pay: '等待付款',
+  history_account_receivable: '收款确认中',
+  history_onGoing: '执行中',
+
+  // ==========
+  //  Wallet
+  // ==========
+  wallet_address: '充值地址',
+
+  // ==========
+  //  Chat
+  // ==========
+  chat_help: '帮助',
+  chat_sound_open: '提示音已开启',
+  chat_sound_close: '提示音已关闭',
+  chat_order_number: '订单号',
+  chat_customer_server: '客服',
+  chat_send_message: '对话',
+
+  // ==========
+  //  Instant
+  // ==========
+  instant_transaction: '即时买卖',
+  instant_sound_open: '提示音已开启',
+  instant_sound_close: '提示音已关闭',
+  instant_over_time: '交易已逾时',
+  instant_over_time_short: '已逾时',
+
+  // Instant Nav
+  instant_nav_all: '即时买卖',
+  instant_nav_onGoing: '进行中',
+
+  // Instant All Item && Instant Count
+  instant_exRate: '汇率',
+  instant_price: '总价',
+  instant_qua: '数量',
+  instant_acc_time: '累计时间',
+  instant_limit_time: '限时时间',
+  instant_buy: '买',
+  instant_pay: '付',
+  instant_sell: '卖',
+  instant_get: '收',
+  instant_no_transaction: '目前没有交易',
+
+  // Instant Buy Detail
+  instant_payee_data: '收款方资料',
+  instant_pay_time: '剩余支付时间',
+  instant_payee_name: '收款方姓名',
+  instant_payee_account: '收款帐号',
+  instant_bank: '开户银行',
+  instant_city: '所在省市',
+  instant_payer_data: '付款方资料',
+  instant_payer_name: '付款方姓名',
 };

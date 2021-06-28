@@ -277,25 +277,10 @@ export default class index extends Component {
 
   componentDidMount() {
     loadCaptchaEnginge(6);
-
-    // if (!this.state.showValidCode) {
-    //   this.props.history.replace('/auth/register');
-    // }
   }
 
   render() {
-    const {
-      phoneNumber,
-      password,
-      showValidCode,
-      confirmPassword,
-      agree,
-      countryCode,
-      isLoading,
-      captcha,
-      checkAccountErr,
-      btnLoading,
-    } = this.state;
+    const { phoneNumber, password, showValidCode, confirmPassword, agree, countryCode, isLoading, captcha, checkAccountErr, btnLoading } = this.state;
 
     return (
       <>
@@ -334,15 +319,7 @@ export default class index extends Component {
                   </Form.Group>
 
                   <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
-                    <Form.Control
-                      className="form-select mb-4"
-                      size="lg"
-                      type="tel"
-                      placeholder="手機號碼"
-                      onChange={this.setPhoneNumber}
-                      isInvalid={!phoneNumber.isValid}
-                      autoComplete="off"
-                    />
+                    <Form.Control className="form-select mb-4" size="lg" type="tel" placeholder="手機號碼" onChange={this.setPhoneNumber} isInvalid={!phoneNumber.isValid} autoComplete="off" />
                     {phoneNumber.error && (
                       <Form.Text
                         style={{
@@ -352,45 +329,11 @@ export default class index extends Component {
                       >{`*${phoneNumber.error}`}</Form.Text>
                     )}
                   </Form.Group>
-
-                  {/* {this.state.showAlert && (
-                    <Fade in={this.state.showAlert}>
-                      <div id="example-fade-text" className="text-danger">
-                        <div className="d-flex align-items-center mb-2">
-                          <svg
-                            xmlns="../../../Assets/cone-striped.svg"
-                            width="16"
-                            height="16"
-                            fill="red"
-                            class="bi bi-cone-striped"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z" />
-                          </svg>
-                          <p className="ml-3 mb-0" style={{ color: 'red' }}>
-                            請注意！
-                          </p>
-                        </div>
-                        <p style={{ color: 'red' }}>
-                          因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。
-                          如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號：
-                          238bien
-                        </p>
-                      </div>
-                    </Fade>
-                  )} */}
                 </Form.Row>
 
                 <Form.Row>
                   <Form.Group as={Col} xl={12} controlId="formBasicPassword">
-                    <Form.Control
-                      className="form-select mb-4"
-                      size="lg"
-                      type="password"
-                      placeholder="設置密碼"
-                      onChange={this.setPassword}
-                      isInvalid={!password.isValid}
-                    />
+                    <Form.Control className="form-select mb-4" size="lg" type="password" placeholder="設置密碼" onChange={this.setPassword} isInvalid={!password.isValid} />
                     {password.error && (
                       <Form.Text
                         style={{
@@ -404,13 +347,7 @@ export default class index extends Component {
 
                 <Form.Row>
                   <Form.Group as={Col} xl={12} controlId="formConfirmPassword">
-                    <Form.Control
-                      className="form-select mb-4"
-                      size="lg"
-                      type="password"
-                      placeholder="確認密碼"
-                      onChange={this.setConfirmPassword}
-                    />
+                    <Form.Control className="form-select mb-4" size="lg" type="password" placeholder="確認密碼" onChange={this.setConfirmPassword} />
                     {confirmPassword.error && (
                       <Form.Text
                         style={{
@@ -444,32 +381,16 @@ export default class index extends Component {
                       }
                       autoComplete="off"
                     />
-                    {captcha.error && (
-                      <Form.Text
-                        className="mb-4"
-                        style={{ fontSize: '12px' }}
-                      >{`*${captcha.error}`}</Form.Text>
-                    )}
+                    {captcha.error && <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${captcha.error}`}</Form.Text>}
 
-                    {checkAccountErr && (
-                      <Form.Text
-                        className="mb-4"
-                        style={{ fontSize: '12px' }}
-                      >{`*${checkAccountErr}`}</Form.Text>
-                    )}
+                    {checkAccountErr && <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${checkAccountErr}`}</Form.Text>}
                     <LoadCanvasTemplate style={{ width: 150, height: 30 }} />
                   </Form.Group>
                 </Form.Row>
 
                 <Form.Row>
                   <Form.Group controlId="formBasicCheckbox" className="user-agreement">
-                    <Form.Check
-                      className="user-agreement__check"
-                      type="checkbox"
-                      label="我已閱讀並同意"
-                      onChange={this.handleAgree}
-                      checked={agree}
-                    />
+                    <Form.Check className="user-agreement__check" type="checkbox" label="我已閱讀並同意" onChange={this.handleAgree} checked={agree} />
                     <span
                       style={{
                         cursor: 'pointer',
@@ -491,15 +412,7 @@ export default class index extends Component {
                   type="submit"
                   disabled={!agree || btnLoading}
                 >
-                  {btnLoading && (
-                    <Spinner
-                      as="span"
-                      animation="grow"
-                      size="md"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                  )}
+                  {btnLoading && <Spinner as="span" animation="grow" size="md" role="status" aria-hidden="true" />}
                   {btnLoading ? '處理中..' : '下一步'}
                 </Button>
                 <br />
@@ -507,14 +420,7 @@ export default class index extends Component {
                   <Fade in={this.state.showAlert}>
                     <div id="example-fade-text" className="text-danger">
                       <div className="d-flex align-items-center mb-2">
-                        <svg
-                          xmlns="../../../Assets/cone-striped.svg"
-                          width="16"
-                          height="16"
-                          fill="red"
-                          class="bi bi-cone-striped"
-                          viewBox="0 0 16 16"
-                        >
+                        <svg xmlns="../../../Assets/cone-striped.svg" width="16" height="16" fill="red" class="bi bi-cone-striped" viewBox="0 0 16 16">
                           <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z" />
                         </svg>
                         <p className="ml-3 mb-0" style={{ color: 'red' }}>
@@ -522,33 +428,15 @@ export default class index extends Component {
                         </p>
                       </div>
                       <p style={{ color: 'red' }}>
-                        因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。
-                        如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號：
-                        238bien
+                        因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。 如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號： 238bien
                       </p>
                     </div>
                   </Fade>
                 )}
               </Form>
             ) : (
-              <ValidCode
-                phoneNumber={phoneNumber.val}
-                countryCode={countryCode.val}
-                password={password.val}
-              />
+              <ValidCode phoneNumber={phoneNumber.val} countryCode={countryCode.val} password={password.val} />
             )}
-
-            {/* <Route
-              path="/auth/valid"
-              component={props => (
-                <ValidCode
-                  phoneNumber={phoneNumber.val}
-                  countryCode={countryCode.val}
-                  password={password.val}
-                  {...props}
-                />
-              )}
-            /> */}
           </div>
         )}
       </>

@@ -7,6 +7,9 @@ import copy from 'copy-to-clipboard';
 import BuyContext from '../../context/buy/BuyContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import SetAccount from './SetAccount';
 import BuyInfoHeader from './BuyInfoHeader';
@@ -21,22 +24,15 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 
 const InfoDetail = props => {
+  // Lang Context
+  const { t } = useI18n();
+
   // Router Props
   const match = useRouteMatch();
 
   // Buy Context
   const buyContext = useContext(BuyContext);
-  const {
-    buyWsData,
-    buyBtnLoading,
-    BuyerAlreadyPay,
-    buyOrderToken,
-    isHideBuyInfo,
-    deltaTime,
-    setHideBuyInfo,
-    setDeltaTime,
-    GetDeltaTime,
-  } = buyContext;
+  const { buyWsData, buyBtnLoading, BuyerAlreadyPay, buyOrderToken, isHideBuyInfo, deltaTime, setHideBuyInfo, setDeltaTime, GetDeltaTime } = buyContext;
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -52,9 +48,9 @@ const InfoDetail = props => {
     copy(value);
 
     if (copy(value)) {
-      alert('複製成功');
+      alert(t('btn_copy'));
     } else {
-      alert('複製失敗，請手動複製');
+      alert(t('btn_copy_fail'));
     }
   };
 
@@ -78,12 +74,7 @@ const InfoDetail = props => {
 
   return (
     <>
-      <Cancel
-        show={showCancel}
-        onHide={() => setShowCancel(false)}
-        onShow={() => GetDeltaTime(buyOrderToken)}
-        onExited={() => GetDeltaTime(buyOrderToken)}
-      />
+      <Cancel show={showCancel} onHide={() => setShowCancel(false)} onShow={() => GetDeltaTime(buyOrderToken)} onExited={() => GetDeltaTime(buyOrderToken)} />
       {/* 第一階段倒數 */}
       {!isHideBuyInfo && (
         <>
@@ -93,7 +84,7 @@ const InfoDetail = props => {
               {/* Cny */}
               <div className="d-flex align-items-center mb-3">
                 <p className="mb-0 mr-3">
-                  付款金額: &emsp;
+                  {t('amount')}: &emsp;
                   <span
                     style={{
                       color: '#3e80f9',
@@ -105,51 +96,39 @@ const InfoDetail = props => {
                     CNY
                   </span>
                 </p>
-                <div
-                  onClick={() => handleCopy(buyWsData.cny)}
-                  className="i_copy2"
-                  style={{ width: 15, height: 15 }}
-                ></div>
+                <div onClick={() => handleCopy(buyWsData.cny)} className="i_copy2" style={{ width: 15, height: 15 }}></div>
               </div>
 
               {/* Name */}
               <div className="d-flex align-items-center mb-3">
-                <p className="mb-0 mr-3">收款姓名：{buyWsData.name}</p>
-                <div
-                  onClick={() => handleCopy(buyWsData.name)}
-                  className="i_copy2"
-                  style={{ width: 15, height: 15 }}
-                ></div>
+                <p className="mb-0 mr-3">
+                  {t('payee')}：{buyWsData.name}
+                </p>
+                <div onClick={() => handleCopy(buyWsData.name)} className="i_copy2" style={{ width: 15, height: 15 }}></div>
               </div>
 
               {/* Account */}
               <div className="d-flex align-items-center mb-3">
-                <p className="mb-0 mr-3">付款帳號： {buyWsData.account}</p>
-                <div
-                  onClick={() => handleCopy(buyWsData.account)}
-                  className="i_copy2"
-                  style={{ width: 15, height: 15 }}
-                ></div>
+                <p className="mb-0 mr-3">
+                  {t('payee_account')}： {buyWsData.account}
+                </p>
+                <div onClick={() => handleCopy(buyWsData.account)} className="i_copy2" style={{ width: 15, height: 15 }}></div>
               </div>
 
               {/* Bank */}
               <div className="d-flex align-items-center mb-3">
-                <p className="mb-0 mr-3">開戶銀行： {buyWsData.bank}</p>
-                <div
-                  onClick={() => handleCopy(buyWsData.bank)}
-                  className="i_copy2"
-                  style={{ width: 15, height: 15 }}
-                ></div>
+                <p className="mb-0 mr-3">
+                  {t('bank')}： {buyWsData.bank}
+                </p>
+                <div onClick={() => handleCopy(buyWsData.bank)} className="i_copy2" style={{ width: 15, height: 15 }}></div>
               </div>
 
               {/* City */}
               <div className="d-flex align-items-center mb-3">
-                <p className="mb-0 mr-3">所在省市： {buyWsData.city}</p>
-                <div
-                  onClick={() => handleCopy(buyWsData.city)}
-                  className="i_copy2"
-                  style={{ width: 15, height: 15 }}
-                ></div>
+                <p className="mb-0 mr-3">
+                  {t('city')}： {buyWsData.city}
+                </p>
+                <div onClick={() => handleCopy(buyWsData.city)} className="i_copy2" style={{ width: 15, height: 15 }}></div>
               </div>
             </Col>
             <Col xl={5} className="mt-4">
@@ -167,13 +146,9 @@ const InfoDetail = props => {
 
           <Row className="justify-content-center">
             <Col className="mw400 text-center">
-              <Button
-                disabled={buyBtnLoading}
-                className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
-                onClick={() => BuyerAlreadyPay(buyOrderToken)}
-              >
+              <Button disabled={buyBtnLoading} className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'} onClick={() => BuyerAlreadyPay(buyOrderToken)}>
                 {buyBtnLoading && <Spinner animation="grow" variant="danger" />}
-                {buyBtnLoading ? '處理中...' : '已完成付款'}
+                {buyBtnLoading ? `${t('btn_loading')}...` : t('btn_already_pay')}
               </Button>
 
               <span
@@ -187,7 +162,7 @@ const InfoDetail = props => {
                 }}
                 onClick={() => setShowCancel(true)}
               >
-                取消訂單
+                {t('btn_cancel_order')}
               </span>
             </Col>
           </Row>
@@ -213,18 +188,14 @@ const InfoDetail = props => {
                   className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
                   onClick={() => BuyerAlreadyPay(buyOrderToken)}
                 >
-                  <Countdown
-                    onComplete={() => setOverTime(true)}
-                    renderer={Timer}
-                    date={timeLeft}
-                  />
+                  <Countdown onComplete={() => setOverTime(true)} renderer={Timer} date={timeLeft} />
                   <br />
                   {buyBtnLoading && <Spinner animation="grow" variant="danger" />}
-                  {buyBtnLoading ? '處理中...' : '已完成付款'}
+                  {buyBtnLoading ? `${t('btn_loading')}...` : t('btn_already_pay')}
                 </Button>
               ) : (
                 <Button className="disable-easy-btn w-100" disabled variant="secondary">
-                  已逾時
+                  {t('btn_over_time')}
                 </Button>
               )}
 
@@ -239,7 +210,7 @@ const InfoDetail = props => {
                 }}
                 onClick={() => setShowCancel(true)}
               >
-                取消訂單
+                {t('btn_cancel_order')}
               </span>
             </Col>
           </Row>

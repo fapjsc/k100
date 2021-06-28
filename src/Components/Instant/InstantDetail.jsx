@@ -5,6 +5,9 @@ import { useMediaQuery } from 'react-responsive';
 // Context
 import InstantContext from '../../context/instant/InstantContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import SellDetail from './SellDetail';
 import BuyDetail from './BuyDetail';
@@ -17,6 +20,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 const InstantDetail = () => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const match = useRouteMatch();
 
@@ -68,7 +73,7 @@ const InstantDetail = () => {
                 src={helpIcon}
                 alt="help icon"
               />
-              幫助
+              {t('chat_help')}
             </Button>
 
             <TheChat hash={sell1Data.Tx_HASH} isChat={showChat} />
@@ -101,7 +106,7 @@ const InstantDetail = () => {
                 src={helpIcon}
                 alt="help icon"
               />
-              幫助
+              {t('chat_help')}
             </Button>
             <TheChat hash={buy1Data.Tx_HASH} isChat={showChat} />
           </div>

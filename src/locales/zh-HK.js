@@ -175,11 +175,38 @@ export default {
   e_wallet: '電子錢包',
   choose_e_wallet: '*請選擇電子錢包',
 
+  // No Data
+  no_data: '目前還沒有資料',
+
+  // No Order
+  no_order: '訂單不存在',
+  no_order_buy: '買',
+  no_order_sell: '賣',
+
+  // Alert text
+  no_token: '沒有Token',
+
   // Button Text
   btn_confirm: '確定',
   btn_return: '返回',
   btn_pair_start: '開始配對',
   btn_pairing: '配對中',
+  btn_loading: '處理中',
+  btn_already_pay: '已完成付款',
+  btn_cancel_order: '取消訂單',
+  btn_over_time: '已逾時',
+  btn_copy: '複製成功',
+  btn_copy_fail: '複製失敗，請手動複製',
+  btn_back_home: '返回主頁',
+  btn_transaction_detail: '詳細交易紀錄',
+  btn_confirm_cancel: '確定取消訂單',
+  btn_fetch_all: '提取所有',
+  btn_next: '下一步',
+  btn_buyer_already_pay: '買家已付款，確認收款',
+  btn_preparing: '對方準備中',
+  btn_close: '關閉',
+  btn_detail: '詳細',
+  btn_instant: '即時交易',
 
   btn_bank: '銀行卡',
   btn_aliPay: '支付寶',
@@ -191,6 +218,7 @@ export default {
   exRate: '匯率',
   payment_contact: '付款窗口',
   limit: '限額',
+  payment_contact_time: '15分鐘',
 
   // Dialog
   please_wait: '請稍等，現正整合交易者資料',
@@ -226,10 +254,18 @@ export default {
   transaction_nav_sell: '出售',
   transaction_nav_transfer: '轉帳',
 
-  // Transaction Buy
+  // =========
+  //  Balance
+  // =========
+  // Error Text
+  avb_insufficient: '可提不足',
+  avb_over_limit: '超過最大可提',
+
+  // ======
+  //  Buy
+  // ======
   buy_usdt: '購買USDT',
 
-  // Buy Form
   // Error Text
   no_account_name: '必須填寫銀行卡持有人的姓名',
   invalid_number: '請輸入有效的購買數量',
@@ -240,4 +276,177 @@ export default {
   account_name_prompt: '*請輸入轉帳銀行卡持有人的真實姓名',
   buy_total: '總價',
   buy_quantity: '數量',
+
+  // Buy Info Header
+  transfer_data: '轉帳資料',
+  limit_time: '剩餘支付時間',
+
+  // Buy Detail
+  amount: '付款金額',
+  payee: '收款姓名',
+  payee_account: '付款帳號',
+  bank: '開戶銀行',
+  city: '所在省市',
+
+  // =======
+  //  Sell
+  // =======
+  // Sell Pairing
+  pair_title: '請稍等，現正整合交易者資料',
+  pair_text: '出售訂單',
+
+  // Sell ExRate
+  sell_usdt: '出售USDT',
+
+  // Sell Error Text
+  sell_invalid_number: '請輸入有效數量',
+  sell_error_enter_payee: '請輸入收款人姓名',
+  sell_error_enter_bank: '請輸入開戶銀行',
+  sell_error_enter_payee_account: '請輸入收款帳號',
+  sell_error_enter_city: '請輸入所在省市',
+
+  // Sell Form
+  sell_enter_qua: '請輸入出售數量',
+
+  // Sell Bank Form
+  sell_payee: '收款姓名',
+  sell_payee_account: '收款帳號',
+  sell_bank: '開戶銀行',
+  sell_city: '所在省市',
+
+  // Sell Header
+  sell_info_transfer_data: '轉帳資料',
+  sell_info_limit_time: '剩餘支付時間',
+
+  // Sell Detail
+  sell_over_time: '交易已逾時',
+  sell_detail_amount: '收款金額',
+  sell_detail_payee: '收款姓名',
+  sell_detail_payee_account: '付款帳號',
+  sell_detail_payee_bank: '開戶銀行',
+  sell_detail_payee_city: '所在省市',
+
+  // ==========
+  //  Transfer
+  // ==========
+  // Error Text
+  transfer_address_error: '錢包地址錯誤',
+  transfer_error_invalid_number: '請輸入有效數量',
+
+  // Transfer Header
+  select_protocol: '請選擇協議種類',
+  protocol_trc20: 'TRC20',
+  protocol_erc20: 'ERC20',
+  transfer_charge: '手續費',
+  transfer_title: '轉帳USDT',
+  transfer_address: '轉帳地址',
+  open_camera: '開啟相機掃描QR Code?',
+
+  // Transfer Form
+  transfer_enter_number: '請輸入數量',
+  transfer_enter_address: '請輸入收款地址',
+
+  // Complete State
+  wait_confirm: '已提交，等待確認中',
+  transaction_hash: '交易回執',
+  complete_text: '購買成功後，數字貨幣預計15~30分鐘內到達你的錢包地址',
+  transaction_done: '交易完成',
+  transaction_cancel: '交易取消',
+  transaction_over_time: '交易超時',
+
+  // Cancel Order Component
+  cancel_component_title: '確定取消訂單嗎？',
+  order_number: '訂單號',
+
+  // Form Footer
+  form_footer_text_1: '本平台目前只提供USDT交易，其他數字貨幣交易將不予受理。',
+  form_footer_text_2: '本平台錢包地址充值或轉出，都是經由 USDT區塊鏈系統網絡確認。',
+  form_footer_text_3: '本平台錢包地址可以重複充值或轉出；如因系統更新，我們會通過網站或口訊通知。',
+  form_footer_text_4: '請勿向錢包地址充值任何非USDT資産，否則資産將不可找回。',
+  form_footer_text_5: '最小充值金額：100USDT，小于最小金額的充值將不會上賬且無法退回。',
+  form_footer_text_6: '請務必確認電腦及浏覽器安全，防止信息被篡改或泄露。',
+  form_footer_text_7: '如有其他問題或要求提出爭議，可透過網頁上的客服對話窗聯絡我們。',
+
+  // ==========
+  //  History
+  // ==========
+  // History nav
+  history_all: '所有紀錄',
+  history_wait: '待處理',
+  history_date: '日期',
+  history_transaction_deal: '交易額（USDT',
+  history_transaction_real: '結餘（USDT',
+  history_transaction_status: '狀態',
+  history_transaction_complete: '完成',
+  history_previousLabel: '上一頁',
+  history_nextLabel: '下一頁',
+
+  // History All Detail
+  history_buy: '買入',
+  history_sell: '賣出',
+  history_transfer_in: '轉入',
+  history_transfer_out: '轉出',
+  history_transaction_hash: '交易回執',
+  history_transaction_charge: '手續費',
+  history_transaction_price: '兌換價',
+  history_RMB: 'RMB',
+  history_account: '帳號',
+  history_payee: '收款人',
+  history_bank: '銀行',
+  history_branch: '分行',
+
+  // History Wait
+  history_wait_pay: '等待付款',
+  history_account_receivable: '收款確認中',
+  history_onGoing: '執行中',
+
+  // ==========
+  //  Wallet
+  // ==========
+  wallet_address: '充值地址',
+
+  // ==========
+  //  Chat
+  // ==========
+  chat_help: '幫助',
+  chat_sound_open: '提示音已開啟',
+  chat_sound_close: '提示音已關閉',
+  chat_order_number: '訂單號',
+  chat_customer_server: '客服',
+  chat_send_message: '對話',
+
+  // ==========
+  //  Instant
+  // ==========
+  instant_transaction: ' 即時買賣',
+  instant_sound_open: '提示音已開啟',
+  instant_sound_close: '提示音已關閉',
+  instant_over_time: '交易已逾時',
+  instant_over_time_short: '已逾時',
+
+  // Instant Nav
+  instant_nav_all: '即時買賣',
+  instant_nav_onGoing: '進行中',
+
+  // Instant All Item && Instant Count
+  instant_exRate: '匯率',
+  instant_price: '總價',
+  instant_qua: '數量',
+  instant_acc_time: '累計時間',
+  instant_limit_time: '限時時間',
+  instant_buy: '買',
+  instant_pay: '付',
+  instant_sell: '賣',
+  instant_get: '收',
+  instant_no_transaction: '目前沒有交易',
+
+  // Instant Buy Detail
+  instant_payee_data: '收款方資料',
+  instant_pay_time: '剩餘支付時間',
+  instant_payee_name: '收款方姓名',
+  instant_payee_account: '收款賬號',
+  instant_bank: '開戶銀行',
+  instant_city: '所在省市',
+  instant_payer_data: '付款方資料',
+  instant_payer_name: '付款方姓名',
 };

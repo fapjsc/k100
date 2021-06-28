@@ -77,7 +77,6 @@ const BankFrom = () => {
       setAccountName({
         val: '',
         isValid: false,
-        // error: '必須填寫銀行卡持有人的姓名',
         error: t('no_account_name'),
       });
 
@@ -85,7 +84,6 @@ const BankFrom = () => {
     }
 
     if (usdt <= 0 || usdt === '' || rmb <= 0 || rmb === '') {
-      // setErrorText('請輸入有效的購買數量');
       setErrorText(t('invalid_number'));
       setFormIsValid(false);
     }
@@ -111,7 +109,6 @@ const BankFrom = () => {
         <Form.Row className="justify-content-between align-items-start">
           <Form.Group as={Col} md={6} sm={12} className="mr-4 mt-0 d-flex flex-column justify-content-center px-0" controlId="formBasicClientName">
             <Form.Control
-              // placeholder="請輸入銀行卡持有人姓名"
               placeholder={t('account_name_placeholder')}
               onChange={onChange}
               value={accountName.val}
@@ -152,7 +149,6 @@ const BankFrom = () => {
               }}
               className=""
             >
-              {/* *請輸入轉帳銀行卡持有人的真實姓名 */}
               {t('account_name_prompt')}
             </p>
           </Form.Group>
@@ -187,11 +183,9 @@ const BankFrom = () => {
               {buyBtnLoading ? (
                 <>
                   <Spinner animation="grow" variant="danger" />
-                  {/* 配對中... */}
                   {t('btn_pairing')}
                 </>
               ) : (
-                // '開始配對'
                 t('btn_pair_start')
               )}
             </Button>

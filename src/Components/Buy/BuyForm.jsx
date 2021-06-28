@@ -155,7 +155,7 @@ const BuyForm = () => {
       setUsdtAmt({
         val: '',
         isValid: false,
-        error: '請輸入有效數量, (不能為0，最多小數第二位)',
+        error: t('invalid_number'),
       });
 
       setFormIsValid(false);

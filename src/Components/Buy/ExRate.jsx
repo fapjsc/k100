@@ -33,7 +33,7 @@ const ExRate = props => {
           {t('exRate')} :<span>{buyRate && Number(buyRate).toFixed(2)}</span>
         </p>
         <p className="mb-0">
-          {t('payment_contact')} :<span>15分鐘</span>
+          {t('payment_contact')} :<span>{t('payment_contact_time')}</span>
         </p>
         <p className="mb-0">
           {t('limit')} :<span>USDT 100.00 - 10000.00</span>

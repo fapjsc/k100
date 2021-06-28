@@ -4,6 +4,9 @@ import { useHistory } from 'react-router-dom';
 // context
 import SellContext from '../../context/sell/SellContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import SellExRate from './SellExRate';
 import SellForm from './SellForm';
@@ -12,13 +15,15 @@ import Pairing from './Pairing';
 import FormFooter from '../Layout/FormFooter';
 
 const Sell = () => {
+  // Lang context
+  const { t } = useI18n();
+
   // Router Props
   const history = useHistory();
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsPairing, wsData, cleanAll, wsClient, sellStatus, orderToken, showBank, cancelOrder } =
-    sellContext;
+  const { wsPairing, wsData, cleanAll, wsClient, sellStatus, orderToken, showBank, cancelOrder } = sellContext;
 
   // ===========
   //  UseEffect
@@ -52,15 +57,7 @@ const Sell = () => {
       <SellForm />
       {showBank && <SellBankForm />}
       <FormFooter />
-      <Pairing
-        show={wsPairing && wsClient}
-        onHide={onHide}
-        title="請稍等，現正整合交易者資料"
-        text={
-          wsData &&
-          `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`
-        }
-      />
+      <Pairing show={wsPairing && wsClient} onHide={onHide} title={t('pair_title')} text={wsData && `${t('pair_text')}：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`} />
     </Fragment>
   );
 };

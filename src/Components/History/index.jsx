@@ -5,7 +5,8 @@ import { Switch, Route, Link, Redirect, useHistory, useLocation } from 'react-ro
 import HistoryContext from '../../context/history/HistoryContext';
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 
-// Components
+// Lang Context
+import { useI18n } from '../../lang';
 
 import HistoryAll from './HistoryAll';
 import HistoryWait from './HistoryWait';
@@ -15,9 +16,10 @@ import HistoryWait from './HistoryWait';
 // Style
 import style from './History.module.scss';
 import './index.scss';
-// import Badge from 'react-bootstrap/Badge';
 
 const History = () => {
+  // Lang Context
+  const { t } = useI18n();
   // History Context
   const historyContext = useContext(HistoryContext);
   const { setWaitList, waitList } = historyContext;
@@ -57,29 +59,17 @@ const History = () => {
         <div className="col-12">
           <div className="contentbox" style={{ marginTop: 60, maxWidth: 1140 }}>
             <div className="history-tab">
-              <Link
-                to="/home/history/all"
-                className={
-                  location.pathname.includes('/home/history/all')
-                    ? 'history-link history-link-active'
-                    : 'history-link'
-                }
-                onClick={() => setHistoryState('all')}
-              >
-                所有紀錄
+              <Link to="/home/history/all" className={location.pathname.includes('/home/history/all') ? 'history-link history-link-active' : 'history-link'} onClick={() => setHistoryState('all')}>
+                {t('history_all')}
               </Link>
 
               <div style={waitBox}>
                 <Link
                   to="/home/history/wait"
-                  className={
-                    location.pathname.includes('/home/history/wait')
-                      ? 'history-link history-link-active'
-                      : 'history-link'
-                  }
+                  className={location.pathname.includes('/home/history/wait') ? 'history-link history-link-active' : 'history-link'}
                   onClick={() => setHistoryState('wait')}
                 >
-                  待處理
+                  {t('history_wait')}
                 </Link>
                 {waitList.length > 0 && (
                   // <Badge pill variant="danger" style={waitCount}>
@@ -121,36 +111,4 @@ const waitCount = {
   color: '#fff',
 };
 
-// const linkStyle = {
-//   backgroundColor: 'inherit',
-//   borderBottom: 'none',
-//   outline: 'none',
-//   cursor: 'pointer',
-//   padding: '14px 16px',
-//   fontSize: '17px',
-//   color: '#707070',
-
-//   marginRight: '1rem',
-
-//   display: 'inline-block',
-//   width: '10rem',
-//   textAlign: 'center',
-// };
-
-// const linkActive = {
-//   backgroundColor: 'inherit',
-//   border: 'none',
-//   outline: 'none',
-//   cursor: 'pointer',
-//   padding: '14px 16px',
-//   fontSize: '17px',
-
-//   color: '#3f80fa',
-//   borderBottom: '2px solid #3f80fa',
-
-//   marginRight: '1rem',
-//   display: 'inline-block',
-//   width: '10rem',
-//   textAlign: 'center',
-// };
 export default History;

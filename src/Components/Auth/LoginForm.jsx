@@ -2,8 +2,10 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
 
+// Context
 import AuthContext from '../../context/auth/AuthContext';
 
+// Style
 import { Form, Col, Spinner, Button } from 'react-bootstrap';
 import './Login/index.scss';
 
@@ -45,6 +47,8 @@ const LoginForm = () => {
     }
     // eslint-disable-next-line
   }, [formIsValid]);
+
+  useEffect(() => {}, []);
 
   // 按下enter後登入
   const handleKeyUp = e => {
@@ -154,12 +158,7 @@ const LoginForm = () => {
             <option>台灣＋886</option>
             <option>香港＋852</option>
           </Form.Control>
-          {countryCode.error && (
-            <Form.Text
-              className="mb-4"
-              style={{ fontSize: '12px' }}
-            >{`*${countryCode.error}`}</Form.Text>
-          )}
+          {countryCode.error && <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${countryCode.error}`}</Form.Text>}
         </Form.Group>
 
         <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
@@ -175,12 +174,7 @@ const LoginForm = () => {
             // onChange={this.setPhoneNumber}
             autoComplete="off"
           />
-          {phoneNumber.error && (
-            <Form.Text
-              className="mb-4"
-              style={{ fontSize: '12px' }}
-            >{`*${phoneNumber.error}`}</Form.Text>
-          )}
+          {phoneNumber.error && <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${phoneNumber.error}`}</Form.Text>}
         </Form.Group>
       </Form.Row>
 
@@ -198,16 +192,9 @@ const LoginForm = () => {
             onKeyUp={handleKeyUp}
             autoComplete="off"
           />
-          {password.error && (
-            <Form.Text
-              className="mb-4"
-              style={{ fontSize: '12px' }}
-            >{`*${password.error}`}</Form.Text>
-          )}
+          {password.error && <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${password.error}`}</Form.Text>}
 
-          {errorText && (
-            <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${errorText}`}</Form.Text>
-          )}
+          {errorText && <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${errorText}`}</Form.Text>}
         </Form.Group>
       </Form.Row>
 
@@ -223,16 +210,7 @@ const LoginForm = () => {
         className="easy-btn"
         type="button"
       >
-        {loginLoading && (
-          <Spinner
-            as="span"
-            animation="border"
-            size="lg"
-            role="status"
-            aria-hidden="true"
-            className="mr-2"
-          />
-        )}
+        {loginLoading && <Spinner as="span" animation="border" size="lg" role="status" aria-hidden="true" className="mr-2" />}
 
         <span>{loginLoading ? '處理中' : '登入'}</span>
       </Button>

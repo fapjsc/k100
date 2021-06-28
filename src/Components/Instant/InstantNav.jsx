@@ -6,7 +6,12 @@ import InstantContext from '../../context/instant/InstantContext';
 import BuyContext from '../../context/buy/BuyContext';
 import SellContext from '../../context/sell/SellContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 const InstantNva = props => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const history = useHistory();
 
@@ -37,13 +42,13 @@ const InstantNva = props => {
       <div className="onGoing">
         {instantData.length ? <span className="red_dot">{instantData.length}</span> : null}
         <button id="all" className={props.tab === 'all' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'} onClick={e => handleClick(e)}>
-          即時買賣
+          {t('instant_nav_all')}
         </button>
       </div>
       <div className="onGoing">
         {wsOnGoingData.length ? <span className="red_dot">{wsOnGoingData.length}</span> : null}
         <button id="onGoing" className={props.tab === 'onGoing' ? 'tabLinks tabLinksActive' : 'tabLinks c_grey'} onClick={e => handleClick(e)}>
-          進行中
+          {t('instant_nav_onGoing')}
         </button>
       </div>
     </nav>

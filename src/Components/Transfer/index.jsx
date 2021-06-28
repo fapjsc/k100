@@ -8,6 +8,9 @@ import OnLoading from './OnLoading';
 import FormFooter from '../Layout/FormFooter';
 import BaseSpinner from '../Ui/BaseSpinner';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Context
 import TransferContext from '../../context/transfer/TransferContext';
 import BalanceContext from '../../context/balance/BalanceContext';
@@ -24,6 +27,9 @@ const Transfer = () => {
   // const isMobile = useMediaQuery({ query: '(max-width: 900px)' }); // 小於等於 900 true
   // Router Props
   const history = useHistory();
+
+  // Lang Context
+  const { t } = useI18n();
 
   // Transfer Context
   const transferContext = useContext(TransferContext);
@@ -195,7 +201,7 @@ const Transfer = () => {
         setTransferAddress({
           val: '',
           isValid: false,
-          error: '錢包地址錯誤',
+          error: t('transfer_address_error'),
         });
         setFormIsValid(false);
         setHttpLoading(false);
@@ -208,7 +214,7 @@ const Transfer = () => {
         setTransferAddress({
           val: '',
           isValid: false,
-          error: '錢包地址錯誤',
+          error: t('transfer_address_error'),
         });
         setFormIsValid(false);
         setHttpLoading(false);
@@ -232,7 +238,7 @@ const Transfer = () => {
       setTransferCount({
         val: '',
         isValid: false,
-        error: '請輸入有效的數量',
+        error: t('transfer_error_invalid_number'),
       });
       setFormIsValid(false);
       setHttpLoading(false);
@@ -243,7 +249,7 @@ const Transfer = () => {
       setTransferCount({
         val: '',
         isValid: false,
-        error: '超出最大可提',
+        error: t('avb_over_limit'),
       });
       setFormIsValid(false);
       setHttpLoading(false);
@@ -261,7 +267,7 @@ const Transfer = () => {
       setTransferCount({
         val: '0',
         isValid: true,
-        error: '可提不足',
+        error: t('avb_insufficient'),
       });
       setFormIsValid(false);
 
@@ -313,15 +319,15 @@ const Transfer = () => {
             <Form.Group as={Col} md={5} sm={12} controlId="transferUsdt" className="pb-0">
               <div className="mb-2 d-flex align-items-center" style={{ height: 30 }}>
                 <Form.Label className="mb-0 txt-primary-c" style={{ fontSize: 12 }}>
-                  請選擇協議種類
+                  {t('select_protocol')}
                 </Form.Label>
               </div>
               <div className="d-flex">
                 <Button className={protocolType === 'trc' ? 'walletBtnActive mr-4' : 'walletBtn mr-4'} onClick={() => handleClick('trc')}>
-                  TRC20
+                  {t('protocol_trc20')}
                 </Button>
                 <Button className={protocolType === 'erc' ? 'walletBtnActive' : 'walletBtn'} onClick={() => handleClick('erc')}>
-                  ERC20
+                  {t('protocol_erc20')}
                 </Button>
               </div>
 
@@ -333,7 +339,7 @@ const Transfer = () => {
                     fontSize: 12,
                   }}
                 >
-                  手續費: {transferHandle && Number(transferHandle).toFixed(2)} USDT
+                  {t('transfer_charge')}: {transferHandle && Number(transferHandle).toFixed(2)} USDT
                 </p>
               )}
             </Form.Group>
@@ -345,16 +351,16 @@ const Transfer = () => {
             <>
               <Form.Group as={Col} md={5} sm={12} controlId="transferUsdt" className="">
                 <div className="d-flex justify-content-between mb-2">
-                  <Form.Label className="mb-0 align-self-center txt-primary-c">轉帳USDT</Form.Label>
+                  <Form.Label className="mb-0 align-self-center txt-primary-c">{t('transfer_title')}</Form.Label>
 
                   {transferLoading ? (
                     <Button variant="secondary" disabled className="" style={{}}>
                       <Spinner as="span" animation="grow" size="lg" role="status" aria-hidden="true" />
-                      Loading...
+                      {t('btn_loading')}...
                     </Button>
                   ) : (
                     <Button onClick={getAll} className="" disabled={transferLoading} variant="outline-primary" size="lg">
-                      提取所有
+                      {t('btn_fetch_all')}
                     </Button>
                   )}
                 </div>
@@ -362,7 +368,7 @@ const Transfer = () => {
                 <Form.Control
                   onWheel={event => event.currentTarget.blur()}
                   type="number"
-                  placeholder="請輸入數量"
+                  placeholder={t('transfer_enter_number')}
                   className="p_sm-2 easy-border"
                   onChange={onChange}
                   value={transferCount.val}
@@ -378,18 +384,6 @@ const Transfer = () => {
                   </Form.Text>
                 ) : null}
               </Form.Group>
-              {/* 
-              <Form.Group as={Col} md={12} className="text-left" style={{ marginBottom: 50 }}>
-                <span
-                  className=""
-                  style={{
-                    color: '#262E45',
-                    fontSize: 12,
-                  }}
-                >
-                  手續費: {transferHandle && Number(transferHandle).toFixed(2)} USDT
-                </span>
-              </Form.Group> */}
 
               {transferCount.val && !transferCount.error ? (
                 <Form.Group as={Col} md={10} sm={12} controlId="transferAddress" className="text-left">
@@ -400,7 +394,7 @@ const Transfer = () => {
                       fontSize: 12,
                     }}
                   >
-                    轉帳地址
+                    {t('transfer_address')}
                   </Form.Label>
 
                   <div
@@ -408,7 +402,15 @@ const Transfer = () => {
                       position: 'relative',
                     }}
                   >
-                    <Form.Control type="text" placeholder="請輸入收款地址" className="p_sm-2 easy-border" onChange={onChange} value={transferAddress.val} autoComplete="off" name="transferAddress" />
+                    <Form.Control
+                      type="text"
+                      placeholder={t('transfer_enter_address')}
+                      className="p_sm-2 easy-border"
+                      onChange={onChange}
+                      value={transferAddress.val}
+                      autoComplete="off"
+                      name="transferAddress"
+                    />
                   </div>
 
                   {/* <h3>Qr Code Scan by Web Cam</h3> */}
@@ -443,7 +445,7 @@ const Transfer = () => {
           <>
             <div className="text-left mt-4">
               <span style={showCameraText} onClick={() => setShowCamera(!showCamera)}>
-                開啟相機掃描QR Code?
+                {t('open_camera')}
               </span>
             </div>
             {showCamera && <QrReader delay={300} style={{ maxWidth: '360px', margin: '30px auto' }} onError={handleErrorWebCam} onScan={handleScanWebCam} facingMode={'environment'} />}
@@ -458,7 +460,7 @@ const Transfer = () => {
               }}
             >
               {httpLoading && <Spinner animation="grow" variant="danger" />}
-              {httpLoading ? '處理中...' : '下一步'}
+              {httpLoading ? `${t('btn_loading')}...` : t('btn_next')}
             </Button>
           </>
         ) : null}

@@ -5,6 +5,9 @@ import { useMediaQuery } from 'react-responsive';
 // Context
 import BuyContext from '../../context/buy/BuyContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Components
 import BaseSpinner from '../Ui/BaseSpinner';
 import ExRate from './ExRate';
@@ -19,6 +22,8 @@ import helpIcon from '../../Assets/i_ask2.png';
 import Button from 'react-bootstrap/Button';
 
 const BuyInfo = () => {
+  // Lang Context
+  const { t } = useI18n();
   // Init State
   const [showChat, setShowChat] = useState(false);
 
@@ -128,7 +133,7 @@ const BuyInfo = () => {
               src={helpIcon}
               alt="help icon"
             />
-            幫助
+            {t('chat_help')}
           </Button>
 
           <TheChat hash={buyWsData.hash} isChat={showChat} />
