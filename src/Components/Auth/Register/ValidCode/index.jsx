@@ -24,6 +24,14 @@ export default class ValidCode extends Component {
     alreadyRegister: false,
   };
 
+  // const [validNum, setValidNum] = useState('')
+  // const [formIsValid, setFormIsValid] = useState(false)
+  // const [error, setError] = useState('')
+  // const [resendValidCode, setResendValidCode] = useState(false)
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [isRegister, setIsRegister] = useState(false)
+  // const [inputValid, setInputValid] = useState(false)
+
   // 驗證碼如果是六位數的話
   setValidNum = event => {
     if (event.target.value.length === 6) {
@@ -305,17 +313,7 @@ export default class ValidCode extends Component {
   };
 
   render() {
-    const {
-      validNum,
-      error,
-      resendValidCode,
-      isLoading,
-      isRegister,
-      token,
-      formIsValid,
-      inputValid,
-      alreadyRegister,
-    } = this.state;
+    const { validNum, error, resendValidCode, isLoading, isRegister, token, formIsValid, inputValid, alreadyRegister } = this.state;
     let { phoneNumber, countryCode, password } = this.props;
 
     let timer;
@@ -325,9 +323,11 @@ export default class ValidCode extends Component {
     return (
       <Fragment>
         {isLoading ? (
-          <Spinner />
+          <div className="mt-4">
+            <Spinner />
+          </div>
         ) : isRegister && !isLoading ? (
-          <SuccessRegister alreadyRegister={alreadyRegister} />
+          <SuccessRegister />
         ) : (
           <Form className="mx-auto">
             <Form.Row className="align-items-center">
@@ -337,40 +337,16 @@ export default class ValidCode extends Component {
                   <InputGroup.Prepend>
                     <InputGroup.Text>VEK&nbsp;-</InputGroup.Text>
                   </InputGroup.Prepend>
-                  <Form.Control
-                    placeholder="一次性驗證碼"
-                    className="form-input mb-0"
-                    onChange={this.setValidNum}
-                    value={validNum.val}
-                    autoComplete="off"
-                    type="number"
-                    isValid={formIsValid}
-                  />
+                  <Form.Control placeholder="一次性驗證碼" className="form-input mb-0" onChange={this.setValidNum} value={validNum.val} autoComplete="off" type="number" isValid={formIsValid} />
                 </InputGroup>
 
                 {error ? <Form.Text className="text-muted">{error}</Form.Text> : null}
               </Form.Group>
 
               <Form.Group as={Col}>
-                {/* <Button
-                                className="mt-4"
-                                variant="primary"
-                                variant={resendValidCode ? 'primary' : 'secondary'}
-                                onClick={this.getValidCode}
-                                disabled={!resendValidCode}
-                            >
-                                發送驗證碼
-                            </Button> */}
-
                 <Countdown
                   date={timer <= 0 && !inputValid ? Date.now() + 120000 : Date.now() + timer}
-                  renderer={props => (
-                    <ButtonTimer
-                      resendValidCode={resendValidCode}
-                      getValidCode={this.getValidCode}
-                      {...props}
-                    />
-                  )}
+                  renderer={props => <ButtonTimer resendValidCode={resendValidCode} getValidCode={this.getValidCode} {...props} />}
                   className="mt-4"
                 ></Countdown>
               </Form.Group>

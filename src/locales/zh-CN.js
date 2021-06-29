@@ -451,4 +451,30 @@ export default {
   instant_city: '所在省市',
   instant_payer_data: '付款方资料',
   instant_payer_name: '付款方姓名',
+
+  // ==========
+  //  Instant
+  // ==========
+  // Index
+  auth_login: '登入帐号',
+  auth_register: '注册帐号',
+  auth_nav_login: '登入',
+  auth_nav_register: '注册',
+
+  // Error Text
+  no_countryCode: '请选择区码',
+  invalid_phoneNumber: '请输入有效的电话号码',
+  invalid_password: '密码只能是英文及数字，且至少六位数',
+
+  // Form Input
+  countryCode: '区号號',
+  china: '中国＋86',
+  taiwan: '台湾＋886',
+  hk: '香港＋852',
+
+   // Placeholder
+   phoneNumber: '手机号码',
+   password: '密码'
+
+
 };

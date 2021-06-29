@@ -449,4 +449,28 @@ export default {
   instant_city: '所在省市',
   instant_payer_data: '付款方資料',
   instant_payer_name: '付款方姓名',
+
+  // ==========
+  //  Instant
+  // ==========
+  // Index
+  auth_login: '登入帳號',
+  auth_register: '註冊帳號',
+  auth_nav_login: '登入',
+  auth_nav_register: '註冊',
+
+    // Error Text
+    no_countryCode: '請選擇區碼',
+    invalid_phoneNumber: '請輸入有效的電話號碼',
+    invalid_password: '密碼只能是英文及數字，且至少六位數',
+
+   // Form Input
+  countryCode: '區號',
+  china: '中國＋86',
+  taiwan: '台灣＋886',
+  hk: '香港＋852',
+
+  // Placeholder
+  phoneNumber: '手機號碼',
+  password: '密碼'
 };

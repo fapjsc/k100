@@ -5,14 +5,22 @@ import validator from 'validator';
 // Context
 import AuthContext from '../../context/auth/AuthContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Style
 import { Form, Col, Spinner, Button } from 'react-bootstrap';
 import './Login/index.scss';
 
 const LoginForm = () => {
+  // Lang Context
+  const { t } = useI18n();
+
+  // Auth Context
   const authContext = useContext(AuthContext);
   const { login, loginLoading, errorText, setErrorText } = authContext;
 
+  // Init State
   const [countryCode, setCountryCode] = useState({
     val: '',
     isValid: true,
@@ -58,7 +66,7 @@ const LoginForm = () => {
   const onChange = e => {
     setErrorText('');
     if (e.target.name === 'countryCode') {
-      if (e.target.value.includes('中國')) {
+      if (e.target.value.includes('86')) {
         setCountryCode({
           val: '86',
           isValid: true,
@@ -66,7 +74,7 @@ const LoginForm = () => {
         });
       }
 
-      if (e.target.value.includes('台灣')) {
+      if (e.target.value.includes('886')) {
         setCountryCode({
           val: '886',
           isValid: true,
@@ -74,7 +82,7 @@ const LoginForm = () => {
         });
       }
 
-      if (e.target.value.includes('香港')) {
+      if (e.target.value.includes('852')) {
         setCountryCode({
           val: '852',
           isValid: true,
