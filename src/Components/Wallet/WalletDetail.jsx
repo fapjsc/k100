@@ -140,7 +140,7 @@ const WalletDetail = () => {
                 </div>
               ) : (
                 <div>
-                  <h2>沒有數據</h2>
+                  <h2>{t('no_data_2')}</h2>
                   <div className="row">
                     <div className="col-12">
                       <button onClick={handleClick} className="easy-btn">

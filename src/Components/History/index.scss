@@ -19,8 +19,12 @@
     display: inline-block;
     text-align: center;
 
-    @media only screen and(max-width: 311px) {
-      font-size: 15px;
+    // @media only screen and(max-width: 311px) {
+    //   font-size: 15px;
+    // }
+
+    @media only screen and(max-width: 375px) {
+      font-size: 13px;
     }
   }
 

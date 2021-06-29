@@ -99,7 +99,12 @@ const InstantCount = props => {
           </Button>
         </>
       ) : (
-        <h2>{t('instant_no_transaction')}</h2>
+        <>
+          <h2 className="mt-4">{t('instant_no_transaction')}</h2>
+          <Button onClick={() => history.replace('/home')} className="easy-btn mw400 btn-sm-screen-100" style={{ marginTop: '4rem', marginBottom: '4rem' }}>
+            {t('btn_return')}
+          </Button>
+        </>
       )}
     </div>
   );

@@ -177,6 +177,7 @@ export default {
 
   // No Data
   no_data: '目前還沒有資料',
+  no_data_2: '沒有數據',
 
   // No Order
   no_order: '訂單不存在',
@@ -185,8 +186,10 @@ export default {
 
   // Alert text
   no_token: '沒有Token',
+  cancel_fail: '訂單取消失敗',
 
   // Button Text
+  btn_continue: '繼續',
   btn_confirm: '確定',
   btn_return: '返回',
   btn_pair_start: '開始配對',
@@ -207,6 +210,11 @@ export default {
   btn_close: '關閉',
   btn_detail: '詳細',
   btn_instant: '即時交易',
+  btn_login: '登入',
+  btn_forget_password: '忘記密碼',
+  btn_send_valid_code: '發送驗證碼',
+  btn_valid_code_already_send: '驗證碼已發送',
+  btn_back_to_login: '回登入頁面',
 
   btn_bank: '銀行卡',
   btn_aliPay: '支付寶',
@@ -342,6 +350,17 @@ export default {
   transfer_address: '轉帳地址',
   open_camera: '開啟相機掃描QR Code?',
 
+  // Transfer Info
+  transfer_info_success: '交易成功',
+  transfer_info_address: '轉帳地址',
+  transfer_info_hash: '交易回執',
+  transfer_info_loading: '轉帳中',
+  transfer_info_fail: '轉帳失敗',
+
+  // Transfer Loading
+  transfer_onLoading: '執行中，請稍等',
+  transfer_text: '轉賬',
+
   // Transfer Form
   transfer_enter_number: '請輸入數量',
   transfer_enter_address: '請輸入收款地址',
@@ -451,26 +470,74 @@ export default {
   instant_payer_name: '付款方姓名',
 
   // ==========
-  //  Instant
+  //  Auth
   // ==========
   // Index
   auth_login: '登入帳號',
   auth_register: '註冊帳號',
   auth_nav_login: '登入',
   auth_nav_register: '註冊',
+  register_success: '註冊成功',
 
-    // Error Text
-    no_countryCode: '請選擇區碼',
-    invalid_phoneNumber: '請輸入有效的電話號碼',
-    invalid_password: '密碼只能是英文及數字，且至少六位數',
+  // Alert Text
+  alert_text_1: '*點擊按鈕後發送一次性驗證碼',
 
-   // Form Input
+  // Error Text
+  no_countryCode: '請選擇區碼',
+  invalid_phoneNumber: '請輸入有效的電話號碼',
+  invalid_password: '密碼只能是英文及數字，且至少六位數',
+  confirm_password_fail: '兩次密碼不一致',
+  no_account: '此帳號未註冊',
+  captcha_error: '驗證碼錯誤',
+
+  // Form Input
   countryCode: '區號',
   china: '中國＋86',
   taiwan: '台灣＋886',
+  singapore: '新加波＋65',
+  malaysia: '馬來西亞＋60',
   hk: '香港＋852',
 
   // Placeholder
   phoneNumber: '手機號碼',
-  password: '密碼'
+  password: '密碼',
+  enter_valid: '輸入驗證碼',
+  enter_password: '設置密碼',
+  enter_new_password: '輸入新密碼',
+  enter_confirm_password: '確認密碼',
+  captcha_check: '驗證碼區分大小寫',
+
+  // Label
+  read_and_agree: '我已閱讀並同意',
+  user_agreement: '《用戶協議》',
+  click_and_send_valid_code: '點擊按鈕後發送驗證碼',
+  one_time_code: '一次性驗證碼',
+
+  // 中國區提示
+  china_area_alert_1: '請注意！',
+  china_area_alert_2: '因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。 如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號： 238bien',
+
+  // ===========
+  //  Http Text
+  // ============
+  login_again: '請重新登入',
+  set_password_success: '密碼設定成功',
+  password_changed: '密碼已經更換',
+  http_error_code_1: '系統錯誤',
+  http_error_code_10: '帳號或密碼錯誤',
+  http_error_code_11: '此帳號已經註冊過',
+  http_error_code_12: '此帳號無法註冊',
+  http_error_code_13: 'json格式錯誤',
+  http_error_code_14: 'json格式錯誤',
+  http_error_code_15: '無效的token',
+  http_error_code_16: '錯誤的操作',
+  http_error_code_17: '帳號未註冊',
+  http_error_code_20: '數據格式錯誤',
+  http_error_code_21: '請勿連續發送請求',
+  http_error_code_22: '驗證碼錯誤',
+  http_error_code_30: '無效的錢包地址',
+  http_error_code_31: '不能轉帳給自己',
+  http_error_code_32: '可提不足',
+  http_error_code_91: 'session過期,請重新登入',
+  http_error_other: '發生錯誤，請重新登入並重新嘗試',
 };

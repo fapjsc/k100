@@ -178,6 +178,7 @@ export default {
 
   // No Data
   no_data: '目前还没有资料',
+  no_data_2: '没有数据',
 
   // No Order
   no_order: '订单不存在',
@@ -186,8 +187,10 @@ export default {
 
   // Alert text
   no_token: '没有Token',
+  cancel_fail: '订单取消失败',
 
   // Button Text
+  btn_continue: '继续',
   btn_confirm: '确定',
   btn_return: '返回',
   btn_pair_start: '开始配对',
@@ -208,6 +211,11 @@ export default {
   btn_close: '关闭',
   btn_detail: '详细',
   btn_instant: '即时交易',
+  btn_login: '登入',
+  btn_forget_password: '忘记密码',
+  btn_send_valid_code: '发送验证码',
+  btn_valid_code_already_send: '验证码已发送',
+  btn_back_to_login: '回登入页面',
 
   btn_bank: '银行卡',
   btn_aliPay: '支付宝',
@@ -344,6 +352,17 @@ export default {
   transfer_address: '转帐地址',
   open_camera: '开启相机扫描QR Code?',
 
+  // Transfer Info
+  transfer_info_success: '交易成功',
+  transfer_info_address: '转帐地址',
+  transfer_info_hash: '交易回执',
+  transfer_info_loading: '转帐中',
+  transfer_info_fail: '转帐失败',
+
+  // Transfer Loading
+  transfer_onLoading: '执行中，请稍等',
+  transfer_text: '转账',
+
   // Transfer Form
   transfer_enter_number: '请输入数量',
   transfer_enter_address: '请输入收款地址',
@@ -453,28 +472,74 @@ export default {
   instant_payer_name: '付款方姓名',
 
   // ==========
-  //  Instant
+  //  Auth
   // ==========
   // Index
   auth_login: '登入帐号',
   auth_register: '注册帐号',
   auth_nav_login: '登入',
   auth_nav_register: '注册',
+  register_success: '注册成功',
+
+  // Alert Text
+  alert_text_1: '*点击按钮后发送一次性验证码',
 
   // Error Text
   no_countryCode: '请选择区码',
   invalid_phoneNumber: '请输入有效的电话号码',
   invalid_password: '密码只能是英文及数字，且至少六位数',
+  confirm_password_fail: '两次密码不一致',
+  no_account: '此帐号未注册',
+  captcha_error: '验证码错误',
 
   // Form Input
-  countryCode: '区号號',
+  countryCode: '区号',
   china: '中国＋86',
   taiwan: '台湾＋886',
+  singapore: '新加波＋65',
+  malaysia: '马来西亚＋60',
   hk: '香港＋852',
 
-   // Placeholder
-   phoneNumber: '手机号码',
-   password: '密码'
+  // Placeholder
+  phoneNumber: '手机号码',
+  password: '密码',
+  enter_valid: '输入验证码',
+  enter_password: '设置密码',
+  enter_new_password: '输入新密码',
+  enter_confirm_password: '确认密码',
+  captcha_check: '验证码区分大小写',
 
+  // Label
+  read_and_agree: '我已阅读并同意',
+  user_agreement: '《用户协议》',
+  click_and_send_valid_code: '点击按钮后发送验证码',
+  one_time_code: '一次性验证码',
 
+  // 中國區提示
+  china_area_alert_1: '请注意！',
+  china_area_alert_2: '因你身处地区受当地电讯条例限制，可能会较慢受到系统发出的简讯，请耐心等候或重新申请一次。如仍未能成功或其他问题，请联络我们客户服务微信号，即有专人协助。微信帐号： 238bien',
+
+  // ===========
+  //  Http Text
+  // ============
+  login_again: '请重新登入',
+  set_password_success: '密码设定成功',
+  password_changed: '密码已经更换',
+  http_error_code_1: '系统错误',
+  http_error_code_10: '帐号或密码错误',
+  http_error_code_11: '此帐号已经注册过',
+  http_error_code_12: '此帐号无法注册',
+  http_error_code_13: 'json格式错误',
+  http_error_code_14: 'json格式错误',
+  http_error_code_15: '无效的token',
+  http_error_code_16: '错误的操作',
+  http_error_code_17: '帐号未注册',
+  http_error_code_20: '数据格式错误',
+  http_error_code_21: '请勿连续发送请求',
+  http_error_code_22: '验证码错误',
+  http_error_code_30: '无效的钱包地址',
+  http_error_code_31: '不能转帐给自己',
+  http_error_code_32: '可提不足',
+  http_error_code_91: 'session过期,请重新登入',
+  http_error_other: '发生错误，请重新登入并重新尝试',
 };

@@ -20,16 +20,7 @@ const InstantScreen = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const {
-    countData,
-    setSell1Data,
-    setCountData,
-    setBuy1Data,
-    sell1Data,
-    buy1Data,
-    actionType,
-    setActionType,
-  } = instantContext;
+  const { countData, setSell1Data, setCountData, setBuy1Data, sell1Data, buy1Data, actionType, setActionType } = instantContext;
 
   // ===========
   //  UseEffect
@@ -44,6 +35,7 @@ const InstantScreen = () => {
   useEffect(() => {
     if (buy1Data) history.replace(`/home/instant/sell/${countData.token}`); // 對方是buy,即時交易這方是sell
     if (sell1Data) history.replace(`/home/instant/buy/${countData.token}`);
+    // if (!buy1Data && !sell1Data) history.replace('/home');
     // eslint-disable-next-line
   }, [sell1Data, buy1Data]);
 
@@ -66,10 +58,7 @@ const InstantScreen = () => {
             <p className="welcome_txt pl-0 mt-4">歡迎登入</p>
             <div className="contentbox">
               <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
-              {actionType !== 'onGoing' && (
-                <InstantCount setShowPop={setShowPop} showPop={showPop} />
-              )}
-
+              {actionType !== 'onGoing' && <InstantCount setShowPop={setShowPop} showPop={showPop} />}
               <FormFooter />
             </div>
           </div>

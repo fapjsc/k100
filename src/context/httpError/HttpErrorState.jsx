@@ -4,9 +4,14 @@ import { useHistory } from 'react-router-dom';
 import HttpErrorReducer from './HttpErrorReducer';
 import HttpErrorContext from './HttpErrorContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 import { SET_HTTP_ERROR, SET_HTTP_LOADING, SET_BUTTON_LOADING } from '../type';
 
 const HttpErrorState = props => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const history = useHistory();
 
@@ -31,82 +36,82 @@ const HttpErrorState = props => {
 
   const handleHttpError = data => {
     if (data.code === '1') {
-      setHttpError('系統錯誤');
+      setHttpError(t('http_error_code_1'));
       return;
     }
 
     if (data.code === '10') {
-      setHttpError('帳號或密碼錯誤');
+      setHttpError(t('http_error_code_10'));
       return;
     }
 
     if (data.code === '11') {
-      setHttpError('此帳號已經註冊過');
+      setHttpError(t('http_error_code_11'));
       return;
     }
 
     if (data.code === '12') {
-      setHttpError('此帳號無法註冊');
+      setHttpError(t('http_error_code_12'));
       return;
     }
 
     if (data.code === '13') {
-      setHttpError('json格式錯誤');
+      setHttpError(t('http_error_code_13'));
       return;
     }
     if (data.code === '14') {
-      setHttpError('json格式錯誤');
+      setHttpError(t('http_error_code_14'));
       return;
     }
 
     if (data.code === '15') {
-      setHttpError('無效的token');
+      setHttpError(t('http_error_code_15'));
       return;
     }
 
     if (data.code === '16') {
-      setHttpError('錯誤的操作');
+      setHttpError(t('http_error_code_16'));
       history.replace('/home/overview');
       return;
     }
 
     if (data.code === '17') {
-      setHttpError('帳號未註冊');
+      setHttpError(t('http_error_code_17'));
       return;
     }
 
     if (data.code === '20') {
-      setHttpError('數據格式錯誤');
+      setHttpError(t('http_error_code_20'));
       history.replace('/home/overview');
       return;
     }
 
     if (data.code === '21') {
-      setHttpError('請勿連續發送請求');
+      setHttpError(t('http_error_code_21'));
       return;
     }
 
     if (data.code === '22') {
-      setHttpError('無效的一次性驗證碼');
+      setHttpError(t('http_error_code_22'));
       return;
     }
 
     if (data.code === '30') {
-      setHttpError('無效的錢包地址');
+      setHttpError(t('http_error_code_30'));
       return;
     }
 
     if (data.code === '31') {
-      setHttpError('不能轉帳給自己');
+      setHttpError(t('http_error_code_31'));
       return;
     }
     if (data.code === '32') {
-      setHttpError('可提不足');
+      setHttpError(t('http_error_code_32'));
       return;
     }
 
     if (data.code === '91') {
-      setHttpError('session過期，請重新登入');
+      setHttpError(t('http_error_code_91'));
       history.replace('/auth/login');
       localStorage.removeItem('token');
       localStorage.removeItem('expiresIn');
@@ -116,7 +121,7 @@ const HttpErrorState = props => {
       return;
     }
 
-    setHttpError('發生錯誤，請重新登入並重新嘗試');
+    setHttpError(t('http_error_other'));
     localStorage.removeItem('token');
     localStorage.removeItem('expiresIn');
     localStorage.removeItem('agent');

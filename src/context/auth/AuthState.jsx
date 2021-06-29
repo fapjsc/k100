@@ -4,6 +4,9 @@ import { useHistory } from 'react-router-dom';
 import AuthReducer from './AuthReducer';
 import AuthContext from './AuthContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 import {
   IS_SEND_VALID_CODE,
   SET_VALID_TOKEN,
@@ -18,6 +21,8 @@ import {
 } from '../type';
 
 const AuthState = props => {
+  // Lang Context
+  const { t } = useI18n();
   // Router Props
   const history = useHistory();
 
@@ -139,7 +144,7 @@ const AuthState = props => {
 
     if (expiresIn <= 0) return;
 
-    alert('請重新登入');
+    alert(t('login_again'));
 
     logout();
   };
@@ -233,7 +238,7 @@ const AuthState = props => {
       if (resData.code === 200) {
         dispatch({
           type: SHOW_ERROR_MODAL,
-          payload: { show: true, text: '密碼設定成功', status: 'success' },
+          payload: { show: true, text: t('set_password_success'), status: 'success' },
         });
 
         dispatch({
@@ -267,7 +272,7 @@ const AuthState = props => {
       if (resData !== 200) {
         handleHttpError(resData);
       } else {
-        alert('密碼已經更換');
+        alert(t('password_changed'));
       }
     } catch (error) {
       handleHttpError(error);
@@ -276,58 +281,58 @@ const AuthState = props => {
 
   const handleHttpError = data => {
     if (data.code === '1') {
-      setErrorText('系統錯誤');
+      setErrorText(t('http_error_code_1'));
       return;
     }
 
     if (data.code === '10') {
-      setErrorText('帳號或密碼錯誤');
+      setErrorText(t('http_error_code_10'));
       return;
     }
 
     if (data.code === '11') {
-      setErrorText('此帳號已經註冊過');
+      setErrorText(t('http_error_code_11'));
 
       return;
     }
 
     if (data.code === '12') {
-      setErrorText('此帳號無法註冊');
+      setErrorText(t('http_error_code_12'));
 
       return;
     }
 
     if (data.code === '13') {
-      setErrorText('json格式錯誤');
+      setErrorText(t('http_error_code_13'));
 
       return;
     }
     if (data.code === '14') {
-      setErrorText('json格式錯誤');
+      setErrorText(t('http_error_code_14'));
 
       return;
     }
 
     if (data.code === '15') {
-      setErrorText('無效的token');
+      setErrorText(t('http_error_code_15'));
 
       return;
     }
 
     if (data.code === '16') {
-      setErrorText('錯誤的操作');
+      setErrorText(t('http_error_code_16'));
 
       return;
     }
 
     if (data.code === '17') {
-      setErrorText('帳號未註冊');
+      setErrorText(t('http_error_code_17'));
 
       return;
     }
 
     if (data.code === '20') {
-      setErrorText('數據格式錯誤');
+      setErrorText(t('http_error_code_20'));
 
       return;
     }
@@ -335,10 +340,10 @@ const AuthState = props => {
     if (data.code === '21') {
       dispatch({
         type: SHOW_ERROR_MODAL,
-        payload: { show: true, text: '請勿連續發送請求', status: 'fail' },
+        payload: { show: true, text: t('http_error_code_21'), status: 'fail' },
       });
 
-      setErrorText('請勿連續發送請求');
+      setErrorText(t('http_error_code_21'));
 
       return;
     }
@@ -346,30 +351,30 @@ const AuthState = props => {
     if (data.code === '22') {
       dispatch({
         type: SHOW_ERROR_MODAL,
-        payload: { show: true, text: '驗證碼錯誤', status: 'fail' },
+        payload: { show: true, text: t('http_error_code_22'), status: 'fail' },
       });
-      setErrorText('驗證碼錯誤');
+      setErrorText(t('http_error_code_22'));
 
       return;
     }
 
     if (data.code === '30') {
-      alert('無效的錢包地址');
+      alert(t('http_error_code_30'));
       return;
     }
 
     if (data.code === '31') {
-      alert('不能轉帳給自己');
+      alert(t('http_error_code_31'));
       return;
     }
 
     if (data.code === 'ˇ32') {
-      alert('可提不足');
+      alert(t('http_error_code_32'));
       return;
     }
 
     if (data.code === 'ˇ91') {
-      alert('請重新登入');
+      alert(t('http_error_code_91'));
       history.replace('/auth/login');
       localStorage.removeItem('token');
       localStorage.removeItem('agent');

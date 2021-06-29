@@ -4,6 +4,9 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 // Context
 import TransferContext from '../../../context/transfer/TransferContext';
 
+// Lang Context
+import { useI18n } from '../../../lang';
+
 // Style
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
@@ -12,6 +15,9 @@ import transIcon from '../../../Assets/icon_load02.gif';
 import completeIcon from '../../../Assets/i_complete.png';
 
 const TransferInfo = () => {
+  // Lang Context
+  const { t } = useI18n();
+
   const history = useHistory();
   const match = useRouteMatch();
   const transferContext = useContext(TransferContext);
@@ -54,11 +60,15 @@ const TransferInfo = () => {
       <Card className="border-0">
         <div className="text-center">
           <img src={completeIcon} alt="complete icon" className="mb-4" />
-          <h4 className="c_blue mb-4">交易成功</h4>
-          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.data.P1}</p>
-          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.data.Tx_HASH}</p>
+          <h4 className="c_blue mb-4">{t('transfer_info_success')}</h4>
+          <p className="txt_12_grey">
+            {t('transfer_info_address')}：{orderDetail && orderDetail.data.P1}
+          </p>
+          <p className="txt_12_grey">
+            {t('transfer_info_hash')}：{orderDetail && orderDetail.data.Tx_HASH}
+          </p>
           <button onClick={backToHome} className="easy-btn mw400">
-            返回主頁
+            {t('btn_back_home')}
           </button>
           <br />
           {/* <p>詳細購買紀錄</p> */}
@@ -70,11 +80,15 @@ const TransferInfo = () => {
       <Card className="border-0">
         <div className="text-center">
           <img src={transIcon} alt="transfer icon" className="mb-4" />
-          <h4 className="c_blue mb-4">轉帳中</h4>
-          <p className="txt_12_grey">轉帳地址：{orderDetail && orderDetail.data.P1}</p>
-          <p className="txt_12_grey">交易回執：{orderDetail && orderDetail.data.Tx_HASH}</p>
+          <h4 className="c_blue mb-4">{t('transfer_info_loading')}</h4>
+          <p className="txt_12_grey">
+            {t('transfer_info_address')}：{orderDetail && orderDetail.data.P1}
+          </p>
+          <p className="txt_12_grey">
+            {t('transfer_info_hash')}：{orderDetail && orderDetail.data.Tx_HASH}
+          </p>
           <button onClick={backToHome} className="easy-btn mw400">
-            返回主頁
+            {t('btn_back_home')}
           </button>
           <br />
           {/* <p>詳細購買紀錄</p> */}
@@ -93,13 +107,13 @@ const TransferInfo = () => {
               height: 110,
             }}
           />
-          <h4 className="c_blue mb-4">轉帳失敗</h4>
+          <h4 className="c_blue mb-4">{t('transfer_info_fail')}</h4>
           <p className="txt_12_grey">
-            轉帳地址：{orderDetail && orderDetail.data.P1}
+            {t('transfer_info_address')}：{orderDetail && orderDetail.data.P1}
             <br />
           </p>
           <button onClick={backToHome} className="easy-btn mw400">
-            返回主頁
+            {t('btn_back_home')}
           </button>
           <br />
           {/* <p>詳細購買紀錄</p> */}
@@ -115,7 +129,7 @@ const TransferInfo = () => {
           <Spinner animation="border" variant="primary" />
 
           <button onClick={backToHome} className="easy-btn mw400">
-            返回主頁
+            {t('btn_back_home')}
           </button>
           <br />
           {/* <p>詳細購買紀錄</p> */}

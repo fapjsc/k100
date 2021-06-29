@@ -29,7 +29,7 @@ const Auth = () => {
     if (location.pathname === '/auth/login') setFormType(t('auth_login'));
     if (location.pathname === '/auth/register') setFormType(t('auth_register'));
     // eslint-disable-next-line
-  }, []);
+  }, [location.pathname]);
 
   return (
     <div className="authBg" style={{}}>

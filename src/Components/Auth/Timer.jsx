@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 
+import { useI18n } from '../../lang';
+
 const Timer = ({ minutes, seconds, phoneValid, setExpirTime }) => {
+  const { t } = useI18n();
   useEffect(() => {
     let time = Number(localStorage.getItem('expiresIn'));
     setExpirTime(time);
@@ -19,7 +22,7 @@ const Timer = ({ minutes, seconds, phoneValid, setExpirTime }) => {
         cursor: 'auto',
       }}
     >
-      驗證碼已發送
+      {t('btn_valid_code_already_send')}
       <span>
         {('0' + minutes).slice(-2)}:{('0' + seconds).slice(-2)}
       </span>

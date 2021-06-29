@@ -66,6 +66,7 @@ const LoginForm = () => {
   const onChange = e => {
     setErrorText('');
     if (e.target.name === 'countryCode') {
+      // 中國
       if (e.target.value.includes('86')) {
         setCountryCode({
           val: '86',
@@ -74,6 +75,7 @@ const LoginForm = () => {
         });
       }
 
+      // 台灣
       if (e.target.value.includes('886')) {
         setCountryCode({
           val: '886',
@@ -82,9 +84,28 @@ const LoginForm = () => {
         });
       }
 
+      // 香港
       if (e.target.value.includes('852')) {
         setCountryCode({
           val: '852',
+          isValid: true,
+          error: '',
+        });
+      }
+
+      // 馬來西亞
+      if (e.target.value.includes('ˊ60')) {
+        setCountryCode({
+          val: '60',
+          isValid: true,
+          error: '',
+        });
+      }
+
+      // 新加波
+      if (e.target.value.includes('65')) {
+        setCountryCode({
+          val: '65',
           isValid: true,
           error: '',
         });
@@ -117,7 +138,7 @@ const LoginForm = () => {
       setCountryCode({
         val: '',
         isValid: false,
-        error: '請選擇區碼',
+        error: t('no_countryCode'),
       });
 
       setFormIsValid(false);
@@ -128,7 +149,7 @@ const LoginForm = () => {
       setPhoneNumber({
         val: '',
         isValid: false,
-        error: '請輸入有效的電話號碼',
+        error: t('invalid_phoneNumber'),
       });
 
       setFormIsValid(false);
@@ -139,7 +160,7 @@ const LoginForm = () => {
       setPassword({
         val: '',
         isValid: false,
-        error: '密碼只能是英文及數字，且至少六位數',
+        error: t('invalid_password'),
       });
       setFormIsValid(false);
     }
@@ -155,16 +176,16 @@ const LoginForm = () => {
               color: '#495057',
             }}
             as="select"
-            defaultValue="區號"
+            defaultValue={t('countryCode')}
             className="form-select mb-4 pl-3"
             name="countryCode"
             onChange={onChange}
             isInvalid={countryCode.error}
           >
-            <option disabled>區號</option>
-            <option>中國＋86</option>
-            <option>台灣＋886</option>
-            <option>香港＋852</option>
+            <option disabled>{t('countryCode')}</option>
+            <option>{t('china')}</option>
+            <option>{t('taiwan')}</option>
+            <option>{t('hk')}</option>
           </Form.Control>
           {countryCode.error && <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${countryCode.error}`}</Form.Text>}
         </Form.Group>
@@ -176,7 +197,7 @@ const LoginForm = () => {
             name="phoneNumber"
             size="lg"
             type="tel"
-            placeholder="手機號碼"
+            placeholder={t('phoneNumber')}
             onChange={onChange}
             value={phoneNumber.val}
             // onChange={this.setPhoneNumber}
@@ -194,7 +215,7 @@ const LoginForm = () => {
             name="password"
             size="lg"
             type="password"
-            placeholder="密碼"
+            placeholder={t('password')}
             onChange={onChange}
             value={password.val}
             onKeyUp={handleKeyUp}
@@ -220,12 +241,12 @@ const LoginForm = () => {
       >
         {loginLoading && <Spinner as="span" animation="border" size="lg" role="status" aria-hidden="true" className="mr-2" />}
 
-        <span>{loginLoading ? '處理中' : '登入'}</span>
+        <span>{loginLoading ? `${t('btn_loading')}...` : t('btn_login')}</span>
       </Button>
       <div className="forget_pw-box">
         <Link to="/forget-pw" className="forget_pw-link">
           <span className="forget_pw"></span>
-          <u>忘記密碼</u>
+          <u>{t('btn_forget_password')}</u>
         </Link>
       </div>
     </Form>

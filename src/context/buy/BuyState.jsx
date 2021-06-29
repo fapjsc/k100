@@ -6,6 +6,9 @@ import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import BuyReducer from './BuyReducer';
 import BuyContext from './BuyContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 // Context
 import HttpErrorContext from '../httpError/HttpErrorContext';
 import BalanceContext from '../../context/balance/BalanceContext';
@@ -25,6 +28,9 @@ import {
 } from '../type';
 
 const BuyState = props => {
+  // Lang Context
+  const { t } = useI18n();
+
   // Router Props
   const history = useHistory();
 
@@ -278,7 +284,7 @@ const BuyState = props => {
 
       if (resData.code === 200) {
       } else {
-        alert(`訂單取消失敗`);
+        alert(t('cancel_fail'));
         history.replace('/home/overview');
       }
     } catch (error) {

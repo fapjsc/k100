@@ -8,6 +8,9 @@ import SellReducer from './SellReducer';
 import HttpErrorContext from '../httpError/HttpErrorContext';
 import BalanceContext from '../../context/balance/BalanceContext';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 import {
   SET_SELL_COMPLETED,
   SET_RMB_SELL_RATE,
@@ -29,6 +32,9 @@ import {
 import { w3cwebsocket as W3CWebsocket } from 'websocket';
 
 const SellState = props => {
+  // Lang Context
+  const { t } = useI18n();
+
   const initialState = {
     exRate: null,
     buyRate: null,
@@ -335,7 +341,7 @@ const SellState = props => {
         // alert('訂單已經取消');
         history.replace('/home/overview');
       } else {
-        alert(`訂單取消失敗`);
+        alert(t('cancel_fail'));
       }
     } catch (error) {
       handleHttpError(error);

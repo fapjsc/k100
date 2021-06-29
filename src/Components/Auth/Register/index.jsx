@@ -83,7 +83,8 @@ const RegisterForm = () => {
   };
 
   const handleCountryCode = e => {
-    if (e.target.value.includes('中國')) {
+    // 中國
+    if (e.target.value.includes('86')) {
       setCountryCode({
         val: 86,
         isValid: true,
@@ -92,7 +93,8 @@ const RegisterForm = () => {
       setShowAlert(true);
     }
 
-    if (e.target.value.includes('台灣')) {
+    // 台灣
+    if (e.target.value.includes('886')) {
       setCountryCode({
         val: 886,
         isValid: true,
@@ -101,9 +103,31 @@ const RegisterForm = () => {
 
       setShowAlert(false);
     }
-    if (e.target.value.includes('香港')) {
+
+    // 香港
+    if (e.target.value.includes('852')) {
       setCountryCode({
         val: 852,
+        isValid: true,
+        error: '',
+      });
+      setShowAlert(false);
+    }
+
+    // 馬來西亞
+    if (e.target.value.includes('60')) {
+      setCountryCode({
+        val: 60,
+        isValid: true,
+        error: '',
+      });
+      setShowAlert(false);
+    }
+
+    // 新加波
+    if (e.target.value.includes('65')) {
+      setCountryCode({
+        val: 65,
         isValid: true,
         error: '',
       });
@@ -131,7 +155,7 @@ const RegisterForm = () => {
       setCaptcha({
         val: '',
         isValid: false,
-        error: '驗證碼錯誤',
+        error: t('captcha_error'),
       });
       setFormIsValid(false);
       setBtnLoading(false);
@@ -142,7 +166,7 @@ const RegisterForm = () => {
       setCountryCode({
         val: null,
         isValid: false,
-        error: '請選擇區碼',
+        error: t('no_countryCode'),
       });
       setFormIsValid(false);
       setBtnLoading(false);
@@ -153,7 +177,7 @@ const RegisterForm = () => {
       setPhoneNumber({
         val: '',
         isValid: false,
-        error: '請輸入有效的電話號碼',
+        error: t('invalid_phoneNumber'),
       });
 
       setFormIsValid(false);
@@ -165,7 +189,7 @@ const RegisterForm = () => {
       setPhoneNumber({
         val: '',
         isValid: false,
-        error: '請輸入有效的電話號碼',
+        error: t('invalid_phoneNumber'),
       });
 
       setFormIsValid(false);
@@ -177,7 +201,7 @@ const RegisterForm = () => {
       setPhoneNumber({
         val: '',
         isValid: false,
-        error: '請輸入有效的電話號碼',
+        error: t('invalid_phoneNumber'),
       });
 
       setFormIsValid(false);
@@ -189,7 +213,7 @@ const RegisterForm = () => {
       setPassword({
         val: '',
         isValid: false,
-        error: '密碼只能是英文及數字，且至少六位數',
+        error: t('invalid_password'),
       });
 
       setFormIsValid(false);
@@ -200,7 +224,7 @@ const RegisterForm = () => {
       setConfirmPassword({
         val: confirmPassword.val,
         isValid: false,
-        error: '兩次密碼不一致',
+        error: t('confirm_password_fail'),
       });
 
       setFormIsValid(false);
@@ -230,7 +254,7 @@ const RegisterForm = () => {
     }
 
     if (resData.code === '11') {
-      setCheckAccountErr('此手機號碼已經註冊過');
+      setCheckAccountErr(t('http_error_code_11'));
       setFormIsValid(false);
       setBtnLoading(false);
     }
@@ -278,15 +302,15 @@ const RegisterForm = () => {
                     color: '#495057',
                   }}
                   as="select"
-                  defaultValue="區號"
+                  defaultValue={t('countryCode')}
                   className="form-select mb-4 pl-3"
                   onChange={handleCountryCode}
                   isInvalid={!countryCode.isValid}
                 >
-                  <option disabled>區號</option>
-                  <option>中國＋86</option>
-                  <option>台灣＋886</option>
-                  <option>香港＋852</option>
+                  <option disabled>{t('countryCode')}</option>
+                  <option>{t('china')}</option>
+                  <option>{t('taiwan')}</option>
+                  <option>{t('hk')}</option>
                 </Form.Control>
                 {countryCode.error && (
                   <Form.Text
@@ -299,7 +323,7 @@ const RegisterForm = () => {
               </Form.Group>
 
               <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
-                <Form.Control className="form-select mb-4" size="lg" type="tel" placeholder="手機號碼" onChange={handlePhoneNumber} isInvalid={!phoneNumber.isValid} autoComplete="off" />
+                <Form.Control className="form-select mb-4" size="lg" type="tel" placeholder={t('phoneNumber')} onChange={handlePhoneNumber} isInvalid={!phoneNumber.isValid} autoComplete="off" />
                 {phoneNumber.error && (
                   <Form.Text
                     style={{
@@ -313,7 +337,7 @@ const RegisterForm = () => {
 
             <Form.Row>
               <Form.Group as={Col} xl={12} controlId="formBasicPassword">
-                <Form.Control className="form-select mb-4" size="lg" type="password" placeholder="設置密碼" onChange={handlePassword} isInvalid={!password.isValid} />
+                <Form.Control className="form-select mb-4" size="lg" type="password" placeholder={t('enter_password')} onChange={handlePassword} isInvalid={!password.isValid} />
                 {password.error && (
                   <Form.Text
                     style={{
@@ -327,7 +351,7 @@ const RegisterForm = () => {
 
             <Form.Row>
               <Form.Group as={Col} xl={12} controlId="formConfirmPassword">
-                <Form.Control className="form-select mb-4" size="lg" type="password" placeholder="確認密碼" onChange={handleConfirmPassword} />
+                <Form.Control className="form-select mb-4" size="lg" type="password" placeholder={t('enter_confirm_password')} onChange={handleConfirmPassword} />
                 {confirmPassword.error && (
                   <Form.Text
                     style={{
@@ -348,7 +372,7 @@ const RegisterForm = () => {
                   }}
                   className="form-select mb-4"
                   size="lg"
-                  placeholder="驗證碼區分大小寫"
+                  placeholder={t('captcha_check')}
                   value={captcha.val}
                   onChange={handleCaptcha}
                   autoComplete="off"
@@ -362,7 +386,7 @@ const RegisterForm = () => {
 
             <Form.Row>
               <Form.Group controlId="formBasicCheckbox" className="user-agreement">
-                <Form.Check className="user-agreement__check" type="checkbox" label="我已閱讀並同意" onChange={handleAgree} checked={agree} />
+                <Form.Check className="user-agreement__check" type="checkbox" label={t('read_and_agree')} onChange={handleAgree} checked={agree} />
                 <span
                   style={{
                     cursor: 'pointer',
@@ -371,7 +395,7 @@ const RegisterForm = () => {
                     marginBottom: 1,
                   }}
                   onClick={gotToAgreePage}
-                >{`《用戶協議》`}</span>
+                >{`${t('user_agreement')}`}</span>
               </Form.Group>
             </Form.Row>
 
@@ -385,7 +409,7 @@ const RegisterForm = () => {
               disabled={!agree || btnLoading}
             >
               {btnLoading && <Spinner as="span" animation="grow" size="md" role="status" aria-hidden="true" />}
-              {btnLoading ? '處理中..' : '下一步'}
+              {btnLoading ? `${t('btn_loading')}...` : t('btn_next')}
             </Button>
             <br />
             {showAlert && (
@@ -396,12 +420,10 @@ const RegisterForm = () => {
                       <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z" />
                     </svg>
                     <p className="ml-3 mb-0" style={{ color: 'red' }}>
-                      請注意！
+                      {t('china_area_alert_1')}
                     </p>
                   </div>
-                  <p style={{ color: 'red' }}>
-                    因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。 如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號： 238bien
-                  </p>
+                  <p style={{ color: 'red' }}>{t('china_area_alert_2')}</p>
                 </div>
               </Fade>
             )}
