@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
 import Countdown from 'react-countdown';
 
 // Components
@@ -16,43 +16,35 @@ import './index.scss';
 const ValidCode = props => {
   const { phoneNumber, countryCode, password } = props;
 
+  const clockRef = useRef();
+
   // Lang Context
   const { t } = useI18n();
 
   const [validNum, setValidNum] = useState(''); // user 輸入驗證碼的值
   const [formIsValid, setFormIsValid] = useState(false);
   const [error, setError] = useState('');
-  const [resendValidCode, setResendValidCode] = useState(false);
+  const [resendValidCode, setResendValidCode] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
-  const [inputValid, setInputValid] = useState(false);
-  const [timer] = useState(localStorage.getItem('expiresIn') - Date.now());
+  // const [inputValid, setInputValid] = useState(false);
+  const [timer] = useState(120000);
   const [token, setToken] = useState();
 
   // 驗證碼如果是六位數的話
   const handleValidCode = event => {
     setValidNum(event.target.value.trim());
-    // if (event.target.value.length === 6) {
-    //   setError('');
-    //   setInputValid(true);
-    //   handleSubmit(phoneNumber, countryCode);
-    // } else {
-    //   setFormIsValid(false);
-    //   setError('');
-    //   setInputValid(true);
-    // }
   };
 
   useEffect(() => {
     if (validNum.length === 6) {
       setError('');
-      setInputValid(true);
       handleSubmit(phoneNumber, countryCode);
     } else {
       setFormIsValid(false);
       setError('');
-      setInputValid(true);
     }
+    // eslint-disable-next-line
   }, [validNum]);
 
   useEffect(() => {
@@ -139,17 +131,9 @@ const ValidCode = props => {
 
   // 請求發送驗證碼
   const getValidCode = async () => {
+    setResendValidCode(false);
+    handleStart(true);
     let { phoneNumber, countryCode } = props;
-
-    console.log(phoneNumber, countryCode);
-
-    setResendValidCode(true);
-    setIsLoading(true);
-
-    const expiresStamp = 120000;
-    const expiresDate = Date.now() + expiresStamp;
-
-    localStorage.setItem('expiresIn', expiresDate);
 
     const registerApi = `/j/Req_oneTimePwd.aspx`;
     if (countryCode === 886) {
@@ -181,8 +165,7 @@ const ValidCode = props => {
   const handleSubmit = async (phoneNumber, countryCode) => {
     // event.preventDefault(); //防止表單提交
     setIsLoading(true);
-
-    console.log(phoneNumber, countryCode, validNum);
+    setResendValidCode(true);
 
     if (countryCode === 886) {
       // 如果第一個字是0，就刪除掉
@@ -204,14 +187,12 @@ const ValidCode = props => {
       });
 
       const resData = await res.json();
-      console.log(resData);
       setIsLoading(false);
 
       if (resData.code === 200) {
         const token = resData.data;
         setError('');
         setFormIsValid(true);
-        setInputValid(true);
         setToken(token);
       } else {
         setValidNum('');
@@ -261,6 +242,12 @@ const ValidCode = props => {
     }
   };
 
+  const handleCountDownComplete = () => {
+    setResendValidCode(true);
+  };
+
+  const handleStart = () => clockRef.current.start();
+
   return (
     <Fragment>
       {isLoading ? (
@@ -281,12 +268,15 @@ const ValidCode = props => {
                 <Form.Control placeholder={t('one_time_code')} className="form-input mb-0" onChange={handleValidCode} value={validNum} autoComplete="off" type="number" isValid={formIsValid} />
               </InputGroup>
 
-              {error ? <Form.Text className="text-muted">{error}</Form.Text> : null}
+              {error ? <Form.Text className="text-muted">*{error}</Form.Text> : null}
             </Form.Group>
 
             <Form.Group as={Col}>
               <Countdown
-                date={timer <= 0 && !inputValid ? Date.now() + 120000 : Date.now() + timer}
+                autoStart={false}
+                ref={clockRef}
+                onComplete={handleCountDownComplete}
+                date={Date.now() + timer}
                 renderer={props => <ButtonTimer t={t} resendValidCode={resendValidCode} getValidCode={getValidCode} {...props} />}
                 className="mt-4"
               ></Countdown>

@@ -2,8 +2,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 const index = ({ resendValidCode, getValidCode, minutes, seconds, completed, t }) => {
-  if (completed || !resendValidCode) {
-    localStorage.removeItem('expiresIn');
+  if (resendValidCode) {
+    // localStorage.removeItem('expiresIn');
     return (
       <Button className="" variant="primary" onClick={getValidCode}>
         {t('btn_send_valid_code')}

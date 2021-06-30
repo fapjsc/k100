@@ -51,12 +51,19 @@ const LoginForm = () => {
 
       login(data);
 
-      return setFormIsValid(false);
+      return () => {
+        setFormIsValid(false);
+      };
     }
     // eslint-disable-next-line
   }, [formIsValid]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    return () => {
+      setErrorText('');
+    };
+    // eslint-disable-next-line
+  }, []);
 
   // 按下enter後登入
   const handleKeyUp = e => {

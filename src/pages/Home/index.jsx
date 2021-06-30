@@ -14,7 +14,7 @@ import Overview from '../../Components/Overview';
 import TheWallet from '../../Components/Wallet/TheWallet';
 import WalletDetail from '../../Components/Wallet/WalletDetail';
 import History from '../../Components/History';
-import ChangePassword from '../../Components/Auth/ChangePassword';
+// import ChangePassword from '../../Components/Auth/ChangePassword';
 import InstantDetail from '../../Components/Instant/InstantDetail';
 import InstantScreen from '../../pages/InstantScreen';
 
@@ -90,7 +90,7 @@ const HomeScreen = () => {
         <Route exact path="/home/wallet/:id" component={WalletDetail} />
         <Route path="/home/history" component={History} />
         <Route path="/home/transaction" component={Transaction} />
-        <Route path="/home/change-pw" component={ChangePassword} />
+        {/* <Route path="/home/change-pw" component={ChangePassword} /> */}
         <Route exact path="/home/instant" component={InstantScreen} />
         <Route exact path="/home/instant/:type/:id" component={InstantDetail} />
 

@@ -80,8 +80,8 @@ const OverView = () => {
 };
 
 const backImg1 = {
-  backgroundImage: 'url(../../Assets/1.jpg)',
-  backgroundSize: 'contain',
+  // backgroundImage: 'url(../../Assets/1.jpg)',
+  // backgroundSize: 'contain',
 };
 
 export default OverView;

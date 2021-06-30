@@ -6,6 +6,7 @@ import { useI18n } from '../../lang';
 
 // Components
 import BaseCard from './../Ui/BaseCard';
+// eslint-disable-next-line
 import BaseDialog from './../Ui/BaseDialog';
 import Header from '../Layout/Header';
 import RegisterForm from './Register';

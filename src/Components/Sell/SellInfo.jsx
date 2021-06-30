@@ -37,7 +37,7 @@ const SellInfo = () => {
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsData, sellWebSocket, cleanAll, wsClient, sellStatus, wsPairing } = sellContext;
+  const { wsData, sellWebSocket, cleanAll, wsClient, sellStatus } = sellContext;
 
   const [showChat, setShowChat] = useState(false);
 

@@ -2,6 +2,12 @@ import { SET_TRANSLATE, SET_MESSAGES, SET_CHAT_WS_CLIENT, CHAT_SET_ORDER_TOKEN, 
 
 const ChatReducer = (state, action) => {
   switch (action.type) {
+    // case SET_MESSAGE_TARGET:
+    //   let arr = [...state.messageTarget, action.payload];
+    //   return {
+    //     ...state,
+    //     messageTarget: [...new Set(arr)], // 去除重複的item
+    //   };
     case SET_NEW_MESSAGE:
       return {
         ...state,

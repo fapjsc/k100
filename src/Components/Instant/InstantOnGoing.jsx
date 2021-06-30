@@ -13,25 +13,15 @@ const TheInstant = () => {
   // Route Props
   const history = useHistory();
 
-  // // Init State
+  // Init State
   const [token, setToken] = useState('');
   const [type, setType] = useState('');
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const {
-    wsOnGoingData,
-    sellMatch1,
-    buyMatch1,
-    sell1Data,
-    buy1Data,
-    setSell1Data,
-    setBuy1Data,
-    setCountData,
-    setActionType,
-  } = instantContext;
+  const { wsOnGoingData, sellMatch1, buyMatch1, sell1Data, buy1Data, setSell1Data, setBuy1Data, setCountData, setActionType } = instantContext;
 
-  // // HttpError Context
+  // HttpError Context
   const httpError = useContext(HttpErrorContext);
   const { btnLoading, errorText, setHttpError } = httpError;
 
@@ -45,6 +35,7 @@ const TheInstant = () => {
   // ==========
   // UseEffect
   // ==========
+
   useEffect(() => {
     if (!token) return;
 
@@ -78,14 +69,7 @@ const TheInstant = () => {
     return (
       <div>
         {wsOnGoingData.map(el => {
-          return (
-            <InstantOnGoingItem
-              key={el.token}
-              el={el}
-              handleClick={handleClick}
-              btnLoading={btnLoading}
-            />
-          );
+          return <InstantOnGoingItem key={el.token} el={el} handleClick={handleClick} btnLoading={btnLoading} />;
         })}
       </div>
     );

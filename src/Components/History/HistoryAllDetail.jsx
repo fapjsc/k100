@@ -24,7 +24,7 @@ const HistoryAllDetail = props => {
   const { singleDetail, setSingleDetail } = historyContext;
 
   useEffect(() => {
-    console.log(singleDetail);
+    // console.log(singleDetail);
     return () => {
       setSingleDetail(null);
     };

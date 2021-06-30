@@ -35,20 +35,20 @@ const ChatState = props => {
 
     const client = new ReconnectingWebSocket(url);
 
-    console.log(client);
+    // console.log(client);
 
     setClient(client);
 
     // 1.建立連接
     client.onopen = message => {
-      console.log('chat connect');
+      // console.log('chat connect');
     };
 
     // 2.收到server回復
     client.onmessage = message => {
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      console.log('got Chat reply!', dataFromServer);
+      // console.log('got Chat reply!', dataFromServer);
 
       setChatLoading(false);
 
@@ -57,7 +57,7 @@ const ChatState = props => {
 
     // 3.錯誤處理
     client.onclose = message => {
-      console.log('聊天室關閉');
+      // console.log('聊天室關閉');
     };
   };
 
@@ -107,14 +107,11 @@ const ChatState = props => {
 
     // 2.收到server回復
     client.onmessage = message => {
-      // console.log(message);
       if (message.data === '' || message.data.includes('login_session')) return;
 
-      // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      console.log('instant got Chat reply!', dataFromServer);
+      // console.log('instant got Chat reply!', dataFromServer);
       setChatLoading(false);
-
       if (dataFromServer.Message_Role === 1) {
         setNewMessage(true);
         console.log('new message');
