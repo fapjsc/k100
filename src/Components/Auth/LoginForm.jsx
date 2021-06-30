@@ -51,9 +51,7 @@ const LoginForm = () => {
 
       login(data);
 
-      return () => {
-        setFormIsValid(false);
-      };
+      setFormIsValid(false);
     }
     // eslint-disable-next-line
   }, [formIsValid]);
