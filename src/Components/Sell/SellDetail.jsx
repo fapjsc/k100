@@ -134,14 +134,23 @@ const SellDetail = () => {
 
             {wsData && (
               <Col xl={5} className="pl-4">
-                <SetAccount usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)} rmbAmt={wsData.D2.toFixed(2)} />
+                <SetAccount
+                  usdtAmt={Math.abs(wsData.UsdtAmt).toFixed(2)}
+                  rmbAmt={wsData.D2.toFixed(2)}
+                />
               </Col>
             )}
           </Row>
           <Row className="justify-content-center mt-4">
             <Col className="mw400 text-center px-0">
               {!httpLoading ? (
-                <Button disabled={overTime} onClick={handleSubmit} className="" block style={sellStatus === 34 ? infoBtn : infoBtnDisabled}>
+                <Button
+                  disabled={overTime}
+                  onClick={handleSubmit}
+                  className=""
+                  block
+                  style={sellStatus === 34 ? infoBtn : infoBtnDisabled}
+                >
                   {sellStatus === 33 && (
                     <img
                       src={btnWait}
@@ -153,7 +162,9 @@ const SellDetail = () => {
                     />
                   )}
 
-                  <span className="">{sellStatus === 34 ? t('btn_buyer_already_pay') : t('btn_preparing')}</span>
+                  <span className="">
+                    {sellStatus === 34 ? t('btn_buyer_already_pay') : t('btn_preparing')}
+                  </span>
                 </Button>
               ) : (
                 <Button variant="secondary" disabled style={infoBtnDisabled}>

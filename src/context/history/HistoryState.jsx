@@ -94,7 +94,6 @@ const HistoryState = props => {
       });
 
       const resData = await res.json();
-      // console.log(resData);
 
       if (resData.code === 200) {
         dispatch({ type: SET_ALL_HISTORY, payload: resData.data });
@@ -127,7 +126,7 @@ const HistoryState = props => {
 
       // console.log(resData);
 
-      // console.log(resData);
+      console.log(resData);
 
       if (resData.code === 200) {
         const { data } = resData;

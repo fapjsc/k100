@@ -83,7 +83,12 @@ const SellInfo = () => {
       {(sellStatus === 33 || sellStatus === 34) && wsData ? (
         <SellDetail />
       ) : sellStatus === 1 || sellStatus === 99 || (sellStatus === 98 && wsData) ? (
-        <CompleteStatus wsStatus={sellStatus} hash={wsData && wsData.Tx_HASH} backToHome={backToHome} type="sell" />
+        <CompleteStatus
+          wsStatus={sellStatus}
+          hash={wsData && wsData.Tx_HASH}
+          backToHome={backToHome}
+          type="sell"
+        />
       ) : (
         <BaseSpinner />
       )}

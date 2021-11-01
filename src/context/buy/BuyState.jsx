@@ -134,7 +134,7 @@ const BuyState = props => {
       // console.log(message);
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got reply!', dataFromServer);
+      console.log('got reply!', dataFromServer, 'buy');
       setWsStatus(dataFromServer.data.Order_StatusID);
       setDeltaTime(dataFromServer.data.DeltaTime);
 

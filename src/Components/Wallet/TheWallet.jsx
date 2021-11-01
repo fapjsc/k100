@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Context
@@ -12,11 +12,36 @@ import { useI18n } from '../../lang';
 // Components
 import FromFooter from '../Layout/FormFooter';
 import BaseSpinner from '../Ui/BaseSpinner';
+import EditBankInfoForm from '../../Components/Wallet/EditBankInfoForm';
+
+// Hooks
+import useHttp from '../../hooks/useHttp';
+
+// Apis
+import { getAgentAcc } from '../../lib/api';
+
+// BootStrap
+import ListGroup from 'react-bootstrap/ListGroup';
+import Spinner from 'react-bootstrap/Spinner';
+
+// Icons
+import { AiFillEdit } from 'react-icons/ai';
 
 // Style
 import './index.scss';
 
 const TheWallet = () => {
+  // Init State
+  const [showFom, setShowForm] = useState(false);
+
+  // Http
+  const {
+    data: getAccData,
+    error: getAccError,
+    status: getAccStatus,
+    sendRequest: sendAccRequest,
+  } = useHttp(getAgentAcc);
+
   // Lang Context
   const { t } = useI18n();
   // Router Props
@@ -48,6 +73,10 @@ const TheWallet = () => {
     };
     // eslint-disable-next-line
   }, [errorText]);
+
+  useEffect(() => {
+    sendAccRequest();
+  }, [sendAccRequest]);
 
   const handleClick = type => {
     setWalletType(type);
@@ -86,6 +115,8 @@ const TheWallet = () => {
                     </div>
                   </div>
                   <br />
+                  <br />
+
                   {/* Wallet chose button */}
                   <div className="row mt-4">
                     <div className="col-12">
@@ -101,6 +132,67 @@ const TheWallet = () => {
                       <button onClick={() => handleClick('erc20')} className="easy-btn w-75">
                         ERC20
                       </button>
+                    </div>
+                  </div>
+
+                  <br />
+                  <br />
+
+                  {/* Acc data */}
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="w-50 d-flex justify-content-between align-items-center pr-4">
+                        <p className="txt_12">帳戶資訊</p>
+                        <AiFillEdit
+                          style={{ fontSize: '2rem', color: '#242e47', cursor: 'pointer' }}
+                          onClick={() => setShowForm(preState => !preState)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6 col-12">
+                      {getAccStatus === 'completed' && !getAccError && (
+                        <>
+                          <ListGroup>
+                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                              收款帳號：{getAccData.P1}
+                            </ListGroup.Item>
+
+                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                              收款姓名：{getAccData.P2}
+                            </ListGroup.Item>
+
+                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                              開戶銀行：{getAccData.P3}
+                            </ListGroup.Item>
+
+                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                              所在省市：{getAccData.P4}
+                            </ListGroup.Item>
+                          </ListGroup>
+
+                          <EditBankInfoForm
+                            getAccData={getAccData}
+                            sendAccRequest={sendAccRequest}
+                            show={showFom}
+                            onHide={() => setShowForm(false)}
+                          />
+                        </>
+                      )}
+
+                      {getAccStatus === 'pending' && (
+                        <div
+                          className=""
+                          style={{
+                            height: '5rem',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Spinner animation="border" style={{ width: '3rem', height: '3rem' }} />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </>

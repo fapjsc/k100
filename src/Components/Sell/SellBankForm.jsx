@@ -253,7 +253,12 @@ const SellBankForm = () => {
 
       <Form.Row className="justify-content-center">
         <Form.Group as={Col} className="mw400 px-0">
-          <Button onClick={validForm} disabled={wsPairing} block className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}>
+          <Button
+            onClick={validForm}
+            disabled={wsPairing}
+            block
+            className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
+          >
             {t('btn_next')}
           </Button>
         </Form.Group>

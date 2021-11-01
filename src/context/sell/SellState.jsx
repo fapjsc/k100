@@ -140,6 +140,8 @@ const SellState = props => {
 
       const resData = await res.json();
 
+      console.log(resData, 'req_sell1');
+
       if (resData.code === 200) {
         const {
           data: { order_token },
@@ -245,7 +247,7 @@ const SellState = props => {
     client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got reply!', dataFromServer);
+      console.log('got reply!', dataFromServer);
       setSellStatus(dataFromServer.data.Order_StatusID);
 
       // 配對中 Order_StatusID：31 or 32
@@ -258,6 +260,7 @@ const SellState = props => {
       if (dataFromServer.data.Order_StatusID === 33) {
         setWsData(dataFromServer.data);
         setWsPairing(false);
+        console.log(dataFromServer, '=====');
         // history.replace(`/home/transaction/sell/${orderToken}`);
       }
 
