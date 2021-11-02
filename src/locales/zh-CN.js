@@ -587,7 +587,7 @@ export default {
   EditBankInfoForm_edit_account_info: '修改帐户资讯',
   EditBankInfoForm_account: '收款帐号',
   EditBankInfoForm_name: '收款姓名',
-  EditBankInfoForm_bank: '收款姓名',
+  EditBankInfoForm_bank: '开户银行',
   EditBankInfoForm_city: '所在省市',
   EditBankInfoForm_confirm: '确定',
   EditBankInfoForm_error: '*无效的输入',
