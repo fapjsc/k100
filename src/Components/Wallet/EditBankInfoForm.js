@@ -104,23 +104,25 @@ const EditBankInfoForm = props => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmitHandler}>
-          <Form.Group className="mb-3" controlId="formBasicAccount">
-            <Form.Label>{t('EditBankInfoForm_account')}</Form.Label>
-            <Form.Control
-              type="account"
-              placeholder=""
-              defaultValue={getAccData && getAccData.P1}
-              onChange={onChangeHandler}
-              autoComplete="off"
-            />
-          </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>{t('EditBankInfoForm_name')}</Form.Label>
             <Form.Control
               type="name"
               placeholder=""
               defaultValue={getAccData && getAccData.P2}
+              onChange={onChangeHandler}
+              autoComplete="off"
+              readOnly
+              style={{ backgroundColor: '#EAECEF' }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicAccount">
+            <Form.Label>{t('EditBankInfoForm_account')}</Form.Label>
+            <Form.Control
+              type="account"
+              placeholder=""
+              defaultValue={getAccData && getAccData.P1}
               onChange={onChangeHandler}
               autoComplete="off"
             />

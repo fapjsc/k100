@@ -152,11 +152,11 @@ const TheWallet = () => {
                         <>
                           <ListGroup>
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t('EditBankInfoForm_account')}：{getAccData.P1}
+                              {t('EditBankInfoForm_name')}：{getAccData.P2}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t('EditBankInfoForm_name')}：{getAccData.P2}
+                              {t('EditBankInfoForm_account')}：{getAccData.P1}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
