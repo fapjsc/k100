@@ -14,8 +14,13 @@ import useHttp from '../../hooks/useHttp';
 // Apis
 import { setAgentAcc } from '../../lib/api';
 
+// Lang Context
+import { useI18n } from '../../lang';
+
 const EditBankInfoForm = props => {
   const { getAccData, sendAccRequest, onHide } = props;
+
+  const { t } = useI18n();
 
   const [formData, setFormData] = useState({
     account: getAccData.P1,
@@ -35,6 +40,7 @@ const EditBankInfoForm = props => {
   } = useHttp(setAgentAcc);
 
   const onChangeHandler = e => {
+    setErrorText('');
     if (e.target.id === 'formBasicAccount') {
       setFormData(preState => {
         return { ...preState, account: e.target.value };
@@ -68,7 +74,8 @@ const EditBankInfoForm = props => {
       formData.bank === '' ||
       formData.city === ''
     ) {
-      setErrorText('*無效的輸入');
+      let errTxt = t('EditBankInfoForm_error');
+      setErrorText(errTxt);
       return;
     }
     const reqData = _setAgentAccDataFormat(formData);
@@ -91,47 +98,53 @@ const EditBankInfoForm = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">修改帳戶資訊</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">
+          {t('EditBankInfoForm_edit_account_info')}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={onSubmitHandler}>
           <Form.Group className="mb-3" controlId="formBasicAccount">
-            <Form.Label>收款帳號</Form.Label>
+            <Form.Label>{t('EditBankInfoForm_account')}</Form.Label>
             <Form.Control
               type="account"
               placeholder=""
               defaultValue={getAccData && getAccData.P1}
               onChange={onChangeHandler}
+              autoComplete="off"
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicName">
-            <Form.Label>收款姓名</Form.Label>
+            <Form.Label>{t('EditBankInfoForm_name')}</Form.Label>
             <Form.Control
               type="name"
               placeholder=""
               defaultValue={getAccData && getAccData.P2}
               onChange={onChangeHandler}
+              autoComplete="off"
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicBank">
-            <Form.Label>開戶銀行</Form.Label>
+            <Form.Label>{t('EditBankInfoForm_bank')}</Form.Label>
             <Form.Control
               type="back"
               placeholder=""
               defaultValue={getAccData && getAccData.P3}
               onChange={onChangeHandler}
+              autoComplete="off"
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicCity">
-            <Form.Label>所在省市</Form.Label>
+            <Form.Label>{t('EditBankInfoForm_city')}</Form.Label>
             <Form.Control
               type="city"
               placeholder=""
               defaultValue={getAccData && getAccData.P4}
               onChange={onChangeHandler}
+              autoComplete="off"
             />
           </Form.Group>
 
@@ -148,7 +161,7 @@ const EditBankInfoForm = props => {
               </>
             )}
 
-            {setAccStatus !== 'pending' && '確定'}
+            {setAccStatus !== 'pending' && t('EditBankInfoForm_confirm')}
           </Button>
         </Form>
       </Modal.Body>

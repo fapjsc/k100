@@ -40,8 +40,6 @@ export const setAgentAcc = async accData => {
     });
 
     const data = await response.json();
-    console.log(response);
-    console.log(data);
 
     if (!response.ok) throw new Error(data.msg || 'Could not edit acc');
 

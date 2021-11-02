@@ -140,34 +140,31 @@ const TheWallet = () => {
 
                   {/* Acc data */}
                   <div className="row">
-                    <div className="col-12">
-                      <div className="w-50 d-flex justify-content-between align-items-center pr-4">
-                        <p className="txt_12">帳戶資訊</p>
+                    <div className="col-md-6 col-12">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <p className="txt_12">{t('EditBankInfoForm_account_info')}</p>
                         <AiFillEdit
                           style={{ fontSize: '2rem', color: '#242e47', cursor: 'pointer' }}
                           onClick={() => setShowForm(preState => !preState)}
                         />
                       </div>
-                    </div>
-
-                    <div className="col-md-6 col-12">
                       {getAccStatus === 'completed' && !getAccError && (
                         <>
                           <ListGroup>
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              收款帳號：{getAccData.P1}
+                              {t('EditBankInfoForm_account')}：{getAccData.P1}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              收款姓名：{getAccData.P2}
+                              {t('EditBankInfoForm_name')}：{getAccData.P2}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              開戶銀行：{getAccData.P3}
+                              {t('EditBankInfoForm_bank')}：{getAccData.P3}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              所在省市：{getAccData.P4}
+                              {t('EditBankInfoForm_city')}：{getAccData.P4}
                             </ListGroup.Item>
                           </ListGroup>
 
