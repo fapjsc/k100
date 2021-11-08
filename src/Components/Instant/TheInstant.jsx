@@ -1,5 +1,11 @@
 import { useEffect, useContext, useState } from 'react';
 
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+
+// Actions
+import { setOpenWebPushNotify, setDeviceIdAction } from '../../store/actions/agentAction';
+
 // Play Sound
 import useSound from 'use-sound';
 import newOrderSound from '../../Assets/mp3/newOrder.mp3';
@@ -16,25 +22,37 @@ import InstantNav from './InstantNav';
 import InstantAll from './InstantAll';
 import InstantOnGoing from './InstantOnGoing';
 
+// Firebase Web Push
+import { deleteToken } from '../../firebaseInit';
+
 // Style
 import BaseSpinner from '../Ui/BaseSpinner';
+
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 const TheInstant = () => {
+  // Redux
+  const dispatch = useDispatch();
+  const { openWebPushNotify, setDeviceId } = useSelector(state => state.agent);
+
+  const { status: setDeviceIdStatus, error: setDeviceIdError } = setDeviceId;
+
   // Lang Context
   const { t } = useI18n();
+
   // Init State
   const [tab, setTab] = useState('all');
   const [play, { stop }] = useSound(newOrderSound, { interrupt: false });
   const [loop, setLoop] = useState();
   const [soundState, setSoundState] = useState(true);
+  const [notifyPermission, setNotifyPermission] = useState('');
 
   // Instant Context
   const instantContext = useContext(InstantContext);
   const {
     connectInstantWs,
     instantOngoingWsConnect,
-    // wsStatusData,
     cleanAll,
     instantAllClient,
     instantOnGoingClient,
@@ -65,10 +83,6 @@ const TheInstant = () => {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line
-  }, [tab]);
-
-  useEffect(() => {
     if (soundState) {
       if (instantData.length > 0) {
         // 即時買賣新訂單聲音提示
@@ -93,6 +107,17 @@ const TheInstant = () => {
     // eslint-disable-next-line
   }, [instantData, soundState]);
 
+  useEffect(() => {
+    if (openWebPushNotify) {
+      localStorage.setItem('openNotify', 'yes');
+    }
+
+    if (!openWebPushNotify) {
+      deleteToken();
+      localStorage.removeItem('openNotify');
+    }
+  }, [openWebPushNotify, dispatch]);
+
   const handleStopSound = () => {
     stop();
     clearInterval(loop);
@@ -104,12 +129,51 @@ const TheInstant = () => {
     setSoundState(!soundState);
   };
 
+  const webPushClickHandler = () => {
+    if (!window.Notification) {
+      alert('你的瀏覽器不支援 Notification');
+      return;
+    }
+
+    if (setDeviceIdError) {
+      alert(setDeviceIdError);
+      return;
+    }
+
+    if (Notification.permission === 'granted') {
+      dispatch(setOpenWebPushNotify(!openWebPushNotify));
+      setNotifyPermission('granted');
+    }
+
+    if (Notification.permission === 'denied') {
+      setNotifyPermission('denied');
+      dispatch(setOpenWebPushNotify(false));
+      alert('請先開啟瀏覽器通知');
+    }
+  };
+
   return (
     <div className="mt-4">
-      <div className="d-flex justify-content-between align-items-center">
-        <p className="mb-0" style={{ fontSize: 12, color: '#fff' }}>
+      <div className="d-flex justify-content-start align-items-center">
+        <p className="mb-0 mr-auto" style={{ fontSize: 12, color: '#fff' }}>
           {t('instant_transaction')}
         </p>
+
+        {setDeviceIdStatus === 'pending' ? (
+          <Button className="btn-info mr-4" disabled>
+            Loading...
+          </Button>
+        ) : (
+          <Button
+            className={openWebPushNotify && !setDeviceIdError ? 'btn-info mr-4' : 'btn-danger mr-4'}
+            onClick={webPushClickHandler}
+          >
+            {openWebPushNotify && !setDeviceIdError
+              ? t('web_push_button_allow')
+              : t('web_push_button_deny')}
+          </Button>
+        )}
+
         <Button className={soundState ? 'btn-info' : 'btn-danger'} onClick={handleClick}>
           {!soundState ? t('instant_sound_close') : t('instant_sound_open')}
         </Button>
@@ -119,7 +183,9 @@ const TheInstant = () => {
         <InstantNav setTab={setTab} tab={tab} />
 
         {/* Content */}
-        {tab === 'all' && !httpLoading && instantData ? <InstantAll stop={handleStopSound} /> : null}
+        {tab === 'all' && !httpLoading && instantData ? (
+          <InstantAll stop={handleStopSound} />
+        ) : null}
         {tab === 'onGoing' && !httpLoading && wsOnGoingData ? <InstantOnGoing /> : null}
 
         {/* Loading */}

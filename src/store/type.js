@@ -1,0 +1,2 @@
+export const OPEN_WEB_PUSH_NOTIFY = 'OPEN_WEB_PUSH_NOTIFY';
+export const SET_DEVICE_ID = 'SET_DEVICE_ID';

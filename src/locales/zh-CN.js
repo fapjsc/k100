@@ -591,4 +591,8 @@ export default {
   EditBankInfoForm_city: '所在省市',
   EditBankInfoForm_confirm: '确定',
   EditBankInfoForm_error: '*无效的输入',
+
+  //** Web Push */
+  web_push_button_allow: '通知已开启',
+  web_push_button_deny: '通知已关闭',
 };

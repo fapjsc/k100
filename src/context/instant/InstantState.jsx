@@ -191,7 +191,11 @@ const InstantState = props => {
         }
 
         // // 交易成功 Order_StatusID：1
-        if (dataFromServer.data.Order_StatusID === 1 || dataFromServer.data.Order_StatusID === 99 || dataFromServer.data.Order_StatusID === 98) {
+        if (
+          dataFromServer.data.Order_StatusID === 1 ||
+          dataFromServer.data.Order_StatusID === 99 ||
+          dataFromServer.data.Order_StatusID === 98
+        ) {
           getBalance();
           client.close();
         }

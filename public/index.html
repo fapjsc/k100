@@ -27,5 +27,21 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- <script>
+      if (!window.Notification) {
+        console.log('這個瀏覽器不支援 Notification');
+      } else if (Notification.permission === 'granted') {
+        let notification = new Notification('這是一則通知');
+      } else if (Notification.permission === 'denied') {
+        alert('建議您允許通知，以收到最新消息');
+      } else if (Notification.permission === 'default') {
+        Notification.requestPermission().then(result => {
+          // result 相當於 Notification.permission
+          if (result === 'granted') {
+            let notification = new Notification('這是一則通知');
+          }
+        });
+      }
+    </script> -->
   </body>
 </html>

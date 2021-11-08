@@ -81,6 +81,7 @@ const InstantReducer = (state, action) => {
         ...state,
         instantData: action.payload,
       };
+
     default:
       return state;
   }

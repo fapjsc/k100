@@ -48,6 +48,31 @@ export const setAgentAcc = async accData => {
     return data.data;
   } catch (error) {
     console.log(error);
-    throw new Error('*訪問伺服器時發生錯誤');
+    throw new Error(error);
+  }
+};
+
+export const sendWebPushToken = async deviceId => {
+  const token = localStorage.getItem('token');
+  const headers = getHeaders(token);
+  const sendDeviceIdUrl = `/j/SetDevice_Session.aspx`;
+
+  try {
+    const response = await fetch(sendDeviceIdUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ DeviceID: deviceId }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.msg || 'Could not send deviceId');
+
+    if (data.code !== 200) throw new Error(data.msg || 'Send deviceId fail');
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
   }
 };

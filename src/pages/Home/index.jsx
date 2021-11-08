@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Route, Switch, Redirect, Link, useHistory, useLocation } from 'react-router-dom';
 
 // Context
@@ -14,7 +14,6 @@ import Overview from '../../Components/Overview';
 import TheWallet from '../../Components/Wallet/TheWallet';
 import WalletDetail from '../../Components/Wallet/WalletDetail';
 import History from '../../Components/History';
-// import ChangePassword from '../../Components/Auth/ChangePassword';
 import InstantDetail from '../../Components/Instant/InstantDetail';
 import InstantScreen from '../../pages/InstantScreen';
 
@@ -43,16 +42,19 @@ const HomeScreen = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const agent = localStorage.getItem('agent');
+
     if (!token) {
       history.replace('/auth/login');
       return;
     }
+
     setToken(token);
     if (agent) {
       setAgent(true);
       autoLogout();
     }
-    if (location.pathname === '/home' || location.pathname === '/home/') history.replace('/home/overview');
+    if (location.pathname === '/home' || location.pathname === '/home/')
+      history.replace('/home/overview');
     // 每小時確認一次agent帳號的過期時間
     let checkAgentExpires = setInterval(() => {
       autoLogout();
@@ -83,6 +85,7 @@ const HomeScreen = () => {
         </Link>
         <TheNav logout={logout} />
       </Header>
+
       <MoneyRecord />
       <Switch>
         <Route exact path="/home/overview" component={Overview} />
@@ -90,14 +93,12 @@ const HomeScreen = () => {
         <Route exact path="/home/wallet/:id" component={WalletDetail} />
         <Route path="/home/history" component={History} />
         <Route path="/home/transaction" component={Transaction} />
-        {/* <Route path="/home/change-pw" component={ChangePassword} /> */}
         <Route exact path="/home/instant" component={InstantScreen} />
         <Route exact path="/home/instant/:type/:id" component={InstantDetail} />
-
         <Redirect to="/home/overview" />
       </Switch>
     </>
   );
 };
 
-export default HomeScreen;
+export default React.memo(HomeScreen);
