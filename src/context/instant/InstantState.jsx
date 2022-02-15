@@ -4,6 +4,11 @@ import { w3cwebsocket as W3CWebsocket } from 'websocket';
 import InstantReducer from './InstantReducer';
 import InstantContext from './InstantContext';
 
+import store from '../../store/store'
+
+
+// Acitons
+import {  setOrderStatus} from "../../store/actions/orderActions";
 // Context
 import HttpErrorContext from '../../context/httpError/HttpErrorContext';
 import BalanceContext from '../../context/balance/BalanceContext';
@@ -91,7 +96,7 @@ const InstantState = props => {
     client.onmessage = message => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got reply all!', dataFromServer);
+      console.log('got reply all!', dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setInstantData(dataFromServer.data);
@@ -183,11 +188,12 @@ const InstantState = props => {
       client.onmessage = message => {
         if (!message.data) return;
         const dataFromServer = JSON.parse(message.data);
-        // console.log('got reply status!', dataFromServer);
+        console.log('got reply status!', dataFromServer);
 
         if (dataFromServer) {
           setWsStatusData(dataFromServer.data.Order_StatusID);
           setPaymentName(dataFromServer.data.P5);
+          store.dispatch(setOrderStatus(dataFromServer.data))
         }
 
         // // 交易成功 Order_StatusID：1

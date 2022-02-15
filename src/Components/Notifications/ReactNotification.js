@@ -4,7 +4,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ReactNotificationComponent = ({ title, body }) => {
-  console.log('notify frontend');
   let hideNotify = title === '';
 
   const Display = () => {

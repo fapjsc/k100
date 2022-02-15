@@ -1,31 +1,36 @@
-import { useContext, useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
+import { useContext, useEffect, useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+
+import { useSelector } from "react-redux";
 
 // ConText
-import SellContext from '../../context/sell/SellContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import SellContext from "../../context/sell/SellContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Components
-import SellExRate from './SellExRate';
-import SellDetail from './SellDetail';
+import SellExRate from "./SellExRate";
+import SellDetail from "./SellDetail";
 // import Pairing from './Pairing';
-import TheChat from '../Chat/TheChat.js';
-import CompleteStatus from '../universal/CompleteStatus';
-import BaseSpinner from '../Ui/BaseSpinner';
+import TheChat from "../Chat/TheChat.js";
+import CompleteStatus from "../universal/CompleteStatus";
+import BaseSpinner from "../Ui/BaseSpinner";
 
 // Style
-import helpIcon from '../../Assets/i_ask2.png';
-import Button from 'react-bootstrap/Button';
+import helpIcon from "../../Assets/i_ask2.png";
+import Button from "react-bootstrap/Button";
 
 const SellInfo = () => {
   // Lang Context
   const { t } = useI18n();
   // Break Points
-  const isMobile = useMediaQuery({ query: '(max-width: 1200px)' }); // 小於等於 1200 true
+  const isMobile = useMediaQuery({ query: "(max-width: 1200px)" }); // 小於等於 1200 true
+
+  const { orderStatus } = useSelector((state) => state.order);
+  const { Order_StatusID: statusID, Tx_HASH: hash } = orderStatus || {};
 
   // Router Props
   const history = useHistory();
@@ -54,13 +59,13 @@ const SellInfo = () => {
   useEffect(() => {
     if (errorText) alert(errorText);
     return () => {
-      setHttpError('');
+      setHttpError("");
     };
     // eslint-disable-next-line
   }, [errorText]);
 
   const backToHome = () => {
-    history.replace('/home/overview');
+    history.replace("/home/overview");
     if (wsClient) wsClient.close();
     cleanAll();
   };
@@ -72,7 +77,7 @@ const SellInfo = () => {
   // };
 
   return (
-    <div className="" style={{ position: 'relative' }}>
+    <div className="" style={{ position: "relative" }}>
       {/* <Pairing
         onHide={onHide}
         show={wsPairing && wsClient}
@@ -80,13 +85,14 @@ const SellInfo = () => {
         text={wsData && `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`}
       /> */}
       <SellExRate />
-      {(sellStatus === 33 || sellStatus === 34) && wsData ? (
+      {(statusID === 33 || statusID === 34) && wsData ? (
         <SellDetail />
-      ) : sellStatus === 1 || sellStatus === 99 || (sellStatus === 98 && wsData) ? (
+      ) : statusID === 1 || statusID === 99 || statusID === 98 || statusID === 35 ? (
         <CompleteStatus
           wsStatus={sellStatus}
-          hash={wsData && wsData.Tx_HASH}
+          hash={hash}
           backToHome={backToHome}
+          statusID={statusID}
           type="sell"
         />
       ) : (
@@ -103,7 +109,11 @@ const SellInfo = () => {
       {/* 聊天室 --手機版 小於1200px  */}
       {isMobile && wsData ? (
         <div style={MobileChatContainer}>
-          <Button style={helpBtn} variant="primary" onClick={() => setShowChat(!showChat)}>
+          <Button
+            style={helpBtn}
+            variant="primary"
+            onClick={() => setShowChat(!showChat)}
+          >
             <img
               style={{
                 width: 15,
@@ -113,7 +123,7 @@ const SellInfo = () => {
               src={helpIcon}
               alt="help icon"
             />
-            {t('chat_help')}
+            {t("chat_help")}
           </Button>
 
           <TheChat hash={wsData.Tx_HASH} isChat={showChat} />
@@ -128,32 +138,32 @@ const helpBtn = {
   paddingRight: 15,
   paddingTop: 5,
   paddingBottom: 5,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '1rem 2rem',
-  fontSize: '1.5rem',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "1rem 2rem",
+  fontSize: "1.5rem",
   fontWeight: 300,
-  borderRadius: '10rem',
-  position: 'absolute',
-  bottom: '5%',
+  borderRadius: "10rem",
+  position: "absolute",
+  bottom: "5%",
   right: 0,
-  backgroundColor: '#F80FA',
+  backgroundColor: "#F80FA",
 };
 
 const MobileChatContainer = {
   height: 600,
   width: 100,
-  position: 'fixed',
+  position: "fixed",
   bottom: -15,
   right: 10,
 };
 
 const chatContainer = {
-  backgroundColor: 'red',
-  position: 'absolute',
+  backgroundColor: "red",
+  position: "absolute",
   top: -95,
-  right: '-50%',
+  right: "-50%",
 };
 
 export default SellInfo;

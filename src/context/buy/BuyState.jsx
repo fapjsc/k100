@@ -1,17 +1,22 @@
-import { useReducer, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useReducer, useContext } from "react";
+import { useHistory } from "react-router-dom";
 // import ReconnectingWebSocket from 'reconnecting-websocket';
-import { w3cwebsocket as W3CWebsocket } from 'websocket';
+import { w3cwebsocket as W3CWebsocket } from "websocket";
 
-import BuyReducer from './BuyReducer';
-import BuyContext from './BuyContext';
+import store from "../../store/store";
+
+// actions
+import { setOrderStatus } from "../../store/actions/orderActions";
+
+import BuyReducer from "./BuyReducer";
+import BuyContext from "./BuyContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Context
-import HttpErrorContext from '../httpError/HttpErrorContext';
-import BalanceContext from '../../context/balance/BalanceContext';
+import HttpErrorContext from "../httpError/HttpErrorContext";
+import BalanceContext from "../../context/balance/BalanceContext";
 
 import {
   BUY_BTN_LOADING,
@@ -25,9 +30,9 @@ import {
   SET_BUY_WS_DATA,
   SET_DELTA_TIME,
   HIDE_BUY_INFO,
-} from '../type';
+} from "../type";
 
-const BuyState = props => {
+const BuyState = (props) => {
   // Lang Context
   const { t } = useI18n();
 
@@ -46,11 +51,11 @@ const BuyState = props => {
   const initialState = {
     buyBtnLoading: false,
     buyCount: {
-      usdt: '',
-      rmb: '',
+      usdt: "",
+      rmb: "",
     },
-    buyErrorText: '',
-    buyOrderToken: '',
+    buyErrorText: "",
+    buyOrderToken: "",
     wsStatus: null,
     buyPairing: false,
     showBank: false,
@@ -62,18 +67,18 @@ const BuyState = props => {
 
   // Get Header
   const getHeader = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     if (!token) return;
     let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('login_session', token);
+    headers.append("Content-Type", "application/json");
+    headers.append("login_session", token);
 
     return headers;
   };
 
   // 確認購買，獲得Order Token--step 1
-  const confirmBuy = async accountName => {
+  const confirmBuy = async (accountName) => {
     handleBuyBtnLoading(true);
     const { usdt } = state.buyCount;
     const headers = getHeader();
@@ -81,7 +86,7 @@ const BuyState = props => {
     try {
       const reqBuyApi = `/j/Req_Buy1.aspx`;
       const res = await fetch(reqBuyApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           ClientName: accountName,
@@ -92,7 +97,7 @@ const BuyState = props => {
       const resData = await res.json();
 
       if (resData.code === 200) {
-        setHttpError('');
+        setHttpError("");
         setOrderToken(resData.data.order_token);
       } else {
         handleHttpError(resData);
@@ -104,14 +109,15 @@ const BuyState = props => {
   };
 
   //連接web socket --step 2
-  const buyConnectWs = token => {
-    const transactionApi = 'j/ws_orderstatus.ashx';
+  const buyConnectWs = (token) => {
+    console.log('call webSocket')
+    const transactionApi = "j/ws_orderstatus.ashx";
 
-    let loginSession = localStorage.getItem('token');
+    let loginSession = localStorage.getItem("token");
 
     let url;
 
-    if (window.location.protocol === 'http:') {
+    if (window.location.protocol === "http:") {
       url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
     } else {
       url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
@@ -130,11 +136,15 @@ const BuyState = props => {
     };
 
     // 2.收到server回復
-    client.onmessage = message => {
+    client.onmessage = (message) => {
+      console.log(message, 'message')
       // console.log(message);
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log('got reply!', dataFromServer, 'buy');
+      console.log("got reply!", dataFromServer, "buy");
+
+      store.dispatch(setOrderStatus(dataFromServer.data));
+
       setWsStatus(dataFromServer.data.Order_StatusID);
       setDeltaTime(dataFromServer.data.DeltaTime);
 
@@ -200,20 +210,23 @@ const BuyState = props => {
       }
 
       // 交易失敗
-      if (dataFromServer.data.Order_StatusID === 99 || dataFromServer.data.Order_StatusID === 98) {
+      if (
+        dataFromServer.data.Order_StatusID === 99 ||
+        dataFromServer.data.Order_StatusID === 98
+      ) {
         client.close();
       }
     };
 
     //3. 連線關閉
-    client.onclose = message => {
+    client.onclose = (message) => {
       // console.log('關閉連線', message);
       // setWsClient(null);
     };
   };
 
   // Buy2 --step 3
-  const BuyerAlreadyPay = async orderToken => {
+  const BuyerAlreadyPay = async (orderToken) => {
     handleBuyBtnLoading(true);
     cleanErr();
 
@@ -222,7 +235,7 @@ const BuyState = props => {
     try {
       const reqBuy2Api = `/j/Req_Buy2.aspx`;
       const res = await fetch(reqBuy2Api, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           Token: orderToken,
@@ -242,13 +255,13 @@ const BuyState = props => {
   };
 
   // Get And Set DeltaTime
-  const GetDeltaTime = async orderToken => {
+  const GetDeltaTime = async (orderToken) => {
     const headers = getHeader();
     const getDetailApi = `/j/GetTxDetail.aspx`;
 
     try {
       const res = await fetch(getDetailApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           Token: orderToken,
@@ -268,12 +281,12 @@ const BuyState = props => {
   };
 
   // 取消訂單
-  const cancelOrder = async orderToken => {
+  const cancelOrder = async (orderToken) => {
     const headers = getHeader();
     const cancelApi = `/j/Req_CancelOrder.aspx`;
     try {
       const res = await fetch(cancelApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           Token: orderToken,
@@ -284,69 +297,69 @@ const BuyState = props => {
 
       if (resData.code === 200) {
       } else {
-        alert(t('cancel_fail'));
-        history.replace('/home/overview');
+        alert(t("cancel_fail"));
+        history.replace("/home/overview");
       }
     } catch (error) {
       handleHttpError(error);
-      history.replace('/home/overview');
+      history.replace("/home/overview");
     }
 
     setHttpLoading(false);
   };
 
   // 設定購買數量
-  const setBuyCount = data => {
+  const setBuyCount = (data) => {
     dispatch({ type: SET_BUY_COUNT, payload: data });
   };
 
   // Set Error Text
-  const setErrorText = text => {
+  const setErrorText = (text) => {
     dispatch({ type: SET_BUY_ERROR_TEXT, payload: text });
   };
 
   // Handle Buy Btn Loading
-  const handleBuyBtnLoading = value => {
+  const handleBuyBtnLoading = (value) => {
     dispatch({ type: BUY_BTN_LOADING, payload: value });
   };
 
   // Set Order Token
-  const setOrderToken = token => {
+  const setOrderToken = (token) => {
     dispatch({ type: SET_BUY_ORDER_TOKEN, payload: token });
   };
 
   // Set Web Socket Status
-  const setWsStatus = value => {
+  const setWsStatus = (value) => {
     dispatch({ type: SET_BUY_WS_STATUS, payload: value });
   };
 
   // Handle Pairing
-  const handlePairing = value => {
+  const handlePairing = (value) => {
     dispatch({ type: HANDLE_PAIRING, payload: value });
   };
 
   // Set Show Bank
-  const setShowBank = value => {
+  const setShowBank = (value) => {
     dispatch({ type: SET_SHOW_BANK, payload: value });
   };
 
   // Set Web Socket Client
-  const setWsClient = client => {
+  const setWsClient = (client) => {
     dispatch({ type: SET_BUY_WS_CLIENT, payload: client });
   };
 
   // Set Buy Web Socket Res Data
-  const setWsData = data => {
+  const setWsData = (data) => {
     dispatch({ type: SET_BUY_WS_DATA, payload: data });
   };
 
   // Set Delta Time
-  const setDeltaTime = num => {
+  const setDeltaTime = (num) => {
     dispatch({ type: SET_DELTA_TIME, payload: num });
   };
 
   // Set Hide Buy Info
-  const setHideBuyInfo = value => {
+  const setHideBuyInfo = (value) => {
     dispatch({ type: HIDE_BUY_INFO, payload: value });
   };
 
@@ -368,14 +381,14 @@ const BuyState = props => {
     setWsData({});
     setOrderToken(null);
     setBuyCount({
-      rmb: '',
-      usdt: '',
+      rmb: "",
+      usdt: "",
     });
   };
 
   const cleanErr = () => {
-    setHttpError('');
-    setErrorText('');
+    setHttpError("");
+    setErrorText("");
   };
 
   const [state, dispatch] = useReducer(BuyReducer, initialState);

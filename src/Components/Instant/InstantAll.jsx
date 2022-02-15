@@ -1,16 +1,25 @@
-import { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useContext } from "react";
+
+// Redux
+import { useDispatch } from "react-redux";
+
+import { useHistory } from "react-router-dom";
 
 // Context
-import InstantContext from '../../context/instant/InstantContext';
+import InstantContext from "../../context/instant/InstantContext";
 
 // Components
-import NoData from '../NoData';
-import InstantAllItem from './InstantAllItem';
+import NoData from "../NoData";
+import InstantAllItem from "./InstantAllItem";
+
+// Actions
+import { setCurrentInstantData } from "../../store/actions/instantActions";
 
 // Style
 
 const InstantAll = ({ stop }) => {
+  const dispatch = useDispatch();
+
   // Route Props
   const history = useHistory();
 
@@ -28,7 +37,8 @@ const InstantAll = ({ stop }) => {
       token,
     };
     setCountData(data);
-    history.replace('/home/instant');
+    dispatch(setCurrentInstantData(data));
+    history.replace("/home/instant");
   };
 
   if (!instantData.length) {
@@ -36,8 +46,10 @@ const InstantAll = ({ stop }) => {
   } else {
     return (
       <div>
-        {instantData.map(el => {
-          return <InstantAllItem key={el.token} el={el} handleClick={handleClick} />;
+        {instantData.map((el) => {
+          return (
+            <InstantAllItem key={el.token} el={el} handleClick={handleClick} />
+          );
         })}
       </div>
     );

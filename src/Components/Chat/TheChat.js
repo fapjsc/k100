@@ -38,7 +38,20 @@ const TheChat = props => {
 
   // Chat Context
   const chatContext = useContext(ChatContext);
-  const { instantClient, client, instantMessages, messages, chatConnect, instantChat, setInstantMessages, setMessages, chatLoading, setChatLoading, newMessage, setNewMessage } = chatContext;
+  const {
+    instantClient,
+    client,
+    instantMessages,
+    messages,
+    chatConnect,
+    instantChat,
+    setInstantMessages,
+    setMessages,
+    chatLoading,
+    setChatLoading,
+    newMessage,
+    setNewMessage,
+  } = chatContext;
 
   // ===========
   //  function
@@ -219,8 +232,18 @@ const TheChat = props => {
                       {/* messages */}
                       {el.Message_Type === 1 ? (
                         <>
-                          {el.Message_Role === 2 && <Badge variant="danger">{t('chat_customer_server')}</Badge>}
-                          <p className={el.Message_Role === 1 || el.Message_Role === 2 ? classes.talk_l : classes.talk_r}>{el.Message}</p>
+                          {el.Message_Role === 2 && (
+                            <Badge variant="danger">{t('chat_customer_server')}</Badge>
+                          )}
+                          <p
+                            className={
+                              el.Message_Role === 1 || el.Message_Role === 2
+                                ? classes.talk_l
+                                : classes.talk_r
+                            }
+                          >
+                            {el.Message}
+                          </p>
                         </>
                       ) : (
                         <>
@@ -238,7 +261,11 @@ const TheChat = props => {
                                 }}
                                 src={el.Message}
                                 alt="send img"
-                                className={el.Message_Role === 1 || el.Message_Role === 2 ? classes.talk_l : classes.talk_r}
+                                className={
+                                  el.Message_Role === 1 || el.Message_Role === 2
+                                    ? classes.talk_l
+                                    : classes.talk_r
+                                }
                               />
                             </PhotoConsumer>
                           </PhotoProvider>
@@ -246,8 +273,19 @@ const TheChat = props => {
                       )}
 
                       {/* 日期 */}
-                      <div className={el.Message_Role === 1 || el.Message_Role === 2 ? classes.talk_time : `${classes.talk_time} ${classes.a_right}`}>
-                        {el.Sysdate.split(' ').splice(1, 1).join().split(':').splice(0, 2).join(':')}
+                      <div
+                        className={
+                          el.Message_Role === 1 || el.Message_Role === 2
+                            ? classes.talk_time
+                            : `${classes.talk_time} ${classes.a_right}`
+                        }
+                      >
+                        {el.Sysdate.split(' ')
+                          .splice(1, 1)
+                          .join()
+                          .split(':')
+                          .splice(0, 2)
+                          .join(':')}
                       </div>
                     </div>
                     <div
@@ -270,7 +308,12 @@ const TheChat = props => {
             <div className={classes.bottom}>
               {/* attach-iconBox */}
               <label className="">
-                <input id="upload_img" style={{ display: 'none' }} type="file" onChange={e => sendImg(e)} />
+                <input
+                  id="upload_img"
+                  style={{ display: 'none' }}
+                  type="file"
+                  onChange={e => sendImg(e)}
+                />
                 <div className={classes.attach_icon} style={{ cursor: 'pointer' }} />
               </label>
               <div className="w_77">
@@ -284,7 +327,12 @@ const TheChat = props => {
                   onKeyUp={e => sendMessage(userInput, e)}
                 />
               </div>
-              <span id="sendIcon" style={{ cursor: 'pointer' }} className={classes.send_icon} onClick={e => sendMessage(userInput, e)} />
+              <span
+                id="sendIcon"
+                style={{ cursor: 'pointer' }}
+                className={classes.send_icon}
+                onClick={e => sendMessage(userInput, e)}
+              />
             </div>
           </>
         ) : client ? (
@@ -300,8 +348,18 @@ const TheChat = props => {
                       {/* messages */}
                       {el.Message_Type === 1 ? (
                         <>
-                          {el.Message_Role === 2 && <Badge variant="danger">{t('chat_customer_server')}</Badge>}
-                          <p className={el.Message_Role === 2 || el.Message_Role === 3 ? classes.talk_l : classes.talk_r}>{el.Message}</p>
+                          {el.Message_Role === 2 && (
+                            <Badge variant="danger">{t('chat_customer_server')}</Badge>
+                          )}
+                          <p
+                            className={
+                              el.Message_Role === 2 || el.Message_Role === 3
+                                ? classes.talk_l
+                                : classes.talk_r
+                            }
+                          >
+                            {el.Message}
+                          </p>
                         </>
                       ) : (
                         <>
@@ -319,7 +377,11 @@ const TheChat = props => {
                                 style={{
                                   cursor: 'zoom-in',
                                 }}
-                                className={el.Message_Role === 3 || el.Message_Role === 2 ? classes.talk_l : classes.talk_r}
+                                className={
+                                  el.Message_Role === 3 || el.Message_Role === 2
+                                    ? classes.talk_l
+                                    : classes.talk_r
+                                }
                               />
                             </PhotoConsumer>
                           </PhotoProvider>
@@ -327,8 +389,19 @@ const TheChat = props => {
                       )}
 
                       {/* 日期 */}
-                      <div className={el.Message_Role === 3 || el.Message_Role === 2 ? classes.talk_time : `${classes.talk_time} ${classes.a_right}`}>
-                        {el.Sysdate.split(' ').splice(1, 1).join().split(':').splice(0, 2).join(':')}
+                      <div
+                        className={
+                          el.Message_Role === 3 || el.Message_Role === 2
+                            ? classes.talk_time
+                            : `${classes.talk_time} ${classes.a_right}`
+                        }
+                      >
+                        {el.Sysdate.split(' ')
+                          .splice(1, 1)
+                          .join()
+                          .split(':')
+                          .splice(0, 2)
+                          .join(':')}
                       </div>
                     </div>
                     <div
@@ -352,7 +425,12 @@ const TheChat = props => {
             <div className={`${classes.bottom} d-flex align-items-center`}>
               {/* attach-iconBox  label className */}
               <label className="mt-2">
-                <input id="upload_img" style={{ display: 'none' }} type="file" onChange={e => sendImg(e)} />
+                <input
+                  id="upload_img"
+                  style={{ display: 'none' }}
+                  type="file"
+                  onChange={e => sendImg(e)}
+                />
                 <div className={classes.attach_icon} style={{ cursor: 'pointer' }} />
               </label>
               <div className="w_77">
@@ -366,7 +444,12 @@ const TheChat = props => {
                   onKeyUp={e => sendMessage(userInput, e)}
                 />
               </div>
-              <span id="sendIcon1" style={{ cursor: 'pointer' }} className={classes.send_icon} onClick={e => sendMessage(userInput, e)} />
+              <span
+                id="sendIcon1"
+                style={{ cursor: 'pointer' }}
+                className={classes.send_icon}
+                onClick={e => sendMessage(userInput, e)}
+              />
             </div>
           </>
         ) : (

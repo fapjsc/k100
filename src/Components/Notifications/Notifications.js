@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { getToken } from '../../firebaseInit.js';
 
 // Redux
@@ -14,6 +15,8 @@ import useHttp from '../../hooks/useHttp';
 import { sendWebPushToken } from '../../lib/api';
 
 const Notifications = props => {
+  const history = useHistory();
+
   // Redux
   const dispatch = useDispatch();
 
@@ -29,6 +32,12 @@ const Notifications = props => {
   console.log('Token found', isTokenFound);
 
   useEffect(() => {
+    if (sendDeviceError) {
+      if (!localStorage.getItem('token')) {
+        localStorage.clear();
+        history.replaceState('/');
+      }
+    }
     dispatch(
       setDeviceIdAction({
         error: sendDeviceError,
@@ -36,7 +45,7 @@ const Notifications = props => {
         data: sendDeviceData,
       })
     );
-  }, [sendDeviceStatus, sendDeviceError, sendDeviceData, dispatch]);
+  }, [sendDeviceStatus, sendDeviceError, sendDeviceData, dispatch, history]);
 
   // To load once
   useEffect(() => {

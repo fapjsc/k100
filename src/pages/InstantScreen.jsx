@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 // Context
-import InstantContext from '../context/instant/InstantContext';
+import InstantContext from "../context/instant/InstantContext";
 
 // Components
-import InstantCount from '../Components/Instant/InstantCount';
-import FormFooter from '../Components/Layout/FormFooter';
-import Pairing from '../Components/universal/Pairing';
-import InstantNav from '../Components/Instant/InstantNav';
+import InstantCount from "../Components/Instant/InstantCount";
+import FormFooter from "../Components/Layout/FormFooter";
+import Pairing from "../Components/universal/Pairing";
+import InstantNav from "../Components/Instant/InstantNav";
 
 const InstantScreen = () => {
   // Router Props
@@ -16,18 +16,27 @@ const InstantScreen = () => {
 
   // Init State
   const [showPop, setShowPop] = useState(false);
-  const [tab, setTab] = useState('all');
+  const [tab, setTab] = useState("all");
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { countData, setSell1Data, setCountData, setBuy1Data, sell1Data, buy1Data, actionType, setActionType } = instantContext;
+  const {
+    countData,
+    setSell1Data,
+    setCountData,
+    setBuy1Data,
+    sell1Data,
+    buy1Data,
+    actionType,
+    setActionType,
+  } = instantContext;
 
   // ===========
   //  UseEffect
   // ===========
   useEffect(() => {
     return () => {
-      setActionType('');
+      setActionType("");
     };
     // eslint-disable-next-line
   }, []);
@@ -43,7 +52,7 @@ const InstantScreen = () => {
   //  Function
   // ==========
   const handleClosePop = () => {
-    history.replace('/home/overview');
+    history.replace("/home/overview");
     setSell1Data(null);
     setCountData(null);
     setBuy1Data(null);
@@ -58,7 +67,9 @@ const InstantScreen = () => {
             <p className="welcome_txt pl-0 mt-4">歡迎登入</p>
             <div className="contentbox">
               <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
-              {actionType !== 'onGoing' && <InstantCount setShowPop={setShowPop} showPop={showPop} />}
+              {actionType !== "onGoing" && (
+                <InstantCount setShowPop={setShowPop} showPop={showPop} />
+              )}
               <FormFooter />
             </div>
           </div>

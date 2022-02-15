@@ -1,26 +1,45 @@
 import firebase from 'firebase/app';
 import 'firebase/messaging';
 
-// 本地
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: 'AIzaSyDNrZhATvtisIkhhN8X5tfxEf0umrq98gE',
-  authDomain: 'web-push-2f66d.firebaseapp.com',
-  projectId: 'web-push-2f66d',
-  storageBucket: 'web-push-2f66d.appspot.com',
-  messagingSenderId: '802105019569',
-  appId: '1:802105019569:web:ec9037b7f31a8b2143e690',
-};
+
+// 本地
+// const {
+//   REACT_APP_API_KEY_LOCAL,
+//   REACT_APP_FIREBASE_AUTH_DOMAIN_LOCAL,
+//   REACT_APP_FIREBASE_PROJECT_ID_LOCAL,
+//   REACT_APP_FIREBASE_STORAGE_BUCKET_LOCAL,
+//   REACT_APP_FIREBASE_MESSAGING_SENDER_ID_LOCAL,
+//   REACT_APP_FIREBASE_APP_ID_LOCAL,
+// } = process.env;
+
+// const firebaseConfig = {
+//   apiKey: REACT_APP_API_KEY_LOCAL,
+//   authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN_LOCAL,
+//   projectId: REACT_APP_FIREBASE_PROJECT_ID_LOCAL,
+//   storageBucket: REACT_APP_FIREBASE_STORAGE_BUCKET_LOCAL,
+//   messagingSenderId: REACT_APP_FIREBASE_MESSAGING_SENDER_ID_LOCAL,
+//   appId: REACT_APP_FIREBASE_APP_ID_LOCAL,
+// };
 
 //** 香港 */
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyD1rj-pHvVoh_iRpMinxJOmTVzWqz9Xd1k',
-//   authDomain: 'project-7097378441609873165.firebaseapp.com',
-//   projectId: 'project-7097378441609873165',
-//   storageBucket: 'project-7097378441609873165.appspot.com',
-//   messagingSenderId: '987626746733',
-//   appId: '1:987626746733:web:bfdba90a8c6514a62ce064',
-// };
+const {
+  REACT_APP_API_KEY,
+  REACT_APP_FIREBASE_AUTH_DOMAIN,
+  REACT_APP_FIREBASE_PROJECT_ID,
+  REACT_APP_FIREBASE_STORAGE_BUCKET,
+  REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  REACT_APP_FIREBASE_APP_ID,
+} = process.env;
+
+const firebaseConfig = {
+  apiKey: REACT_APP_API_KEY,
+  authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: REACT_APP_FIREBASE_APP_ID,
+};
 
 firebase.initializeApp(firebaseConfig);
 
@@ -32,21 +51,13 @@ try {
   console.log(error);
 }
 
-// const { REACT_APP_VAPID_KEY } = process.env;
-
-// 本地
-const FCMKEY =
-  'BMnL09T9ZnPU6QYORfcsfxiOWsBcdhrFBa4mEFuW4sG32GT2mqIfdW70lvEMYWML6Gr0NGPRo-49z7mRkJhdDN4';
-
-//** 香港 */
-// const FCMKEY =
-//   'BKvsu7omq-VMU1ICqm66yPVNmu9i9ROua0tOaw1PI-QoMB70eqKus2LwOBvbMfmBDZdg8ONV3v9np9f0-6bcqsE';
+const { REACT_APP_VAPID_KEY, REACT_APP_VAPID_KEY_LOCAL } = process.env;
 
 let currentToken = '';
 
 export const getToken = async setTokenFound => {
   try {
-    currentToken = await messaging.getToken({ vapidKey: FCMKEY });
+    currentToken = await messaging.getToken({ vapidKey: REACT_APP_VAPID_KEY });
     if (currentToken) {
       setTokenFound(true);
     } else {

@@ -595,4 +595,7 @@ export default {
   //** Web Push */
   web_push_button_allow: '通知已开启',
   web_push_button_deny: '通知已关闭',
+
+  web_push_open_notify_request: '请先开启浏览器通知',
+  web_push_not_support: '你的浏览器不支援 Notification',
 };

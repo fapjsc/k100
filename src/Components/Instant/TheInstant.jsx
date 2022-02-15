@@ -4,7 +4,7 @@ import { useEffect, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Actions
-import { setOpenWebPushNotify, setDeviceIdAction } from '../../store/actions/agentAction';
+import { setOpenWebPushNotify } from '../../store/actions/agentAction';
 
 // Play Sound
 import useSound from 'use-sound';
@@ -29,7 +29,6 @@ import { deleteToken } from '../../firebaseInit';
 import BaseSpinner from '../Ui/BaseSpinner';
 
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
 
 const TheInstant = () => {
   // Redux
@@ -45,8 +44,8 @@ const TheInstant = () => {
   const [tab, setTab] = useState('all');
   const [play, { stop }] = useSound(newOrderSound, { interrupt: false });
   const [loop, setLoop] = useState();
-  const [soundState, setSoundState] = useState(true);
-  const [notifyPermission, setNotifyPermission] = useState('');
+  const [soundState, setSoundState] = useState(localStorage.getItem('openSound'));
+  // const [notifyPermission, setNotifyPermission] = useState('');
 
   // Instant Context
   const instantContext = useContext(InstantContext);
@@ -83,28 +82,28 @@ const TheInstant = () => {
   }, []);
 
   useEffect(() => {
-    if (soundState) {
-      if (instantData.length > 0) {
-        // 即時買賣新訂單聲音提示
-        play();
-        const soundLoop = setInterval(() => {
-          play();
-        }, 5000);
+    if (soundState) localStorage.setItem('openSound', true);
+    if (!soundState) localStorage.removeItem('openSound');
 
-        setLoop(soundLoop);
-      } else {
-        if (loop) handleStopSound();
-      }
+    let soundLoop;
+    if (soundState && instantData.length > 0) {
+      // 即時買賣新訂單聲音提示
+      play();
+      soundLoop = setInterval(() => {
+        play();
+      }, 5000);
+
+      setLoop(soundLoop);
+    }
+
+    if (soundState && instantData.length === 0) {
+      stop();
+      clearInterval(soundLoop);
     }
 
     return () => {
-      if (loop) {
-        stop();
-        clearInterval(loop);
-      }
+      clearInterval(soundLoop);
     };
-
-    // eslint-disable-next-line
   }, [instantData, soundState]);
 
   useEffect(() => {
@@ -123,15 +122,9 @@ const TheInstant = () => {
     clearInterval(loop);
   };
 
-  const handleClick = () => {
-    stop();
-    clearInterval(loop);
-    setSoundState(!soundState);
-  };
-
   const webPushClickHandler = () => {
     if (!window.Notification) {
-      alert('你的瀏覽器不支援 Notification');
+      alert(t('web_push_not_support'));
       return;
     }
 
@@ -139,16 +132,17 @@ const TheInstant = () => {
       alert(setDeviceIdError);
       return;
     }
+    console.log(Notification.permission);
 
-    if (Notification.permission === 'granted') {
+    if (Notification.permission === 'granted' || Notification.permission === 'default') {
       dispatch(setOpenWebPushNotify(!openWebPushNotify));
-      setNotifyPermission('granted');
+      // setNotifyPermission('granted');
     }
 
     if (Notification.permission === 'denied') {
-      setNotifyPermission('denied');
+      // setNotifyPermission('denied');
       dispatch(setOpenWebPushNotify(false));
-      alert('請先開啟瀏覽器通知');
+      alert(t('web_push_open_notify_request'));
     }
   };
 
@@ -174,7 +168,10 @@ const TheInstant = () => {
           </Button>
         )}
 
-        <Button className={soundState ? 'btn-info' : 'btn-danger'} onClick={handleClick}>
+        <Button
+          className={soundState ? 'btn-info' : 'btn-danger'}
+          onClick={() => setSoundState(pre => !pre)}
+        >
           {!soundState ? t('instant_sound_close') : t('instant_sound_open')}
         </Button>
       </div>

@@ -1,34 +1,41 @@
-import { useContext, useEffect, useState } from 'react';
-import { useRouteMatch, useHistory } from 'react-router-dom';
-import Countdown from 'react-countdown';
+import { useContext, useEffect, useState } from "react";
+import { useRouteMatch, useHistory } from "react-router-dom";
+import Countdown from "react-countdown";
+
+import { useSelector } from "react-redux";
 
 // Context
-import InstantContext from '../../context/instant/InstantContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
-import BuyContext from '../../context/buy/BuyContext';
+import InstantContext from "../../context/instant/InstantContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
+import BuyContext from "../../context/buy/BuyContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Components
-import FromFooter from '../Layout/FormFooter';
-import BaseSpinner from '../Ui/BaseSpinner';
-import CompleteStatus from '../universal/CompleteStatus';
-import Cancel from '../universal/Cancel';
-import InstantNav from '../Instant/InstantNav';
-import CountDownTimer from '../universal/countDownTimer';
-import Timer from '../Buy/Timer';
+import FromFooter from "../Layout/FormFooter";
+import BaseSpinner from "../Ui/BaseSpinner";
+import CompleteStatus from "../universal/CompleteStatus";
+import Cancel from "../universal/Cancel";
+import InstantNav from "../Instant/InstantNav";
+import CountDownTimer from "../universal/countDownTimer";
+import Timer from "../Buy/Timer";
 
 // Style
-import Spinner from 'react-bootstrap/Spinner';
-import Button from 'react-bootstrap/Button';
+import Spinner from "react-bootstrap/Spinner";
+import Button from "react-bootstrap/Button";
 
 const SellDetail = () => {
+  console.log("instant sell");
   // Lang Context
   const { t } = useI18n();
   // Router Props
   const match = useRouteMatch();
   const history = useHistory();
+
+  const { orderStatus } = useSelector((state) => state.order);
+
+  const { Order_StatusID: statusID } = orderStatus || {};
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -40,16 +47,30 @@ const SellDetail = () => {
 
   // Instant Context
   const instantContext = useContext(InstantContext);
-  const { sell1Data, sellMatch1, sellMatch2, statusWs, wsStatusData, wsStatusClient, cleanAll, paymentName } = instantContext;
+  const {
+    sell1Data,
+    sellMatch1,
+    sellMatch2,
+    statusWs,
+    wsStatusData,
+    wsStatusClient,
+    cleanAll,
+    paymentName,
+  } = instantContext;
 
   // Init State
   const [overTime1, setOvertime1] = useState(false);
   const [overTime2, setOvertime2] = useState(false);
   const [showComplete, setShowComplete] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
-  const [tab, setTab] = useState('all');
-  const [timeLeft, setTimeLeft] = useState(Date.now() + 1000 * 60 * 15 - deltaTime * 1000);
-  const [timeLeft2, setTimeLeft2] = useState(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
+  const [tab, setTab] = useState("all");
+  const [timeLeft, setTimeLeft] = useState(
+    Date.now() + 1000 * 60 * 15 - deltaTime * 1000
+  );
+  const [timeLeft2, setTimeLeft2] = useState(
+    Date.now() + 1000 * 60 * 30 - deltaTime * 1000
+  );
+
 
   // ===========
   //  useEffect
@@ -78,7 +99,7 @@ const SellDetail = () => {
   useEffect(() => {
     if (errorText) alert(errorText);
     return () => {
-      setHttpError('');
+      setHttpError("");
     };
     //eslint-disable-next-line
   }, [errorText]);
@@ -115,7 +136,7 @@ const SellDetail = () => {
 
   const backToHome = () => {
     if (wsStatusClient) wsStatusClient.close();
-    history.replace('/home/overview');
+    history.replace("/home/overview");
     setOvertime1(false);
     setOvertime2(false);
     setDeltaTime(null);
@@ -124,15 +145,21 @@ const SellDetail = () => {
 
   return (
     <>
-      <Cancel show={showCancel} onHide={() => setShowCancel(false)} hash={sell1Data.Tx_HASH} token={match.params.id} type="instant" />
+      <Cancel
+        show={showCancel}
+        onHide={() => setShowCancel(false)}
+        hash={sell1Data.Tx_HASH}
+        token={match.params.id}
+        type="instant"
+      />
       <div className="row mt-4">
         <div className="col-xl-8 col-12">
           <p className="welcome_txt pl-0" style={{ marginTop: 20 }}>
-            {t('welcome_text')}
+            {t("welcome_text")}
           </p>
           <div className="contentbox">
             <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
-            <div className="txt_12 pt_20">{t('instant_nav_all')}</div>
+            <div className="txt_12 pt_20">{t("instant_nav_all")}</div>
             <div id="sell" className="tabcontent">
               {sell1Data && !showComplete ? (
                 <>
@@ -142,32 +169,42 @@ const SellDetail = () => {
                       {/* Block-1  --pay info */}
                       <div className="w45_m100 mobile-width">
                         <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
-                          <span className="txt_12 mr-auto">{t('instant_payee_data')}</span>
+                          <span className="txt_12 mr-auto">
+                            {t("instant_payee_data")}
+                          </span>
                           <span className="i_clock mr-1 mb-1" />
-                          <span className="txt_12">{t('instant_pay_time')}：</span>
-                          <Countdown onComplete={handleCountDownComplete} renderer={CountDownTimer} date={timeLeft} />
+                          <span className="txt_12">
+                            {t("instant_pay_time")}：
+                          </span>
+                          <Countdown
+                            onComplete={handleCountDownComplete}
+                            renderer={CountDownTimer}
+                            date={timeLeft}
+                          />
                         </div>
                         {/* 收款方資料 */}
                         <div className="lightblue_bg txt_12 d-flex flex-column py-4">
                           <span className="txt_12_grey mb-4">
-                            {t('instant_payee_name')}：{sell1Data.P2}
+                            {t("instant_payee_name")}：{sell1Data.P2}
                           </span>
                           <span className="txt_12_grey mb-4">
-                            {t('instant_payee_account')}：{sell1Data.P1}
+                            {t("instant_payee_account")}：{sell1Data.P1}
                           </span>
                           <span className="txt_12_grey mb-4">
-                            {t('instant_bank')}：{sell1Data.P3}
+                            {t("instant_bank")}：{sell1Data.P3}
                           </span>
                           <span className="txt_12_grey">
-                            {t('instant_city')}：{sell1Data.P4}
+                            {t("instant_city")}：{sell1Data.P4}
                           </span>
                         </div>
 
                         {/* 付款方資料 */}
                         <div className="w45_m100 mobile-width w-100">
-                          <p className="txt_12 pt_20 mb-2">{t('instant_payer_data')}</p>
+                          <p className="txt_12 pt_20 mb-2">
+                            {t("instant_payer_data")}
+                          </p>
                           <p className="txt_12_grey lightblue_bg py-4">
-                            {t('instant_payer_name')}：{paymentName}
+                            {t("instant_payer_name")}：{paymentName}
                           </p>
                         </div>
                       </div>
@@ -175,25 +212,35 @@ const SellDetail = () => {
                       {/* Block-2  --交易資料 */}
                       <div className="easy_info mobile-width h-50 flex-order1-mobile p-4">
                         <div className="inline">
-                          <div className="txt_12_grey">{t('instant_exRate')}：</div>
+                          <div className="txt_12_grey">
+                            {t("instant_exRate")}：
+                          </div>
                           <span className="">{sell1Data.D1.toFixed(2)}</span>
                         </div>
 
                         <div className="right_txt16">
                           <span className="i_blue1" />
-                          <span className="blue">{t('instant_buy')}</span>
+                          <span className="blue">{t("instant_buy")}</span>
                         </div>
 
                         <hr />
 
                         <div className="d-flex justify-content-between">
                           <div>
-                            <p className="txt_12_grey mb-0">{t('instant_price')}</p>
-                            <p className="c_blue">{sell1Data.D2.toFixed(2)} CNY</p>
+                            <p className="txt_12_grey mb-0">
+                              {t("instant_price")}
+                            </p>
+                            <p className="c_blue">
+                              {sell1Data.D2.toFixed(2)} CNY
+                            </p>
                           </div>
                           <div>
-                            <p className="txt_12_grey text-right mb-0">{t('instant_qua')}</p>
-                            <p className="">{Math.abs(sell1Data.UsdtAmt).toFixed(2)} USDT</p>
+                            <p className="txt_12_grey text-right mb-0">
+                              {t("instant_qua")}
+                            </p>
+                            <p className="">
+                              {Math.abs(sell1Data.UsdtAmt).toFixed(2)} USDT
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -203,11 +250,18 @@ const SellDetail = () => {
                   {/* 第二階段倒數結束 */}
                   {overTime2 && (
                     <div>
-                      <h2 className="txt_18 text-center my-4" style={{ color: '#242e47' }}>
-                        {t('instant_over_time')}
+                      <h2
+                        className="txt_18 text-center my-4"
+                        style={{ color: "#242e47" }}
+                      >
+                        {t("instant_over_time")}
                       </h2>
-                      <Button onClick={backToHome} className="easy-btn mw400 mobile-width" variant="primary">
-                        {t('btn_back_home')}
+                      <Button
+                        onClick={backToHome}
+                        className="easy-btn mw400 mobile-width"
+                        variant="primary"
+                      >
+                        {t("btn_back_home")}
                       </Button>
                     </div>
                   )}
@@ -216,9 +270,20 @@ const SellDetail = () => {
                   {!overTime1 && (
                     <>
                       {httpLoading ? (
-                        <Button variant="secondary" className="easy-btn mw400 mobile-width" style={{ marginTop: 50 }} disabled>
-                          <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-                          {t('btn_loading')}...
+                        <Button
+                          variant="secondary"
+                          className="easy-btn mw400 mobile-width"
+                          style={{ marginTop: 50 }}
+                          disabled
+                        >
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          {t("btn_loading")}...
                         </Button>
                       ) : (
                         <Button
@@ -229,7 +294,7 @@ const SellDetail = () => {
                             marginTop: 50,
                           }}
                         >
-                          {t('btn_already_pay')}
+                          {t("btn_already_pay")}
                         </Button>
                       )}
                     </>
@@ -239,9 +304,20 @@ const SellDetail = () => {
                   {overTime1 && !overTime2 ? (
                     <>
                       {httpLoading ? (
-                        <Button variant="secondary" className="easy-btn mw400 mobile-width" style={{ marginTop: 50 }} disabled>
-                          <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
-                          {t('btn_loading')}...
+                        <Button
+                          variant="secondary"
+                          className="easy-btn mw400 mobile-width"
+                          style={{ marginTop: 50 }}
+                          disabled
+                        >
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          {t("btn_loading")}...
                         </Button>
                       ) : (
                         <Button
@@ -252,8 +328,12 @@ const SellDetail = () => {
                             marginTop: 50,
                           }}
                         >
-                          <Countdown onComplete={handleCountDownComplete2} renderer={Timer} date={timeLeft2} />
-                          &nbsp; {t('btn_already_pay')}
+                          <Countdown
+                            onComplete={handleCountDownComplete2}
+                            renderer={Timer}
+                            date={timeLeft2}
+                          />
+                          &nbsp; {t("btn_already_pay")}
                         </Button>
                       )}
                     </>
@@ -262,24 +342,31 @@ const SellDetail = () => {
                   <div className="text-center">
                     <span
                       style={{
-                        cursor: 'pointer',
-                        paddingBottom: '2px',
-                        borderBottom: '1px solid #262e45',
+                        cursor: "pointer",
+                        paddingBottom: "2px",
+                        borderBottom: "1px solid #262e45",
                         fontSize: 12,
-                        color: '#262e45',
-                        borderColor: '#262e45',
+                        color: "#262e45",
+                        borderColor: "#262e45",
                       }}
                       // onClick={() => setShowCancel(true)}
                       onClick={handleCancel}
                     >
-                      {t('btn_cancel_order')}
+                      {t("btn_cancel_order")}
                     </span>
                   </div>
                   <FromFooter />
                 </>
               ) : sell1Data && showComplete ? (
                 // 交易結果
-                <CompleteStatus wsStatus={wsStatusData} backToHome={backToHome} hash={sell1Data.Tx_HASH} type="buy" />
+                <CompleteStatus
+                  statusID={statusID}
+                  wsStatus={wsStatusData}
+                  backToHome={backToHome}
+                  hash={sell1Data.Tx_HASH}
+                  type="buy"
+                  action="confirm"
+                />
               ) : (
                 <BaseSpinner />
               )}
