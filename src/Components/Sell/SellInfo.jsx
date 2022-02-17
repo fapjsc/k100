@@ -76,6 +76,8 @@ const SellInfo = () => {
   //   cleanAll();
   // };
 
+  console.log(statusID)
+
   return (
     <div className="" style={{ position: "relative" }}>
       {/* <Pairing
@@ -85,9 +87,9 @@ const SellInfo = () => {
         text={wsData && `出售訂單：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`}
       /> */}
       <SellExRate />
-      {(statusID === 33 || statusID === 34) && wsData ? (
+      {(statusID === 33 || statusID === 34 || statusID === 35) && wsData ? (
         <SellDetail />
-      ) : statusID === 1 || statusID === 99 || statusID === 98 || statusID === 35 ? (
+      ) : statusID === 1 || statusID === 99 || statusID === 98  ? (
         <CompleteStatus
           wsStatus={sellStatus}
           hash={hash}

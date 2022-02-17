@@ -275,6 +275,11 @@ const SellState = (props) => {
         setWsData(dataFromServer.data);
       }
 
+      if (dataFromServer.data.Order_StatusID === 35) {
+        setWsData(dataFromServer.data);
+      }
+      
+
       // 交易成功 Order_StatusID：1
       if (dataFromServer.data.Order_StatusID === 1) {
         getBalance();

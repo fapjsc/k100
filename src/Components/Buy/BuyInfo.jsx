@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import BuyContext from "../../context/buy/BuyContext";
 
 // Hooks
-import useHttp from '../../hooks/useHttp'
+import useHttp from "../../hooks/useHttp";
 
 // Apis
 import { confirmReceived } from "../../lib/api";
@@ -31,7 +31,7 @@ import Button from "react-bootstrap/Button";
 
 const BuyInfo = () => {
   const { orderStatus } = useSelector((state) => state.order);
-  const { Order_StatusID: statusID, Tx_HASH:hash } = orderStatus || {};
+  const { Order_StatusID: statusID, Tx_HASH: hash } = orderStatus || {};
 
   // Lang Context
   const { t } = useI18n();
@@ -45,15 +45,13 @@ const BuyInfo = () => {
   const match = useRouteMatch();
   const history = useHistory();
 
-
- // Buy2 http
- const {
-  sendRequest: confirmReceivedReq,
-  data: confirmReceivedData,
-  status: confirmReceivedStatus,
-  error: confirmReceivedError,
-} = useHttp(confirmReceived);
-
+  // Buy2 http
+  const {
+    sendRequest: confirmReceivedReq,
+    data: confirmReceivedData,
+    status: confirmReceivedStatus,
+    error: confirmReceivedError,
+  } = useHttp(confirmReceived);
 
   // Buy Context
   const buyContext = useContext(BuyContext);
@@ -128,10 +126,9 @@ const BuyInfo = () => {
       />
       <ExRate />
 
-      {statusID === 33 && buyWsData ? (
+      {(statusID === 35 || statusID === 33) && buyWsData ? (
         <BuyDetail />
       ) : (statusID === 34 ||
-          statusID === 35 ||
           statusID === 1 ||
           statusID === 99 ||
           statusID === 98) &&

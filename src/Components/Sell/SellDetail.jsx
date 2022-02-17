@@ -31,10 +31,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
+import warningImg from "../../Assets/warning.png";
+
 const SellDetail = () => {
   const { orderStatus } = useSelector((state) => state.order);
   const { Order_StatusID: statusID } = orderStatus || {};
-
 
   // Appeal http
   const {
@@ -56,6 +57,8 @@ const SellDetail = () => {
   const sellContext = useContext(SellContext);
   const { wsData, setConfirmSell, confirmSellAction, sellStatus, cleanAll } =
     sellContext;
+
+  console.log("sell details", sellStatus, statusID);
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -110,20 +113,7 @@ const SellDetail = () => {
 
   return (
     <Container className="">
-      {overTime ? (
-        <div>
-          <h2 className="txt_18 text-center my-4" style={{ color: "#242e47" }}>
-            {t("sell_over_time")}
-          </h2>
-          <Button
-            onClick={backToHome}
-            className="easy-btn mw400 mobile-width"
-            variant="primary"
-          >
-            {t("btn_back_home")}
-          </Button>
-        </div>
-      ) : !overTime ? (
+      {wsData ? (
         <>
           <Row className="mb-2 mt-4">
             <Col className="mt-4 pl-1 mb-2">
@@ -173,14 +163,15 @@ const SellDetail = () => {
             <Col className="mw400 text-center px-0">
               {!httpLoading ? (
                 <>
-                  <Button
-                    disabled={overTime}
-                    onClick={handleSubmit}
-                    className="mw400"
-                    block
-                    style={statusID === 34 ? infoBtn : infoBtnDisabled}
-                  >
-                    {statusID === 33 && (
+                  {statusID === 33 && (
+                    <Button
+                      disabled={overTime}
+                      // onClick={handleSubmit}
+                      className="mw400"
+                      block
+                      // style={statusID === 34 ? infoBtn : infoBtnDisabled}
+                      style={infoBtnDisabled}
+                    >
                       <img
                         src={btnWait}
                         alt="btn wait"
@@ -189,24 +180,47 @@ const SellDetail = () => {
                           marginRight: 10,
                         }}
                       />
-                    )}
 
-                    <span className="">
-                      {statusID === 34
-                        ? t("btn_buyer_already_pay")
-                        : t("btn_preparing")}
-                    </span>
-                  </Button>
+                      <span className="">{t("btn_preparing")}</span>
+                    </Button>
+                  )}
 
                   {statusID === 34 && (
-                    <Button
-                      onClick={() => appealReq(token)}
-                      className="easy-btn mw400 mobile-width"
-                      style={{ backgroundColor: "#bfbfbf", width: "100%" }}
-                      disabled={appealStatus === "pending"}
-                    >
-                      {appealStatus === "pending" ? "loading..." : "申诉"}
-                    </Button>
+                    <>
+                      <button
+                        style={infoBtn}
+                        className="easy-btn mw400 mobile-width"
+                        onClick={handleSubmit}
+                      >
+                        {t("btn_buyer_already_pay")}
+                      </button>
+                      <button
+                        onClick={() => appealReq(token)}
+                        className="easy-btn mw400 mobile-width"
+                        style={{ backgroundColor: "#bfbfbf", width: "100%" }}
+                        disabled={appealStatus === "pending"}
+                      >
+                        {appealStatus === "pending" ? "loading..." : "申诉"}
+                      </button>
+                    </>
+                  )}
+
+                  {statusID === 35 && (
+                    <div style={{}}>
+                      <div className="d-flex justify-content-center align-items-center">
+                        <img
+                          style={{ width: "5rem", height: "5rem" }}
+                          src={warningImg}
+                          alt="warning"
+                        />
+                        <h5 className="txt26" style={{ marginBottom: 0 }}>
+                          申訴中
+                        </h5>
+                      </div>
+                      <button onClick={handleSubmit} className="easy-btn mw400">
+                        確定已收款
+                      </button>
+                    </div>
                   )}
                 </>
               ) : (

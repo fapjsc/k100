@@ -25,6 +25,8 @@ import Timer from "../Buy/Timer";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
+import warningImg from "../../Assets/warning.png";
+
 const SellDetail = () => {
   console.log("instant sell");
   // Lang Context
@@ -71,6 +73,7 @@ const SellDetail = () => {
     Date.now() + 1000 * 60 * 30 - deltaTime * 1000
   );
 
+  console.log(wsStatusData);
 
   // ===========
   //  useEffect
@@ -105,6 +108,10 @@ const SellDetail = () => {
   }, [errorText]);
 
   useEffect(() => {
+    if (wsStatusData === 35) {
+      setShowComplete(false);
+    }
+
     if (wsStatusData === 99 || wsStatusData === 98) {
       setShowComplete(true);
       setShowCancel(false);
@@ -164,91 +171,176 @@ const SellDetail = () => {
               {sell1Data && !showComplete ? (
                 <>
                   {/* 第一階段倒數結束前 */}
-                  {!overTime1 && (
-                    <div className="d-flex justify-content-between flex-column-mobile">
-                      {/* Block-1  --pay info */}
-                      <div className="w45_m100 mobile-width">
-                        <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
-                          <span className="txt_12 mr-auto">
-                            {t("instant_payee_data")}
-                          </span>
-                          <span className="i_clock mr-1 mb-1" />
-                          <span className="txt_12">
-                            {t("instant_pay_time")}：
-                          </span>
-                          <Countdown
-                            onComplete={handleCountDownComplete}
-                            renderer={CountDownTimer}
-                            date={timeLeft}
-                          />
-                        </div>
-                        {/* 收款方資料 */}
-                        <div className="lightblue_bg txt_12 d-flex flex-column py-4">
-                          <span className="txt_12_grey mb-4">
-                            {t("instant_payee_name")}：{sell1Data.P2}
-                          </span>
-                          <span className="txt_12_grey mb-4">
-                            {t("instant_payee_account")}：{sell1Data.P1}
-                          </span>
-                          <span className="txt_12_grey mb-4">
-                            {t("instant_bank")}：{sell1Data.P3}
-                          </span>
-                          <span className="txt_12_grey">
-                            {t("instant_city")}：{sell1Data.P4}
-                          </span>
-                        </div>
+                  <div className="d-flex justify-content-between flex-column-mobile">
+                    {/* Block-1  --pay info */}
+                    <div className="w45_m100 mobile-width">
+                      <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
+                        <span className="txt_12 mr-auto">
+                          {t("instant_payee_data")}
+                        </span>
+                        <span className="i_clock mr-1 mb-1" />
 
-                        {/* 付款方資料 */}
-                        <div className="w45_m100 mobile-width w-100">
-                          <p className="txt_12 pt_20 mb-2">
-                            {t("instant_payer_data")}
+                        {wsStatusData !== 35 && (
+                          <>
+                            <span className="txt_12">
+                              {t("instant_pay_time")}：
+                            </span>
+                            <Countdown
+                              onComplete={handleCountDownComplete}
+                              renderer={CountDownTimer}
+                              date={timeLeft}
+                            />
+                          </>
+                        )}
+                      </div>
+                      {/* 收款方資料 */}
+                      <div className="lightblue_bg txt_12 d-flex flex-column py-4">
+                        <span className="txt_12_grey mb-4">
+                          {t("instant_payee_name")}：{sell1Data.P2}
+                        </span>
+                        <span className="txt_12_grey mb-4">
+                          {t("instant_payee_account")}：{sell1Data.P1}
+                        </span>
+                        <span className="txt_12_grey mb-4">
+                          {t("instant_bank")}：{sell1Data.P3}
+                        </span>
+                        <span className="txt_12_grey">
+                          {t("instant_city")}：{sell1Data.P4}
+                        </span>
+                      </div>
+
+                      {/* 付款方資料 */}
+                      <div className="w45_m100 mobile-width w-100">
+                        <p className="txt_12 pt_20 mb-2">
+                          {t("instant_payer_data")}
+                        </p>
+                        <p className="txt_12_grey lightblue_bg py-4">
+                          {t("instant_payer_name")}：{paymentName}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Block-2  --交易資料 */}
+                    <div className="easy_info mobile-width h-50 flex-order1-mobile p-4">
+                      <div className="inline">
+                        <div className="txt_12_grey">
+                          {t("instant_exRate")}：
+                        </div>
+                        <span className="">{sell1Data.D1.toFixed(2)}</span>
+                      </div>
+
+                      <div className="right_txt16">
+                        <span className="i_blue1" />
+                        <span className="blue">{t("instant_buy")}</span>
+                      </div>
+
+                      <hr />
+
+                      <div className="d-flex justify-content-between">
+                        <div>
+                          <p className="txt_12_grey mb-0">
+                            {t("instant_price")}
                           </p>
-                          <p className="txt_12_grey lightblue_bg py-4">
-                            {t("instant_payer_name")}：{paymentName}
+                          <p className="c_blue">
+                            {sell1Data.D2.toFixed(2)} CNY
+                          </p>
+                        </div>
+                        <div>
+                          <p className="txt_12_grey text-right mb-0">
+                            {t("instant_qua")}
+                          </p>
+                          <p className="">
+                            {Math.abs(sell1Data.UsdtAmt).toFixed(2)} USDT
                           </p>
                         </div>
                       </div>
+                    </div>
+                  </div>
 
-                      {/* Block-2  --交易資料 */}
-                      <div className="easy_info mobile-width h-50 flex-order1-mobile p-4">
-                        <div className="inline">
-                          <div className="txt_12_grey">
-                            {t("instant_exRate")}：
-                          </div>
-                          <span className="">{sell1Data.D1.toFixed(2)}</span>
-                        </div>
+                  {/* {wsStatusData === 34 && !httpLoading ? (
+                    <>
+                      <Button
+                        onClick={handleClick}
+                        className="easy-btn mw400 mobile-width"
+                        style={{}}
+                      >
+                        {t("btn_buyer_already_pay")}
+                      </Button>
 
-                        <div className="right_txt16">
-                          <span className="i_blue1" />
-                          <span className="blue">{t("instant_buy")}</span>
-                        </div>
+                      <Button
+                        onClick={() => appealReq(match.params.id)}
+                        className="easy-btn mw400 mobile-width"
+                        style={{ backgroundColor: "#bfbfbf" }}
+                        disabled={appealStatus === "pending"}
+                      >
+                        {appealStatus === "pending" ? "loading..." : "申诉"}
+                      </Button>
+                    </>
+                  ) : null} */}
 
-                        <hr />
+                  {wsStatusData === 33 && (
+                    <div>
+                      <Button
+                        onClick={handleClick}
+                        disabled={overTime1 || httpLoading}
+                        className="easy-btn mw400 mobile-width"
+                        style={{
+                          marginTop: 50,
+                        }}
+                      >
 
-                        <div className="d-flex justify-content-between">
-                          <div>
-                            <p className="txt_12_grey mb-0">
-                              {t("instant_price")}
-                            </p>
-                            <p className="c_blue">
-                              {sell1Data.D2.toFixed(2)} CNY
-                            </p>
-                          </div>
-                          <div>
-                            <p className="txt_12_grey text-right mb-0">
-                              {t("instant_qua")}
-                            </p>
-                            <p className="">
-                              {Math.abs(sell1Data.UsdtAmt).toFixed(2)} USDT
-                            </p>
-                          </div>
-                        </div>
+                        {httpLoading ? 'loading...' : t("btn_already_pay")}
+                      </Button>
+                      <div className="text-center">
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            paddingBottom: "2px",
+                            borderBottom: "1px solid #262e45",
+                            fontSize: 12,
+                            color: "#262e45",
+                            borderColor: "#262e45",
+                          }}
+                          onClick={handleCancel}
+                        >
+                          {t("btn_cancel_order")}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {wsStatusData === 35 && (
+                    <div style={{}}>
+                      <div className="d-flex justify-content-center align-items-center">
+                        <img
+                          style={{ width: "5rem", height: "5rem" }}
+                          src={warningImg}
+                          alt="warning"
+                        />
+                        <h5 className="txt26" style={{ marginBottom: 0 }}>
+                          申訴中
+                        </h5>
+                      </div>
+                      <div className="text-center">
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            paddingBottom: "2px",
+                            borderBottom: "1px solid #262e45",
+                            fontSize: 12,
+                            color: "#262e45",
+                            borderColor: "#262e45",
+                          }}
+                          onClick={handleCancel}
+                        >
+                          {t("btn_cancel_order")}
+                        </span>
                       </div>
                     </div>
                   )}
 
                   {/* 第二階段倒數結束 */}
-                  {overTime2 && (
+                  {/* {overTime2 && (
                     <div>
                       <h2
                         className="txt_18 text-center my-4"
@@ -264,10 +356,10 @@ const SellDetail = () => {
                         {t("btn_back_home")}
                       </Button>
                     </div>
-                  )}
+                  )} */}
 
                   {/* Button --正常 */}
-                  {!overTime1 && (
+                  {/* {!overTime1 && (
                     <>
                       {httpLoading ? (
                         <Button
@@ -283,7 +375,7 @@ const SellDetail = () => {
                             role="status"
                             aria-hidden="true"
                           />
-                          {t("btn_loading")}...
+                          {t("btn_loading")}
                         </Button>
                       ) : (
                         <Button
@@ -294,14 +386,14 @@ const SellDetail = () => {
                             marginTop: 50,
                           }}
                         >
-                          {t("btn_already_pay")}
+                          {t("btn_already_pay")}...
                         </Button>
                       )}
                     </>
-                  )}
+                  )} */}
 
                   {/* Button --倒數 */}
-                  {overTime1 && !overTime2 ? (
+                  {/* {overTime1 && !overTime2 ? (
                     <>
                       {httpLoading ? (
                         <Button
@@ -354,7 +446,7 @@ const SellDetail = () => {
                     >
                       {t("btn_cancel_order")}
                     </span>
-                  </div>
+                  </div> */}
                   <FromFooter />
                 </>
               ) : sell1Data && showComplete ? (

@@ -26,8 +26,8 @@ import HistoryDetail from "../History/HistoryAllDetail";
 import Card from "react-bootstrap/Card";
 
 const CompleteStatus = (props) => {
-  console.log(props.action);
-  console.log(props.type);
+  // console.log(props.action);
+  // console.log(props.type);
 
   const dispatch = useDispatch();
   const {
@@ -44,7 +44,7 @@ const CompleteStatus = (props) => {
   const { orderStatus } = useSelector((state) => state.order);
   const { MasterType, Order_TypeID } = orderStatus || {};
 
-  console.log(Order_TypeID);
+  // console.log(Order_TypeID);
 
   // Buy2 Http
 
@@ -158,7 +158,7 @@ const CompleteStatus = (props) => {
     return (
       <Card className="border-0 text-center pb-4">
         <div className="i_error mt-4 mb-4" />
-        <h4 className="c_blue">申訴中</h4>
+        <h4 className="c_blue">申訴中..</h4>
         <br />
         <p className="txt_12_grey text-break">
           {t("transaction_hash")}：{" "}

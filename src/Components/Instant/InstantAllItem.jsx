@@ -5,6 +5,7 @@ import { useI18n } from '../../lang';
 import StopWatch from '../universal/StopWatch';
 
 const InstantAllItem = ({ el, handleClick }) => {
+  console.log(el)
   // Lang Context
   const { t } = useI18n();
   if (el.MType === 2) {
@@ -87,6 +88,7 @@ const InstantAllItem = ({ el, handleClick }) => {
                 {t('instant_get')}&nbsp;{el.D2.toFixed(2)} CNY
               </span>
             </div>
+
           </div>
 
           <div className="col-md-1" />

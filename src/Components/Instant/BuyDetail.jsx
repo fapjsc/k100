@@ -37,8 +37,9 @@ import { setInstantOrderData } from "../../store/actions/instantActions";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
+import warningImg from "../../Assets/warning.png";
+
 const BuyDetail = () => {
-  console.log('instant buy')
   // Lang Context
   const { t } = useI18n();
 
@@ -90,9 +91,6 @@ const BuyDetail = () => {
     // sell1Data,
   } = instantContext;
 
-
-  console.log(wsStatusData)
-
   // Init State
   const [showComplete, setShowComplete] = useState(false);
   const [tab, setTab] = useState("all");
@@ -142,19 +140,21 @@ const BuyDetail = () => {
   }, [tab]);
 
   useEffect(() => {
-    if (wsStatusData === 99 || wsStatusData === 98) {
+    console.log("instant buy", wsStatusData, statusID, showComplete);
+    if (wsStatusData === 35) setShowComplete(false);
+
+    if (wsStatusData === 99 || wsStatusData === 98 || wsStatusData === 1) {
+      console.log("set true");
       setShowComplete(true);
     }
-
-    if (wsStatusData === 1) setShowComplete(true);
 
     // eslint-disable-next-line
   }, [wsStatusData]);
 
   useEffect(() => {
     if (appealData && appealStatus === "completed" && !appealError) {
+      console.log("set true", appealData, appealStatus, appealError);
       dispatch(setOrderStatus(appealData));
-      setShowComplete(true);
     }
   }, [appealData, appealStatus, appealError, dispatch]);
 
@@ -165,6 +165,7 @@ const BuyDetail = () => {
       !confirmReceivedError
     ) {
       dispatch(setOrderStatus(confirmReceivedData));
+      console.log("set true");
       setShowComplete(true);
     }
   }, [
@@ -182,7 +183,7 @@ const BuyDetail = () => {
 
   useEffect(() => {
     if (statusID === 35) {
-      setShowComplete(true);
+      setShowComplete(false);
     }
   }, [statusID]);
 
@@ -206,188 +207,191 @@ const BuyDetail = () => {
         </p>
         <div className="contentbox">
           <InstantNav tab={tab} setTab={setTab} jumpTo={true} />
-          {overTime ? (
-            <div>
-              <h2
-                className="txt_18 text-center my-4"
-                style={{ color: "#242e47" }}
-              >
-                {t("instant_over_time")}
-              </h2>
-              <Button
-                onClick={backToHome}
-                className="easy-btn mw400 mobile-width"
-                variant="primary"
-              >
-                {t("btn_back_home")}
-              </Button>
-            </div>
-          ) : (
-            <>
-              <div className="txt_12 pt_20">{t("instant_transaction")}</div>
-              <div id="buy" className="tabcontent">
-                {buy1Data && !showComplete ? (
-                  <>
-                    <div className="d-flex justify-content-between flex-column-mobile">
-                      {/* Block-1  --pay info */}
-                      <div className="w45_m100 mobile-width">
-                        {/* Pay Timer */}
-                        <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
-                          <span className="txt_12 mr-auto">
-                            {t("instant_payee_data")}
-                          </span>
-                          <span className="i_clock mr-1 mb-1" />
+          <div className="txt_12 pt_20">{t("instant_transaction")}</div>
+          <div id="buy" className="tabcontent">
+            {buy1Data && !showComplete ? (
+              <>
+                <div className="d-flex justify-content-between flex-column-mobile">
+                  {/* Block-1  --pay info */}
+                  <div className="w45_m100 mobile-width">
+                    {/* Pay Timer */}
+                    <div className="easy_counter mt-4 d-flex justify-content-start align-items-center mb-2">
+                      <span className="txt_12 mr-auto">
+                        {t("instant_payee_data")}
+                      </span>
+                      <span className="i_clock mr-1 mb-1" />
+
+                      {wsStatusData !== 35 && (
+                        <>
                           <span className="txt_12">
                             {t("instant_pay_time")}：
                           </span>
-                          {/* <span className="c_yellow">15分40秒</span> */}
                           <Countdown
                             onComplete={() => setOverTime(true)}
                             renderer={CountDownTimer}
                             date={timeLeft}
                           />
-                        </div>
-                        {/* 收款方資料 */}
-                        <div className="lightblue_bg txt_12 d-flex flex-column py-4">
-                          <span className="txt_12_grey mb-4">
-                            {t("instant_payee_name")}：{buy1Data.P2}
-                          </span>
-                          <span className="txt_12_grey mb-4">
-                            {t("instant_payee_account")}：{buy1Data.P1}
-                          </span>
-                          <span className="txt_12_grey mb-4">
-                            {t("instant_bank")}：{buy1Data.P3}
-                          </span>
-                          <span className="txt_12_grey">
-                            {t("instant_city")}：{buy1Data.P4}
-                          </span>
-                        </div>
-                        {/* 付款方資料 */}
-                        <div className="w45_m100 mobile-width w-100">
-                          <p className="txt_12 pt_20 mb-2">
-                            {t("instant_payer_data")}
-                          </p>
-                          <p className="txt_12_grey lightblue_bg py-4">
-                            {t("instant_payer_name")}：{paymentName}
-                          </p>
-                        </div>
-                      </div>
+                        </>
+                      )}
+                    </div>
+                    {/* 收款方資料 */}
+                    <div className="lightblue_bg txt_12 d-flex flex-column py-4">
+                      <span className="txt_12_grey mb-4">
+                        {t("instant_payee_name")}：{buy1Data.P2}
+                      </span>
+                      <span className="txt_12_grey mb-4">
+                        {t("instant_payee_account")}：{buy1Data.P1}
+                      </span>
+                      <span className="txt_12_grey mb-4">
+                        {t("instant_bank")}：{buy1Data.P3}
+                      </span>
+                      <span className="txt_12_grey">
+                        {t("instant_city")}：{buy1Data.P4}
+                      </span>
+                    </div>
+                    {/* 付款方資料 */}
+                    <div className="w45_m100 mobile-width w-100">
+                      <p className="txt_12 pt_20 mb-2">
+                        {t("instant_payer_data")}
+                      </p>
+                      <p className="txt_12_grey lightblue_bg py-4">
+                        {t("instant_payer_name")}：{paymentName}
+                      </p>
+                    </div>
+                  </div>
 
-                      {/* Block-2  --交易資料 */}
-                      <div className="easy_info mobile-width h-50 flex-order1-mobile p-4">
-                        <div className="inline">
-                          <div className="txt_12_grey">
-                            {t("instant_exRate")}：
-                          </div>
-                          <span className="">{buy1Data.D1.toFixed(2)}</span>
-                        </div>
-
-                        <div className="right_txt16">
-                          <span className="i_red" />
-                          <span className="red">{t("instant_sell")}</span>
-                        </div>
-
-                        <hr />
-
-                        <div className="d-flex justify-content-between">
-                          <div>
-                            <p className="txt_12_grey mb-0 ">
-                              {t("instant_price")}
-                            </p>
-                            <p className="c_blue ">
-                              {buy1Data.D2.toFixed(2)} CNY
-                            </p>
-                          </div>
-
-                          <div>
-                            <p className="txt_12_grey text-right mb-0 ">
-                              {t("instant_qua")}
-                            </p>
-                            <p className="">
-                              {Math.abs(buy1Data.UsdtAmt).toFixed(2)} USDT
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                  {/* Block-2  --交易資料 */}
+                  <div className="easy_info mobile-width h-50 flex-order1-mobile p-4">
+                    <div className="inline">
+                      <div className="txt_12_grey">{t("instant_exRate")}：</div>
+                      <span className="">{buy1Data.D1.toFixed(2)}</span>
                     </div>
 
-                    {/* Button */}
-                    {wsStatusData === 33 ? (
-                      <button className="mw400 disable-easy-btn mobile-width">
-                        <span className="i_ready"></span>
-                        {t("btn_preparing")}
-                      </button>
-                    ) : null}
+                    <div className="right_txt16">
+                      <span className="i_red" />
+                      <span className="red">{t("instant_sell")}</span>
+                    </div>
 
-                    {wsStatusData === 34 && !httpLoading ? (
-                      <>
-                        <Button
-                          onClick={handleClick}
-                          className="easy-btn mw400 mobile-width"
-                          style={{}}
-                        >
-                          {t("btn_buyer_already_pay")}
-                        </Button>
+                    <hr />
 
-                        <Button
-                          onClick={() => appealReq(match.params.id)}
-                          className="easy-btn mw400 mobile-width"
-                          style={{ backgroundColor: "#bfbfbf" }}
-                          disabled={appealStatus === "pending"}
-                        >
-                          {appealStatus === "pending" ? "loading..." : "申诉"}
-                        </Button>
-                      </>
-                    ) : null}
+                    <div className="d-flex justify-content-between">
+                      <div>
+                        <p className="txt_12_grey mb-0 ">
+                          {t("instant_price")}
+                        </p>
+                        <p className="c_blue ">{buy1Data.D2.toFixed(2)} CNY</p>
+                      </div>
 
-                    {wsStatusData === 34 && httpLoading ? (
-                      <Button
-                        className="disable-easy-btn mobile-width mw400"
-                        disabled
-                      >
-                        <Spinner
-                          as="span"
-                          animation="grow"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        {t("btn_loading")}...
-                      </Button>
-                    ) : null}
+                      <div>
+                        <p className="txt_12_grey text-right mb-0 ">
+                          {t("instant_qua")}
+                        </p>
+                        <p className="">
+                          {Math.abs(buy1Data.UsdtAmt).toFixed(2)} USDT
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-                    <FromFooter />
+                {/* Button */}
+                {wsStatusData === 33 ? (
+                  <button className="mw400 disable-easy-btn mobile-width">
+                    <span className="i_ready"></span>
+                    {t("btn_preparing")}
+                  </button>
+                ) : null}
+
+                {wsStatusData === 34 && !httpLoading ? (
+                  <>
+                    <Button
+                      onClick={handleClick}
+                      className="easy-btn mw400 mobile-width"
+                      style={{}}
+                    >
+                      {t("btn_buyer_already_pay")}
+                    </Button>
+
+                    <Button
+                      onClick={() => appealReq(match.params.id)}
+                      className="easy-btn mw400 mobile-width"
+                      style={{ backgroundColor: "#bfbfbf" }}
+                      disabled={appealStatus === "pending"}
+                    >
+                      {appealStatus === "pending" ? "loading..." : "申诉"}
+                    </Button>
                   </>
-                ) : // : buy1Data && showComplete && !instantData ? (
-                //   // 交易結果
-                //   <CompleteStatus
-                //     wsStatus={wsStatusData}
-                //     backToHome={backToHome}
-                //     hash={buy1Data.Tx_HASH}
-                //     type="sell"
-                //   />
-                // )
+                ) : null}
 
-                showComplete && statusID && buy1Data ? (
-                  <CompleteStatus
-                    // instantData={instantData}
-                    confirm={handleClick}
-                    statusID={statusID}
-                    confirmReceivedReq={confirmReceivedReq}
-                    orderToken={orderToken}
-                    confirmReceivedStatus={confirmReceivedStatus}
-                    wsStatus={wsStatusData}
-                    backToHome={backToHome}
-                    hash={buy1Data.Tx_HASH}
-                    type="sell"
-                    action="confirm"
-                  />
-                ) : (
-                  <BaseSpinner />
+                {wsStatusData === 34 && httpLoading ? (
+                  <Button
+                    className="disable-easy-btn mobile-width mw400"
+                    disabled
+                  >
+                    <Spinner
+                      as="span"
+                      animation="grow"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    {t("btn_loading")}...
+                  </Button>
+                ) : null}
+
+                {wsStatusData === 35 && (
+                  <div style={{}}>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <img
+                        style={{ width: "5rem", height: "5rem" }}
+                        src={warningImg}
+                        alt="warning"
+                      />
+                      <h5 className="txt26" style={{ marginBottom: 0 }}>
+                        申訴中
+                      </h5>
+                    </div>
+                    <Button
+                      onClick={handleClick}
+                      className="easy-btn mw400 mobile-width"
+                      style={{}}
+                      disabled={httpLoading}
+                    >
+                      {httpLoading ? "Loading..." : "確認已收款"}
+                    </Button>
+                  </div>
                 )}
-              </div>
-            </>
-          )}
+
+                <FromFooter />
+              </>
+            ) : // : buy1Data && showComplete && !instantData ? (
+            //   // 交易結果
+            //   <CompleteStatus
+            //     wsStatus={wsStatusData}
+            //     backToHome={backToHome}
+            //     hash={buy1Data.Tx_HASH}
+            //     type="sell"
+            //   />
+            // )
+
+            showComplete && statusID && buy1Data ? (
+              <CompleteStatus
+                // instantData={instantData}
+                confirm={handleClick}
+                statusID={statusID}
+                confirmReceivedReq={confirmReceivedReq}
+                orderToken={orderToken}
+                confirmReceivedStatus={confirmReceivedStatus}
+                wsStatus={wsStatusData}
+                backToHome={backToHome}
+                hash={buy1Data.Tx_HASH}
+                type="sell"
+                action="confirm"
+              />
+            ) : (
+              <BaseSpinner />
+            )}
+          </div>
         </div>
       </div>
     </div>
