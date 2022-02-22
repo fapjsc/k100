@@ -339,7 +339,7 @@ const TheChat = (props) => {
                 </div>
               )}
 
-              {statusID === 1 && (
+              {(statusID === 1 || statusID === 99) && (
                 <div style={{ textAlign: "center" }}>
                   <p style={{ color: "#707070" }}>對話結束</p>
                 </div>
@@ -360,11 +360,11 @@ const TheChat = (props) => {
                   style={{ display: "none" }}
                   type="file"
                   onChange={(e) => sendImg(e)}
-                  disabled={statusID === 1}
+                  disabled={statusID === 1 || statusID === 99}
                 />
                 <div
                   className={classes.attach_icon}
-                  style={{ cursor: statusID === 1 ? "no-drop" : "pointer" }}
+                  style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
                 />
               </label>
               <div className="w_77">
@@ -376,12 +376,12 @@ const TheChat = (props) => {
                   value={userInput}
                   onChange={handleChange}
                   onKeyUp={(e) => sendMessage(userInput, e)}
-                  disabled={statusID === 1}
+                  disabled={statusID === 1 || statusID === 99}
                 />
               </div>
               <span
                 id="sendIcon"
-                style={{ cursor: statusID === 1 ? "no-drop" : "pointer" }}
+                style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
                 className={classes.send_icon}
                 onClick={(e) => sendMessage(userInput, e)}
               />
@@ -475,7 +475,7 @@ const TheChat = (props) => {
                   <Spinner animation="border" role="status" />
                 </div>
               )}
-              {statusID === 1 && (
+              {(statusID === 1 || statusID === 99) && (
                 <div style={{ textAlign: "center" }}>
                   <p style={{ color: "#707070" }}>對話結束</p>
                 </div>
@@ -491,11 +491,11 @@ const TheChat = (props) => {
                   style={{ display: "none" }}
                   type="file"
                   onChange={(e) => sendImg(e)}
-                  disabled={statusID === 1}
+                  disabled={statusID === 1 || statusID === 99}
                 />
                 <div
                   className={classes.attach_icon}
-                  style={{ cursor: statusID === 1 ? "no-drop" : "pointer" }}
+                  style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
                 />
               </label>
               <div className="w_77">
@@ -507,12 +507,12 @@ const TheChat = (props) => {
                   value={userInput}
                   onChange={handleChange}
                   onKeyUp={(e) => sendMessage(userInput, e)}
-                  disabled={statusID === 1}
+                  disabled={statusID === 1 || statusID === 99}
                 />
               </div>
               <span
                 id="sendIcon1"
-                style={{ cursor: statusID === 1 ? "no-drop" : "pointer" }}
+                style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
                 className={classes.send_icon}
                 onClick={(e) => sendMessage(userInput, e)}
               />
