@@ -57,7 +57,8 @@
 
 .talk {
   height: 76%;
-  overflow: auto;
+  // overflow: auto;
+  overflow-y: scroll;
   padding: 10px;
   z-index: -1;
   position: absolute;
@@ -84,7 +85,7 @@
   border-radius: 5px;
   font-size: 12px;
   padding: 15px 10px;
-  width: 85%;
+  width: 70%;
 }
 .talk_r {
   background-color: #f6f6f6;
@@ -92,8 +93,8 @@
   border-radius: 5px;
   font-size: 12px;
   padding: 15px 15px;
-  width: 85%;
-  margin-left: 15%;
+  width: 70%;
+  margin-left: auto;
 }
 
 .talk_time {

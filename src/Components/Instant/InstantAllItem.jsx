@@ -5,7 +5,7 @@ import { useI18n } from '../../lang';
 import StopWatch from '../universal/StopWatch';
 
 const InstantAllItem = ({ el, handleClick }) => {
-  console.log(el)
+  // console.log(el)
   // Lang Context
   const { t } = useI18n();
   if (el.MType === 2) {

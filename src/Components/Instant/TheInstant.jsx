@@ -1,39 +1,43 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState } from "react";
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
 // Actions
-import { setOpenWebPushNotify } from '../../store/actions/agentAction';
+import { setOpenWebPushNotify } from "../../store/actions/agentAction";
 
 // Play Sound
-import useSound from 'use-sound';
-import newOrderSound from '../../Assets/mp3/newOrder.mp3';
+import useSound from "use-sound";
+import newOrderSound from "../../Assets/mp3/newOrder.mp3";
 
 // Context
-import InstantContext from '../../context/instant/InstantContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import InstantContext from "../../context/instant/InstantContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Components
-import InstantNav from './InstantNav';
-import InstantAll from './InstantAll';
-import InstantOnGoing from './InstantOnGoing';
+import InstantNav from "./InstantNav";
+import InstantAll from "./InstantAll";
+import InstantOnGoing from "./InstantOnGoing";
 
 // Firebase Web Push
-import { deleteToken } from '../../firebaseInit';
+import { deleteToken } from "../../firebaseInit";
 
 // Style
-import BaseSpinner from '../Ui/BaseSpinner';
+import BaseSpinner from "../Ui/BaseSpinner";
 
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 
 const TheInstant = () => {
+
+  const [playbackRate] = useState(0.6);
   // Redux
   const dispatch = useDispatch();
-  const { openWebPushNotify, setDeviceId } = useSelector(state => state.agent);
+  const { openWebPushNotify, setDeviceId } = useSelector(
+    (state) => state.agent
+  );
 
   const { status: setDeviceIdStatus, error: setDeviceIdError } = setDeviceId;
 
@@ -41,10 +45,12 @@ const TheInstant = () => {
   const { t } = useI18n();
 
   // Init State
-  const [tab, setTab] = useState('all');
-  const [play, { stop }] = useSound(newOrderSound, { interrupt: false });
-  const [loop, setLoop] = useState();
-  const [soundState, setSoundState] = useState(localStorage.getItem('openSound'));
+  const [tab, setTab] = useState("all");
+  const [play, { stop }] = useSound(newOrderSound, { playbackRate, loop: true, interrupt: false });
+  // const [loop, setLoop] = useState();
+  const [soundState, setSoundState] = useState(
+    localStorage.getItem("openSound")
+  );
   // const [notifyPermission, setNotifyPermission] = useState('');
 
   // Instant Context
@@ -82,49 +88,45 @@ const TheInstant = () => {
   }, []);
 
   useEffect(() => {
-    if (soundState) localStorage.setItem('openSound', true);
-    if (!soundState) localStorage.removeItem('openSound');
+    if (soundState) localStorage.setItem("openSound", true);
+    if (!soundState) localStorage.removeItem("openSound");
 
-    let soundLoop;
-    if (soundState && instantData.length > 0) {
+    if (JSON.parse(soundState) && instantData.length > 0) {
+      console.log(soundState, instantData.length)
       // 即時買賣新訂單聲音提示
       play();
-      soundLoop = setInterval(() => {
-        play();
-      }, 5000);
-
-      setLoop(soundLoop);
     }
 
     if (soundState && instantData.length === 0) {
       stop();
-      clearInterval(soundLoop);
+      // clearInterval(soundLoop);
     }
 
     return () => {
-      clearInterval(soundLoop);
+      stop();
+      // clearInterval(soundLoop);
     };
-  }, [instantData, soundState]);
+  }, [instantData, soundState, stop, play]);
 
   useEffect(() => {
     if (openWebPushNotify) {
-      localStorage.setItem('openNotify', 'yes');
+      localStorage.setItem("openNotify", "yes");
     }
 
     if (!openWebPushNotify) {
       deleteToken();
-      localStorage.removeItem('openNotify');
+      localStorage.removeItem("openNotify");
     }
   }, [openWebPushNotify, dispatch]);
 
   const handleStopSound = () => {
     stop();
-    clearInterval(loop);
+    // clearInterval(loop);
   };
 
   const webPushClickHandler = () => {
     if (!window.Notification) {
-      alert(t('web_push_not_support'));
+      alert(t("web_push_not_support"));
       return;
     }
 
@@ -134,45 +136,52 @@ const TheInstant = () => {
     }
     console.log(Notification.permission);
 
-    if (Notification.permission === 'granted' || Notification.permission === 'default') {
+    if (
+      Notification.permission === "granted" ||
+      Notification.permission === "default"
+    ) {
       dispatch(setOpenWebPushNotify(!openWebPushNotify));
       // setNotifyPermission('granted');
     }
 
-    if (Notification.permission === 'denied') {
+    if (Notification.permission === "denied") {
       // setNotifyPermission('denied');
       dispatch(setOpenWebPushNotify(false));
-      alert(t('web_push_open_notify_request'));
+      alert(t("web_push_open_notify_request"));
     }
   };
 
   return (
     <div className="mt-4">
       <div className="d-flex justify-content-start align-items-center">
-        <p className="mb-0 mr-auto" style={{ fontSize: 12, color: '#fff' }}>
-          {t('instant_transaction')}
+        <p className="mb-0 mr-auto" style={{ fontSize: 12, color: "#fff" }}>
+          {t("instant_transaction")}
         </p>
 
-        {setDeviceIdStatus === 'pending' ? (
+        {setDeviceIdStatus === "pending" ? (
           <Button className="btn-info mr-4" disabled>
             Loading...
           </Button>
         ) : (
           <Button
-            className={openWebPushNotify && !setDeviceIdError ? 'btn-info mr-4' : 'btn-danger mr-4'}
+            className={
+              openWebPushNotify && !setDeviceIdError
+                ? "btn-info mr-4"
+                : "btn-danger mr-4"
+            }
             onClick={webPushClickHandler}
           >
             {openWebPushNotify && !setDeviceIdError
-              ? t('web_push_button_allow')
-              : t('web_push_button_deny')}
+              ? t("web_push_button_allow")
+              : t("web_push_button_deny")}
           </Button>
         )}
 
         <Button
-          className={soundState ? 'btn-info' : 'btn-danger'}
-          onClick={() => setSoundState(pre => !pre)}
+          className={soundState ? "btn-info" : "btn-danger"}
+          onClick={() => setSoundState((pre) => !pre)}
         >
-          {!soundState ? t('instant_sound_close') : t('instant_sound_open')}
+          {!soundState ? t("instant_sound_close") : t("instant_sound_open")}
         </Button>
       </div>
       <div className="contentbox">
@@ -180,10 +189,12 @@ const TheInstant = () => {
         <InstantNav setTab={setTab} tab={tab} />
 
         {/* Content */}
-        {tab === 'all' && !httpLoading && instantData ? (
+        {tab === "all" && !httpLoading && instantData ? (
           <InstantAll stop={handleStopSound} />
         ) : null}
-        {tab === 'onGoing' && !httpLoading && wsOnGoingData ? <InstantOnGoing /> : null}
+        {tab === "onGoing" && !httpLoading && wsOnGoingData ? (
+          <InstantOnGoing />
+        ) : null}
 
         {/* Loading */}
         {httpLoading && (
