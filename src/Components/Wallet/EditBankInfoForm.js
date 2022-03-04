@@ -112,8 +112,7 @@ const EditBankInfoForm = props => {
               defaultValue={getAccData && getAccData.P2}
               onChange={onChangeHandler}
               autoComplete="off"
-              readOnly
-              style={{ backgroundColor: '#EAECEF' }}
+              // style={{ backgroundColor: '#EAECEF' }}
             />
           </Form.Group>
 
