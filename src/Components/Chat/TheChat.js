@@ -253,8 +253,11 @@ const TheChat = (props) => {
             <div
               ref={messagesEndRef}
               className={classes.talk}
-              style={{ width: "100%" }}
-              // ref={scrollRef}
+              style={{
+                width: "100%",
+                paddingTop: "3rem",
+              }}
+              // ref={scrollRef}f
             >
               {instantMessages.map((el, index) => {
                 return (
@@ -364,7 +367,10 @@ const TheChat = (props) => {
                 />
                 <div
                   className={classes.attach_icon}
-                  style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
+                  style={{
+                    cursor:
+                      statusID === 1 || statusID === 99 ? "no-drop" : "pointer",
+                  }}
                 />
               </label>
               <div className="w_77">
@@ -381,7 +387,10 @@ const TheChat = (props) => {
               </div>
               <span
                 id="sendIcon"
-                style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
+                style={{
+                  cursor:
+                    statusID === 1 || statusID === 99 ? "no-drop" : "pointer",
+                }}
                 className={classes.send_icon}
                 onClick={(e) => sendMessage(userInput, e)}
               />
@@ -495,7 +504,10 @@ const TheChat = (props) => {
                 />
                 <div
                   className={classes.attach_icon}
-                  style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
+                  style={{
+                    cursor:
+                      statusID === 1 || statusID === 99 ? "no-drop" : "pointer",
+                  }}
                 />
               </label>
               <div className="w_77">
@@ -512,7 +524,10 @@ const TheChat = (props) => {
               </div>
               <span
                 id="sendIcon1"
-                style={{ cursor: (statusID === 1 || statusID === 99) ? "no-drop" : "pointer" }}
+                style={{
+                  cursor:
+                    statusID === 1 || statusID === 99 ? "no-drop" : "pointer",
+                }}
                 className={classes.send_icon}
                 onClick={(e) => sendMessage(userInput, e)}
               />
