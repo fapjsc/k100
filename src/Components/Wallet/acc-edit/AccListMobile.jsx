@@ -13,7 +13,11 @@ const AccListMobile = ({ accHistoryData, onClickHandler }) => {
     <>
       <section className={styles.container}>
         {currentItems?.map((d) => (
-          <div onClick={() => onClickHandler(d.H_id)} className={styles.item}>
+          <div
+            key={d.H_id}
+            onClick={() => onClickHandler(d.H_id)}
+            className={styles.item}
+          >
             <div className={styles.name}>
               <BsFillPersonCheckFill />
               {d.P2}
