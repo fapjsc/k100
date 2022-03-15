@@ -95,7 +95,7 @@ const InstantState = (props) => {
     client.onmessage = (message) => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log("got reply all!", dataFromServer);
+      // console.log("got reply all!", dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setInstantData(dataFromServer.data);
@@ -199,7 +199,7 @@ const InstantState = (props) => {
       client.onmessage = (message) => {
         if (!message.data) return;
         const dataFromServer = JSON.parse(message.data);
-        console.log("got reply status!", dataFromServer);
+        // console.log("got reply status!", dataFromServer);
 
         if (dataFromServer) {
           setWsStatusData(dataFromServer.data.Order_StatusID);

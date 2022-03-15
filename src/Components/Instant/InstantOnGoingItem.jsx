@@ -12,7 +12,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
 import {
-  orderStatusCode,
+  // orderStatusCode,
   sellOrderStatusCode,
   buyOrderStatusCode,
 } from "../../lib/orderStatus";
@@ -115,7 +115,9 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
 
             {/* Status */}
             <div className="">
-              <span style={{color: el.Order_StatusID !== 34 && '#db1c1c'}}>{buyOrderStatusCode[el.Order_StatusID]}</span>
+              <span style={{ color: el.Order_StatusID !== 34 && "#db1c1c" }}>
+                {buyOrderStatusCode[el.Order_StatusID]}
+              </span>
             </div>
           </div>
 
@@ -211,7 +213,9 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
 
             {/* Status */}
             <div className="">
-              <span style={{color: el.Order_StatusID !== 33 && '#db1c1c'}}>{sellOrderStatusCode[el.Order_StatusID]} </span>
+              <span style={{ color: el.Order_StatusID !== 33 && "#db1c1c" }}>
+                {sellOrderStatusCode[el.Order_StatusID]}{" "}
+              </span>
             </div>
           </div>
 

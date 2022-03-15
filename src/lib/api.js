@@ -46,7 +46,7 @@ export const setAgentAcc = async (accData) => {
 
     return data.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw new Error(error);
 
   }
@@ -73,13 +73,13 @@ export const getAgentAccHistory = async (accData) => {
 
     return data.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw new Error(error);
   }
 };
 
 export const sendWebPushToken = async (deviceId) => {
-  console.log(deviceId);
+  // console.log(deviceId);
   const token = localStorage.getItem("token");
   const headers = getHeaders(token);
   const sendDeviceIdUrl = `/j/SetDevice_Session.aspx`;
@@ -99,13 +99,13 @@ export const sendWebPushToken = async (deviceId) => {
 
     return data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw new Error(error);
   }
 };
 
 export const confirmReceived = async ({orderToken, type}) => {
-  console.log(orderToken, type === 'sell');
+  // console.log(orderToken, type === 'sell');
   const headers = getHeaders();
 
   let url;
@@ -116,7 +116,7 @@ export const confirmReceived = async ({orderToken, type}) => {
     url = `/j/Req_BuyMatch2.aspx`;
   }
 
-  console.log(url)
+  // console.log(url)
 
   const response = await fetch(url, {
     method: "POST",
@@ -135,7 +135,7 @@ export const confirmReceived = async ({orderToken, type}) => {
 };
 
 export const orderAppeal = async (orderToken) => {
-  console.log(orderToken);
+  // console.log(orderToken);
   const headers = getHeaders();
   const appealUrl = `/j/Req_Appeal.aspx`;
 
@@ -152,7 +152,7 @@ export const orderAppeal = async (orderToken) => {
   if (!response.ok) throw new Error("Fetch Fail");
   if (data.code !== 200) throw new Error("appeal fail");
 
-  console.log(data);
+  // console.log(data);
   return data.data;
 };
 

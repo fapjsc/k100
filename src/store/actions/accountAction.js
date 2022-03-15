@@ -47,7 +47,6 @@ export const setAcc = (accData) => async (dispatch) => {
   try {
     const { data } = await authFetch.post("/SetAgentAcc.aspx", accData);
 
-    console.log(data);
     dispatch({
       type: accountActionsTypes.SET_CURRENT_ACC_SUCCESS,
       payload: { data },

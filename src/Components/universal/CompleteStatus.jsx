@@ -42,7 +42,7 @@ const CompleteStatus = (props) => {
   const { t } = useI18n();
 
   const { orderStatus } = useSelector((state) => state.order);
-  const { MasterType, Order_TypeID } = orderStatus || {};
+  const { MasterType } = orderStatus || {};
 
   // console.log(Order_TypeID);
 

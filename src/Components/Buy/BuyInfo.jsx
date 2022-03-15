@@ -48,9 +48,9 @@ const BuyInfo = () => {
   // Buy2 http
   const {
     sendRequest: confirmReceivedReq,
-    data: confirmReceivedData,
+    // data: confirmReceivedData,
     status: confirmReceivedStatus,
-    error: confirmReceivedError,
+    // error: confirmReceivedError,
   } = useHttp(confirmReceived);
 
   // Buy Context

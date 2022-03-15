@@ -31,7 +31,7 @@ import { orderAppeal } from "../../lib/api";
 import { confirmReceived } from "../../lib/api";
 
 // Actions
-import { setInstantOrderData } from "../../store/actions/instantActions";
+// import { setInstantOrderData } from "../../store/actions/instantActions";
 
 // Style
 import Spinner from "react-bootstrap/Spinner";
@@ -124,6 +124,7 @@ const BuyDetail = () => {
   useEffect(() => {
     setTimeLeft(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
     if (deltaTime > 1800) setOverTime(true);
+    // eslint-disable-next-line
   }, [deltaTime]);
 
   useEffect(() => {
@@ -140,11 +141,11 @@ const BuyDetail = () => {
   }, [tab]);
 
   useEffect(() => {
-    console.log("instant buy", wsStatusData, statusID, showComplete);
+    // console.log("instant buy", wsStatusData, statusID, showComplete);
     if (wsStatusData === 35) setShowComplete(false);
 
     if (wsStatusData === 99 || wsStatusData === 98 || wsStatusData === 1) {
-      console.log("set true");
+      // console.log("set true");
       setShowComplete(true);
     }
 
@@ -153,7 +154,7 @@ const BuyDetail = () => {
 
   useEffect(() => {
     if (appealData && appealStatus === "completed" && !appealError) {
-      console.log("set true", appealData, appealStatus, appealError);
+      // console.log("set true", appealData, appealStatus, appealError);
       dispatch(setOrderStatus(appealData));
     }
   }, [appealData, appealStatus, appealError, dispatch]);
@@ -165,7 +166,7 @@ const BuyDetail = () => {
       !confirmReceivedError
     ) {
       dispatch(setOrderStatus(confirmReceivedData));
-      console.log("set true");
+      // console.log("set true");
       setShowComplete(true);
     }
   }, [

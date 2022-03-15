@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
 
 import { BsFillPlusCircleFill } from "react-icons/bs";
 
@@ -37,7 +36,6 @@ const EditBankInfoForm = ({ accHistoryData, show, onHide }) => {
     error: setAccError,
   } = useSelector((state) => state.setAccount);
 
-  // const currentAccRef = useRef();
 
   const selectAccHandler = (acc) => {
     const newData = {
@@ -85,7 +83,8 @@ const EditBankInfoForm = ({ accHistoryData, show, onHide }) => {
     dispatch({ type: accountActionsTypes.SET_CURRENT_ACC_CLEAR });
 
     onHide();
-  }, [setAccData, setAccError]);
+    // eslint-disable-next-line
+  }, [setAccData, setAccError, dispatch]);
 
   const onHideHandler = () => {
     setShowForm(false);

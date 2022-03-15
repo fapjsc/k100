@@ -1,17 +1,26 @@
-import { useReducer } from 'react';
-import ReconnectingWebSocket from 'reconnecting-websocket';
+import { useReducer } from "react";
+import ReconnectingWebSocket from "reconnecting-websocket";
 // import { w3cwebsocket as W3CWebsocket } from 'websocket';
 
-import ChatReducer from './ChatReducer';
-import ChatContext from './ChatContext';
+import ChatReducer from "./ChatReducer";
+import ChatContext from "./ChatContext";
 
-import { SET_TRANSLATE, SET_MESSAGES, SET_CHAT_WS_CLIENT, CHAT_SET_ORDER_TOKEN, SET_INSTANT_CLIENT, SET_INSTANT_MESSAGES, SET_CHAT_LOADING, SET_NEW_MESSAGE } from '../type';
+import {
+  SET_TRANSLATE,
+  SET_MESSAGES,
+  SET_CHAT_WS_CLIENT,
+  CHAT_SET_ORDER_TOKEN,
+  SET_INSTANT_CLIENT,
+  SET_INSTANT_MESSAGES,
+  SET_CHAT_LOADING,
+  SET_NEW_MESSAGE,
+} from "../type";
 
-const ChatState = props => {
+const ChatState = (props) => {
   const initialState = {
     isTranslate: false,
     messages: [],
-    orderToken: '',
+    orderToken: "",
     client: null,
     instantClient: null,
     instantMessages: [],
@@ -20,14 +29,14 @@ const ChatState = props => {
   };
 
   // Chat WebSocket
-  const chatConnect = orderToken => {
-    const loginSession = localStorage.getItem('token');
+  const chatConnect = (orderToken) => {
+    const loginSession = localStorage.getItem("token");
 
     const chatApi = `WS_ChatOrder.ashx`;
 
     let url;
 
-    if (window.location.protocol === 'http:') {
+    if (window.location.protocol === "http:") {
       url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
@@ -40,12 +49,12 @@ const ChatState = props => {
     setClient(client);
 
     // 1.建立連接
-    client.onopen = message => {
+    client.onopen = (message) => {
       // console.log('chat connect');
     };
 
     // 2.收到server回復
-    client.onmessage = message => {
+    client.onmessage = (message) => {
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
       // console.log('got Chat reply!', dataFromServer);
@@ -56,13 +65,13 @@ const ChatState = props => {
     };
 
     // 3.錯誤處理
-    client.onclose = message => {
+    client.onclose = (message) => {
       // console.log('聊天室關閉');
     };
   };
 
   // 關閉連線
-  const closeUserChatWebSocket = orderToken => {
+  const closeUserChatWebSocket = (orderToken) => {
     // state.client.close();
     // alert('call close');
     // const loginSession = localStorage.getItem('token');
@@ -84,14 +93,14 @@ const ChatState = props => {
   };
 
   // instant chat
-  const instantChat = orderToken => {
-    const loginSession = localStorage.getItem('token');
+  const instantChat = (orderToken) => {
+    const loginSession = localStorage.getItem("token");
 
     const chatApi = `ws_ChatOrder3.ashx`;
 
     let url;
 
-    if (window.location.protocol === 'http:') {
+    if (window.location.protocol === "http:") {
       url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}/${chatApi}?login_session=${loginSession}&order_token=${orderToken}`;
@@ -100,65 +109,65 @@ const ChatState = props => {
     const client = new ReconnectingWebSocket(url);
 
     // 1.建立連接
-    client.onopen = message => {
+    client.onopen = (message) => {
       setInstantClient(client);
-      console.log('instant chat connect');
+      // console.log('instant chat connect');
     };
 
     // 2.收到server回復
-    client.onmessage = message => {
-      if (message.data === '' || message.data.includes('login_session')) return;
+    client.onmessage = (message) => {
+      if (message.data === "" || message.data.includes("login_session")) return;
 
       const dataFromServer = JSON.parse(message.data);
       // console.log('instant got Chat reply!', dataFromServer);
       setChatLoading(false);
       if (dataFromServer.Message_Role === 1) {
         setNewMessage(true);
-        console.log('new message');
+        // console.log("new message");
       }
       setInstantMessages(dataFromServer);
     };
 
     // 3.錯誤處理
-    client.onclose = message => {
-      console.log('instant聊天室關閉');
+    client.onclose = (message) => {
+      // console.log("instant聊天室關閉");
     };
   };
 
-  const setTranslate = value => {
+  const setTranslate = (value) => {
     dispatch({ type: SET_TRANSLATE, payload: value });
   };
 
-  const setMessages = message => {
+  const setMessages = (message) => {
     dispatch({ type: SET_MESSAGES, payload: message });
   };
 
-  const setOrderToken = orderToken => {
+  const setOrderToken = (orderToken) => {
     dispatch({ type: CHAT_SET_ORDER_TOKEN, payload: orderToken });
   };
 
   // Set Instant Client
-  const setInstantClient = value => {
+  const setInstantClient = (value) => {
     dispatch({ type: SET_INSTANT_CLIENT, payload: value });
   };
 
   // Set Instant Messages
-  const setInstantMessages = message => {
+  const setInstantMessages = (message) => {
     dispatch({ type: SET_INSTANT_MESSAGES, payload: message });
   };
 
   // Set Normal Chat Client
-  const setClient = client => {
+  const setClient = (client) => {
     dispatch({ type: SET_CHAT_WS_CLIENT, payload: client });
   };
 
   // Set Chat Loading
-  const setChatLoading = value => {
+  const setChatLoading = (value) => {
     dispatch({ type: SET_CHAT_LOADING, payload: value });
   };
 
   // Set New Message
-  const setNewMessage = value => {
+  const setNewMessage = (value) => {
     dispatch({ type: SET_NEW_MESSAGE, payload: value });
   };
 

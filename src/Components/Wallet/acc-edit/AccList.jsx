@@ -46,6 +46,7 @@ const AccList = ({
       setCurrentItem(null);
       setClearItem(false);
     }
+    // eslint-disable-next-line
   }, [clearItem]);
 
   if (showForm) {

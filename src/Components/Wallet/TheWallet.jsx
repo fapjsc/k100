@@ -32,7 +32,6 @@ import { AiFillEdit } from "react-icons/ai";
 import "./index.scss";
 
 const TheWallet = () => {
-  console.log("wallet");
   // Init State
   const [showFom, setShowForm] = useState(false);
 
@@ -41,13 +40,13 @@ const TheWallet = () => {
   const {
     loading: accLoading,
     data: accData,
-    error: accError,
+    // error: accError,
   } = useSelector((state) => state.currentAcc);
 
   const {
-    loading: historyAccLoading,
+    // loading: historyAccLoading,
     data: historyAccData,
-    error: historyAccError,
+    // error: historyAccError,
   } = useSelector((state) => state.historyAcc);
 
   // Lang Context
@@ -86,6 +85,7 @@ const TheWallet = () => {
   useEffect(() => {
     dispatch(getAcc());
     dispatch(getAccHistory());
+    // eslint-disable-next-line
   }, []);
 
   const handleClick = (type) => {

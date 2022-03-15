@@ -1,17 +1,17 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from "react";
 
 // Context
-import SellContext from '../../context/sell/SellContext';
-import BuyContext from '../../context/buy/BuyContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
-import { useI18n } from '../../lang';
+import SellContext from "../../context/sell/SellContext";
+import BuyContext from "../../context/buy/BuyContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
+import { useI18n } from "../../lang";
 
 // Style
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import changeMoney from '../../Assets/i_twoways.png';
-import './index.scss';
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+import changeMoney from "../../Assets/i_twoways.png";
+import "./index.scss";
 
 const BuyForm = () => {
   // Lang Context
@@ -23,7 +23,14 @@ const BuyForm = () => {
 
   // but context
   const buyContext = useContext(BuyContext);
-  const { setBuyCount, buyCount, buyErrorText, setErrorText, setShowBank, showBank } = buyContext;
+  const {
+    setBuyCount,
+    buyCount,
+    buyErrorText,
+    setErrorText,
+    setShowBank,
+    showBank,
+  } = buyContext;
 
   // http error context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -31,15 +38,15 @@ const BuyForm = () => {
 
   // Init State
   const [usdtAmt, setUsdtAmt] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [rmbAmt, setRmbAmt] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
@@ -51,8 +58,8 @@ const BuyForm = () => {
   // unMount後清除錯誤提示
   useEffect(() => {
     return () => {
-      setHttpError(''); // http錯誤提示
-      setErrorText(''); // 前端表單驗證錯誤提示
+      setHttpError(""); // http錯誤提示
+      setErrorText(""); // 前端表單驗證錯誤提示
     };
     // eslint-disable-next-line
   }, []);
@@ -86,43 +93,42 @@ const BuyForm = () => {
     // eslint-disable-next-line
   }, []);
 
-  const onChange = e => {
-    setHttpError(''); // http錯誤提示
-    setErrorText(''); // 前端表單驗證錯誤提示
-    if (e.target.name === 'usdtAmt') {
-      if (e.target.value < 0 || e.target.value === 'e') {
+  const onChange = (e) => {
+    setHttpError(""); // http錯誤提示
+    setErrorText(""); // 前端表單驗證錯誤提示
+    if (e.target.name === "usdtAmt") {
+      if (e.target.value < 0 || e.target.value === "e") {
         setUsdtAmt({
-          val: '',
+          val: "",
           isValid: true,
-          error: '',
+          error: "",
         });
         return;
       }
 
       let rmb = Number(e.target.value * buyRate).toFixed(2);
-      console.log(buyRate);
 
       setUsdtAmt({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
 
       setRmbAmt({
         val: rmb,
         isValid: true,
-        error: '',
+        error: "",
       });
 
       if (!e.target.val) setShowBank(false);
     }
 
-    if (e.target.name === 'rmbAmt') {
-      if (e.target.value < 0 || e.target.value === 'e') {
+    if (e.target.name === "rmbAmt") {
+      if (e.target.value < 0 || e.target.value === "e") {
         setRmbAmt({
-          val: '',
+          val: "",
           isValid: true,
-          error: '',
+          error: "",
         });
         return;
       }
@@ -132,13 +138,13 @@ const BuyForm = () => {
       setRmbAmt({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
 
       setUsdtAmt({
         val: usdt,
         isValid: true,
-        error: '',
+        error: "",
       });
 
       if (!e.target.val) setShowBank(false);
@@ -153,9 +159,9 @@ const BuyForm = () => {
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
     if (!rule.test(usdtAmt.val) || !rule.test(rmbAmt.val)) {
       setUsdtAmt({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('invalid_number'),
+        error: t("invalid_number"),
       });
 
       setFormIsValid(false);
@@ -170,14 +176,14 @@ const BuyForm = () => {
           <Form.Control
             style={formInput}
             className="align-self-center easy-border"
-            placeholder={t('please_enter_quantity')}
+            placeholder={t("please_enter_quantity")}
             value={buyCount.usdt}
             onChange={onChange}
             name="usdtAmt"
             autoComplete="off"
             type="number"
             isInvalid={usdtAmt.error}
-            onWheel={event => event.currentTarget.blur()}
+            onWheel={(event) => event.currentTarget.blur()}
           />
 
           <span style={inputText}>USDT</span>
@@ -185,7 +191,7 @@ const BuyForm = () => {
             <Form.Text
               className=""
               style={{
-                fontSize: '12px',
+                fontSize: "12px",
               }}
             >
               <span className="">*{usdtAmt.error}</span>
@@ -196,7 +202,7 @@ const BuyForm = () => {
             <Form.Text
               className=""
               style={{
-                fontSize: '12px',
+                fontSize: "12px",
               }}
             >
               <span className="">*{buyErrorText}</span>
@@ -217,7 +223,7 @@ const BuyForm = () => {
             autoComplete="off"
             type="number"
             className="easy-border"
-            onWheel={event => event.currentTarget.blur()}
+            onWheel={(event) => event.currentTarget.blur()}
           />
           <span style={inputText}>CNY</span>
         </Form.Group>
@@ -226,7 +232,7 @@ const BuyForm = () => {
       {usdtAmt.val && (
         <Form.Row className="mt-4">
           <Form.Group as={Col} className="mt-4">
-            <p className="txt_12">{t('e_wallet')}</p>
+            <p className="txt_12">{t("e_wallet")}</p>
             <Button
               type="button"
               style={{
@@ -234,10 +240,10 @@ const BuyForm = () => {
                 marginRight: 15,
               }}
               // className="walletBtn"
-              className={showBank ? 'walletBtnActive' : 'walletBtn'}
+              className={showBank ? "walletBtnActive" : "walletBtn"}
               onClick={validCount}
             >
-              {t('btn_bank')}
+              {t("btn_bank")}
             </Button>
 
             <Button
@@ -247,9 +253,11 @@ const BuyForm = () => {
                 marginTop: -8,
               }}
             >
-              {t('btn_aliPay')}
+              {t("btn_aliPay")}
             </Button>
-            <Form.Text style={{ fontSize: 12 }}>{t('choose_e_wallet')}</Form.Text>
+            <Form.Text style={{ fontSize: 12 }}>
+              {t("choose_e_wallet")}
+            </Form.Text>
           </Form.Group>
         </Form.Row>
       )}
@@ -266,10 +274,10 @@ const formInput = {
 };
 
 const inputText = {
-  color: '#D7E2F3',
-  position: 'absolute',
-  top: '50%',
-  transform: 'translateY(-45%)',
+  color: "#D7E2F3",
+  position: "absolute",
+  top: "50%",
+  transform: "translateY(-45%)",
   right: 35,
   fontSize: 17,
 };

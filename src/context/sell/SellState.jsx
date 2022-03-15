@@ -144,8 +144,6 @@ const SellState = (props) => {
 
       const resData = await res.json();
 
-      console.log(resData, "req_sell1");
-
       if (resData.code === 200) {
         const {
           data: { order_token },
@@ -255,11 +253,10 @@ const SellState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message, "message");
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       store.dispatch(setOrderStatus(dataFromServer.data));
-      console.log("got reply!", dataFromServer, "sell");
+      // console.log("got reply!", dataFromServer, "sell");
       setSellStatus(dataFromServer.data.Order_StatusID);
 
       // 配對中 Order_StatusID：31 or 32
@@ -272,7 +269,7 @@ const SellState = (props) => {
       if (dataFromServer.data.Order_StatusID === 33) {
         setWsData(dataFromServer.data);
         setWsPairing(false);
-        console.log(dataFromServer, "=====");
+        // console.log(dataFromServer, "=====");
         // history.replace(`/home/transaction/sell/${orderToken}`);
       }
 
@@ -354,8 +351,6 @@ const SellState = (props) => {
       });
 
       const resData = await res.json();
-
-      console.log(resData);
 
       dispatch({ type: SET_CANCEL_ORDER_DATA, payload: resData });
 

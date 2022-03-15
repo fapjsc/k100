@@ -14,14 +14,15 @@ const PaginatedItems = ({ itemsPerPage, items, setCurrentItems }) => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(items.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(items.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage]);
+    // eslint-disable-next-line
+  }, [itemOffset, itemsPerPage, items]);
 
   return (
     <ReactPaginate
       nextLabel=">"
       previousLabel="<"
       onPageChange={handlePageClick}
-      pageRangeDisplayed={3}
+      pageRangeDisplayed={1}
       marginPagesDisplayed={2}
       pageCount={pageCount}
       containerClassName="pagination"

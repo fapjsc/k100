@@ -76,8 +76,6 @@ const SellInfo = () => {
   //   cleanAll();
   // };
 
-  console.log(statusID)
-
   return (
     <div className="" style={{ position: "relative" }}>
       {/* <Pairing
@@ -89,7 +87,7 @@ const SellInfo = () => {
       <SellExRate />
       {(statusID === 33 || statusID === 34 || statusID === 35) && wsData ? (
         <SellDetail />
-      ) : statusID === 1 || statusID === 99 || statusID === 98  ? (
+      ) : statusID === 1 || statusID === 99 || statusID === 98 ? (
         <CompleteStatus
           wsStatus={sellStatus}
           hash={hash}

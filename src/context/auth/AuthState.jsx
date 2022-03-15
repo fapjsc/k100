@@ -70,8 +70,6 @@ const AuthState = (props) => {
     let loginApi = `/j/login.aspx`;
 
     try {
-      console.log(loginApi);
-
       const res = await fetch(loginApi, {
         method: "POST",
         body: JSON.stringify({
@@ -393,7 +391,6 @@ const AuthState = (props) => {
 
   // 驗證帳號是否存在
   const checkAccountExists = async (data) => {
-    console.log(data);
     const checkAccount = `/j/ChkLoginExists.aspx`;
 
     try {
@@ -406,7 +403,6 @@ const AuthState = (props) => {
       });
 
       const resData = await res.json();
-      console.log(resData);
 
       if (resData.code === "11") {
         setAccountExists("exists");

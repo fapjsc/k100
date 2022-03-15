@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
-import Countdown from "react-countdown";
+// import Countdown from "react-countdown";
 import copy from "copy-to-clipboard";
 
 import { useSelector } from "react-redux";
@@ -15,7 +15,7 @@ import { useI18n } from "../../lang";
 // Components
 import SetAccount from "./SetAccount";
 import BuyInfoHeader from "./BuyInfoHeader";
-import Timer from "./Timer";
+// import Timer from "./Timer";
 import Cancel from "../universal/Cancel";
 
 // import CancelSell from '../Sell/CancelSell';
@@ -35,8 +35,6 @@ const InfoDetail = (props) => {
   const { orderStatus } = useSelector((state) => state.order);
   const { Order_StatusID: statusID } = orderStatus || {};
 
-  console.log(statusID);
-
   // Router Props
   const match = useRouteMatch();
 
@@ -47,7 +45,7 @@ const InfoDetail = (props) => {
     buyBtnLoading,
     BuyerAlreadyPay,
     buyOrderToken,
-    isHideBuyInfo,
+    // isHideBuyInfo,
     deltaTime,
     setHideBuyInfo,
     setDeltaTime,
@@ -56,17 +54,17 @@ const InfoDetail = (props) => {
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
-  // eslint-disable-next-line
   const { errorText } = httpErrorContext;
 
   // Init State
+  // eslint-disable-next-line
   const [timeLeft, setTimeLeft] = useState(
     Date.now() + (1000 * 60 * 30 - deltaTime * 1000)
   );
+
+  // eslint-disable-next-line
   const [overTime, setOverTime] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
-
-  console.log(buyWsData);
 
   const handleCopy = (value) => {
     copy(value);

@@ -19,16 +19,15 @@ import CompleteStatus from "../universal/CompleteStatus";
 import Cancel from "../universal/Cancel";
 import InstantNav from "../Instant/InstantNav";
 import CountDownTimer from "../universal/countDownTimer";
-import Timer from "../Buy/Timer";
+// import Timer from "../Buy/Timer";
 
 // Style
-import Spinner from "react-bootstrap/Spinner";
+// import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
 import warningImg from "../../Assets/warning.png";
 
 const SellDetail = () => {
-  console.log("instant sell");
   // Lang Context
   const { t } = useI18n();
   // Router Props
@@ -62,6 +61,7 @@ const SellDetail = () => {
 
   // Init State
   const [overTime1, setOvertime1] = useState(false);
+  // eslint-disable-next-line
   const [overTime2, setOvertime2] = useState(false);
   const [showComplete, setShowComplete] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
@@ -69,11 +69,10 @@ const SellDetail = () => {
   const [timeLeft, setTimeLeft] = useState(
     Date.now() + 1000 * 60 * 15 - deltaTime * 1000
   );
+  // eslint-disable-next-line
   const [timeLeft2, setTimeLeft2] = useState(
     Date.now() + 1000 * 60 * 30 - deltaTime * 1000
   );
-
-  console.log(wsStatusData);
 
   // ===========
   //  useEffect
@@ -97,6 +96,7 @@ const SellDetail = () => {
 
     if (deltaTime > 1800) setOvertime2(true);
     if (deltaTime > 900 && deltaTime <= 1800) setOvertime1(true);
+    //eslint-disable-next-line
   }, [deltaTime]);
 
   useEffect(() => {
@@ -137,9 +137,9 @@ const SellDetail = () => {
     setOvertime1(true);
   };
 
-  const handleCountDownComplete2 = () => {
-    setOvertime2(true);
-  };
+  // const handleCountDownComplete2 = () => {
+  //   setOvertime2(true);
+  // };
 
   const backToHome = () => {
     if (wsStatusClient) wsStatusClient.close();
@@ -288,8 +288,7 @@ const SellDetail = () => {
                           marginTop: 50,
                         }}
                       >
-
-                        {httpLoading ? 'loading...' : t("btn_already_pay")}
+                        {httpLoading ? "loading..." : t("btn_already_pay")}
                       </Button>
                       <div className="text-center">
                         <span

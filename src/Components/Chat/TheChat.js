@@ -27,7 +27,6 @@ const TheChat = (props) => {
   const { orderStatus } = useSelector((state) => state.order);
   const { Order_StatusID: statusID } = orderStatus || {};
 
-  console.log(orderStatus);
 
   // Lang Context
   const { t } = useI18n();

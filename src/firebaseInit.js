@@ -51,6 +51,7 @@ try {
   console.log(error);
 }
 
+// eslint-disable-next-line
 const { REACT_APP_VAPID_KEY, REACT_APP_VAPID_KEY_LOCAL } = process.env;
 
 let currentToken = '';

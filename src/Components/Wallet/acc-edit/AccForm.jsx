@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,8 +22,6 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
     bank: "",
     city: "",
   });
-
-  console.log(formData);
 
   const dispatch = useDispatch();
 

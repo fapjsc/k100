@@ -40,9 +40,9 @@ const SellDetail = () => {
   // Appeal http
   const {
     sendRequest: appealReq,
-    data: appealData,
+    // data: appealData,
     status: appealStatus,
-    error: appealError,
+    // error: appealError,
   } = useHttp(orderAppeal);
 
   // Lang Context
@@ -55,10 +55,7 @@ const SellDetail = () => {
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsData, setConfirmSell, confirmSellAction, sellStatus, cleanAll } =
-    sellContext;
-
-  console.log("sell details", sellStatus, statusID);
+  const { wsData, setConfirmSell, confirmSellAction } = sellContext;
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -106,10 +103,10 @@ const SellDetail = () => {
     setIsClick(true);
   };
 
-  const backToHome = () => {
-    history.replace("/home/overview");
-    cleanAll();
-  };
+  // const backToHome = () => {
+  //   history.replace("/home/overview");
+  //   cleanAll();
+  // };
 
   return (
     <Container className="">

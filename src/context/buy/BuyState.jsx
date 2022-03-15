@@ -110,7 +110,7 @@ const BuyState = (props) => {
 
   //連接web socket --step 2
   const buyConnectWs = (token) => {
-    console.log("call webSocket");
+    // console.log("call webSocket");
     const transactionApi = "j/ws_orderstatus.ashx";
 
     let loginSession = localStorage.getItem("token");
@@ -143,11 +143,11 @@ const BuyState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message, "message");
+      // console.log(message, "message");
       // console.log(message);
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log("got reply!", dataFromServer, "buy");
+      // console.log("got reply!", dataFromServer, "buy");
 
       store.dispatch(setOrderStatus(dataFromServer.data));
 
