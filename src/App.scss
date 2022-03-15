@@ -1539,3 +1539,19 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.pagination {
+  justify-content: center;
+  padding-bottom: 0;
+  font-size: 1.5rem;
+
+  .page-link {
+    border: none;
+    border-radius: 5px;
+    padding: 5px 12px;
+  }
+
+  .disabled {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,66 @@
+.container {
+  height: 64vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  //   border-bottom: 1px solid grey;
+
+  .item {
+    height: 25%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    padding: 0.5rem 1rem;
+    border-top: 1px solid grey;
+    gap: 0.5rem;
+    color: #181818;
+    font-weight: bold;
+
+    &:last-child {
+      border-bottom: 1px solid grey;
+    }
+
+    &:hover {
+      background-color: #f8f9fd;
+      color: #3f80fa;
+
+      svg {
+        display: inline-block;
+      }
+    }
+
+    div {
+    }
+
+    svg {
+      color: #3f80fa;
+      font-size: 1.2rem;
+      display: none;
+      transition: all 0.2s ease-in;
+      margin-right: 5px;
+    }
+    .name {
+      display: flex;
+      align-items: center;
+    }
+
+    .account {
+      grid-row: 2 /3;
+      display: flex;
+      align-items: center;
+    }
+
+    .bank {
+      grid-row: 3/ 4;
+      display: flex;
+      align-items: center;
+    }
+
+    .city {
+      grid-row: 3/ 4;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+}

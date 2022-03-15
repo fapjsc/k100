@@ -4,12 +4,22 @@
   border-bottom: none;
   padding: 2rem 10px;
 
+  @media only screen and(max-width:767px) {
+    padding: 1rem 10px;
+    padding-top: 1.5rem;
+  }
+
   .title[data-show="show-form"] {
-    grid-column: 1 / 3;
+    grid-column: 1 / 4;
   }
 
   .title {
-    grid-column: 2 / 4;
+    grid-column: 2 / 5;
+
+    @media only screen and(max-width: 767px) {
+      font-size: 2rem;
+      grid-column: 1 / 5;
+    }
   }
 
   .close[data-show="show-form"] {
@@ -21,6 +31,11 @@
   .close {
     grid-column: 6 / 7;
     cursor: pointer;
+
+    @media only screen and(max-width: 767px) {
+      width: 50% !important;
+      text-align: right;
+    }
   }
 }
 

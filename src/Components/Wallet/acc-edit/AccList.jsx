@@ -3,8 +3,12 @@ import { useSelector } from "react-redux";
 
 import { BsFillPersonCheckFill } from "react-icons/bs";
 
+// Hooks
+import useRwd from "../../../hooks/useRwd";
+
 // Components
 import AccForm from "./AccForm";
+import AccListMobile from "./AccListMobile";
 
 import styles from "./AccList.module.scss";
 
@@ -22,18 +26,20 @@ const AccList = ({
 
   const [currentItem, setCurrentItem] = useState(null);
 
+  const { isMobile } = useRwd();
+
   const onClickHandler = (id, type) => {
     const current = historyAccData.find((acc) => acc.H_id === id);
     setCurrentItem(current);
     selectAccHandler(current);
   };
 
-  const editClick = (e, id) => {
-    e.stopPropagation();
-    const current = historyAccData.find((acc) => acc.H_id === id);
-    setCurrentItem(current);
-    setShowForm(true);
-  };
+  // const editClick = (e, id) => {
+  //   e.stopPropagation();
+  //   const current = historyAccData.find((acc) => acc.H_id === id);
+  //   setCurrentItem(current);
+  //   setShowForm(true);
+  // };
 
   useEffect(() => {
     if (clearItem) {
@@ -52,6 +58,15 @@ const AccList = ({
     );
   }
 
+  if (isMobile) {
+    return (
+      <AccListMobile
+        accHistoryData={accHistoryData}
+        onClickHandler={onClickHandler}
+      />
+    );
+  }
+
   return (
     <>
       <div className={styles["header-box"]}>
@@ -65,21 +80,26 @@ const AccList = ({
       <div
         style={{
           maxHeight: "calc(50vh)",
-          overflowY: "auto",
+          overflowY: "scroll",
+          overflowX: "hidden",
         }}
       >
         {accHistoryData?.map((d) => (
-          <div key={d.H_id} className={styles["content-item"]}>
+          <div
+            onClick={() => onClickHandler(d.H_id)}
+            key={d.H_id}
+            className={styles["content-item"]}
+          >
             <div className={styles["icon-box"]}>
               <BsFillPersonCheckFill />
             </div>
-            <div onClick={() => onClickHandler(d.H_id)}>{d.P2}</div>
-            <div onClick={() => onClickHandler(d.H_id)}>{d.P1}</div>
-            <div onClick={() => onClickHandler(d.H_id)}>{d.P3}</div>
-            <div onClick={() => onClickHandler(d.H_id)}>{d.P4}</div>
-            <div style={{ zIndex: 10 }} onClick={(e) => editClick(e, d.H_id)}>
+            <div>{d.P2}</div>
+            <div>{d.P1}</div>
+            <div>{d.P3}</div>
+            <div>{d.P4}</div>
+            {/* <div style={{ zIndex: 10 }} onClick={(e) => editClick(e, d.H_id)}>
               ...
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
