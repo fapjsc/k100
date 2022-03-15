@@ -11,6 +11,10 @@ html {
   font-size: 62.5%;
 }
 
+.adm-mask {
+  z-index: 20001;
+}
+
 .bg_darkblue {
   background-color: #242e47;
 }
@@ -20,6 +24,11 @@ html {
 .bg_white {
   background-color: #ffffff;
 }
+
+.c-dark-blue {
+  color: #242e47;
+}
+
 .c_fff {
   color: #fff;
 }
@@ -652,7 +661,7 @@ Images
 =========
 */
 .i_notyet {
-  background-image: url('./Assets/icon_load02.gif');
+  background-image: url("./Assets/icon_load02.gif");
   background-size: inherit;
   background-repeat: no-repeat;
   height: 110px;
@@ -661,7 +670,7 @@ Images
 }
 
 .i_done {
-  background-image: url('./Assets/i_complete.png');
+  background-image: url("./Assets/i_complete.png");
   background-size: inherit;
   background-repeat: no-repeat;
   height: 110px;
@@ -670,7 +679,7 @@ Images
 }
 
 .i_error {
-  background-image: url('./Assets//icon-error-new.png');
+  background-image: url("./Assets//icon-error-new.png");
   background-size: cover;
   background-repeat: no-repeat;
   height: 80px;
@@ -932,6 +941,18 @@ Button
   padding: 15px;
   margin: 10px auto 15px;
   border: none;
+  transition: 0.3s;
+  font-size: 17px;
+  // cursor: pointer;
+}
+
+.easy-btn-ghost {
+  background-color: white;
+  border-radius: 5px;
+  color: #3e80f9;
+  width: 50%;
+  padding: 15px;
+  margin: 10px auto 15px;
   transition: 0.3s;
   font-size: 17px;
   cursor: pointer;
@@ -1515,6 +1536,6 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }

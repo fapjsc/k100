@@ -1,5 +1,4 @@
-export const _setAgentAccDataFormat = data => {
-  console.log(data);
+export const _setAgentAccDataFormat = (data) => {
   data = {
     P1: data.account,
     P2: data.name,

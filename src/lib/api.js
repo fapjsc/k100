@@ -20,7 +20,6 @@ export const getAgentAcc = async () => {
 
   const data = await response.json();
 
-  console.log(data);
 
   if (!response.ok) throw new Error(data.msg || "Could not get agent acc");
   if (data.code !== 200) throw new Error(data.mag || "Fetch acc data error");
@@ -44,6 +43,33 @@ export const setAgentAcc = async (accData) => {
     if (!response.ok) throw new Error(data.msg || "Could not edit acc");
 
     if (data.code !== 200) throw new Error(data.msg || "Edit acc data fail.");
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+
+  }
+};
+
+export const getAgentAccHistory = async (accData) => {
+  const headers = getHeaders();
+  const setAccAPi = `/j/GetAgentAccHistory.aspx`;
+
+  try {
+    const response = await fetch(setAccAPi, {
+      method: "get",
+      headers,
+      body: JSON.stringify(accData),
+    });
+
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.msg || "Could not edit acc");
+
+    if (data.code !== 200) throw new Error(data.msg || "Edit acc data fail.");
+
 
     return data.data;
   } catch (error) {

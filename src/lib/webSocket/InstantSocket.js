@@ -29,12 +29,11 @@ export const connectInstantWs = () => {
   client.onmessage = (message) => {
     if (!message.data) return;
     const dataFromServer = JSON.parse(message.data);
-    console.log(dataFromServer)
-  
+    console.log(dataFromServer);
   };
 
   // 3.錯誤處理
   client.onclose = function (message) {
-    console.log('關閉連線.....');
+    console.log("關閉連線.....");
   };
 };

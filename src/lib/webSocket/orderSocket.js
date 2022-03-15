@@ -9,10 +9,16 @@ export const buyConnectWs = (token) => {
 
   let url;
 
-  if (window.location.protocol === "http:") {
-    url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+  // if (window.location.protocol === "http:") {
+  //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+  // } else {
+  //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+  // }
+
+  if (window.location.host.includes("k100u")) {
+    url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
   } else {
-    url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+    url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
   }
 
   client = new W3CWebsocket(url);

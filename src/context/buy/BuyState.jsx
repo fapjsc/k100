@@ -110,17 +110,23 @@ const BuyState = (props) => {
 
   //連接web socket --step 2
   const buyConnectWs = (token) => {
-    console.log('call webSocket')
+    console.log("call webSocket");
     const transactionApi = "j/ws_orderstatus.ashx";
 
     let loginSession = localStorage.getItem("token");
 
     let url;
 
-    if (window.location.protocol === "http:") {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+    // if (window.location.protocol === "http:") {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+    // } else {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+    // }
+
+    if (window.location.host.includes("k100u")) {
+      url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
     } else {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+      url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
     }
 
     const client = new W3CWebsocket(url);
@@ -137,7 +143,7 @@ const BuyState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message, 'message')
+      console.log(message, "message");
       // console.log(message);
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
@@ -207,7 +213,6 @@ const BuyState = (props) => {
         setWsData(wsData);
         handleBuyBtnLoading(false);
       }
-
 
       // 交易完成
       if (dataFromServer.data.Order_StatusID === 1) {

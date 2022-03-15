@@ -1,14 +1,20 @@
-import { useReducer, useContext } from 'react';
-import ReconnectingWebSocket from 'reconnecting-websocket';
-import TransferContext from './TransferContext';
-import TransferReducer from './TransferReducer';
-import { SET_TRANSFER_ORDER_TOKEN, SET_TRANSFER_STATUS, SET_USDT_COUNT, SET_ORDER_DETAIL, GET_WS_CLIENT } from '../type';
+import { useReducer, useContext } from "react";
+import ReconnectingWebSocket from "reconnecting-websocket";
+import TransferContext from "./TransferContext";
+import TransferReducer from "./TransferReducer";
+import {
+  SET_TRANSFER_ORDER_TOKEN,
+  SET_TRANSFER_STATUS,
+  SET_USDT_COUNT,
+  SET_ORDER_DETAIL,
+  GET_WS_CLIENT,
+} from "../type";
 
 // Context
-import HttpErrorContext from '../httpError/HttpErrorContext';
+import HttpErrorContext from "../httpError/HttpErrorContext";
 // import BalanceContext from '../balance/BalanceContext';
 
-const TransferState = props => {
+const TransferState = (props) => {
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { setHttpLoading, handleHttpError } = httpErrorContext;
@@ -23,30 +29,36 @@ const TransferState = props => {
 
   // Get Header
   const getHeader = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) return;
     let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('login_session', token);
+    headers.append("Content-Type", "application/json");
+    headers.append("login_session", token);
 
     return headers;
   };
 
   // webSocket連接
-  const transferWebSocket = orderToken => {
+  const transferWebSocket = (orderToken) => {
     if (!orderToken) return;
 
-    const loginSession = localStorage.getItem('token');
+    const loginSession = localStorage.getItem("token");
     if (!loginSession) return;
 
-    const connectWs = 'j/ws_orderstatus.ashx';
+    const connectWs = "j/ws_orderstatus.ashx";
 
     let url;
 
-    if (window.location.protocol === 'http:') {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // if (window.location.protocol === 'http:') {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // } else {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // }
+
+    if (window.location.host.includes("k100u")) {
+      url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+      url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
     const client = new ReconnectingWebSocket(url);
@@ -59,14 +71,17 @@ const TransferState = props => {
     };
 
     // 2.收到server回復
-    client.onmessage = message => {
+    client.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data);
       // console.log('got transfer reply!', dataFromServer);
-      dispatch({ type: SET_TRANSFER_STATUS, payload: dataFromServer.data.Order_StatusID });
+      dispatch({
+        type: SET_TRANSFER_STATUS,
+        payload: dataFromServer.data.Order_StatusID,
+      });
     };
 
     // 3.錯誤處理
-    client.onclose = message => {
+    client.onclose = (message) => {
       // console.log('關閉連線.....');
     };
   };
@@ -89,7 +104,7 @@ const TransferState = props => {
 
     try {
       const res = await fetch(checkErcApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           ToAddress: transferAddress.val,
@@ -114,14 +129,14 @@ const TransferState = props => {
     const headers = getHeader();
     if (!transferAddress || !transferCount || !headers) {
       setHttpLoading(false);
-      handleHttpError('');
+      handleHttpError("");
       return;
     }
 
-    const transferApi = '/j/Req_Transfer1.aspx';
+    const transferApi = "/j/Req_Transfer1.aspx";
     try {
       const res = await fetch(transferApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           ToAddress: transferAddress.val,
@@ -151,7 +166,7 @@ const TransferState = props => {
 
     try {
       const res = await fetch(checkErcApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           ToAddress: transferAddress.val,
@@ -176,14 +191,14 @@ const TransferState = props => {
     const headers = getHeader();
     if (!transferAddress || !transferCount || !headers) {
       setHttpLoading(false);
-      handleHttpError('');
+      handleHttpError("");
       return;
     }
 
-    const transferApi = '/j/Req_Transfer2.aspx';
+    const transferApi = "/j/Req_Transfer2.aspx";
     try {
       const res = await fetch(transferApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           ToAddress: transferAddress.val,
@@ -205,7 +220,7 @@ const TransferState = props => {
   };
 
   // get detail
-  const detailReq = async orderToken => {
+  const detailReq = async (orderToken) => {
     const headers = getHeader();
 
     if (!orderToken || !headers) {
@@ -213,10 +228,10 @@ const TransferState = props => {
       return;
     }
 
-    const detailApi = '/j/GetTxDetail.aspx';
+    const detailApi = "/j/GetTxDetail.aspx";
     try {
       const res = await fetch(detailApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           Token: orderToken,
@@ -247,17 +262,17 @@ const TransferState = props => {
   };
 
   // set usdt count
-  const setUsdtCount = value => {
+  const setUsdtCount = (value) => {
     dispatch({ type: SET_USDT_COUNT, payload: value });
   };
 
   // set order token
-  const setOrderToken = value => {
+  const setOrderToken = (value) => {
     dispatch({ type: SET_TRANSFER_ORDER_TOKEN, payload: value });
   };
 
   // Set Order Detail
-  const setOrderDetail = data => {
+  const setOrderDetail = (data) => {
     dispatch({ type: SET_ORDER_DETAIL, payload: data });
   };
 

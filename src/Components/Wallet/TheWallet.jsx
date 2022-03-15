@@ -1,49 +1,58 @@
-import { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
 
 // Context
-import WalletContext from '../../context/wallet/WalletContext';
-import BalanceContext from '../../context/balance/BalanceContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import WalletContext from "../../context/wallet/WalletContext";
+import BalanceContext from "../../context/balance/BalanceContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Components
-import FromFooter from '../Layout/FormFooter';
-import BaseSpinner from '../Ui/BaseSpinner';
-import EditBankInfoForm from '../../Components/Wallet/EditBankInfoForm';
+import FromFooter from "../Layout/FormFooter";
+import BaseSpinner from "../Ui/BaseSpinner";
+import EditBankInfoForm from "./acc-edit/EditBankInfoForm";
 
-// Hooks
-import useHttp from '../../hooks/useHttp';
+// Actions
+import { getAcc, getAccHistory } from "../../store/actions/accountAction";
 
 // Apis
-import { getAgentAcc } from '../../lib/api';
 
 // BootStrap
-import ListGroup from 'react-bootstrap/ListGroup';
-import Spinner from 'react-bootstrap/Spinner';
+import ListGroup from "react-bootstrap/ListGroup";
+import Spinner from "react-bootstrap/Spinner";
 
 // Icons
-import { AiFillEdit } from 'react-icons/ai';
+import { AiFillEdit } from "react-icons/ai";
 
 // Style
-import './index.scss';
+import "./index.scss";
 
 const TheWallet = () => {
+  console.log("wallet");
   // Init State
   const [showFom, setShowForm] = useState(false);
 
-  // Http
+  // Redux
+  const dispatch = useDispatch();
   const {
-    data: getAccData,
-    error: getAccError,
-    status: getAccStatus,
-    sendRequest: sendAccRequest,
-  } = useHttp(getAgentAcc);
+    loading: accLoading,
+    data: accData,
+    error: accError,
+  } = useSelector((state) => state.currentAcc);
+
+  const {
+    loading: historyAccLoading,
+    data: historyAccData,
+    error: historyAccError,
+  } = useSelector((state) => state.historyAcc);
 
   // Lang Context
   const { t } = useI18n();
+
   // Router Props
   const history = useHistory();
 
@@ -69,16 +78,17 @@ const TheWallet = () => {
   useEffect(() => {
     if (errorText) alert(errorText);
     return () => {
-      setHttpError('');
+      setHttpError("");
     };
     // eslint-disable-next-line
   }, [errorText]);
 
   useEffect(() => {
-    sendAccRequest();
-  }, [sendAccRequest]);
+    dispatch(getAcc());
+    dispatch(getAccHistory());
+  }, []);
 
-  const handleClick = type => {
+  const handleClick = (type) => {
     setWalletType(type);
     history.push(`/home/wallet/${type}`);
   };
@@ -88,7 +98,7 @@ const TheWallet = () => {
       <div className="container h_88">
         <div className="row">
           <div className="col-12">
-            <p className="welcome_txt pl-0 mt-3">{t('welcome_text')}</p>
+            <p className="welcome_txt pl-0 mt-3">{t("welcome_text")}</p>
             <div className="content-box" style={{ paddingLeft: 30 }}>
               {/* Balance */}
 
@@ -100,15 +110,16 @@ const TheWallet = () => {
                 <>
                   <div className="row mt-4">
                     <div className="col-md-8 col-12">
-                      <p className="txt_12 mb-0">{t('overView_wallet')}</p>
+                      <p className="txt_12 mb-0">{t("overView_wallet")}</p>
                       <div className="balance">
-                        {t('balance_real')}：<span className="usdt mr_sm"></span>
+                        {t("balance_real")}：
+                        <span className="usdt mr_sm"></span>
                         <span className="c_green mr_sm">USDT</span>
                         <span className="c_green fs_20">{real}</span>
                       </div>
 
                       <div className="balance">
-                        {t('balance_avb')}：<span className="usdt mr_sm"></span>
+                        {t("balance_avb")}：<span className="usdt mr_sm"></span>
                         <span className="c_green mr_sm">USDT</span>
                         <span className="c_green fs_20">{avb}</span>
                       </div>
@@ -120,16 +131,22 @@ const TheWallet = () => {
                   {/* Wallet chose button */}
                   <div className="row mt-4">
                     <div className="col-12">
-                      <p className="txt_12">{t('wallet_address')}</p>
+                      <p className="txt_12">{t("wallet_address")}</p>
                     </div>
                     <div className="col-md-6 col-12 text-center">
-                      <button onClick={() => handleClick('trc20')} className="easy-btn w-75">
+                      <button
+                        onClick={() => handleClick("trc20")}
+                        className="easy-btn w-75"
+                      >
                         TRC20
                       </button>
                     </div>
 
                     <div className="col-md-6 col-12 text-center">
-                      <button onClick={() => handleClick('erc20')} className="easy-btn w-75">
+                      <button
+                        onClick={() => handleClick("erc20")}
+                        className="easy-btn w-75"
+                      >
                         ERC20
                       </button>
                     </div>
@@ -142,52 +159,61 @@ const TheWallet = () => {
                   <div className="row">
                     <div className="col-md-6 col-12">
                       <div className="d-flex justify-content-between align-items-center">
-                        <p className="txt_12">{t('EditBankInfoForm_account_info')}</p>
+                        <p className="txt_12">
+                          {t("EditBankInfoForm_account_info")}
+                        </p>
                         <AiFillEdit
-                          style={{ fontSize: '2rem', color: '#242e47', cursor: 'pointer' }}
-                          onClick={() => setShowForm(preState => !preState)}
+                          style={{
+                            fontSize: "2rem",
+                            color: "#242e47",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => setShowForm((preState) => !preState)}
                         />
                       </div>
-                      {getAccStatus === 'completed' && !getAccError && (
+
+                      {accData && (
                         <>
                           <ListGroup>
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t('EditBankInfoForm_name')}：{getAccData.P2}
+                              {t("EditBankInfoForm_name")}：{accData.P2}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t('EditBankInfoForm_account')}：{getAccData.P1}
+                              {t("EditBankInfoForm_account")}：{accData.P1}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t('EditBankInfoForm_bank')}：{getAccData.P3}
+                              {t("EditBankInfoForm_bank")}：{accData.P3}
                             </ListGroup.Item>
 
                             <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t('EditBankInfoForm_city')}：{getAccData.P4}
+                              {t("EditBankInfoForm_city")}：{accData.P4}
                             </ListGroup.Item>
                           </ListGroup>
 
                           <EditBankInfoForm
-                            getAccData={getAccData}
-                            sendAccRequest={sendAccRequest}
+                            accHistoryData={historyAccData}
                             show={showFom}
                             onHide={() => setShowForm(false)}
                           />
                         </>
                       )}
 
-                      {getAccStatus === 'pending' && (
+                      {accLoading && (
                         <div
                           className=""
                           style={{
-                            height: '5rem',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                            height: "5rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
                           }}
                         >
-                          <Spinner animation="border" style={{ width: '3rem', height: '3rem' }} />
+                          <Spinner
+                            animation="border"
+                            style={{ width: "3rem", height: "3rem" }}
+                          />
                         </div>
                       )}
                     </div>

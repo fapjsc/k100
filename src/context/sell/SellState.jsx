@@ -232,10 +232,16 @@ const SellState = (props) => {
 
     let url;
 
-    if (window.location.protocol === "http:") {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // if (window.location.protocol === "http:") {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // } else {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // }
+
+    if (window.location.host.includes("k100u")) {
+      url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+      url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
     const client = new W3CWebsocket(url);
@@ -249,7 +255,7 @@ const SellState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message, 'message')
+      console.log(message, "message");
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       store.dispatch(setOrderStatus(dataFromServer.data));
@@ -278,7 +284,6 @@ const SellState = (props) => {
       if (dataFromServer.data.Order_StatusID === 35) {
         setWsData(dataFromServer.data);
       }
-      
 
       // 交易成功 Order_StatusID：1
       if (dataFromServer.data.Order_StatusID === 1) {

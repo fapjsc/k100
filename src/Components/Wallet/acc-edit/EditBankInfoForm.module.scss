@@ -1,0 +1,32 @@
+.header {
+  display: grid;
+  grid-template-columns: 5% repeat(4, 20% 30% 20% 15%) 5%;
+  border-bottom: none;
+  padding: 2rem 10px;
+
+  .title[data-show="show-form"] {
+    grid-column: 1 / 3;
+  }
+
+  .title {
+    grid-column: 2 / 4;
+  }
+
+  .close[data-show="show-form"] {
+    cursor: pointer;
+    width: 50% !important;
+    text-align: right;
+  }
+
+  .close {
+    grid-column: 6 / 7;
+    cursor: pointer;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
