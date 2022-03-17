@@ -27,7 +27,6 @@ const TheChat = (props) => {
   const { orderStatus } = useSelector((state) => state.order);
   const { Order_StatusID: statusID } = orderStatus || {};
 
-
   // Lang Context
   const { t } = useI18n();
   // Router Props
@@ -296,6 +295,7 @@ const TheChat = (props) => {
                               <img
                                 style={{
                                   cursor: "zoom-in",
+                                  display: "block",
                                 }}
                                 src={el.Message}
                                 alt="send img"
@@ -440,6 +440,7 @@ const TheChat = (props) => {
                                 alt="send img"
                                 style={{
                                   cursor: "zoom-in",
+                                  display: "block",
                                 }}
                                 className={
                                   el.Message_Role === 3 || el.Message_Role === 2

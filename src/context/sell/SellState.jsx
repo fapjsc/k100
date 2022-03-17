@@ -322,10 +322,16 @@ const SellState = (props) => {
 
     let url;
 
-    if (window.location.protocol === "http:") {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // if (window.location.protocol === "http:") {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // } else {
+    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // }
+
+    if (window.location.host.includes("k100u")) {
+      url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
-      url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+      url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
     const client = new W3CWebsocket(url);

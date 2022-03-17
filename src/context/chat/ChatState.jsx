@@ -30,6 +30,7 @@ const ChatState = (props) => {
 
   // Chat WebSocket
   const chatConnect = (orderToken) => {
+
     const loginSession = localStorage.getItem("token");
 
     const chatApi = `WS_ChatOrder.ashx`;
@@ -50,14 +51,14 @@ const ChatState = (props) => {
 
     // 1.建立連接
     client.onopen = (message) => {
-      // console.log('chat connect');
+      console.log('chat connect');
     };
 
     // 2.收到server回復
     client.onmessage = (message) => {
       // console.log(message);
       const dataFromServer = JSON.parse(message.data);
-      // console.log('got Chat reply!', dataFromServer);
+      console.log('got Chat reply!', dataFromServer);
 
       setChatLoading(false);
 
@@ -119,7 +120,7 @@ const ChatState = (props) => {
       if (message.data === "" || message.data.includes("login_session")) return;
 
       const dataFromServer = JSON.parse(message.data);
-      // console.log('instant got Chat reply!', dataFromServer);
+      console.log('instant got Chat reply!', dataFromServer);
       setChatLoading(false);
       if (dataFromServer.Message_Role === 1) {
         setNewMessage(true);
