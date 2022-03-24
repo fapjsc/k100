@@ -32,8 +32,8 @@ import {
   SET_SHOW_SELL_BANK,
 } from "../type";
 
-// import ReconnectingWebSocket from 'reconnecting-websocket';
-import { w3cwebsocket as W3CWebsocket } from "websocket";
+import ReconnectingWebSocket from "reconnecting-websocket";
+// import { w3cwebsocket as W3CWebsocket } from "websocket";
 
 const SellState = (props) => {
   // Lang Context
@@ -230,33 +230,28 @@ const SellState = (props) => {
 
     let url;
 
-    // if (window.location.protocol === "http:") {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    // } else {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    // }
-
     if (window.location.host.includes("k100u")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new W3CWebsocket(url);
+    const client = new ReconnectingWebSocket(url);
 
     setWsClient(client);
 
     // 1.建立連接
     client.onopen = () => {
-      // console.log('websocket client connected sell');
+      console.log("websocket client connected sell");
     };
 
     // 2.收到server回復
     client.onmessage = (message) => {
+      console.log(message, "sell");
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       store.dispatch(setOrderStatus(dataFromServer.data));
-      // console.log("got reply!", dataFromServer, "sell");
+      console.log("got reply!", dataFromServer, "sell");
       setSellStatus(dataFromServer.data.Order_StatusID);
 
       // 配對中 Order_StatusID：31 or 32
@@ -293,51 +288,43 @@ const SellState = (props) => {
       }
 
       // 交易失敗
-      if (
-        dataFromServer.data.Order_StatusID === 99 ||
-        dataFromServer.data.Order_StatusID === 98
-      ) {
+      if (dataFromServer.data.Order_StatusID === 99) {
         client.close();
       }
     };
 
     // 3.錯誤處理
     client.onclose = function (message) {
-      // console.log('關閉連線.....', message);
+      console.log("關閉連線.....sell...", message);
     };
   };
 
   // 關閉webSocket
-  const closeWebSocket = (orderToken) => {
-    if (state.client) {
-      state.client.close();
-    }
+  // const closeWebSocket = (orderToken) => {
+  //   console.log("1234hjfdkjfad;fj;");
+  //   if (state.client) {
+  //     state.client.close();
+  //   }
 
-    if (!orderToken) return;
+  //   if (!orderToken) return;
 
-    const loginSession = localStorage.getItem("token");
-    if (!loginSession) return;
+  //   const loginSession = localStorage.getItem("token");
+  //   if (!loginSession) return;
 
-    const connectWs = "j/ws_orderstatus.ashx";
+  //   const connectWs = "j/ws_orderstatus.ashx";
 
-    let url;
+  //   let url;
 
-    // if (window.location.protocol === "http:") {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    // } else {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    // }
+  //   if (window.location.host.includes("k100u")) {
+  //     url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+  //   } else {
+  //     url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+  //   }
 
-    if (window.location.host.includes("k100u")) {
-      url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    } else {
-      url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    }
+  //   const client = new ReconnectingWebSocket(url);
 
-    const client = new W3CWebsocket(url);
-
-    client.close();
-  };
+  //   client.close();
+  // };
 
   // 取消訂單
   const cancelOrder = async (orderToken) => {
@@ -475,7 +462,7 @@ const SellState = (props) => {
         getExRate,
         getOrderToken,
         sellWebSocket,
-        closeWebSocket,
+        // closeWebSocket,
         cancelOrder,
         cleanOrderToken,
         setWsPairing,

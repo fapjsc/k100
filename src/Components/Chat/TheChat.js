@@ -25,7 +25,7 @@ import classes from "./TheChat.module.scss";
 
 const TheChat = (props) => {
   const { orderStatus } = useSelector((state) => state.order);
-  const { Order_StatusID: statusID } = orderStatus || {};
+  const { Order_StatusID: statusID, Tx_HASH: statusHash } = orderStatus || {};
 
   // Lang Context
   const { t } = useI18n();
@@ -242,7 +242,7 @@ const TheChat = (props) => {
           <p className="mb-1" style={{ display: "block" }}>
             {t("chat_order_number")}：
           </p>
-          <p className="">{props.hash}</p>
+          <p className="">{props.hash || statusHash}</p>
         </div>
 
         {instantClient ? (

@@ -69,6 +69,8 @@ const BuyInfo = () => {
     // closeWebSocket,
   } = buyContext;
 
+  console.log(buyWsData);
+
   // ===========
   //  useEffect
   // ===========
@@ -126,17 +128,17 @@ const BuyInfo = () => {
       />
       <ExRate />
 
+      {}
+
       {(statusID === 35 || statusID === 33) && buyWsData ? (
         <BuyDetail />
-      ) : (statusID === 34 ||
-          statusID === 1 ||
-          statusID === 99 ||
-          statusID === 98) &&
-        buyWsData ? (
+      ) : ((statusID === 34 || statusID === 1) && buyWsData) ||
+        statusID === 99 ||
+        statusID === 98 ? (
         // <BuyComplete wsStatus={wsStatus} hash={buyWsData.hash} backToHome={backToHome} />
         <CompleteStatus
           statusID={statusID}
-          hash={buyWsData.hash || hash}
+          hash={buyWsData?.hash || hash}
           backToHome={backToHome}
           confirmReceivedReq={confirmReceivedReq}
           confirmReceivedStatus={confirmReceivedStatus}

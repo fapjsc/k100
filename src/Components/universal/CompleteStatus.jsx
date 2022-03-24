@@ -3,6 +3,8 @@ import { useRouteMatch } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { Button } from "react-bootstrap";
+
 // Context
 import HistoryContext from "../../context/history/HistoryContext";
 import InstantContext from "../../context/instant/InstantContext";
@@ -14,7 +16,7 @@ import useHttp from "../../hooks/useHttp";
 import { setOrderStatus } from "../../store/actions/orderActions";
 
 // Apis
-import { cancelOrder, confirmReceived } from "../../lib/api";
+import { cancelOrder, confirmReceived, orderAppeal } from "../../lib/api";
 
 // Lang Context
 import { useI18n } from "../../lang";
@@ -26,27 +28,14 @@ import HistoryDetail from "../History/HistoryAllDetail";
 import Card from "react-bootstrap/Card";
 
 const CompleteStatus = (props) => {
-  // console.log(props.action);
-  // console.log(props.type);
-
   const dispatch = useDispatch();
-  const {
-    hash,
-    instantData,
-    statusID,
-    // confirmReceivedReq,
-    // confirmReceivedStatus,
-    backToHome,
-  } = props;
+  const { hash, instantData, statusID, backToHome, setShowComplete } = props;
+
   // Lang Context
   const { t } = useI18n();
 
   const { orderStatus } = useSelector((state) => state.order);
   const { MasterType } = orderStatus || {};
-
-  // console.log(Order_TypeID);
-
-  // Buy2 Http
 
   // Router Props
   const match = useRouteMatch();
@@ -64,42 +53,60 @@ const CompleteStatus = (props) => {
   const instantContext = useContext(InstantContext);
   const { sell1Data, buy1Data } = instantContext;
 
-  // 取消訂單請求
+  // Appeal http
   const {
-    sendRequest: cancelReq,
-    data: cancelData,
-    error: cancelError,
-    status: cancelStatus,
-  } = useHttp(cancelOrder);
+    sendRequest: appealReq,
+    data: appealData,
+    status: appealStatus,
+    error: appealError,
+  } = useHttp(orderAppeal);
+
+  // 取消訂單請求
+  // const {
+  //   sendRequest: cancelReq,
+  //   data: cancelData,
+  //   error: cancelError,
+  //   status: cancelStatus,
+  // } = useHttp(cancelOrder);
 
   // 確定收款請求
-  const {
-    sendRequest: confirmReceivedReq,
-    data: confirmReceivedData,
-    status: confirmReceivedStatus,
-    error: confirmReceivedError,
-  } = useHttp(confirmReceived);
+  // const {
+  //   sendRequest: confirmReceivedReq,
+  //   data: confirmReceivedData,
+  //   status: confirmReceivedStatus,
+  //   error: confirmReceivedError,
+  // } = useHttp(confirmReceived);
 
   useEffect(() => {
-    if (cancelData && cancelStatus === "completed" && !cancelError) {
-      dispatch(setOrderStatus(cancelData));
+    if (appealData && appealStatus === "completed" && !appealError) {
+      // console.log("set true", appealData, appealStatus, appealError);
+      dispatch(setOrderStatus(appealData));
+      if (setShowComplete) {
+        setShowComplete(false);
+      }
     }
-  }, [cancelData, cancelError, cancelStatus, dispatch]);
+  }, [appealData, appealStatus, appealError, dispatch]);
 
-  useEffect(() => {
-    if (
-      confirmReceivedData &&
-      confirmReceivedStatus === "completed" &&
-      !confirmReceivedError
-    ) {
-      dispatch(setOrderStatus(confirmReceivedData));
-    }
-  }, [
-    confirmReceivedData,
-    confirmReceivedStatus,
-    confirmReceivedError,
-    dispatch,
-  ]);
+  // useEffect(() => {
+  //   if (cancelData && cancelStatus === "completed" && !cancelError) {
+  //     dispatch(setOrderStatus(cancelData));
+  //   }
+  // }, [cancelData, cancelError, cancelStatus, dispatch]);
+
+  // useEffect(() => {
+  //   if (
+  //     confirmReceivedData &&
+  //     confirmReceivedStatus === "completed" &&
+  //     !confirmReceivedError
+  //   ) {
+  //     dispatch(setOrderStatus(confirmReceivedData));
+  //   }
+  // }, [
+  //   confirmReceivedData,
+  //   confirmReceivedStatus,
+  //   confirmReceivedError,
+  //   dispatch,
+  // ]);
 
   const handleClick = () => {
     if (sell1Data || buy1Data) {
@@ -154,71 +161,6 @@ const CompleteStatus = (props) => {
     setSingleDetail(orderDetail);
   };
 
-  if (props.wsStatus === 35 || statusID === 35) {
-    return (
-      <Card className="border-0 text-center pb-4">
-        <div className="i_error mt-4 mb-4" />
-        <h4 className="c_blue">申訴中..</h4>
-        <br />
-        <p className="txt_12_grey text-break">
-          {t("transaction_hash")}：{" "}
-          {instantData?.hash || buy1Data?.Tx_HASH || hash}
-        </p>
-        <p className="txt_12_grey text-break"></p>
-
-        {/* 買 */}
-        {MasterType === 0 && (
-          <>
-            {props.type === "sell" && (
-              <button
-                disabled={confirmReceivedStatus === "pending"}
-                onClick={() => confirmReceivedReq({ orderToken })}
-                className="easy-btn mw400"
-              >
-                {confirmReceivedStatus === "pending" ? "Loading..." : "确认"}
-              </button>
-            )}
-
-            {props.type === "buy" && (
-              <button
-                disabled={cancelStatus === "pending"}
-                onClick={() => cancelReq(orderToken)}
-                className="easy-btn"
-              >
-                {cancelStatus === "pending" ? "Loading..." : "取消"}
-              </button>
-            )}
-          </>
-        )}
-
-        {/* 賣 */}
-        {MasterType === 1 && (
-          <>
-            {props.type === "sell" && (
-              <button
-                disabled={confirmReceivedStatus === "pending"}
-                onClick={() => confirmReceivedReq({ orderToken, type: "sell" })}
-                className="easy-btn mw400"
-              >
-                {confirmReceivedStatus === "pending" ? "Loading..." : "确认"}
-              </button>
-            )}
-
-            {props.type === "buy" && (
-              <button
-                disabled={cancelStatus === "pending"}
-                onClick={() => cancelReq(orderToken)}
-                className="easy-btn"
-              >
-                {cancelStatus === "pending" ? "Loading..." : "取消"}
-              </button>
-            )}
-          </>
-        )}
-      </Card>
-    );
-  }
-
   if (props.wsStatus === 34 || statusID === 34) {
     return (
       <Card className="border-0 text-center pb-4">
@@ -271,6 +213,7 @@ const CompleteStatus = (props) => {
     );
   }
 
+  // 取消
   if (props.wsStatus === 99 || statusID === 99) {
     return (
       <Card className="border-0 text-center pb-4">
@@ -288,6 +231,7 @@ const CompleteStatus = (props) => {
     );
   }
 
+  // 超時
   if (props.wsStatus === 98 || statusID === 98) {
     return (
       <Card className="border-0 text-center pb-4">
@@ -298,7 +242,22 @@ const CompleteStatus = (props) => {
           {t("transaction_hash")}： {hash}
         </p>
         <br />
-        <button onClick={backToHome} className="easy-btn mw400">
+        {(MasterType === 0 && props.type === "buy") ||
+        (MasterType === 1 && props.type === "buy") ? (
+          <Button
+            onClick={() => appealReq(orderToken)}
+            className="easy-btn mw400"
+            disabled={appealStatus === "pending"}
+          >
+            {appealStatus === "pending" ? "Loading..." : "申訴"}
+          </Button>
+        ) : null}
+
+        <button
+          onClick={backToHome}
+          className="easy-btn mw400"
+          style={{ backgroundColor: "#f2f2f2", color: "#707070" }}
+        >
           {t("btn_back_home")}
         </button>
       </Card>

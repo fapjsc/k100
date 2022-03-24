@@ -27,6 +27,23 @@ export const getAgentAcc = async () => {
   return data.data;
 };
 
+export const getExpiredOrder = async () => {
+  const headers = getHeaders();
+  const url = `/j/GetTxExpired.aspx`;
+
+  const response = await fetch(url, {
+    headers,
+  });
+
+  const data = await response.json();
+
+
+  if (!response.ok) throw new Error(data.msg || "Could not get expired order ");
+  if (data.code !== 200) throw new Error(data.mag || "Fetch expired order  error");
+
+  return data.data;
+};
+
 export const setAgentAcc = async (accData) => {
   const headers = getHeaders();
   const setAccAPi = `/j/SetAgentAcc.aspx`;

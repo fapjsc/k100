@@ -1,7 +1,7 @@
 import { useReducer, useContext } from "react";
 import { useHistory } from "react-router-dom";
-// import ReconnectingWebSocket from 'reconnecting-websocket';
-import { w3cwebsocket as W3CWebsocket } from "websocket";
+import ReconnectingWebSocket from "reconnecting-websocket";
+// import { w3cwebsocket as W3CWebsocket } from "websocket";
 
 import store from "../../store/store";
 
@@ -110,18 +110,11 @@ const BuyState = (props) => {
 
   //連接web socket --step 2
   const buyConnectWs = (token) => {
-    // console.log("call webSocket");
     const transactionApi = "j/ws_orderstatus.ashx";
 
     let loginSession = localStorage.getItem("token");
 
     let url;
-
-    // if (window.location.protocol === "http:") {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
-    // } else {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
-    // }
 
     if (window.location.host.includes("k100u")) {
       url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
@@ -129,25 +122,23 @@ const BuyState = (props) => {
       url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
     }
 
-    const client = new W3CWebsocket(url);
-
-    // console.log(client);
+    const client = new ReconnectingWebSocket(url);
 
     if (client) setWsClient(client);
     // console.log(token);
 
     // 1.建立連接
     client.onopen = () => {
-      // console.log('websocket client connected buy');
+      console.log("websocket client connected buy");
     };
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      // console.log(message, "message");
+      console.log(message, "buy");
       // console.log(message);
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      // console.log("got reply!", dataFromServer, "buy");
+      console.log("got reply!", dataFromServer, "buy");
 
       store.dispatch(setOrderStatus(dataFromServer.data));
 
@@ -231,17 +222,14 @@ const BuyState = (props) => {
       }
 
       // 交易失敗
-      if (
-        dataFromServer.data.Order_StatusID === 99 ||
-        dataFromServer.data.Order_StatusID === 98
-      ) {
+      if (dataFromServer.data.Order_StatusID === 99) {
         client.close();
       }
     };
 
     //3. 連線關閉
     client.onclose = (message) => {
-      // console.log('關閉連線', message);
+      console.log("關閉連線", message);
       // setWsClient(null);
     };
   };

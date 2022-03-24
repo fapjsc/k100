@@ -32,8 +32,9 @@ const InfoDetail = (props) => {
   const { t } = useI18n();
 
   // Redux
+
   const { orderStatus } = useSelector((state) => state.order);
-  const { Order_StatusID: statusID } = orderStatus || {};
+  const { Order_StatusID: statusID, Tx_HASH: statusHash } = orderStatus || {};
 
   // Router Props
   const match = useRouteMatch();
@@ -94,6 +95,8 @@ const InfoDetail = (props) => {
     // eslint-disable-next-line
   }, [deltaTime]);
 
+  console.log(statusID);
+
   return (
     <>
       <Cancel
@@ -101,6 +104,7 @@ const InfoDetail = (props) => {
         onHide={() => setShowCancel(false)}
         onShow={() => GetDeltaTime(buyOrderToken)}
         onExited={() => GetDeltaTime(buyOrderToken)}
+        hash={statusHash}
       />
       {/* 第一階段倒數 */}
       <>
@@ -261,68 +265,6 @@ const InfoDetail = (props) => {
           </Col>
         </Row>
       </>
-
-      {/* 第二階段倒數
-      {isHideBuyInfo && deltaTime ? (
-        <>
-          {errorText && (
-            <Row className="mb-4">
-              <Col className="text-danger" style={{ fontSize: 12 }}>
-                *{errorText}
-              </Col>
-            </Row>
-          )}
-          <Row className="justify-content-center">
-            <Col className="mw400 text-center">
-              {!overTime ? (
-                <Button
-                  disabled={buyBtnLoading || overTime}
-                  //   className="easy-btn w-100"
-                  className={
-                    buyBtnLoading ? "disable-easy-btn w-100" : "easy-btn w-100"
-                  }
-                  onClick={() => BuyerAlreadyPay(buyOrderToken)}
-                >
-                  <Countdown
-                    onComplete={() => setOverTime(true)}
-                    renderer={Timer}
-                    date={timeLeft}
-                  />
-                  <br />
-                  {buyBtnLoading && (
-                    <Spinner animation="grow" variant="danger" />
-                  )}
-                  {buyBtnLoading
-                    ? `${t("btn_loading")}...`
-                    : t("btn_already_pay")}
-                </Button>
-              ) : (
-                <Button
-                  className="disable-easy-btn w-100"
-                  disabled
-                  variant="secondary"
-                >
-                  {t("btn_over_time")}
-                </Button>
-              )}
-
-              <span
-                style={{
-                  cursor: "pointer",
-                  paddingBottom: "2px",
-                  borderBottom: "1px solid #262e45",
-                  borderColor: "#262e45",
-                  fontSize: 12,
-                  color: "#262e45",
-                }}
-                onClick={() => setShowCancel(true)}
-              >
-                {t("btn_cancel_order")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ) : null} */}
     </>
   );
 };

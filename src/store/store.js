@@ -5,6 +5,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { agentReducer } from "./reducers/agentReducer";
 import { instantReducer } from "./reducers/instantReducer";
 import { orderReducer } from "./reducers/orderReducer";
+import { expiredReducer } from "./reducers/expiredReducer";
+
 import {
   setAccountReducer,
   currentAccountReducer,
@@ -20,6 +22,7 @@ const reducer = combineReducers({
   setAccount: setAccountReducer,
   currentAcc: currentAccountReducer,
   historyAcc: accHistoryReducer,
+  expired: expiredReducer,
 });
 
 const store = createStore(

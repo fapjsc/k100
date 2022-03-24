@@ -27,8 +27,7 @@ import CountDownTimer from "../universal/countDownTimer";
 import useHttp from "../../hooks/useHttp";
 
 // Apis
-import { orderAppeal } from "../../lib/api";
-import { confirmReceived } from "../../lib/api";
+import { orderAppeal, confirmReceived } from "../../lib/api";
 
 // Actions
 // import { setInstantOrderData } from "../../store/actions/instantActions";
@@ -121,6 +120,10 @@ const BuyDetail = () => {
     //eslint-disable-next-line
   }, []);
 
+  // useEffect(() => {
+  //   dispatch(getExpiredOrder());
+  // }, [dispatch]);
+
   useEffect(() => {
     setTimeLeft(Date.now() + 1000 * 60 * 30 - deltaTime * 1000);
     if (deltaTime > 1800) setOverTime(true);
@@ -199,6 +202,8 @@ const BuyDetail = () => {
     history.replace("/home/overview");
     cleanAll();
   };
+
+  console.log(statusID);
 
   return (
     <div className="row mt-4">
@@ -365,17 +370,7 @@ const BuyDetail = () => {
 
                 <FromFooter />
               </>
-            ) : // : buy1Data && showComplete && !instantData ? (
-            //   // 交易結果
-            //   <CompleteStatus
-            //     wsStatus={wsStatusData}
-            //     backToHome={backToHome}
-            //     hash={buy1Data.Tx_HASH}
-            //     type="sell"
-            //   />
-            // )
-
-            showComplete && statusID && buy1Data ? (
+            ) : showComplete && statusID && buy1Data ? (
               <CompleteStatus
                 // instantData={instantData}
                 confirm={handleClick}
@@ -386,6 +381,7 @@ const BuyDetail = () => {
                 wsStatus={wsStatusData}
                 backToHome={backToHome}
                 hash={buy1Data.Tx_HASH}
+                setShowComplete={setShowComplete}
                 type="sell"
                 action="confirm"
               />

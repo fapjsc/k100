@@ -108,6 +108,8 @@ const SellDetail = () => {
   //   cleanAll();
   // };
 
+  console.log(statusID);
+
   return (
     <Container className="">
       {wsData ? (

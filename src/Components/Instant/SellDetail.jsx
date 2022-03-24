@@ -150,6 +150,8 @@ const SellDetail = () => {
     cleanAll();
   };
 
+  console.log(statusID);
+
   return (
     <>
       <Cancel
@@ -180,7 +182,7 @@ const SellDetail = () => {
                         </span>
                         <span className="i_clock mr-1 mb-1" />
 
-                        {wsStatusData !== 35 && (
+                        {(wsStatusData !== 35 || statusID !== 35) && (
                           <>
                             <span className="txt_12">
                               {t("instant_pay_time")}：
@@ -257,32 +259,12 @@ const SellDetail = () => {
                     </div>
                   </div>
 
-                  {/* {wsStatusData === 34 && !httpLoading ? (
-                    <>
-                      <Button
-                        onClick={handleClick}
-                        className="easy-btn mw400 mobile-width"
-                        style={{}}
-                      >
-                        {t("btn_buyer_already_pay")}
-                      </Button>
-
-                      <Button
-                        onClick={() => appealReq(match.params.id)}
-                        className="easy-btn mw400 mobile-width"
-                        style={{ backgroundColor: "#bfbfbf" }}
-                        disabled={appealStatus === "pending"}
-                      >
-                        {appealStatus === "pending" ? "loading..." : "申诉"}
-                      </Button>
-                    </>
-                  ) : null} */}
-
-                  {wsStatusData === 33 && (
+                  {(wsStatusData === 33 || statusID === 33) && (
                     <div>
                       <Button
                         onClick={handleClick}
-                        disabled={overTime1 || httpLoading}
+                        // disabled={overTime1 || httpLoading}
+                        disabled={httpLoading || overTime2}
                         className="easy-btn mw400 mobile-width"
                         style={{
                           marginTop: 50,
@@ -308,7 +290,7 @@ const SellDetail = () => {
                     </div>
                   )}
 
-                  {wsStatusData === 35 && (
+                  {(wsStatusData === 35 || statusID === 35) && (
                     <div style={{}}>
                       <div className="d-flex justify-content-center align-items-center">
                         <img
@@ -338,114 +320,6 @@ const SellDetail = () => {
                     </div>
                   )}
 
-                  {/* 第二階段倒數結束 */}
-                  {/* {overTime2 && (
-                    <div>
-                      <h2
-                        className="txt_18 text-center my-4"
-                        style={{ color: "#242e47" }}
-                      >
-                        {t("instant_over_time")}
-                      </h2>
-                      <Button
-                        onClick={backToHome}
-                        className="easy-btn mw400 mobile-width"
-                        variant="primary"
-                      >
-                        {t("btn_back_home")}
-                      </Button>
-                    </div>
-                  )} */}
-
-                  {/* Button --正常 */}
-                  {/* {!overTime1 && (
-                    <>
-                      {httpLoading ? (
-                        <Button
-                          variant="secondary"
-                          className="easy-btn mw400 mobile-width"
-                          style={{ marginTop: 50 }}
-                          disabled
-                        >
-                          <Spinner
-                            as="span"
-                            animation="grow"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
-                          {t("btn_loading")}
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={handleClick}
-                          disabled={overTime1}
-                          className="easy-btn mw400 mobile-width"
-                          style={{
-                            marginTop: 50,
-                          }}
-                        >
-                          {t("btn_already_pay")}...
-                        </Button>
-                      )}
-                    </>
-                  )} */}
-
-                  {/* Button --倒數 */}
-                  {/* {overTime1 && !overTime2 ? (
-                    <>
-                      {httpLoading ? (
-                        <Button
-                          variant="secondary"
-                          className="easy-btn mw400 mobile-width"
-                          style={{ marginTop: 50 }}
-                          disabled
-                        >
-                          <Spinner
-                            as="span"
-                            animation="grow"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
-                          {t("btn_loading")}...
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={handleClick}
-                          disabled={overTime2}
-                          className="easy-btn mw400 mobile-width"
-                          style={{
-                            marginTop: 50,
-                          }}
-                        >
-                          <Countdown
-                            onComplete={handleCountDownComplete2}
-                            renderer={Timer}
-                            date={timeLeft2}
-                          />
-                          &nbsp; {t("btn_already_pay")}
-                        </Button>
-                      )}
-                    </>
-                  ) : null}
-
-                  <div className="text-center">
-                    <span
-                      style={{
-                        cursor: "pointer",
-                        paddingBottom: "2px",
-                        borderBottom: "1px solid #262e45",
-                        fontSize: 12,
-                        color: "#262e45",
-                        borderColor: "#262e45",
-                      }}
-                      // onClick={() => setShowCancel(true)}
-                      onClick={handleCancel}
-                    >
-                      {t("btn_cancel_order")}
-                    </span>
-                  </div> */}
                   <FromFooter />
                 </>
               ) : sell1Data && showComplete ? (
@@ -455,6 +329,7 @@ const SellDetail = () => {
                   wsStatus={wsStatusData}
                   backToHome={backToHome}
                   hash={sell1Data.Tx_HASH}
+                  setShowComplete={setShowComplete}
                   type="buy"
                   action="confirm"
                 />

@@ -1,6 +1,6 @@
 import { useReducer, useContext } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { w3cwebsocket as W3CWebsocket } from "websocket";
+// import { w3cwebsocket as W3CWebsocket } from "websocket";
 import InstantReducer from "./InstantReducer";
 import InstantContext from "./InstantContext";
 
@@ -94,7 +94,7 @@ const InstantState = (props) => {
     // 2.收到server回復
     client.onmessage = (message) => {
       if (!message.data) return;
-      const dataFromServer = JSON.parse(message.data);
+      const dataFromServer = JSON.parse(message?.data);
       // console.log("got reply all!", dataFromServer);
 
       if (dataFromServer.data.length > 0) {
@@ -107,7 +107,7 @@ const InstantState = (props) => {
 
     // 3.錯誤處理
     client.onclose = function (message) {
-      // console.log('關閉連線.....');
+      console.log("關閉連線.....");
     };
   };
 
@@ -120,12 +120,6 @@ const InstantState = (props) => {
     const connectWs = "j/WS_livePendingOrders.ashx";
 
     let url;
-
-    // if (window.location.protocol === "http:") {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}`;
-    // } else {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}`;
-    // }
 
     if (window.location.host.includes("k100u")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
@@ -144,8 +138,10 @@ const InstantState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
+      // console.log(message);
+
       if (!message.data) return;
-      const dataFromServer = JSON.parse(message.data);
+      const dataFromServer = JSON.parse(message?.data);
       // console.log('got reply onGoing!', dataFromServer);
 
       if (dataFromServer.data.length > 0) {
@@ -173,33 +169,27 @@ const InstantState = (props) => {
 
     let url;
 
-    // if (window.location.protocol === "http:") {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL}${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    // } else {
-    //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    // }
-
     if (window.location.host.includes("k100u")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     }
 
-    const client = new W3CWebsocket(url);
+    const client = new ReconnectingWebSocket(url);
 
     if (client) {
       setWsStatusClient(client);
 
       // 1.建立連接
       client.onopen = () => {
-        // console.log('websocket client connected instant status');
+        console.log("websocket client connected instant status");
       };
 
       // 2.收到server回復
       client.onmessage = (message) => {
         if (!message.data) return;
-        const dataFromServer = JSON.parse(message.data);
-        // console.log("got reply status!", dataFromServer);
+        const dataFromServer = JSON.parse(message?.data);
+        console.log("got reply status!", dataFromServer);
 
         if (dataFromServer) {
           setWsStatusData(dataFromServer.data.Order_StatusID);
@@ -210,8 +200,7 @@ const InstantState = (props) => {
         // // 交易成功 Order_StatusID：1
         if (
           dataFromServer.data.Order_StatusID === 1 ||
-          dataFromServer.data.Order_StatusID === 99 ||
-          dataFromServer.data.Order_StatusID === 98
+          dataFromServer.data.Order_StatusID === 99
         ) {
           getBalance();
           client.close();
@@ -220,7 +209,7 @@ const InstantState = (props) => {
 
       // 3. 關閉提示
       client.onclose = function (message) {
-        // console.log('關閉ws status連線.....');
+        console.log("關閉ws status連線.....");
       };
     }
   };
