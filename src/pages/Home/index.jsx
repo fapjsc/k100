@@ -21,6 +21,7 @@ import InstantScreen from '../../pages/InstantScreen';
 import style from '../../Components/Layout/Header.module.scss';
 
 const HomeScreen = () => {
+
   // Router Props
   const history = useHistory();
   const location = useLocation();

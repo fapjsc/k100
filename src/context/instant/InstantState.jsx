@@ -76,7 +76,7 @@ const InstantState = (props) => {
 
     let url;
 
-    if (window.location.host.includes("k100u")) {
+    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
@@ -121,7 +121,7 @@ const InstantState = (props) => {
 
     let url;
 
-    if (window.location.host.includes("k100u")) {
+    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
@@ -169,7 +169,9 @@ const InstantState = (props) => {
 
     let url;
 
-    if (!window.location.host.includes("demo")) {
+    console.log(window.location.hosts)
+
+    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;

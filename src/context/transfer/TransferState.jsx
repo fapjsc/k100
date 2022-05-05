@@ -55,7 +55,7 @@ const TransferState = (props) => {
     //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     // }
 
-    if (!window.location.host.includes("demo")) {
+    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;

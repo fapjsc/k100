@@ -116,7 +116,7 @@ const BuyState = (props) => {
 
     let url;
 
-    if (!window.location.host.includes('demo')) {
+    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
       url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
     } else {
       url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
