@@ -12,6 +12,9 @@ import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 // Lang Context
 import { useI18n } from "../../lang";
 
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
+
 // Components
 import SetAccount from "./SetAccount";
 import BuyInfoHeader from "./BuyInfoHeader";
@@ -122,7 +125,7 @@ const InfoDetail = (props) => {
                   }}
                 >
                   {Number(buyWsData.cny).toFixed(2)}
-                  CNY
+                  {locationMoneyPrefix()}
                 </span>
               </p>
               <div

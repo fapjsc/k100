@@ -7,6 +7,9 @@ import Col from 'react-bootstrap/Col';
 // Lang Context
 import { useI18n } from '../../lang';
 
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
+
 const SetAccount = props => {
   // Lang Context
   const { t } = useI18n();
@@ -32,7 +35,7 @@ const SetAccount = props => {
         <p className="txt_12_grey mb-0">{t('buy_total')}</p>
         <p className="c_blue">
           {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
-          &nbsp; CNY
+          &nbsp; {locationMoneyPrefix()}
         </p>
       </Col>
 

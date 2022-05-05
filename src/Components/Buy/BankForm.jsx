@@ -11,6 +11,9 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 
+// Utils 
+import { locationMoneyPrefix } from "../../lib/utils";
+
 const BankFrom = () => {
   // Lang Context
   const { t } = useI18n();
@@ -161,7 +164,7 @@ const BankFrom = () => {
                   <p className="txt_12_grey mb-0">{t('buy_total')}</p>
                   <p className="confirmBuy-text c_blue mb-0">
                     {thousandBitSeparator(Number(buyCount.rmb).toFixed(2).toString())}
-                    &nbsp; CNY
+                    &nbsp; {locationMoneyPrefix()}
                   </p>
                 </div>
               </Form.Group>

@@ -1,18 +1,21 @@
-import { Fragment, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Fragment, useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 // context
-import SellContext from '../../context/sell/SellContext';
+import SellContext from "../../context/sell/SellContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
+
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
 
 // Components
-import SellExRate from './SellExRate';
-import SellForm from './SellForm';
-import SellBankForm from './SellBankForm';
-import Pairing from './Pairing';
-import FormFooter from '../Layout/FormFooter';
+import SellExRate from "./SellExRate";
+import SellForm from "./SellForm";
+import SellBankForm from "./SellBankForm";
+import Pairing from "./Pairing";
+import FormFooter from "../Layout/FormFooter";
 
 const Sell = () => {
   // Lang context
@@ -23,7 +26,16 @@ const Sell = () => {
 
   // Sell Context
   const sellContext = useContext(SellContext);
-  const { wsPairing, wsData, cleanAll, wsClient, sellStatus, orderToken, showBank, cancelOrder } = sellContext;
+  const {
+    wsPairing,
+    wsData,
+    cleanAll,
+    wsClient,
+    sellStatus,
+    orderToken,
+    showBank,
+    cancelOrder,
+  } = sellContext;
 
   // ===========
   //  UseEffect
@@ -39,7 +51,8 @@ const Sell = () => {
   }, []);
 
   useEffect(() => {
-    if (sellStatus === 33) history.replace(`/home/transaction/sell/${orderToken}`);
+    if (sellStatus === 33)
+      history.replace(`/home/transaction/sell/${orderToken}`);
     // eslint-disable-next-line
   }, [sellStatus]);
 
@@ -47,7 +60,7 @@ const Sell = () => {
     if (orderToken) cancelOrder(orderToken);
     if (wsClient) wsClient.close();
     // setWsPairing(false);
-    history.replace('/home/overview');
+    history.replace("/home/overview");
     cleanAll();
   };
 
@@ -57,7 +70,17 @@ const Sell = () => {
       <SellForm />
       {showBank && <SellBankForm />}
       <FormFooter />
-      <Pairing show={wsPairing && wsClient} onHide={onHide} title={t('pair_title')} text={wsData && `${t('pair_text')}：${Math.abs(wsData.UsdtAmt).toFixed(2)} USDT = $${wsData.D2.toFixed(2)} CNY`} />
+      <Pairing
+        show={wsPairing && wsClient}
+        onHide={onHide}
+        title={t("pair_title")}
+        text={
+          wsData &&
+          `${t("pair_text")}：${Math.abs(wsData.UsdtAmt).toFixed(
+            2
+          )} USDT = ${wsData.D2.toFixed(2)} ${locationMoneyPrefix()}`
+        }
+      />
     </Fragment>
   );
 };

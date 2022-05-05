@@ -7,6 +7,9 @@ import closeBtn from '../../../Assets/blue_close_btn.png';
 // Context
 import { useI18n } from '../../../lang';
 
+// Utils
+import { locationMoneyPrefix } from "../../../lib/utils";
+
 const Paring = props => {
   const { t } = useI18n();
   return (
@@ -24,7 +27,7 @@ const Paring = props => {
           <img src={searchIcon} alt="icon" className="" />
           <h3 style={{ color: '#3F80FA' }}>{t('please_wait')}</h3>
           <p>
-            {t('buy_order')}：{Number(props.usdt).toFixed(2)} USDT = ${Number(props.rmb).toFixed(2)} CNY
+            {t('buy_order')}：{Number(props.usdt).toFixed(2)} USDT = ${Number(props.rmb).toFixed(2)} {locationMoneyPrefix()}
           </p>
         </div>
       </Modal.Body>

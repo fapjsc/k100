@@ -10,5 +10,20 @@ export const getHeader = () => {
   return headers;
 };
 
+export const locationMoneyPrefix = () => {
+  const host = window.location.host;
 
+  switch (host) {
+    case "88u":
+      return "TWD";
 
+    case "u88":
+      return "TWD";
+
+    case "jp88":
+      return "JPY";
+
+    default:
+      return "TWD";
+  }
+};

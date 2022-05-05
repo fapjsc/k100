@@ -4,6 +4,9 @@ import { useI18n } from '../../lang';
 // Components
 import StopWatch from '../universal/StopWatch';
 
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
+
 const InstantAllItem = ({ el, handleClick }) => {
   // console.log(el)
   // Lang Context
@@ -40,7 +43,7 @@ const InstantAllItem = ({ el, handleClick }) => {
             <div className="w-50">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t('instant_pay')}&nbsp;{el.D2.toFixed(2)} CNY
+                {t('instant_pay')}&nbsp;{el.D2.toFixed(2)} {locationMoneyPrefix()}
               </span>
             </div>
           </div>
@@ -85,7 +88,7 @@ const InstantAllItem = ({ el, handleClick }) => {
             <div className="w-50">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t('instant_get')}&nbsp;{el.D2.toFixed(2)} CNY
+                {t('instant_get')}&nbsp;{el.D2.toFixed(2)} {locationMoneyPrefix()}
               </span>
             </div>
 

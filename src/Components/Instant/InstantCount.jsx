@@ -11,6 +11,9 @@ import { useI18n } from '../../lang';
 // Components
 import NoOrder from '../universal/NoOrder';
 
+// Utils
+import { locationMoneyPrefix} from "../../lib/utils";
+
 // Style
 import Button from 'react-bootstrap/Button';
 
@@ -68,7 +71,7 @@ const InstantCount = props => {
         <>
           <div className="txt_12 pt_20 mb-3 pl-1">{t('instant_transaction')}</div>
 
-          <div className="easy_info mobile-width" style={{ float: 'inherit' }}>
+          <div className="easy_info mobile-width" style={{ cssFloat: 'inherit' }}>
             <div className="inline">
               <div className="txt_12_grey">{t('instant_exRate')}：</div>
               <span className="">{countData.exRate}</span>
@@ -83,10 +86,10 @@ const InstantCount = props => {
 
             <div className="inline ">
               <div className="txt_12_grey mobile-text">{t('instant_price')}</div>
-              <span className="c_blue mobile-text">{countData.cny} CNY</span>
+              <span className="c_blue mobile-text">{countData.cny} {locationMoneyPrefix()}</span>
             </div>
 
-            <div className="inline pl_40 " style={{ float: 'right' }}>
+            <div className="inline pl_40 " style={{ cssFloat: 'right' }}>
               <div className="txt_12_grey mobile-text" style={{ textAlign: 'right' }}>
                 {t('instant_qua')}
               </div>

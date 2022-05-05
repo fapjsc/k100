@@ -1,27 +1,30 @@
-import { Fragment, useState, useContext, useEffect } from 'react';
-import { useMediaQuery } from 'react-responsive';
+import { Fragment, useState, useContext, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 
 // Context
-import SellContext from '../../context/sell/SellContext';
-import BalanceContext from '../../context/balance/BalanceContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import SellContext from "../../context/sell/SellContext";
+import BalanceContext from "../../context/balance/BalanceContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Components
-import BaseSpinner from '../Ui/BaseSpinner';
+import BaseSpinner from "../Ui/BaseSpinner";
+
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
 
 // Style
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
-import changeMoney from '../../Assets/i_twoways.png';
+import changeMoney from "../../Assets/i_twoways.png";
 
 const SellForm = () => {
-  const mobileApp = useMediaQuery({ query: '(max-width: 1199px)' });
+  const mobileApp = useMediaQuery({ query: "(max-width: 1199px)" });
 
   // Lang Context
   const { t } = useI18n();
@@ -39,15 +42,15 @@ const SellForm = () => {
   const { errorText, setHttpError } = httpErrorContext;
 
   const [usdt, setUsdt] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [cny, setCny] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [formValid, setFormValid] = useState(false);
@@ -80,19 +83,19 @@ const SellForm = () => {
   useEffect(() => {
     if (errorText) alert(errorText);
     return () => {
-      setHttpError('');
+      setHttpError("");
     };
     // eslint-disable-next-line
   }, [errorText]);
 
-  const onChange = e => {
+  const onChange = (e) => {
     if (!e.target.val) setShowBank(false);
-    if (e.target.name === 'usdt') {
-      if (e.target.value < 0 || e.target.value === 'e') {
+    if (e.target.name === "usdt") {
+      if (e.target.value < 0 || e.target.value === "e") {
         setUsdt({
-          val: '',
+          val: "",
           isValid: true,
-          error: '',
+          error: "",
         });
         return;
       }
@@ -101,23 +104,23 @@ const SellForm = () => {
       setCny({
         val: counter,
         isValid: true,
-        error: '',
+        error: "",
       });
       setUsdt({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
 
       if (!e.target.val) setShowBankWallet(false);
     }
 
-    if (e.target.name === 'cny') {
-      if (e.target.value < 0 || e.target.value === 'e') {
+    if (e.target.name === "cny") {
+      if (e.target.value < 0 || e.target.value === "e") {
         setCny({
-          val: '',
+          val: "",
           isValid: true,
-          error: '',
+          error: "",
         });
         return;
       }
@@ -125,12 +128,12 @@ const SellForm = () => {
       setUsdt({
         val: counter,
         isValid: true,
-        error: '',
+        error: "",
       });
       setCny({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
 
       if (!e.target.val) setShowBankWallet(false);
@@ -153,16 +156,17 @@ const SellForm = () => {
     setUsdt({
       val: usdtCount,
       isValid: true,
-      error: '',
+      error: "",
     });
 
     setCny({
       val: cnyCount,
       isValid: true,
-      error: '',
+      error: "",
     });
 
-    if (avb <= 0) setUsdt({ val: '', isValid: false, error: t('avb_insufficient') });
+    if (avb <= 0)
+      setUsdt({ val: "", isValid: false, error: t("avb_insufficient") });
 
     setFetchLoading(false);
   };
@@ -175,27 +179,27 @@ const SellForm = () => {
       setUsdt({
         val: usdt.val,
         isValid: false,
-        error: t('avb_over_limit'),
+        error: t("avb_over_limit"),
       });
 
       setFormValid(false);
     }
 
-    if (usdt.val === '' || usdt.val <= 0) {
+    if (usdt.val === "" || usdt.val <= 0) {
       setUsdt({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('sell_error_invalid_number'),
+        error: t("sell_error_invalid_number"),
       });
 
       setFormValid(false);
     }
 
-    if (cny.val === '' || cny.val <= 0) {
+    if (cny.val === "" || cny.val <= 0) {
       setCny({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('sell_error_invalid_number'),
+        error: t("sell_error_invalid_number"),
       });
 
       setFormValid(false);
@@ -205,15 +209,15 @@ const SellForm = () => {
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
     if (!rule.test(usdt.val) || !rule.test(cny.val)) {
       setUsdt({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('sell_error_invalid_number'),
+        error: t("sell_error_invalid_number"),
       });
 
       setCny({
-        val: '',
+        val: "",
         isValid: true,
-        error: '',
+        error: "",
       });
 
       setFormValid(false);
@@ -233,18 +237,35 @@ const SellForm = () => {
           <Form.Row
             className="mt-4"
             style={{
-              marginBottom: '-12px',
+              marginBottom: "-12px",
             }}
           >
-            <Form.Group as={Col} xl={5} className="mb-0 d-flex justify-content-end pr-0">
+            <Form.Group
+              as={Col}
+              xl={5}
+              className="mb-0 d-flex justify-content-end pr-0"
+            >
               {fetchLoading ? (
                 <Button variant="secondary" disabled className="" style={{}}>
-                  <Spinner as="span" animation="grow" size="lg" role="status" aria-hidden="true" />
-                  {t('btn_loading')}...
+                  <Spinner
+                    as="span"
+                    animation="grow"
+                    size="lg"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  {t("btn_loading")}...
                 </Button>
               ) : (
-                <Button disabled={fetchLoading} variant="outline-primary" size="lg" className="" onClick={fetchAll} style={{}}>
-                  {t('btn_fetch_all')}
+                <Button
+                  disabled={fetchLoading}
+                  variant="outline-primary"
+                  size="lg"
+                  className=""
+                  onClick={fetchAll}
+                  style={{}}
+                >
+                  {t("btn_fetch_all")}
                 </Button>
               )}
             </Form.Group>
@@ -253,9 +274,9 @@ const SellForm = () => {
           <Form.Row className="mt-4">
             <Form.Group as={Col} xl={5} controlId="usdt" className="p-0 m-0">
               <Form.Control
-                onWheel={event => event.currentTarget.blur()}
+                onWheel={(event) => event.currentTarget.blur()}
                 className="easy-border"
-                placeholder={t('sell_enter_qua')}
+                placeholder={t("sell_enter_qua")}
                 autoComplete="off"
                 type="number"
                 step="number"
@@ -272,7 +293,7 @@ const SellForm = () => {
 
               {/* 錯誤提示 */}
               {usdt.error && (
-                <Form.Text className="" style={{ fontSize: '12px' }}>
+                <Form.Text className="" style={{ fontSize: "12px" }}>
                   *{usdt.error}
                 </Form.Text>
               )}
@@ -281,13 +302,21 @@ const SellForm = () => {
             </Form.Group>
 
             {/* img */}
-            <Form.Group as={Col} className=" my-3 d-flex align-items-start justify-content-center">
-              <img className="" src={changeMoney} alt="change money" style={mobileApp ? changeMoneyIconMobile : changeMoneyIcon} />
+            <Form.Group
+              as={Col}
+              className=" my-3 d-flex align-items-start justify-content-center"
+            >
+              <img
+                className=""
+                src={changeMoney}
+                alt="change money"
+                style={mobileApp ? changeMoneyIconMobile : changeMoneyIcon}
+              />
             </Form.Group>
 
             <Form.Group as={Col} xl={5} controlId="cny" className="m-0 p-0">
               <Form.Control
-                onWheel={event => event.currentTarget.blur()}
+                onWheel={(event) => event.currentTarget.blur()}
                 className="easy-border"
                 autoComplete="off"
                 type="number"
@@ -302,24 +331,24 @@ const SellForm = () => {
                 }}
               />
 
-              <span style={inputText}>CNY</span>
+              <span style={inputText}>{locationMoneyPrefix()}</span>
             </Form.Group>
           </Form.Row>
 
           {usdt.val && (
             <Form.Row className="mt-4">
               <Form.Group as={Col} className="mt-4">
-                <p className="txt_12">{t('e_wallet')}</p>
+                <p className="txt_12">{t("e_wallet")}</p>
                 <Button
                   type="button"
                   style={{
                     marginTop: -8,
                     marginRight: 15,
                   }}
-                  className={showBankWallet ? 'walletBtnActive' : 'walletBtn'}
+                  className={showBankWallet ? "walletBtnActive" : "walletBtn"}
                   onClick={validForm}
                 >
-                  {t('btn_bank')}
+                  {t("btn_bank")}
                 </Button>
 
                 <Button
@@ -329,9 +358,11 @@ const SellForm = () => {
                     marginTop: -8,
                   }}
                 >
-                  {t('btn_aliPay')}
+                  {t("btn_aliPay")}
                 </Button>
-                <Form.Text style={{ fontSize: 12 }}>{t('choose_e_wallet')}</Form.Text>
+                <Form.Text style={{ fontSize: 12 }}>
+                  {t("choose_e_wallet")}
+                </Form.Text>
               </Form.Group>
             </Form.Row>
           )}
@@ -348,15 +379,15 @@ const changeMoneyIcon = {
 };
 
 const changeMoneyIconMobile = {
-  transform: 'rotate(90deg)',
+  transform: "rotate(90deg)",
   width: 45,
 };
 
 const inputText = {
-  color: '#D7E2F3',
-  position: 'absolute',
+  color: "#D7E2F3",
+  position: "absolute",
   top: 0,
-  transform: 'translateY(75%)',
+  transform: "translateY(75%)",
   right: 30,
   fontSize: 17,
 };

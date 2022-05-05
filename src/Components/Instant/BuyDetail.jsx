@@ -10,6 +10,9 @@ import InstantContext from "../../context/instant/InstantContext";
 import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import BuyContext from "../../context/buy/BuyContext";
 
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
+
 // Lang Context
 import { useI18n } from "../../lang";
 
@@ -285,7 +288,7 @@ const BuyDetail = () => {
                         <p className="txt_12_grey mb-0 ">
                           {t("instant_price")}
                         </p>
-                        <p className="c_blue ">{buy1Data.D2.toFixed(2)} CNY</p>
+                        <p className="c_blue ">{buy1Data.D2.toFixed(2)} {locationMoneyPrefix()}</p>
                       </div>
 
                       <div>

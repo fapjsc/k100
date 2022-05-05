@@ -11,6 +11,9 @@ import CountDownTimer from "../universal/countDownTimer";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
+
 import {
   // orderStatusCode,
   sellOrderStatusCode,
@@ -109,7 +112,8 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
             <div className="">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t("instant_pay")}&nbsp;{el.D2.toFixed(2)} CNY
+                {t("instant_pay")}&nbsp;{el.D2.toFixed(2)}{" "}
+                {locationMoneyPrefix()}
               </span>
             </div>
 
@@ -207,7 +211,8 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
             <div className="">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t("instant_get")}&nbsp;{el.D2.toFixed(2)} CNY
+                {t("instant_get")}&nbsp;{el.D2.toFixed(2)}{" "}
+                {locationMoneyPrefix()}
               </span>
             </div>
 

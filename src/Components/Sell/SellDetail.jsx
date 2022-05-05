@@ -11,6 +11,9 @@ import BuyContext from "../../context/buy/BuyContext";
 // lang Context
 import { useI18n } from "../../lang";
 
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
+
 // Hooks
 import useHttp from "../../hooks/useHttp";
 
@@ -108,7 +111,6 @@ const SellDetail = () => {
   //   cleanAll();
   // };
 
-
   return (
     <Container className="">
       {wsData ? (
@@ -130,7 +132,8 @@ const SellDetail = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  {wsData && wsData.D2.toFixed(2) + ` CNY`}
+                  {wsData &&
+                    wsData.D2.toFixed(2) + `  ${locationMoneyPrefix()}`}
                 </span>
               </p>
               <p>

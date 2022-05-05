@@ -6,6 +6,9 @@ import BuyContext from "../../context/buy/BuyContext";
 import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import { useI18n } from "../../lang";
 
+// Utils
+import { locationMoneyPrefix } from "../../lib/utils";
+
 // Style
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -225,7 +228,7 @@ const BuyForm = () => {
             className="easy-border"
             onWheel={(event) => event.currentTarget.blur()}
           />
-          <span style={inputText}>CNY</span>
+          <span style={inputText}>{locationMoneyPrefix()}</span>
         </Form.Group>
       </Form.Row>
 
