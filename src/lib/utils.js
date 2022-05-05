@@ -16,10 +16,10 @@ export const locationMoneyPrefix = () => {
   console.log(host);
 
   switch (host) {
-    case host.includes("88u"):
+    case host === "88u.asia":
       return "TWD";
 
-    case host.includes("jp88"):
+    case host === "jp88.asia":
       return "JPY";
 
     default:
