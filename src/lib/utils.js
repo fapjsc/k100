@@ -24,6 +24,6 @@ export const locationMoneyPrefix = () => {
       return "JPY";
 
     default:
-      return "TWD";
+      return "CNY";
   }
 };
