@@ -15,7 +15,7 @@ export const buyConnectWs = (token) => {
   //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
   // }
 
-  if (window.location.host.includes("k100u")) {
+  if (!window.location.host.includes("demo")) {
     url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
   } else {
     url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;

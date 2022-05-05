@@ -95,7 +95,7 @@ const InstantState = (props) => {
     client.onmessage = (message) => {
       if (!message.data) return;
       const dataFromServer = JSON.parse(message?.data);
-      // console.log("got reply all!", dataFromServer);
+      console.log("got reply all!", dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setInstantData(dataFromServer.data);
@@ -142,7 +142,7 @@ const InstantState = (props) => {
 
       if (!message.data) return;
       const dataFromServer = JSON.parse(message?.data);
-      // console.log('got reply onGoing!', dataFromServer);
+      console.log('got reply onGoing!', dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setOnGoingData(dataFromServer.data);
@@ -169,7 +169,7 @@ const InstantState = (props) => {
 
     let url;
 
-    if (window.location.host.includes("k100u")) {
+    if (!window.location.host.includes("demo")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;

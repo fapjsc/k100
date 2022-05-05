@@ -230,7 +230,7 @@ const SellState = (props) => {
 
     let url;
 
-    if (window.location.host.includes("k100u")) {
+    if (!window.location.host.includes("demo")) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
