@@ -13,14 +13,13 @@ export const getHeader = () => {
 export const locationMoneyPrefix = () => {
   const host = window.location.host;
 
+  console.log(host);
+
   switch (host) {
-    case "88u":
+    case host.includes("88u"):
       return "TWD";
 
-    case "u88":
-      return "TWD";
-
-    case "jp88":
+    case host.includes("jp88"):
       return "JPY";
 
     default:
