@@ -95,7 +95,6 @@ const InfoDetail = (props) => {
     // eslint-disable-next-line
   }, [deltaTime]);
 
-  console.log(statusID);
 
   return (
     <>

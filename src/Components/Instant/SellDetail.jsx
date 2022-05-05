@@ -150,7 +150,6 @@ const SellDetail = () => {
     cleanAll();
   };
 
-  console.log(statusID);
 
   return (
     <>

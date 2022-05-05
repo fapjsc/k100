@@ -8,7 +8,11 @@ export const connectInstantWs = () => {
 
   if (!loginSession) return;
 
+  if(client) client?.close()
+
   const connectWs = "j/ws_liveorders.ashx";
+
+
 
   let url;
 
@@ -27,6 +31,7 @@ export const connectInstantWs = () => {
 
   // 2.收到server回復
   client.onmessage = (message) => {
+
     if (!message.data) return;
     const dataFromServer = JSON.parse(message.data);
     console.log(dataFromServer);

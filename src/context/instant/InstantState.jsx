@@ -88,7 +88,7 @@ const InstantState = (props) => {
 
     // 1.建立連接
     client.onopen = () => {
-      // console.log('websocket client connected instant');
+      console.log('websocket client connected instant');
     };
 
     // 2.收到server回復
