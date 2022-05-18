@@ -3,10 +3,13 @@ import { useHistory } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { Toast } from "antd-mobile";
+
 // Context
 import WalletContext from "../../context/wallet/WalletContext";
 import BalanceContext from "../../context/balance/BalanceContext";
 import HttpErrorContext from "../../context/httpError/HttpErrorContext";
+import AuthContext from "../../context/auth/AuthContext";
 
 // Lang Context
 import { useI18n } from "../../lang";
@@ -33,20 +36,24 @@ import "./index.scss";
 
 const TheWallet = () => {
   // Init State
-  const [showFom, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+  // Auth Context
+  const authContext = useContext(AuthContext);
+  const { isAgent } = authContext;
 
   // Redux
   const dispatch = useDispatch();
   const {
     loading: accLoading,
     data: accData,
-    // error: accError,
+    error: accError,
   } = useSelector((state) => state.currentAcc);
 
   const {
     // loading: historyAccLoading,
     data: historyAccData,
-    // error: historyAccError,
+    error: historyAccError,
   } = useSelector((state) => state.historyAcc);
 
   // Lang Context
@@ -83,15 +90,35 @@ const TheWallet = () => {
   }, [errorText]);
 
   useEffect(() => {
-    dispatch(getAcc());
-    dispatch(getAccHistory());
+    if (isAgent) {
+      dispatch(getAcc());
+      dispatch(getAccHistory());
+    }
+
     // eslint-disable-next-line
-  }, []);
+  }, [isAgent]);
 
   const handleClick = (type) => {
     setWalletType(type);
     history.push(`/home/wallet/${type}`);
   };
+
+  useEffect(() => {
+    if (historyAccError) {
+      Toast.show({
+        icon: "fail",
+        content: historyAccError,
+      });
+    }
+
+    if (accError) {
+      const message = accError + `: 無法獲取帳戶資訊`;
+      Toast.show({
+        icon: "fail",
+        content: message,
+      });
+    }
+  }, [accError, historyAccError]);
 
   return (
     <section className="wallet">
@@ -156,68 +183,73 @@ const TheWallet = () => {
                   <br />
 
                   {/* Acc data */}
-                  <div className="row">
-                    <div className="col-md-6 col-12">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <p className="txt_12">
-                          {t("EditBankInfoForm_account_info")}
-                        </p>
-                        <AiFillEdit
-                          style={{
-                            fontSize: "2rem",
-                            color: "#242e47",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => setShowForm((preState) => !preState)}
-                        />
-                      </div>
 
-                      {accData && (
-                        <>
-                          <ListGroup>
-                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t("EditBankInfoForm_name")}：{accData.P2}
-                            </ListGroup.Item>
-
-                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t("EditBankInfoForm_account")}：{accData.P1}
-                            </ListGroup.Item>
-
-                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t("EditBankInfoForm_bank")}：{accData.P3}
-                            </ListGroup.Item>
-
-                            <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                              {t("EditBankInfoForm_city")}：{accData.P4}
-                            </ListGroup.Item>
-                          </ListGroup>
-
-                          <EditBankInfoForm
-                            accHistoryData={historyAccData}
-                            show={showFom}
-                            onHide={() => setShowForm(false)}
-                          />
-                        </>
-                      )}
-
-                      {accLoading && (
-                        <div
-                          className=""
-                          style={{
-                            height: "5rem",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Spinner
-                            animation="border"
-                            style={{ width: "3rem", height: "3rem" }}
+                  {isAgent && (
+                    <div className="row">
+                      <div className="col-md-6 col-12">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <p className="txt_12">
+                            {t("EditBankInfoForm_account_info")}
+                          </p>
+                          <AiFillEdit
+                            style={{
+                              fontSize: "2rem",
+                              color: "#242e47",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => setShowForm((preState) => !preState)}
                           />
                         </div>
-                      )}
+
+                        {accData && (
+                          <>
+                            <ListGroup>
+                              <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                                {t("EditBankInfoForm_name")}：{accData?.P2}
+                              </ListGroup.Item>
+
+                              <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                                {t("EditBankInfoForm_account")}：{accData?.P1}
+                              </ListGroup.Item>
+
+                              <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                                {t("EditBankInfoForm_bank")}：{accData?.P3}
+                              </ListGroup.Item>
+
+                              <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                                {t("EditBankInfoForm_city")}：{accData?.P4}
+                              </ListGroup.Item>
+                            </ListGroup>
+                          </>
+                        )}
+
+                        {showForm && (
+                          <EditBankInfoForm
+                            accHistoryData={historyAccData}
+                            show={showForm}
+                            onHide={() => setShowForm(false)}
+                          />
+                        )}
+
+                        {accLoading && (
+                          <div
+                            className=""
+                            style={{
+                              height: "5rem",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Spinner
+                              animation="border"
+                              style={{ width: "3rem", height: "3rem" }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </>
               )}
 

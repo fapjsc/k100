@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -42,9 +42,9 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
   };
 
   useEffect(() => {
-    const { name, account, city, bank } = formData || {};
+    const { name, account, bank } = formData || {};
 
-    if (name && account && city && bank) {
+    if (name && account && bank) {
       setCanSubmit(true);
     } else {
       setCanSubmit(false);
@@ -101,6 +101,7 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
     <Form className={styles.form} onSubmit={onSubmitHandler}>
       <Form.Group className="mb-3" controlId="name">
         <Form.Label>收款姓名</Form.Label>
+        <Form.Label style={{ color: "red" }}>(必填)</Form.Label>
         <Form.Control
           className={styles["input"]}
           onChange={onChange}
@@ -112,6 +113,7 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
 
       <Form.Group className="mb-3" controlId="account">
         <Form.Label>收款帳號</Form.Label>
+        <Form.Label style={{ color: "red" }}>(必填)</Form.Label>
         <Form.Control
           onChange={onChange}
           className={styles["input"]}
@@ -123,6 +125,7 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
 
       <Form.Group className="mb-3" controlId="bank">
         <Form.Label>開戶銀行</Form.Label>
+        <Form.Label style={{ color: "red" }}>(必填)</Form.Label>
         <Form.Control
           onChange={onChange}
           className={styles["input"]}
@@ -142,6 +145,8 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
           value={formData.city}
         />
       </Form.Group>
+
+      <div style={{ color: "red" }}>*需與匯款帳戶資訊一致</div>
 
       <div style={{ display: "flex", gap: "8%" }}>
         <Button

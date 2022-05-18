@@ -15,14 +15,13 @@ export const locationMoneyPrefix = () => {
 
   console.log(host);
 
-  switch (host) {
-    case host === "88u.asia":
-      return "TWD";
-
-    case host === "jp88.asia":
-      return "JPY";
-
-    default:
-      return "CNY";
+  if (host.includes("88u.asia")) {
+    return "TWD";
   }
+
+  if (host.includes("jp88.asia")) {
+    return "JPY";
+  }
+
+  return "CNY";
 };
