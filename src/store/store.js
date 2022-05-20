@@ -6,6 +6,7 @@ import { agentReducer } from "./reducers/agentReducer";
 import { instantReducer } from "./reducers/instantReducer";
 import { orderReducer } from "./reducers/orderReducer";
 import { expiredReducer } from "./reducers/expiredReducer";
+import { autoPickReducer } from "./reducers/autoPickReducer";
 
 import {
   setAccountReducer,
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   currentAcc: currentAccountReducer,
   historyAcc: accHistoryReducer,
   expired: expiredReducer,
+  autoPick: autoPickReducer,
 });
 
 const store = createStore(

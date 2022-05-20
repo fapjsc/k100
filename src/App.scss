@@ -11,6 +11,14 @@ html {
   font-size: 62.5%;
 }
 
+.big-bg[host="88U"] {
+  background-image: url(./Assets/88u/88u_bg.jpg);
+  height: 150vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .adm-mask {
   z-index: 20001;
 }

@@ -2,7 +2,7 @@
 }
 
 .user-auth {
-  background-image: url(../../Assets//easy_bg.jpg);
+  background-image: url(../../Assets/easy_bg.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -20,6 +20,10 @@
     padding-bottom: 20rem;
     height: 100%;
   }
+}
+
+.user-auth[host="88U"] {
+  background-image: url(../../Assets/88u/88u_bg.jpg);
 }
 
 .form-nav {

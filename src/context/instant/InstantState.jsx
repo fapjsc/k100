@@ -76,7 +76,10 @@ const InstantState = (props) => {
 
     let url;
 
-    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
+    if (
+      !window.location.host.includes("demo") &&
+      !window.location.host.includes("localhost")
+    ) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
@@ -88,11 +91,12 @@ const InstantState = (props) => {
 
     // 1.建立連接
     client.onopen = () => {
-      console.log('websocket client connected instant');
+      console.log("websocket client connected instant");
     };
 
     // 2.收到server回復
     client.onmessage = (message) => {
+      console.log(message, "live order");
       if (!message.data) return;
       const dataFromServer = JSON.parse(message?.data);
       console.log("got reply all!", dataFromServer);
@@ -121,7 +125,10 @@ const InstantState = (props) => {
 
     let url;
 
-    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
+    if (
+      !window.location.host.includes("demo") &&
+      !window.location.host.includes("localhost")
+    ) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
@@ -138,11 +145,10 @@ const InstantState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      // console.log(message);
-
+      console.log(message)
       if (!message.data) return;
       const dataFromServer = JSON.parse(message?.data);
-      console.log('got reply onGoing!', dataFromServer);
+      console.log("got reply onGoing!", dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setOnGoingData(dataFromServer.data);
@@ -169,9 +175,12 @@ const InstantState = (props) => {
 
     let url;
 
-    console.log(window.location.hosts)
+    console.log(window.location.hosts);
 
-    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
+    if (
+      !window.location.host.includes("demo") &&
+      !window.location.host.includes("localhost")
+    ) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;

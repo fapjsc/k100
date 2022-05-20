@@ -1,17 +1,17 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from "react";
 
 // Context
-import BuyContext from '../../context/buy/BuyContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
-import { useI18n } from '../../lang';
+import BuyContext from "../../context/buy/BuyContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
+import { useI18n } from "../../lang";
 
 // Style
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Spinner from 'react-bootstrap/Spinner';
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+import Spinner from "react-bootstrap/Spinner";
 
-// Utils 
+// Utils
 import { locationMoneyPrefix } from "../../lib/utils";
 
 const BankFrom = () => {
@@ -27,9 +27,9 @@ const BankFrom = () => {
   const { errorText, setHttpError } = httpErrorContext;
 
   const [accountName, setAccountName] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
@@ -37,8 +37,8 @@ const BankFrom = () => {
   // unMount後清除錯誤提示
   useEffect(() => {
     return () => {
-      setHttpError(''); // http錯誤提示
-      setErrorText(''); // 前端表單驗證錯誤提示
+      setHttpError(""); // http錯誤提示
+      setErrorText(""); // 前端表單驗證錯誤提示
     };
     // eslint-disable-next-line
   }, []);
@@ -55,17 +55,17 @@ const BankFrom = () => {
   }, [formIsValid]);
 
   // Handle Form Input Change
-  const onChange = e => {
-    setHttpError('');
+  const onChange = (e) => {
+    setHttpError("");
     setAccountName({
       val: e.target.value.trim(),
       isValid: true,
-      error: '',
+      error: "",
     });
   };
 
   // Handle Key Up
-  const handleKeyUp = e => {
+  const handleKeyUp = (e) => {
     if (e.keyCode === 13) {
       validForm();
     }
@@ -76,33 +76,33 @@ const BankFrom = () => {
     const { usdt, rmb } = buyCount;
     setFormIsValid(true);
 
-    if (accountName.val === '') {
+    if (accountName.val === "") {
       setAccountName({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('no_account_name'),
+        error: t("no_account_name"),
       });
 
       setFormIsValid(false);
     }
 
-    if (usdt <= 0 || usdt === '' || rmb <= 0 || rmb === '') {
-      setErrorText(t('invalid_number'));
+    if (usdt <= 0 || usdt === "" || rmb <= 0 || rmb === "") {
+      setErrorText(t("invalid_number"));
       setFormIsValid(false);
     }
   };
 
   // 換算千分位
-  const thousandBitSeparator = num => {
+  const thousandBitSeparator = (num) => {
     return (
       num &&
       // eslint-disable-next-line
-      (num.toString().indexOf('.') != -1
+      (num.toString().indexOf(".") != -1
         ? num.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
-            return $1 + ',';
+            return $1 + ",";
           })
         : num.toString().replace(/(\d)(?=(\d{3}))/g, function ($0, $1) {
-            return $1 + ',';
+            return $1 + ",";
           }))
     );
   };
@@ -110,9 +110,15 @@ const BankFrom = () => {
     <>
       <Form className="confirmBuyContent">
         <Form.Row className="justify-content-between align-items-start">
-          <Form.Group as={Col} md={6} sm={12} className="mr-4 mt-0 d-flex flex-column justify-content-center px-0" controlId="formBasicClientName">
+          <Form.Group
+            as={Col}
+            md={6}
+            sm={12}
+            className="mr-4 mt-0 d-flex flex-column justify-content-center px-0"
+            controlId="formBasicClientName"
+          >
             <Form.Control
-              placeholder={t('account_name_placeholder')}
+              placeholder={t("account_name_placeholder")}
               onChange={onChange}
               value={accountName.val}
               className="confirmBuyInput easy-border"
@@ -124,7 +130,7 @@ const BankFrom = () => {
             {accountName.error && (
               <Form.Text
                 style={{
-                  fontSize: '12px',
+                  fontSize: "12px",
                 }}
                 className=""
               >
@@ -136,7 +142,7 @@ const BankFrom = () => {
             {errorText && (
               <Form.Text
                 style={{
-                  fontSize: '12px',
+                  fontSize: "12px",
                 }}
                 className=""
               >
@@ -147,12 +153,12 @@ const BankFrom = () => {
             {/* 輸入提示 */}
             <p
               style={{
-                color: '#eb0303',
+                color: "#eb0303",
                 fontSize: 12,
               }}
               className=""
             >
-              {t('account_name_prompt')}
+              {t("account_name_prompt")}
             </p>
           </Form.Group>
 
@@ -161,18 +167,22 @@ const BankFrom = () => {
             <Form.Row className="confirmBuy-textContent p-4">
               <Form.Group as={Col} className="mb-0">
                 <div className="">
-                  <p className="txt_12_grey mb-0">{t('buy_total')}</p>
+                  <p className="txt_12_grey mb-0">{t("buy_total")}</p>
                   <p className="confirmBuy-text c_blue mb-0">
-                    {thousandBitSeparator(Number(buyCount.rmb).toFixed(2).toString())}
+                    {thousandBitSeparator(
+                      Number(buyCount.rmb).toFixed(2).toString()
+                    )}
                     &nbsp; {locationMoneyPrefix()}
                   </p>
                 </div>
               </Form.Group>
               <Form.Group as={Col} className=" text-right mb-0">
-                <p className="txt_12_grey mb-0">{t('buy_quantity')}</p>
+                <p className="txt_12_grey mb-0">{t("buy_quantity")}</p>
                 <p className="confirmBuy-text mb-0 text-dark">
                   {/* 小數第二位，千分逗號 */}
-                  {thousandBitSeparator(Number(buyCount.usdt).toFixed(2).toString())}
+                  {thousandBitSeparator(
+                    Number(buyCount.usdt).toFixed(2).toString()
+                  )}
                   &nbsp; USDT
                 </p>
               </Form.Group>
@@ -182,14 +192,20 @@ const BankFrom = () => {
 
         <Form.Row className="justify-content-center mt-4">
           <Form.Group as={Col} className="mw400 px-0">
-            <Button className={buyBtnLoading ? 'disable-easy-btn w-100' : 'easy-btn w-100'} disabled={buyBtnLoading} onClick={validForm}>
+            <Button
+              className={
+                buyBtnLoading ? "disable-easy-btn w-100" : "easy-btn w-100"
+              }
+              disabled={buyBtnLoading}
+              onClick={validForm}
+            >
               {buyBtnLoading ? (
                 <>
                   <Spinner animation="grow" variant="danger" />
-                  {t('btn_pairing')}
+                  {t("btn_pairing")}
                 </>
               ) : (
-                t('btn_pair_start')
+                t("btn_pair_start")
               )}
             </Button>
           </Form.Group>

@@ -97,61 +97,63 @@ const App = () => {
   };
 
   return (
-    <HttpErrorState>
-      <AuthState>
-        <BalanceState>
-          <InstantState>
-            <TransferState>
-              <SellState>
-                <HistoryState>
-                  <BuyState>
-                    <WalletState>
-                      <ChatState>
-                        {openWebPushNotify && <Notification />}
+    <div host={process.env.REACT_APP_HOST_NAME || 'k100u'} className='big-bg'>
+      <HttpErrorState>
+        <AuthState>
+          <BalanceState>
+            <InstantState>
+              <TransferState>
+                <SellState>
+                  <HistoryState>
+                    <BuyState>
+                      <WalletState>
+                        <ChatState>
+                          {openWebPushNotify && <Notification />}
 
-                        {showNotify && (
-                          <ReactNotificationComponent
-                            title={notification.title}
-                            body={notification.body}
-                          />
-                        )}
+                          {showNotify && (
+                            <ReactNotificationComponent
+                              title={notification.title}
+                              body={notification.body}
+                            />
+                          )}
 
-                        <Switch>
-                          <Route
-                            path="/auth"
-                            component={(props) => (
-                              <Auth {...props} setAuth={setAuth} />
-                            )}
-                          />
+                          <Switch>
+                            <Route
+                              path="/auth"
+                              component={(props) => (
+                                <Auth {...props} setAuth={setAuth} />
+                              )}
+                            />
 
-                          <Route path="/agreement" component={Agreement} />
+                            <Route path="/agreement" component={Agreement} />
 
-                          <Route
-                            isAuth={isAuth}
-                            path="/home"
-                            component={(props) => (
-                              <Home {...props} setAuth={setAuth} />
-                            )}
-                          />
+                            <Route
+                              isAuth={isAuth}
+                              path="/home"
+                              component={(props) => (
+                                <Home {...props} setAuth={setAuth} />
+                              )}
+                            />
 
-                          <Route
-                            exact
-                            path="/forget-pw"
-                            component={ForgetPassword}
-                          />
+                            <Route
+                              exact
+                              path="/forget-pw"
+                              component={ForgetPassword}
+                            />
 
-                          <Redirect to="/auth/login" />
-                        </Switch>
-                      </ChatState>
-                    </WalletState>
-                  </BuyState>
-                </HistoryState>
-              </SellState>
-            </TransferState>
-          </InstantState>
-        </BalanceState>
-      </AuthState>
-    </HttpErrorState>
+                            <Redirect to="/auth/login" />
+                          </Switch>
+                        </ChatState>
+                      </WalletState>
+                    </BuyState>
+                  </HistoryState>
+                </SellState>
+              </TransferState>
+            </InstantState>
+          </BalanceState>
+        </AuthState>
+      </HttpErrorState>
+    </div>
   );
 };
 

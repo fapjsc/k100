@@ -105,7 +105,7 @@ const History = () => {
                 }
                 onClick={() => setHistoryState("expired")}
               >
-                超时订单
+                {t("history_expires")}
               </Link>
             </div>
 

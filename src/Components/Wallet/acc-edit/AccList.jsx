@@ -5,6 +5,8 @@ import { BsFillPersonCheckFill } from "react-icons/bs";
 
 // Hooks
 import useRwd from "../../../hooks/useRwd";
+// Lang Context
+import { useI18n } from "../../../lang";
 
 // Components
 import AccForm from "./AccForm";
@@ -27,6 +29,8 @@ const AccList = ({
   const [currentItem, setCurrentItem] = useState(null);
 
   const { isMobile } = useRwd();
+
+  const { t } = useI18n();
 
   const onClickHandler = (id, type) => {
     const current = historyAccData.find((acc) => acc.H_id === id);
@@ -72,10 +76,10 @@ const AccList = ({
     <>
       <div className={styles["header-box"]}>
         <div />
-        <div>收款姓名</div>
-        <div>收款帳號</div>
-        <div>開戶銀行</div>
-        <div>所在省市</div>
+        <div>{t("EditBankInfoForm_name")}</div>
+        <div>{t("EditBankInfoForm_account")}</div>
+        <div>{t("EditBankInfoForm_bank")}</div>
+        <div>{t("EditBankInfoForm_city")}</div>
         <div />
       </div>
       <div

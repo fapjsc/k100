@@ -196,6 +196,11 @@ const HistoryAllDetail = (props) => {
                 <p className="txt_12_grey mb-1">{t("history_branch")}</p>
                 <p className="mb-0">{singleDetail.branch}</p>
               </div>
+
+              <div style={gridContent14}>
+                <p className="txt_12_grey mb-1">{t("history_payer")}</p>
+                <p className="mb-0">{singleDetail.payer}</p>
+              </div>
             </>
           ) : null}
         </div>
@@ -378,6 +383,17 @@ const gridContent13 = {
   flexDirection: "column",
   justifyContent: "center",
   padding: 10,
+};
+
+const gridContent14 = {
+  gridColumn: "1 / 7",
+  border: "1px solid #D9E2F1",
+  margin: "0 -1px -1px 0",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: 10,
+  borderTop: "none",
 };
 
 const iconStyle = {

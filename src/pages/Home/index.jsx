@@ -82,7 +82,7 @@ const HomeScreen = () => {
     <>
       <Header history={history} token={token}>
         <Link to="/home" className={style.logoLink}>
-          <div className={style.logo}></div>
+          <div host={process.env.REACT_APP_HOST_NAME || 'k100u'} className={style.logo}></div>
         </Link>
         <TheNav logout={logout} />
       </Header>

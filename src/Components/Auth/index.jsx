@@ -35,9 +35,9 @@ const Auth = () => {
   return (
     <div className="authBg" style={{}}>
       <Header>
-        <div className={style.logo}></div>
+        <div host={process.env.REACT_APP_HOST_NAME || 'k100U'} className={style.logo}></div>
       </Header>
-      <div className="user-auth">
+      <div host={process.env.REACT_APP_HOST_NAME || 'k100U'} className="user-auth">
         <BaseCard className="">
           {
             <div>

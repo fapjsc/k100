@@ -1,13 +1,18 @@
-import { useReducer, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import HistoryReducer from './HistoryReducer';
-import HistoryContext from './HistoryContext';
-import { SET_ALL_HISTORY, SET_SINGLE_DETAIL, SET_WAIT_HISTORY, HISTORY_LOADING } from '../type';
+import { useReducer, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import HistoryReducer from "./HistoryReducer";
+import HistoryContext from "./HistoryContext";
+import {
+  SET_ALL_HISTORY,
+  SET_SINGLE_DETAIL,
+  SET_WAIT_HISTORY,
+  HISTORY_LOADING,
+} from "../type";
 
 // Context
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 
-const HistoryState = props => {
+const HistoryState = (props) => {
   // Router Props
   const history = useHistory();
 
@@ -25,16 +30,16 @@ const HistoryState = props => {
 
   // Get Header
   const getHeader = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     if (token) {
       let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('login_session', token);
+      headers.append("Content-Type", "application/json");
+      headers.append("login_session", token);
 
       return headers;
     } else {
-      history.replace('/auth/login');
+      history.replace("/auth/login");
       return;
     }
   };
@@ -43,7 +48,7 @@ const HistoryState = props => {
   const setWaitList = async () => {
     const headers = getHeader();
 
-    const historyApi = '/j/GetTxPendings.aspx';
+    const historyApi = "/j/GetTxPendings.aspx";
 
     try {
       const res = await fetch(historyApi, {
@@ -56,18 +61,18 @@ const HistoryState = props => {
         const { data } = resData;
         // console.log(data);
 
-        const newData = data.map(h => {
+        const newData = data.map((h) => {
           if (h.MasterType === 0) {
-            h.MasterType = '買入';
+            h.MasterType = "買入";
             return h;
           } else if (h.MasterType === 1) {
-            h.MasterType = '賣出';
+            h.MasterType = "賣出";
             return h;
           } else if (h.MasterType === 2) {
-            h.MasterType = '轉出';
+            h.MasterType = "轉出";
             return h;
           } else {
-            h.MasterType = '轉入';
+            h.MasterType = "轉入";
             return h;
           }
         });
@@ -86,7 +91,7 @@ const HistoryState = props => {
     setLoading(true);
     const headers = getHeader();
 
-    const historyApi = '/j/GetTxHistory.aspx';
+    const historyApi = "/j/GetTxHistory.aspx";
 
     try {
       const res = await fetch(historyApi, {
@@ -108,15 +113,15 @@ const HistoryState = props => {
   };
 
   // get single detail
-  const detailReq = async detailToken => {
+  const detailReq = async (detailToken) => {
     setLoading(true);
     const headers = getHeader();
 
-    const detailApi = '/j/GetTxDetail.aspx';
+    const detailApi = "/j/GetTxDetail.aspx";
 
     try {
       const res = await fetch(detailApi, {
-        method: 'POST',
+        method: "POST",
         headers,
         body: JSON.stringify({
           Token: detailToken,
@@ -141,6 +146,7 @@ const HistoryState = props => {
             payee: data.P2,
             bank: data.P3,
             branch: data.P4,
+            payer: data.P5,
             exchangePrice: data.D1,
             rmb: data.D2,
             charge: data.D3,
@@ -190,11 +196,11 @@ const HistoryState = props => {
   };
 
   // Set Loading
-  const setLoading = value => {
+  const setLoading = (value) => {
     dispatch({ type: HISTORY_LOADING, payload: value });
   };
 
-  const setSingleDetail = orderDetail => {
+  const setSingleDetail = (orderDetail) => {
     dispatch({ type: SET_SINGLE_DETAIL, payload: orderDetail });
   };
 

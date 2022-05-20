@@ -1,10 +1,6 @@
 body {
   background-color: #e2e0e0;
 
-  // background: -webkit-linear-gradient(177deg, rgb(53, 77, 111), rgb(136, 160, 194));
-  // background: linear-gradient(177deg, rgb(53, 77, 111), rgb(136, 160, 194));
-
-  // background-image: url(./Assets/new-k100u-bg.jpg);
   background: -moz-linear-gradient(
     -45deg,
     rgba(47, 71, 105, 0.79) 0%,
@@ -32,6 +28,7 @@ body {
     rgba(118, 144, 181, 1) 99%,
     rgba(114, 140, 177, 1) 100%
   ); /* FF3.6-15 */
+
   background: -webkit-linear-gradient(
     -45deg,
     rgba(47, 71, 105, 0.79) 0%,

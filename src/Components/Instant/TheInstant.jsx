@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Actions
 import { setOpenWebPushNotify } from "../../store/actions/agentAction";
+import { autoPickReq } from "../../store/actions/autoPickAction";
 
 // Play Sound
 import useSound from "use-sound";
@@ -31,13 +32,19 @@ import BaseSpinner from "../Ui/BaseSpinner";
 import Button from "react-bootstrap/Button";
 
 const TheInstant = () => {
-
   const [playbackRate] = useState(0.6);
   // Redux
   const dispatch = useDispatch();
   const { openWebPushNotify, setDeviceId } = useSelector(
     (state) => state.agent
   );
+
+  const {
+    data: autoPickData,
+    loading: autoPickLoading,
+    error: autoPickError,
+  } = useSelector((state) => state.autoPick);
+  const { AutoMode } = autoPickData || {};
 
   const { status: setDeviceIdStatus, error: setDeviceIdError } = setDeviceId;
 
@@ -46,11 +53,16 @@ const TheInstant = () => {
 
   // Init State
   const [tab, setTab] = useState("all");
-  const [play, { stop }] = useSound(newOrderSound, { playbackRate, loop: true, interrupt: false });
+  const [play, { stop }] = useSound(newOrderSound, {
+    playbackRate,
+    loop: true,
+    interrupt: false,
+  });
   // const [loop, setLoop] = useState();
   const [soundState, setSoundState] = useState(
     localStorage.getItem("openSound")
   );
+  const [autoPick, setAutoPick] = useState("");
   // const [notifyPermission, setNotifyPermission] = useState('');
 
   // Instant Context
@@ -92,7 +104,7 @@ const TheInstant = () => {
     if (!soundState) localStorage.removeItem("openSound");
 
     if (JSON.parse(soundState) && instantData.length > 0) {
-      console.log(soundState, instantData.length)
+      console.log(soundState, instantData.length);
       // 即時買賣新訂單聲音提示
       play();
     }
@@ -134,7 +146,7 @@ const TheInstant = () => {
       alert(setDeviceIdError);
       return;
     }
-    console.log(Notification.permission);
+    // console.log(Notification.permission);
 
     if (
       Notification.permission === "granted" ||
@@ -150,6 +162,39 @@ const TheInstant = () => {
       alert(t("web_push_open_notify_request"));
     }
   };
+
+  useEffect(() => {
+    // mode: 0 手動
+    // mode: 1 自動
+    // mode: -1 查詢
+    dispatch(autoPickReq({ mode: -1 }));
+  }, [dispatch]);
+
+  const autoPickHandler = () => {
+    if (autoPick === "manual" || !autoPick) {
+      setAutoPick("auto");
+    }
+
+    if (autoPick === "auto") {
+      setAutoPick("manual");
+    }
+  };
+
+  useEffect(() => {
+    if (autoPick === "auto") {
+      dispatch(autoPickReq({ mode: 1 }));
+    }
+
+    if (autoPick === "manual") {
+      dispatch(autoPickReq({ mode: 0 }));
+    }
+  }, [autoPick, dispatch]);
+
+  useEffect(() => {
+    if (autoPickError) {
+      alert(`自動接單錯誤：${autoPickError}`);
+    }
+  }, [autoPickError]);
 
   return (
     <div className="mt-4">
@@ -183,6 +228,28 @@ const TheInstant = () => {
         >
           {!soundState ? t("instant_sound_close") : t("instant_sound_open")}
         </Button>
+
+        {/* Auto Pick */}
+        {autoPickLoading && (
+          <button className="btn-info ml-3" type="button" disabled>
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Loading...
+          </button>
+        )}
+        {autoPickData && !autoPickLoading && (
+          <Button
+            className={AutoMode === 1 ? "btn-info" : "btn-danger"}
+            style={{ marginLeft: "1rem" }}
+            onClick={autoPickHandler}
+          >
+            {AutoMode === 0 && t("instant_auto_pick_close")}
+            {AutoMode === 1 && t("instant_auto_pick")}
+          </Button>
+        )}
       </div>
       <div className="contentbox">
         {/* Tab Link */}
