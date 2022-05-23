@@ -167,7 +167,9 @@ const TheInstant = () => {
     // mode: 0 手動
     // mode: 1 自動
     // mode: -1 查詢
-    dispatch(autoPickReq({ mode: -1 }));
+    if (process.env.REACT_APP_HOST_NAME === "K100U") {
+      dispatch(autoPickReq({ mode: -1 }));
+    }
   }, [dispatch]);
 
   const autoPickHandler = () => {
