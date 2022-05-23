@@ -79,7 +79,9 @@ const AccList = ({
         <div>{t("EditBankInfoForm_name")}</div>
         <div>{t("EditBankInfoForm_account")}</div>
         <div>{t("EditBankInfoForm_bank")}</div>
-        <div>{t("EditBankInfoForm_city")}</div>
+        {process.env.REACT_APP_HOST_NAME === "K100U" && (
+          <div>{t("EditBankInfoForm_city")}</div>
+        )}
         <div />
       </div>
       <div
@@ -101,7 +103,7 @@ const AccList = ({
             <div>{d.P2}</div>
             <div>{d.P1}</div>
             <div>{d.P3}</div>
-            <div>{d.P4}</div>
+            {process.env.REACT_APP_HOST_NAME === "K100U" && <div>{d.P4}</div>}
             {/* <div style={{ zIndex: 10 }} onClick={(e) => editClick(e, d.H_id)}>
               ...
             </div> */}

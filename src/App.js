@@ -97,7 +97,7 @@ const App = () => {
   };
 
   return (
-    <div host={process.env.REACT_APP_HOST_NAME || 'k100u'} className='big-bg'>
+    <div host={process.env.REACT_APP_HOST_NAME || "K100U"} className="big-bg">
       <HttpErrorState>
         <AuthState>
           <BalanceState>

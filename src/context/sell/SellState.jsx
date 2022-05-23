@@ -230,7 +230,10 @@ const SellState = (props) => {
 
     let url;
 
-    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
+    if (
+      !window.location.host.includes("demo") &&
+      !window.location.host.includes("localhost")
+    ) {
       url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
     } else {
       url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
@@ -247,11 +250,10 @@ const SellState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message, "sell");
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
       store.dispatch(setOrderStatus(dataFromServer.data));
-      console.log("got reply!", dataFromServer, "sell");
+      // console.log("got reply!", dataFromServer, "sell");
       setSellStatus(dataFromServer.data.Order_StatusID);
 
       // 配對中 Order_StatusID：31 or 32

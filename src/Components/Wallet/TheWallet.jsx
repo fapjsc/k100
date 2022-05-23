@@ -216,9 +216,11 @@ const TheWallet = () => {
                                 {t("EditBankInfoForm_bank")}：{accData?.P3}
                               </ListGroup.Item>
 
-                              <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                                {t("EditBankInfoForm_city")}：{accData?.P4}
-                              </ListGroup.Item>
+                              {process.env.REACT_APP_HOST_NAME === "K100U" && (
+                                <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                                  {t("EditBankInfoForm_city")}：{accData?.P4}
+                                </ListGroup.Item>
+                              )}
                             </ListGroup>
                           </>
                         )}

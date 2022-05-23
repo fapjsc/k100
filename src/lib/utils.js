@@ -11,17 +11,25 @@ export const getHeader = () => {
 };
 
 export const locationMoneyPrefix = () => {
-  const host = window.location.host;
+  // const host = window.location.host;s
 
-  console.log(host);
+  const host = process.env.REACT_APP_HOST_NAME;
 
-  if (host.includes("88u.asia")) {
+  if (host === "88U") {
     return "TWD";
   }
 
-  if (host.includes("jp88.asia")) {
+  if (host === "JP88") {
     return "JPY";
   }
+
+  // if (host.includes("88u.asia")) {
+  //   return "TWD";
+  // }
+
+  // if (host.includes("jp88.asia")) {
+  //   return "JPY";
+  // }
 
   return "CNY";
 };

@@ -116,7 +116,10 @@ const BuyState = (props) => {
 
     let url;
 
-    if (!window.location.host.includes("demo") && !window.location.host.includes("localhost")) {
+    if (
+      !window.location.host.includes("demo") &&
+      !window.location.host.includes("localhost")
+    ) {
       url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
     } else {
       url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
@@ -134,11 +137,10 @@ const BuyState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message, "buy");
       // console.log(message);
       if (!message.data) return;
       const dataFromServer = JSON.parse(message.data);
-      console.log("got reply!", dataFromServer, "buy");
+      // console.log("got reply!", dataFromServer, "buy");
 
       store.dispatch(setOrderStatus(dataFromServer.data));
 

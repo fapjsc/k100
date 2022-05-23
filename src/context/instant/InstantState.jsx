@@ -96,10 +96,9 @@ const InstantState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message, "live order");
       if (!message.data) return;
       const dataFromServer = JSON.parse(message?.data);
-      console.log("got reply all!", dataFromServer);
+      // console.log("got reply all!", dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setInstantData(dataFromServer.data);
@@ -145,10 +144,9 @@ const InstantState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      console.log(message)
       if (!message.data) return;
       const dataFromServer = JSON.parse(message?.data);
-      console.log("got reply onGoing!", dataFromServer);
+      // console.log("got reply onGoing!", dataFromServer);
 
       if (dataFromServer.data.length > 0) {
         setOnGoingData(dataFromServer.data);
@@ -175,8 +173,6 @@ const InstantState = (props) => {
 
     let url;
 
-    console.log(window.location.hosts);
-
     if (
       !window.location.host.includes("demo") &&
       !window.location.host.includes("localhost")
@@ -200,7 +196,7 @@ const InstantState = (props) => {
       client.onmessage = (message) => {
         if (!message.data) return;
         const dataFromServer = JSON.parse(message?.data);
-        console.log("got reply status!", dataFromServer);
+        // console.log("got reply status!", dataFromServer);
 
         if (dataFromServer) {
           setWsStatusData(dataFromServer.data.Order_StatusID);

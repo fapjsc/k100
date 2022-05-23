@@ -1,27 +1,33 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Route, Switch, Redirect, Link, useHistory, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Route,
+  Switch,
+  Redirect,
+  Link,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
 // Context
-import AuthContext from '../../context/auth/AuthContext';
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import AuthContext from "../../context/auth/AuthContext";
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 
 // Components
-import Transaction from '../../pages/Transaction';
-import Header from '../../Components/Layout/Header';
-import TheNav from '../../Components/Layout/TheNav';
-import MoneyRecord from '../../Components/MoneyRecord';
-import Overview from '../../Components/Overview';
-import TheWallet from '../../Components/Wallet/TheWallet';
-import WalletDetail from '../../Components/Wallet/WalletDetail';
-import History from '../../Components/History';
-import InstantDetail from '../../Components/Instant/InstantDetail';
-import InstantScreen from '../../pages/InstantScreen';
+import Transaction from "../../pages/Transaction";
+import Header from "../../Components/Layout/Header";
+import TheNav from "../../Components/Layout/TheNav";
+import MoneyRecord from "../../Components/MoneyRecord";
+import Overview from "../../Components/Overview";
+import TheWallet from "../../Components/Wallet/TheWallet";
+import WalletDetail from "../../Components/Wallet/WalletDetail";
+import History from "../../Components/History";
+import InstantDetail from "../../Components/Instant/InstantDetail";
+import InstantScreen from "../../pages/InstantScreen";
 
 // Style
-import style from '../../Components/Layout/Header.module.scss';
+import style from "../../Components/Layout/Header.module.scss";
 
 const HomeScreen = () => {
-
   // Router Props
   const history = useHistory();
   const location = useLocation();
@@ -41,11 +47,11 @@ const HomeScreen = () => {
   //  UseEffect
   // ===========
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const agent = localStorage.getItem('agent');
+    const token = localStorage.getItem("token");
+    const agent = localStorage.getItem("agent");
 
     if (!token) {
-      history.replace('/auth/login');
+      history.replace("/auth/login");
       return;
     }
 
@@ -54,8 +60,8 @@ const HomeScreen = () => {
       setAgent(true);
       autoLogout();
     }
-    if (location.pathname === '/home' || location.pathname === '/home/')
-      history.replace('/home/overview');
+    if (location.pathname === "/home" || location.pathname === "/home/")
+      history.replace("/home/overview");
     // 每小時確認一次agent帳號的過期時間
     let checkAgentExpires = setInterval(() => {
       autoLogout();
@@ -69,7 +75,7 @@ const HomeScreen = () => {
   useEffect(() => {
     if (errorText) alert(errorText);
     return () => {
-      setHttpError('');
+      setHttpError("");
     };
     // eslint-disable-next-line
   }, [errorText]);
@@ -82,7 +88,10 @@ const HomeScreen = () => {
     <>
       <Header history={history} token={token}>
         <Link to="/home" className={style.logoLink}>
-          <div host={process.env.REACT_APP_HOST_NAME || 'k100u'} className={style.logo}></div>
+          <div
+            host={process.env.REACT_APP_HOST_NAME || "K100U"}
+            className={style.logo}
+          ></div>
         </Link>
         <TheNav logout={logout} />
       </Header>

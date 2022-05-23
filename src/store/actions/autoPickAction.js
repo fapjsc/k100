@@ -20,7 +20,7 @@ export const autoPickReq =
     } catch (error) {
       if (error.response.status !== 401) {
         dispatch({
-          type: autoPickActionTypes.SET_AUTO_PICK_CLEAR,
+          type: autoPickActionTypes.SET_AUTO_PICK_ERROR,
           payload: { error: error.response.data.msg || "Fetch Fail." },
         });
       }

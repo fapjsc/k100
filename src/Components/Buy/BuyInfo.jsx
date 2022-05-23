@@ -69,8 +69,6 @@ const BuyInfo = () => {
     // closeWebSocket,
   } = buyContext;
 
-  console.log(buyWsData);
-
   // ===========
   //  useEffect
   // ===========

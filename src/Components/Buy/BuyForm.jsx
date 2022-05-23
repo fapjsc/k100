@@ -170,6 +170,7 @@ const BuyForm = () => {
       setFormIsValid(false);
     }
   };
+
   return (
     <Form style={formStyle}>
       {/* <button onClick={() => setLocale('zh-HK')}>繁體</button>
@@ -249,15 +250,18 @@ const BuyForm = () => {
               {t("btn_bank")}
             </Button>
 
-            <Button
-              type="button"
-              className="disableWalletBtn"
-              style={{
-                marginTop: -8,
-              }}
-            >
-              {t("btn_aliPay")}
-            </Button>
+            {process.env.REACT_APP_HOST_NAME === "K100U" && (
+              <Button
+                type="button"
+                className="disableWalletBtn"
+                style={{
+                  marginTop: -8,
+                }}
+              >
+                {t("btn_aliPay")}
+              </Button>
+            )}
+
             <Form.Text style={{ fontSize: 12 }}>
               {t("choose_e_wallet")}
             </Form.Text>

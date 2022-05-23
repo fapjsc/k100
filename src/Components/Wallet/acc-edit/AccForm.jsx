@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -135,16 +135,18 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
         />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="city">
-        <Form.Label>所在省市</Form.Label>
-        <Form.Control
-          onChange={onChange}
-          className={styles["input"]}
-          type="text"
-          placeholder="請輸入所在省市"
-          value={formData.city}
-        />
-      </Form.Group>
+      {process.env.REACT_APP_HOST_NAME === "K100U" && (
+        <Form.Group className="mb-3" controlId="city">
+          <Form.Label>所在省市</Form.Label>
+          <Form.Control
+            onChange={onChange}
+            className={styles["input"]}
+            type="text"
+            placeholder="請輸入所在省市"
+            value={formData.city}
+          />
+        </Form.Group>
+      )}
 
       <div style={{ color: "red" }}>*需與匯款帳戶資訊一致</div>
 

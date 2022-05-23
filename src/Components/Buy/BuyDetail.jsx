@@ -98,7 +98,6 @@ const InfoDetail = (props) => {
     // eslint-disable-next-line
   }, [deltaTime]);
 
-
   return (
     <>
       <Cancel

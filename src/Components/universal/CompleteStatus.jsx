@@ -16,7 +16,7 @@ import useHttp from "../../hooks/useHttp";
 import { setOrderStatus } from "../../store/actions/orderActions";
 
 // Apis
-import { cancelOrder, confirmReceived, orderAppeal } from "../../lib/api";
+import { orderAppeal } from "../../lib/api";
 
 // Lang Context
 import { useI18n } from "../../lang";
@@ -61,22 +61,6 @@ const CompleteStatus = (props) => {
     error: appealError,
   } = useHttp(orderAppeal);
 
-  // 取消訂單請求
-  // const {
-  //   sendRequest: cancelReq,
-  //   data: cancelData,
-  //   error: cancelError,
-  //   status: cancelStatus,
-  // } = useHttp(cancelOrder);
-
-  // 確定收款請求
-  // const {
-  //   sendRequest: confirmReceivedReq,
-  //   data: confirmReceivedData,
-  //   status: confirmReceivedStatus,
-  //   error: confirmReceivedError,
-  // } = useHttp(confirmReceived);
-
   useEffect(() => {
     if (appealData && appealStatus === "completed" && !appealError) {
       // console.log("set true", appealData, appealStatus, appealError);
@@ -85,28 +69,8 @@ const CompleteStatus = (props) => {
         setShowComplete(false);
       }
     }
+    // eslint-disable-next-line
   }, [appealData, appealStatus, appealError, dispatch]);
-
-  // useEffect(() => {
-  //   if (cancelData && cancelStatus === "completed" && !cancelError) {
-  //     dispatch(setOrderStatus(cancelData));
-  //   }
-  // }, [cancelData, cancelError, cancelStatus, dispatch]);
-
-  // useEffect(() => {
-  //   if (
-  //     confirmReceivedData &&
-  //     confirmReceivedStatus === "completed" &&
-  //     !confirmReceivedError
-  //   ) {
-  //     dispatch(setOrderStatus(confirmReceivedData));
-  //   }
-  // }, [
-  //   confirmReceivedData,
-  //   confirmReceivedStatus,
-  //   confirmReceivedError,
-  //   dispatch,
-  // ]);
 
   const handleClick = () => {
     if (sell1Data || buy1Data) {
