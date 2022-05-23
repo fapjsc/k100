@@ -474,7 +474,7 @@ export default {
   // ==========
   //  Chat
   // ==========
-  chat_help: "帮助",
+  chat_help: "幫助",
   chat_sound_open: "提示音已開啟",
   chat_sound_close: "提示音已關閉",
   chat_order_number: "訂單號",
