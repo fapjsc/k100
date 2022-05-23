@@ -62,7 +62,7 @@ const TheInstant = () => {
   const [soundState, setSoundState] = useState(
     localStorage.getItem("openSound")
   );
-  const [autoPick, setAutoPick] = useState("");
+  // const [autoPick, setAutoPick] = useState("");
   // const [notifyPermission, setNotifyPermission] = useState('');
 
   // Instant Context
@@ -173,24 +173,16 @@ const TheInstant = () => {
   }, [dispatch]);
 
   const autoPickHandler = () => {
-    if (autoPick === "manual" || !autoPick) {
-      setAutoPick("auto");
-    }
-
-    if (autoPick === "auto") {
-      setAutoPick("manual");
-    }
-  };
-
-  useEffect(() => {
-    if (autoPick === "auto") {
-      dispatch(autoPickReq({ mode: 1 }));
-    }
-
-    if (autoPick === "manual") {
+    // 自動轉手動
+    if (AutoMode === 1) {
       dispatch(autoPickReq({ mode: 0 }));
     }
-  }, [autoPick, dispatch]);
+
+    // 手動轉自動
+    if (AutoMode === 0) {
+      dispatch(autoPickReq({ mode: 1 }));
+    }
+  };
 
   useEffect(() => {
     if (autoPickError) {
