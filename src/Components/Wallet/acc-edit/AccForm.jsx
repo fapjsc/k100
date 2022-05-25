@@ -4,6 +4,9 @@ import Button from "react-bootstrap/Button";
 
 import { useDispatch, useSelector } from "react-redux";
 
+// Hooks
+import { useI18n } from "../../../lang";
+
 // Actions
 import { setAcc } from "../../../store/actions/accountAction";
 
@@ -22,6 +25,8 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
     bank: "",
     city: "",
   });
+
+  const {t} = useI18n()
 
   const dispatch = useDispatch();
 
@@ -100,49 +105,49 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
   return (
     <Form className={styles.form} onSubmit={onSubmitHandler}>
       <Form.Group className="mb-3" controlId="name">
-        <Form.Label>收款姓名</Form.Label>
-        <Form.Label style={{ color: "red" }}>(必填)</Form.Label>
+        <Form.Label>{t('EditBankInfoForm_name')}</Form.Label>
+        {/* <Form.Label style={{ color: "red" }}>(必填)</Form.Label> */}
         <Form.Control
           className={styles["input"]}
           onChange={onChange}
           type="text"
-          placeholder="請輸入收款姓名"
+          // placeholder="請輸入收款姓名"
           value={formData.name}
         />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="account">
-        <Form.Label>收款帳號</Form.Label>
+        <Form.Label>{t('EditBankInfoForm_bank')}</Form.Label>
         <Form.Label style={{ color: "red" }}>(必填)</Form.Label>
         <Form.Control
           onChange={onChange}
           className={styles["input"]}
           type="text"
-          placeholder="請輸入收款帳號"
+          // placeholder="請輸入收款帳號"
           value={formData.account}
         />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="bank">
-        <Form.Label>開戶銀行</Form.Label>
+        <Form.Label>{t('EditBankInfoForm_bank')}</Form.Label>
         <Form.Label style={{ color: "red" }}>(必填)</Form.Label>
         <Form.Control
           onChange={onChange}
           className={styles["input"]}
           type="text"
-          placeholder="請輸入開戶銀行"
+          // placeholder="請輸入開戶銀行"
           value={formData.bank}
         />
       </Form.Group>
 
       {process.env.REACT_APP_HOST_NAME === "K100U" && (
         <Form.Group className="mb-3" controlId="city">
-          <Form.Label>所在省市</Form.Label>
+          <Form.Label>{t('EditBankInfoForm_city')}</Form.Label>
           <Form.Control
             onChange={onChange}
             className={styles["input"]}
             type="text"
-            placeholder="請輸入所在省市"
+            // placeholder="請輸入所在省市"
             value={formData.city}
           />
         </Form.Group>

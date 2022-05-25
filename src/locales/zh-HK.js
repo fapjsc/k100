@@ -332,9 +332,9 @@ export default {
 
   // Buy Detail
   amount: "付款金额",
-  payee: "收款姓名",
-  payee_account: "付款帳號",
-  bank: "開戶銀行",
+  payee: "戶名",
+  payee_account: "銀行帳號",
+  bank: "銀行代碼",
   city: "所在省市",
 
   // =======
@@ -349,9 +349,9 @@ export default {
 
   // Sell Error Text
   sell_error_invalid_number: "請輸入有效數量",
-  sell_error_enter_payee: "請輸入收款人姓名",
-  sell_error_enter_bank: "請輸入開戶銀行",
-  sell_error_enter_payee_account: "請輸入收款帳號",
+  sell_error_enter_payee: "請輸入戶名",
+  sell_error_enter_bank: "請輸入銀行代碼",
+  sell_error_enter_payee_account: "請輸入銀行帳號",
   sell_error_enter_city: "請輸入所在省市",
 
   // Sell Form
@@ -455,9 +455,9 @@ export default {
   history_transaction_charge: "手續費",
   history_transaction_price: "兌換價",
   history_RMB: "RMB",
-  history_account: "帳號",
-  history_payee: "收款人",
-  history_bank: "銀行",
+  history_account: "銀行帳號",
+  history_payee: "戶名",
+  history_bank: "銀行代碼",
   history_branch: "分行",
   history_payer: "付款人",
 
@@ -501,7 +501,7 @@ export default {
   instant_price: "總價",
   instant_qua: "數量",
   instant_acc_time: "累計時間",
-  instant_limit_time: "現實時間",
+  instant_limit_time: "剩餘支付時間",
   instant_buy: "買",
   instant_pay: "付",
   instant_sell: "賣",

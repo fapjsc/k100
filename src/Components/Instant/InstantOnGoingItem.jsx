@@ -147,7 +147,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
         {/* header */}
         <div
           className="d-flex align-items-center mt-4"
-          style={{ maxWidth: 186 }}
+          style={{ maxWidth: 220 }}
         >
           <span className="txt_12 mr-auto">
             {t("instant_exRate")}：{el.D1.toFixed(2)}

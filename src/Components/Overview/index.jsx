@@ -1,20 +1,20 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 // Context
-import AuthContext from '../../context/auth/AuthContext';
-import { useI18n } from '../../lang/';
+import AuthContext from "../../context/auth/AuthContext";
+import { useI18n } from "../../lang/";
 
 // Components
-import TheInstant from '../Instant/TheInstant';
+import TheInstant from "../Instant/TheInstant";
 
 // Style
-import './index.scss';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import classes from './overView.module.scss';
-import phoneImg from '../../Assets/k100u-phone.png';
+import "./index.scss";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import classes from "./overView.module.scss";
+import phoneImg from "../../Assets/k100u-phone.png";
 
 const OverView = () => {
   // Auth Context
@@ -26,41 +26,60 @@ const OverView = () => {
 
   return (
     <Container className={classes.container}>
-      <p className="welcome_txt text-left pl-0">{t('welcome_text')}</p>
+       <ul style={{ color: "white", display: 'flex', gap: '3rem' }}>
+        <li>一般會員</li>
+        <li>白銀會員</li>
+        <li>白金會員</li>
+        <li>鑽石會員</li>
+        <li>黑鑽會員</li>
+      </ul>
+
+      <p className="welcome_txt text-left pl-0">{t("welcome_text")}</p>
       <Row className="">
         <Col className="" as={Col} md={3} xs={6}>
-          <Link className="home_btn w-100 border border-dark" style={backImg1} to="/home/transaction/buy">
+          <Link
+            className="home_btn w-100 border border-dark"
+            style={backImg1}
+            to="/home/transaction/buy"
+          >
             <div className="trade"></div>
-            <p>{t('overView_transaction')}</p>
+            <p>{t("overView_transaction")}</p>
           </Link>
         </Col>
         <Col className="" as={Col} md={3} xs={6}>
-          <Link className="home_btn w-100 border border-dark" to="/home/transaction/transfer">
+          <Link
+            className="home_btn w-100 border border-dark"
+            to="/home/transaction/transfer"
+          >
             <div className="i_01"></div>
-            <p>{t('overView_transfer')}</p>
+            <p>{t("overView_transfer")}</p>
           </Link>
         </Col>
 
         <Col className="" as={Col} md={3} xs={6}>
           <Link className="home_btn w-100 border border-dark" to="/home/wallet">
             <div className="i_wallet"></div>
-            <p>{t('overView_wallet')}</p>
+            <p>{t("overView_wallet")}</p>
           </Link>
         </Col>
         <Col className="" as={Col} md={3} xs={6}>
-          <Link className="home_btn w-100 border border-dark" to="/home/history">
+          <Link
+            className="home_btn w-100 border border-dark"
+            to="/home/history"
+          >
             <div className="i_trans"></div>
-            <p>{t('overView_history')}</p>
+            <p>{t("overView_history")}</p>
           </Link>
         </Col>
       </Row>
 
+     
       {!isAgent && (
         <section className={classes.landingBlock}>
           <div className={classes.textBox}>
-            <h2 className={classes.title}>{t('slogan_title')}</h2>
-            <p className={classes.subText}>{t('slogan_sub_text_1')}</p>
-            <p className={classes.subText}>{t('slogan_sub_text_2')}</p>
+            <h2 className={classes.title}>{t("slogan_title")}</h2>
+            <p className={classes.subText}>{t("slogan_sub_text_1")}</p>
+            <p className={classes.subText}>{t("slogan_sub_text_2")}</p>
           </div>
           <div className={classes.imgBox}>
             <img className={classes.phone} src={phoneImg} alt="phone" />
@@ -75,6 +94,8 @@ const OverView = () => {
           </Col>
         </Row>
       )}
+
+     
     </Container>
   );
 };
