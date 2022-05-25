@@ -74,16 +74,18 @@ const InstantState = (props) => {
 
     const connectWs = "j/ws_liveorders.ashx";
 
-    let url;
+    const url = `wss://${process.env.REACT_APP_PROXY}/${connectWs}?login_session=${loginSession}`;
 
-    if (
-      !window.location.host.includes("demo") &&
-      !window.location.host.includes("localhost")
-    ) {
-      url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
-    } else {
-      url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
-    }
+    // let url;
+
+    // if (
+    //   !window.location.host.includes("demo") &&
+    //   !window.location.host.includes("localhost")
+    // ) {
+    //   url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
+    // } else {
+    //   url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
+    // }
 
     const client = new ReconnectingWebSocket(url);
 
@@ -122,16 +124,18 @@ const InstantState = (props) => {
     setHttpLoading(true);
     const connectWs = "j/WS_livePendingOrders.ashx";
 
-    let url;
+    const url = `wss://${process.env.REACT_APP_PROXY}/${connectWs}?login_session=${loginSession}`;
 
-    if (
-      !window.location.host.includes("demo") &&
-      !window.location.host.includes("localhost")
-    ) {
-      url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
-    } else {
-      url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
-    }
+    // let url;
+
+    // if (
+    //   !window.location.host.includes("demo") &&
+    //   !window.location.host.includes("localhost")
+    // ) {
+    //   url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}`;
+    // } else {
+    //   url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}`;
+    // }
 
     const client = new ReconnectingWebSocket(url);
 
@@ -171,16 +175,18 @@ const InstantState = (props) => {
 
     const connectWs = "j/ws_orderstatus.ashx";
 
-    let url;
+    const url = `wss://${process.env.REACT_APP_PROXY}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
 
-    if (
-      !window.location.host.includes("demo") &&
-      !window.location.host.includes("localhost")
-    ) {
-      url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    } else {
-      url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
-    }
+    // let url;
+
+    // if (
+    //   !window.location.host.includes("demo") &&
+    //   !window.location.host.includes("localhost")
+    // ) {
+    //   url = `wss://${window.location.host}/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // } else {
+    //   url = `wss://demo.k100u.com/${connectWs}?login_session=${loginSession}&order_token=${orderToken}`;
+    // }
 
     const client = new ReconnectingWebSocket(url);
 

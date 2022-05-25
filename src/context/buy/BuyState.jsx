@@ -114,16 +114,18 @@ const BuyState = (props) => {
 
     let loginSession = localStorage.getItem("token");
 
-    let url;
+    const url = `wss://${process.env.REACT_APP_PROXY}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
 
-    if (
-      !window.location.host.includes("demo") &&
-      !window.location.host.includes("localhost")
-    ) {
-      url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
-    } else {
-      url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
-    }
+    // let url;
+
+    // if (
+    //   !window.location.host.includes("demo") &&
+    //   !window.location.host.includes("localhost")
+    // ) {
+    //   url = `wss://${window.location.host}/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+    // } else {
+    //   url = `wss://demo.k100u.com/${transactionApi}?login_session=${loginSession}&order_token=${token}`;
+    // }
 
     const client = new ReconnectingWebSocket(url);
 

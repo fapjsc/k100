@@ -12,13 +12,15 @@ export const connectInstantWs = () => {
 
   const connectWs = "j/ws_liveorders.ashx";
 
-  let url;
+  const url = `wss://${process.env.REACT_APP_PROXY}/${connectWs}?login_session=${loginSession}`;
 
-  if (window.location.protocol === "http:") {
-    url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}`;
-  } else {
-    url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}`;
-  }
+  // let url;
+
+  // if (window.location.protocol === "http:") {
+  //   url = `${process.env.REACT_APP_WEBSOCKET_URL}/${connectWs}?login_session=${loginSession}`;
+  // } else {
+  //   url = `${process.env.REACT_APP_WEBSOCKET_URL_DOMAIN}/${connectWs}?login_session=${loginSession}`;
+  // }
 
   client = new ReconnectingWebSocket(url);
 
