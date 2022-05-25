@@ -78,7 +78,7 @@ const BuyState = (props) => {
   };
 
   // 確認購買，獲得Order Token--step 1
-  const confirmBuy = async (accountName) => {
+  const confirmBuy = async ({ accountName, bankCode, account }) => {
     handleBuyBtnLoading(true);
     const { usdt } = state.buyCount;
     const headers = getHeader();
@@ -89,12 +89,14 @@ const BuyState = (props) => {
         method: "POST",
         headers,
         body: JSON.stringify({
-          ClientName: accountName,
+          ClientName: `${accountName}|${account}|${bankCode}`,
           UsdtAmt: usdt,
         }),
       });
 
       const resData = await res.json();
+
+      console.log(resData);
 
       if (resData.code === 200) {
         setHttpError("");

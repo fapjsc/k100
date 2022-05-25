@@ -20,11 +20,30 @@ export const getAgentAcc = async () => {
 
   const data = await response.json();
 
-
   if (!response.ok) throw new Error(data.msg || "Could not get agent acc");
   if (data.code !== 200) throw new Error(data.mag || "Fetch acc data error");
 
   return data.data;
+};
+
+//Req_AgentAccHistory.aspx
+
+export const delAgentAcc = async (id) => {
+  const headers = getHeaders();
+  const delAccApi = `/j/Req_AgentAccHistory.aspx`;
+
+  const response = await fetch(delAccApi, {
+    method: "POST",
+    body: JSON.stringify({ H_id: id }),
+    headers,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) throw new Error(data.msg || "Could not get agent acc");
+  if (data.code !== 200) throw new Error(data.mag || "Fetch acc data error");
+
+  return data.msg;
 };
 
 export const getExpiredOrder = async () => {
@@ -37,9 +56,9 @@ export const getExpiredOrder = async () => {
 
   const data = await response.json();
 
-
   if (!response.ok) throw new Error(data.msg || "Could not get expired order ");
-  if (data.code !== 200) throw new Error(data.mag || "Fetch expired order  error");
+  if (data.code !== 200)
+    throw new Error(data.mag || "Fetch expired order  error");
 
   return data.data;
 };
@@ -65,7 +84,6 @@ export const setAgentAcc = async (accData) => {
   } catch (error) {
     // console.log(error);
     throw new Error(error);
-
   }
 };
 
@@ -80,13 +98,11 @@ export const getAgentAccHistory = async (accData) => {
       body: JSON.stringify(accData),
     });
 
-
     const data = await response.json();
 
     if (!response.ok) throw new Error(data.msg || "Could not edit acc");
 
     if (data.code !== 200) throw new Error(data.msg || "Edit acc data fail.");
-
 
     return data.data;
   } catch (error) {
@@ -121,7 +137,7 @@ export const sendWebPushToken = async (deviceId) => {
   }
 };
 
-export const confirmReceived = async ({orderToken, type}) => {
+export const confirmReceived = async ({ orderToken, type }) => {
   // console.log(orderToken, type === 'sell');
   const headers = getHeaders();
 

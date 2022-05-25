@@ -17,10 +17,13 @@ REACT_APP_PROXY=demo.k100u.com
 
 
 
-## build 前設定
+## build 前設定 websocket url 以及 ui
 ### .env
 REACT_APP_HOST_NAME=88U
 REACT_APP_PROXY=www.88u.asia
+
+### package.json
+proxy 
 
 
 ## 影響範圍

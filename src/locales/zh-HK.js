@@ -315,12 +315,16 @@ export default {
 
   // Buy Form
   // Error Text
-  no_account_name: "必須填寫銀行卡持有人的姓名",
+  no_account_name: "必須填寫戶名",
+  no_bank_account: "必須填寫銀行帳號",
+  no_bank_code: "必須填寫銀行代碼",
   invalid_number: "請輸入有效的購買數量",
 
   // Form Text
   please_enter_quantity: "請輸入購買數量",
-  account_name_placeholder: "請輸入銀行卡持有人姓名",
+  account_name_placeholder: "請輸入戶名",
+  account_placeholder: "請輸入銀行帳號",
+  bank_code_placeholder: "請輸入銀行代碼",
   account_name_prompt: "*ATM轉帳時請註記持有人的真實姓名，並顯示於雙方明細，資料不符時將不受理交易服務，並退還收款金額，相關手續費會於退款時一併扣除，若有疑問請洽客服，謝謝。",
   buy_total: "總價",
   buy_quantity: "數量",
@@ -455,6 +459,8 @@ export default {
   history_bank: "銀行代碼",
   history_branch: "分行",
   history_payer: "付款人",
+  history_payer_account: "付款銀行帳號",
+  history_payer_bank_code: "付款銀行代碼",
   history_currency: "TWD",
 
   // History Wait
@@ -513,6 +519,8 @@ export default {
   instant_city: "所在省市",
   instant_payer_data: "付款方資料",
   instant_payer_name: "付款方姓名",
+  instant_payer_account: "付款帳號",
+  instant_payer_bankCode: "付款銀行代碼",
 
   // ==========
   //  Auth

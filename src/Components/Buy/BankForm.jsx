@@ -20,7 +20,13 @@ const BankFrom = () => {
 
   // Buy Context
   const buyContext = useContext(BuyContext);
-  const { buyBtnLoading, buyCount, setErrorText, confirmBuy } = buyContext;
+  const {
+    buyBtnLoading,
+    buyCount,
+    setErrorText,
+    confirmBuy,
+    handleBuyBtnLoading,
+  } = buyContext;
 
   // Http Error context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -32,21 +38,41 @@ const BankFrom = () => {
     error: "",
   });
 
+  const [account, setAccount] = useState({
+    val: "",
+    isValid: true,
+    error: "",
+  });
+
+  const [bankCode, setBankCode] = useState({
+    val: "",
+    isValid: true,
+    error: "",
+  });
+
   const [formIsValid, setFormIsValid] = useState(false);
 
   // unMount後清除錯誤提示
   useEffect(() => {
+    if (errorText) {
+      handleBuyBtnLoading(false);
+    }
+
     return () => {
       setHttpError(""); // http錯誤提示
       setErrorText(""); // 前端表單驗證錯誤提示
     };
     // eslint-disable-next-line
-  }, []);
+  }, [errorText]);
 
   // Get Order Token for Connect Web Socket
   useEffect(() => {
     if (formIsValid) {
-      confirmBuy(accountName.val);
+      confirmBuy({
+        accountName: accountName.val,
+        bankCode: bankCode.val,
+        account: account.val,
+      });
     }
 
     return setFormIsValid(false);
@@ -55,13 +81,34 @@ const BankFrom = () => {
   }, [formIsValid]);
 
   // Handle Form Input Change
-  const onChange = (e) => {
+  const onChange = ({ target }) => {
     setHttpError("");
-    setAccountName({
-      val: e.target.value.trim(),
-      isValid: true,
-      error: "",
-    });
+
+    const { id, value } = target || {};
+
+    if (id === "bank-form-name") {
+      setAccountName({
+        val: value.trim(),
+        isValid: true,
+        error: "",
+      });
+    }
+
+    if (id === "bank-form-account") {
+      setAccount({
+        val: value.trim(),
+        isValid: true,
+        error: "",
+      });
+    }
+
+    if (id === "bank-form-code") {
+      setBankCode({
+        val: value.trim(),
+        isValid: true,
+        error: "",
+      });
+    }
   };
 
   // Handle Key Up
@@ -84,6 +131,28 @@ const BankFrom = () => {
       });
 
       setFormIsValid(false);
+    }
+
+    if (process.env.REACT_APP_HOST_NAME === "88U") {
+      if (account.val === "") {
+        setAccount({
+          val: "",
+          isValid: false,
+          error: t("no_bank_account"),
+        });
+
+        setFormIsValid(false);
+      }
+
+      if (bankCode.val === "") {
+        setBankCode({
+          val: "",
+          isValid: false,
+          error: t("no_bank_code"),
+        });
+
+        setFormIsValid(false);
+      }
     }
 
     if (usdt <= 0 || usdt === "" || rmb <= 0 || rmb === "") {
@@ -115,9 +184,10 @@ const BankFrom = () => {
             md={6}
             sm={12}
             className="mr-4 mt-0 d-flex flex-column justify-content-center px-0"
-            controlId="formBasicClientName"
+            // controlId="formBasicClientName"
           >
             <Form.Control
+              id="bank-form-name"
               placeholder={t("account_name_placeholder")}
               onChange={onChange}
               value={accountName.val}
@@ -136,6 +206,55 @@ const BankFrom = () => {
               >
                 *{accountName.error}
               </Form.Text>
+            )}
+
+            {process.env.REACT_APP_HOST_NAME === "88U" && (
+              <>
+                <Form.Control
+                  id="bank-form-account"
+                  placeholder={t("account_placeholder")}
+                  onChange={onChange}
+                  value={account.val}
+                  className="confirmBuyInput easy-border"
+                  autoComplete="off"
+                  onKeyUp={handleKeyUp}
+                  isInvalid={account.error}
+                  style={{ marginTop: "5px" }}
+                />
+                {account.error && (
+                  <Form.Text
+                    style={{
+                      fontSize: "12px",
+                    }}
+                    className=""
+                  >
+                    *{account.error}
+                  </Form.Text>
+                )}
+
+                <Form.Control
+                  id="bank-form-code"
+                  placeholder={t("bank_code_placeholder")}
+                  onChange={onChange}
+                  value={bankCode.val}
+                  className="confirmBuyInput easy-border"
+                  autoComplete="off"
+                  onKeyUp={handleKeyUp}
+                  isInvalid={bankCode.error}
+                  style={{ marginTop: "5px" }}
+                />
+                {bankCode.error && (
+                  <Form.Text
+                    style={{
+                      fontSize: "12px",
+                      marginBottom: "5px",
+                    }}
+                    className=""
+                  >
+                    *{bankCode.error}
+                  </Form.Text>
+                )}
+              </>
             )}
 
             {/* http 請求錯誤訊息 */}

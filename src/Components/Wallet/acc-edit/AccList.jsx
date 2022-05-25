@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { BsFillPersonCheckFill } from "react-icons/bs";
+import { BsFillPersonCheckFill, BsFillTrashFill } from "react-icons/bs";
 
 // Hooks
 import useRwd from "../../../hooks/useRwd";
+import useHttp from "../../../hooks/useHttp";
+
+// Apis
+import { delAgentAcc } from "../../../lib/api";
+
 // Lang Context
 import { useI18n } from "../../../lang";
 
@@ -13,6 +18,7 @@ import AccForm from "./AccForm";
 import AccListMobile from "./AccListMobile";
 
 import styles from "./AccList.module.scss";
+import Button from "react-bootstrap/Button";
 
 const AccList = ({
   accHistoryData,
@@ -22,15 +28,26 @@ const AccList = ({
   onHideHandler,
   clearItem,
   setClearItem,
+  getAccHistory,
 }) => {
   //   const { data: currentAccData } = useSelector((state) => state.currentAcc);
   const { data: historyAccData } = useSelector((state) => state.historyAcc);
+  const { data: currentAccData } = useSelector((state) => state.currentAcc);
 
   const [currentItem, setCurrentItem] = useState(null);
+
+  const dispatch = useDispatch();
 
   const { isMobile } = useRwd();
 
   const { t } = useI18n();
+
+  const {
+    sendRequest: delAcc,
+    data: delAccData,
+    status: delAccStatus,
+    error: delAccError,
+  } = useHttp(delAgentAcc);
 
   const onClickHandler = (id, type) => {
     const current = historyAccData.find((acc) => acc.H_id === id);
@@ -46,12 +63,30 @@ const AccList = ({
   // };
 
   useEffect(() => {
+    console.log(delAccData);
+    if (delAccStatus === "pending") return;
+
+    if (delAccError) {
+      alert(delAccError);
+      return;
+    }
+
+    if (delAccData) {
+      dispatch(getAccHistory());
+    }
+  }, [delAccStatus, delAccError, delAccData, dispatch]);
+
+  useEffect(() => {
     if (clearItem) {
       setCurrentItem(null);
       setClearItem(false);
     }
     // eslint-disable-next-line
   }, [clearItem]);
+
+  const deleteHandler = (id) => {
+    delAcc(id);
+  };
 
   if (showForm) {
     return (
@@ -68,6 +103,7 @@ const AccList = ({
       <AccListMobile
         accHistoryData={accHistoryData}
         onClickHandler={onClickHandler}
+        getAccHistory={getAccHistory}
       />
     );
   }
@@ -104,9 +140,51 @@ const AccList = ({
             <div>{d.P1}</div>
             <div>{d.P3}</div>
             {process.env.REACT_APP_HOST_NAME === "K100U" && <div>{d.P4}</div>}
-            {/* <div style={{ zIndex: 10 }} onClick={(e) => editClick(e, d.H_id)}>
-              ...
-            </div> */}
+
+            {process.env.REACT_APP_HOST_NAME === "88U" &&
+              currentAccData.P1 !== d.P1 &&
+              currentAccData.P2 !== d.P2 &&
+              currentAccData.P3 !== d.P3 && (
+                <Button
+                  variant="primary"
+                  disabled={delAccStatus === "pending"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteHandler(d.H_id);
+                  }}
+                >
+                  {delAccStatus === "pending" ? (
+                    <span style={{ fontSize: "5px", color: "white" }}>
+                      loading...
+                    </span>
+                  ) : (
+                    "DEL"
+                  )}
+                </Button>
+              )}
+
+            {process.env.REACT_APP_HOST_NAME === "K100U" &&
+              currentAccData.P1 !== d.P1 &&
+              currentAccData.P2 !== d.P2 &&
+              currentAccData.P3 !== d.P3 &&
+              currentAccData.P4 !== d.P4 && (
+                <Button
+                  variant="primary"
+                  disabled={delAccStatus === "pending"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteHandler(d.H_id);
+                  }}
+                >
+                  {delAccStatus === "pending" ? (
+                    <span style={{ fontSize: "5px", color: "white" }}>
+                      loading...
+                    </span>
+                  ) : (
+                    "DEL"
+                  )}
+                </Button>
+              )}
           </div>
         ))}
       </div>

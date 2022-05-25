@@ -197,10 +197,28 @@ const HistoryAllDetail = (props) => {
                 <p className="mb-0">{singleDetail.branch}</p>
               </div>
 
-              <div style={gridContent14}>
-                <p className="txt_12_grey mb-1">{t("history_payer")}</p>
-                <p className="mb-0">{singleDetail.payer}</p>
-              </div>
+              {process.env.REACT_APP_HOST_NAME === "88U" && (
+                <>
+                  <div style={gridContent14}>
+                    <p className="txt_12_grey mb-1">{t("history_payer")}</p>
+                    <p className="mb-0">{singleDetail.payer}</p>
+                  </div>
+
+                  <div style={gridContent15}>
+                    <p className="txt_12_grey mb-1">
+                      {t("history_payer_account")}
+                    </p>
+                    <p className="mb-0">{singleDetail.payerAccount}</p>
+                  </div>
+
+                  <div style={gridContent16}>
+                    <p className="txt_12_grey mb-1">
+                      {t("history_payer_bank_code")}
+                    </p>
+                    <p className="mb-0">{singleDetail.payerBankCode}</p>
+                  </div>
+                </>
+              )}
             </>
           ) : null}
         </div>
@@ -386,6 +404,28 @@ const gridContent13 = {
 };
 
 const gridContent14 = {
+  gridColumn: "1 / 7",
+  border: "1px solid #D9E2F1",
+  margin: "0 -1px -1px 0",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: 10,
+  borderTop: "none",
+};
+
+const gridContent15 = {
+  gridColumn: "7 / -1",
+  border: "1px solid #D9E2F1",
+  margin: "-1px -1px -1px -1px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: 10,
+  borderTop: "none",
+};
+
+const gridContent16 = {
   gridColumn: "1 / 7",
   border: "1px solid #D9E2F1",
   margin: "0 -1px -1px 0",

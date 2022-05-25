@@ -26,13 +26,15 @@ const OverView = () => {
 
   return (
     <Container className={classes.container}>
-       <ul style={{ color: "white", display: 'flex', gap: '3rem' }}>
-        <li>一般會員</li>
-        <li>白銀會員</li>
-        <li>白金會員</li>
-        <li>鑽石會員</li>
-        <li>黑鑽會員</li>
-      </ul>
+      {process.env.REACT_APP_HOST_NAME === "88U" && (
+        <ul style={{ color: "white", display: "flex", gap: "3rem" }}>
+          <li>一般會員</li>
+          <li>白銀會員</li>
+          <li>白金會員</li>
+          <li>鑽石會員</li>
+          <li>黑鑽會員</li>
+        </ul>
+      )}
 
       <p className="welcome_txt text-left pl-0">{t("welcome_text")}</p>
       <Row className="">
@@ -73,7 +75,6 @@ const OverView = () => {
         </Col>
       </Row>
 
-     
       {!isAgent && (
         <section className={classes.landingBlock}>
           <div className={classes.textBox}>
@@ -94,8 +95,6 @@ const OverView = () => {
           </Col>
         </Row>
       )}
-
-     
     </Container>
   );
 };

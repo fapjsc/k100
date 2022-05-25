@@ -25,6 +25,10 @@
     height: 100%;
   }
 
+  button {
+    display: none;
+  }
+
   svg {
     color: #3f80fa;
     font-size: 1.2rem;
@@ -37,6 +41,10 @@
     color: #3f80fa;
 
     svg {
+      display: inline-block;
+    }
+
+    button {
       display: inline-block;
     }
   }

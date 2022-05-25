@@ -221,7 +221,7 @@ const SellDetail = () => {
                           {t("instant_payer_data")}
                         </p>
                         <p className="txt_12_grey lightblue_bg py-4">
-                          {t("instant_payer_name")}：{paymentName}
+                          {t("instant_payer_name")}：{paymentName.name}
                         </p>
                       </div>
                     </div>

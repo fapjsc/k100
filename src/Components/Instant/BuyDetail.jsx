@@ -266,9 +266,31 @@ const BuyDetail = () => {
                       <p className="txt_12 pt_20 mb-2">
                         {t("instant_payer_data")}
                       </p>
-                      <p className="txt_12_grey lightblue_bg py-4">
-                        {t("instant_payer_name")}：{paymentName}
+                      <div className="txt_12_grey lightblue_bg py-4">
+                        <p>
+                          {t("instant_payer_name")}：{paymentName.name}
+                        </p>
+                        {process.env.REACT_APP_HOST_NAME === "88U" && (
+                          <>
+                            <p>
+                              {t("instant_payer_account")}：
+                              {paymentName.account}
+                            </p>
+                            <p>
+                              {t("instant_payer_bankCode")}：
+                              {paymentName.bankCode}
+                            </p>
+                          </>
+                        )}
+                      </div>
+
+                      {/* <p className="txt_12_grey lightblue_bg py-4">
+                        {t("instant_payer_name")}：{paymentName.account}
                       </p>
+
+                      <p className="txt_12_grey lightblue_bg py-4">
+                        {t("instant_payer_name")}：{paymentName.bankCode}
+                      </p> */}
                     </div>
                   </div>
 

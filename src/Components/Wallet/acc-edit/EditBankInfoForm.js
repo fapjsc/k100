@@ -36,7 +36,6 @@ const EditBankInfoForm = ({ accHistoryData, show, onHide }) => {
     error: setAccError,
   } = useSelector((state) => state.setAccount);
 
-
   const selectAccHandler = (acc) => {
     const newData = {
       P1: acc.P1,
@@ -123,6 +122,7 @@ const EditBankInfoForm = ({ accHistoryData, show, onHide }) => {
             onHideHandler={onHideHandler}
             setClearItem={setClearItem}
             clearItem={clearItem}
+            getAccHistory={getAccHistory}
           />
         )}
       </Modal.Body>

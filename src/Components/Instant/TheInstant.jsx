@@ -227,7 +227,7 @@ const TheInstant = () => {
         {autoPickLoading && (
           <button className="btn-info ml-3" type="button" disabled>
             <span
-              class="spinner-border spinner-border-sm"
+              className="spinner-border spinner-border-sm"
               role="status"
               aria-hidden="true"
             ></span>

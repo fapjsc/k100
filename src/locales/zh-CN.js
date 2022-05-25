@@ -316,11 +316,15 @@ export default {
   // Buy Form
   // Error Text
   no_account_name: "必须填写银行卡持有人的姓名",
+  no_bank_account: "",
+  no_bank_code: "",
   invalid_number: "请输入有效的购买数量",
 
   // Form Text
   please_enter_quantity: "请输入购买数量",
   account_name_placeholder: "请输入银行卡持有人姓名",
+  account_placeholder: "",
+  bank_code_placeholder: "",
   account_name_prompt: "*请输入转帐银行卡持有人的真实姓名",
   buy_total: "总价",
   buy_quantity: "数量",
@@ -455,6 +459,8 @@ export default {
   history_bank: "银行",
   history_branch: "分行",
   history_payer: "付款人",
+  history_payer_account: "",
+  history_payer_bank_code: "",
   history_currency: "RMB",
 
   // History Wait
@@ -513,6 +519,8 @@ export default {
   instant_city: "所在省市",
   instant_payer_data: "付款方资料",
   instant_payer_name: "付款方姓名",
+  instant_payer_account: "",
+  instant_payer_bankCode: "",
 
   // ==========
   //  Auth

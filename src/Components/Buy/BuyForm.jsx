@@ -160,7 +160,12 @@ const BuyForm = () => {
 
     // 有1~2位小数的正數，且不能為0或0開頭
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
-    if (!rule.test(usdtAmt.val) || !rule.test(rmbAmt.val)) {
+    if (
+      !rule.test(usdtAmt.val) ||
+      !rule.test(rmbAmt.val) ||
+      usdtAmt.val < 100 ||
+      usdtAmt.val > 10000
+    ) {
       setUsdtAmt({
         val: "",
         isValid: false,

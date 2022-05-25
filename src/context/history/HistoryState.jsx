@@ -129,15 +129,23 @@ const HistoryState = (props) => {
       });
       const resData = await res.json();
 
-      // console.log(resData);
-
-      console.log(resData);
-
       if (resData.code === 200) {
         const { data } = resData;
 
         // buy and sell
         if (data.MasterType === 1 || data.MasterType === 0) {
+          console.log(data);
+
+          let payer;
+          let payerAccount;
+          let payerBankCode;
+
+          if (data.P5) {
+            payer = data.P5.split("|")[0];
+            payerAccount = data.P5.split("|")[1];
+            payerBankCode = data.P5.split("|")[2];
+          }
+
           const orderDetail = {
             date: data.Date,
             txHASH: data.Tx_HASH,
@@ -146,7 +154,9 @@ const HistoryState = (props) => {
             payee: data.P2,
             bank: data.P3,
             branch: data.P4,
-            payer: data.P5,
+            payer,
+            payerAccount,
+            payerBankCode,
             exchangePrice: data.D1,
             rmb: data.D2,
             charge: data.D3,

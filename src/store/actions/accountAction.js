@@ -12,10 +12,10 @@ export const getAcc = () => async (dispatch) => {
       payload: { data: data.data },
     });
   } catch (error) {
-    if (error.response.status !== 401) {
+    if (error.response?.status !== 401) {
       dispatch({
         type: accountActionsTypes.GET_CURRENT_ACC_ERROR,
-        payload: { error: error.response.data.msg || "Fetch Fail." },
+        payload: { error: error?.response?.data?.msg || "Fetch Fail." },
       });
     }
   }
@@ -32,10 +32,10 @@ export const getAccHistory = () => async (dispatch) => {
       payload: { data: data.data },
     });
   } catch (error) {
-    if (error.response.status !== 401) {
+    if (error.response?.status !== 401) {
       dispatch({
         type: accountActionsTypes.SET_HISTORY_ACC_ERROR,
-        payload: { error: error.response.data.msg || "Fetch Fail." },
+        payload: { error: error?.response?.data?.msg || "Fetch Fail." },
       });
     }
   }
@@ -52,10 +52,10 @@ export const setAcc = (accData) => async (dispatch) => {
       payload: { data },
     });
   } catch (error) {
-    if (error.response.status !== 401) {
+    if (error.response?.status !== 401) {
       dispatch({
         type: accountActionsTypes.SET_CURRENT_ACC_ERROR,
-        payload: { error: error.response.data.msg || "Fetch Fail." },
+        payload: { error: error?.response?.data?.msg || "Fetch Fail." },
       });
     }
   }

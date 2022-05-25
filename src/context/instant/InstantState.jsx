@@ -206,7 +206,13 @@ const InstantState = (props) => {
 
         if (dataFromServer) {
           setWsStatusData(dataFromServer.data.Order_StatusID);
-          setPaymentName(dataFromServer.data.P5);
+
+          const name = dataFromServer.data.P5.split("|")[0];
+          const account = dataFromServer.data.P5.split("|")[1];
+          const bankCode = dataFromServer.data.P5.split("|")[2];
+          // console.log(name);
+
+          setPaymentName({ name, account, bankCode });
           store.dispatch(setOrderStatus(dataFromServer.data));
         }
 
@@ -418,8 +424,8 @@ const InstantState = (props) => {
   };
 
   // Set Payment Name
-  const setPaymentName = (name) => {
-    dispatch({ type: SET_PAYMENT_NAME, payload: name });
+  const setPaymentName = ({ name, account, bankCode }) => {
+    dispatch({ type: SET_PAYMENT_NAME, payload: { name, account, bankCode } });
   };
 
   // Clean All
