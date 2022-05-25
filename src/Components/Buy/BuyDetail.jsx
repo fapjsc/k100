@@ -171,16 +171,18 @@ const InfoDetail = (props) => {
             </div>
 
             {/* City */}
-            <div className="d-flex align-items-center mb-3">
-              <p className="mb-0 mr-3">
-                {t("city")}： {buyWsData.city}
-              </p>
-              <div
-                onClick={() => handleCopy(buyWsData.city)}
-                className="i_copy2"
-                style={{ width: 15, height: 15 }}
-              ></div>
-            </div>
+            {process.env.REACT_REACT_APP_HOST_NAME === "K100U" && (
+              <div className="d-flex align-items-center mb-3">
+                <p className="mb-0 mr-3">
+                  {t("city")}： {buyWsData.city}
+                </p>
+                <div
+                  onClick={() => handleCopy(buyWsData.city)}
+                  className="i_copy2"
+                  style={{ width: 15, height: 15 }}
+                ></div>
+              </div>
+            )}
           </Col>
           <Col xl={5} className="mt-4">
             <SetAccount

@@ -211,8 +211,8 @@ export default {
   // ========
   // Form Label
   understand_agreement: "我了解協議內容",
-  e_wallet: "電子錢包",
-  choose_e_wallet: "*請選擇電子錢包",
+  e_wallet: "",
+  choose_e_wallet: "",
 
   // No Data
   no_data: "目前還沒有資料",
@@ -255,7 +255,7 @@ export default {
   btn_valid_code_already_send: "驗證碼已經發送",
   btn_back_to_login: "回登入页面",
 
-  btn_bank: "銀行卡",
+  btn_bank: "銀行資訊",
   btn_aliPay: "支付寶",
 
   // WelCome Text
@@ -321,8 +321,7 @@ export default {
   // Form Text
   please_enter_quantity: "請輸入購買數量",
   account_name_placeholder: "請輸入銀行卡持有人姓名",
-  account_name_prompt:
-    "*ATM轉帳時請註記持有人的真實姓名，並顯示於雙方明細，資料不符時將不受理交易服務，並退還收款金額，相關手續費會於退款時一併扣除，若有疑問請洽客服，謝謝。",
+  account_name_prompt: "*ATM轉帳時請註記持有人的真實姓名，並顯示於雙方明細，資料不符時將不受理交易服務，並退還收款金額，相關手續費會於退款時一併扣除，若有疑問請洽客服，謝謝。",
   buy_total: "總價",
   buy_quantity: "數量",
 
@@ -331,7 +330,7 @@ export default {
   limit_time: "剩餘支付時間",
 
   // Buy Detail
-  amount: "付款金额",
+  amount: "付款金額",
   payee: "戶名",
   payee_account: "銀行帳號",
   bank: "銀行代碼",
@@ -421,15 +420,11 @@ export default {
   // Form Footer
   form_footer_text_1: "本平台目前只提供USDT交易，其他數字貨幣交易將不予受理",
   form_footer_text_2: "本平台錢包地址充值或轉出，均為USDT區塊鏈系統網路確認。",
-  form_footer_text_3:
-    "本平台錢包地址可以重複充值或轉出；如因系統更新，我們會通過網站或口訊通知。",
-  form_footer_text_4:
-    "請問向錢包地址充值任何非 USDT 資產，否則資產將不可兌現。",
-  form_footer_text_5:
-    "最小充值金額：100USDT，小於最小金額的充值將不會上賬且無法退回。",
+  form_footer_text_3: "本平台錢包地址可以重複充值或轉出；如因系統更新，我們會通過網站或口訊通知。",
+  form_footer_text_4: "請問向錢包地址充值任何非 USDT 資產，否則資產將不可兌現。",
+  form_footer_text_5: "最小充值金額：100USDT，小於最小金額的充值將不會上賬且無法退回。",
   form_footer_text_6: "請務必確認電腦及瀏覽器安全，防止信息被篡改或洩露。",
-  form_footer_text_7:
-    "如有其他問題或要求提出爭議，可透過網頁上的客服對話窗聯絡我們",
+  form_footer_text_7: "如有其他問題或要求提出爭議，可透過網頁上的客服對話窗聯絡我們",
 
   // ==========
   //  History
@@ -439,7 +434,7 @@ export default {
   history_wait: "待處理",
   history_expires: "超時訂單",
   history_date: "日期",
-  history_transaction_deal: "交易额（USDT)",
+  history_transaction_deal: "交易額（USDT)",
   history_transaction_real: "結餘（USDT)",
   history_transaction_status: "狀態",
   history_transaction_complete: "完成",
@@ -460,6 +455,7 @@ export default {
   history_bank: "銀行代碼",
   history_branch: "分行",
   history_payer: "付款人",
+  history_currency: "TWD",
 
   // History Wait
   history_wait_pay: "等待付款",
@@ -564,8 +560,7 @@ export default {
 
   // 中國區提示
   china_area_alert_1: "請注意！",
-  china_area_alert_2:
-    "因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號： 238bien",
+  china_area_alert_2: "因你身處地區受當地電訊條例限制，可能會較慢受到系統發出的簡訊，請耐心等候或重新申請一次。如仍未能成功或其他問題，請聯絡我們客戶服務微信號，即有專人協助。微信帳號： 238bien",
 
   // ===========
   //  Http Text

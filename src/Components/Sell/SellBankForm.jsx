@@ -1,15 +1,15 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from "react";
 
 // Context
-import SellContext from '../../context/sell/SellContext';
+import SellContext from "../../context/sell/SellContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Style
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const SellBankForm = () => {
   // Lang Context
@@ -17,27 +17,27 @@ const SellBankForm = () => {
 
   // Init State
   const [name, setName] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [bank, setBank] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [account, setAccount] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [city, setCity] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [formValid, setFormValid] = useState(false);
@@ -49,36 +49,36 @@ const SellBankForm = () => {
   // ===========
   //  Function
   // ===========
-  const onChange = e => {
-    if (e.target.name === 'name') {
+  const onChange = (e) => {
+    if (e.target.name === "name") {
       setName({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
     }
 
-    if (e.target.name === 'bank') {
+    if (e.target.name === "bank") {
       setBank({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
     }
 
-    if (e.target.name === 'account') {
+    if (e.target.name === "account") {
       setAccount({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
     }
 
-    if (e.target.name === 'city') {
+    if (e.target.name === "city") {
       setCity({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
     }
   };
@@ -87,41 +87,41 @@ const SellBankForm = () => {
   const validForm = () => {
     setFormValid(true);
 
-    if (name.val === '') {
+    if (name.val === "") {
       setName({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('sell_error_enter_payee'),
+        error: t("sell_error_enter_payee"),
       });
 
       setFormValid(false);
     }
 
-    if (bank.val === '') {
+    if (bank.val === "") {
       setBank({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('sell_error_enter_bank'),
+        error: t("sell_error_enter_bank"),
       });
 
       setFormValid(false);
     }
 
-    if (account.val === '') {
+    if (account.val === "") {
       setAccount({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('sell_error_enter_payee_account'),
+        error: t("sell_error_enter_payee_account"),
       });
 
       setFormValid(false);
     }
 
-    if (city.val === '') {
+    if (city.val === "" && process.env.REACT_APP_HOST_NAME === "K100U") {
       setCity({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('sell_error_enter_city'),
+        error: t("sell_error_enter_city"),
       });
 
       setFormValid(false);
@@ -153,9 +153,15 @@ const SellBankForm = () => {
   return (
     <Form>
       <Form.Row className="mt-20">
-        <Form.Group as={Col} xl={6} sm={12} controlId="name" className="input-fill-x  mt-20">
+        <Form.Group
+          as={Col}
+          xl={6}
+          sm={12}
+          controlId="name"
+          className="input-fill-x  mt-20"
+        >
           <Form.Control
-            placeholder={t('sell_payee')}
+            placeholder={t("sell_payee")}
             name="name"
             isInvalid={!name.isValid}
             value={name.val}
@@ -167,18 +173,24 @@ const SellBankForm = () => {
               fontSize: 20,
             }}
           />
-          <Form.Label className="input-label">{t('sell_payee')}</Form.Label>
+          <Form.Label className="input-label">{t("sell_payee")}</Form.Label>
 
           {name.error && (
-            <Form.Text className="" style={{ fontSize: '12px' }}>
+            <Form.Text className="" style={{ fontSize: "12px" }}>
               *{name.error}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group as={Col} xl={6} sm={12} controlId="account" className="mt-20 input-fill-x">
+        <Form.Group
+          as={Col}
+          xl={6}
+          sm={12}
+          controlId="account"
+          className="mt-20 input-fill-x"
+        >
           <Form.Control
             className="easy-border input-fill"
-            placeholder={t('sell_payee_account')}
+            placeholder={t("sell_payee_account")}
             name="account"
             isInvalid={!account.isValid}
             value={account.val}
@@ -189,10 +201,12 @@ const SellBankForm = () => {
               fontSize: 20,
             }}
           />
-          <Form.Label className="input-label">{t('sell_payee_account')}</Form.Label>
+          <Form.Label className="input-label">
+            {t("sell_payee_account")}
+          </Form.Label>
 
           {account.error && (
-            <Form.Text className="" style={{ fontSize: '12px' }}>
+            <Form.Text className="" style={{ fontSize: "12px" }}>
               *{account.error}
             </Form.Text>
           )}
@@ -200,10 +214,16 @@ const SellBankForm = () => {
       </Form.Row>
 
       <Form.Row className="">
-        <Form.Group as={Col} xl={6} sm={12} controlId="bank" className="mt-20 input-fill-x">
+        <Form.Group
+          as={Col}
+          xl={6}
+          sm={12}
+          controlId="bank"
+          className="mt-20 input-fill-x"
+        >
           <Form.Control
             className="easy-border input-fill"
-            placeholder={t('sell_bank')}
+            placeholder={t("sell_bank")}
             name="bank"
             isInvalid={!bank.isValid}
             value={bank.val}
@@ -214,41 +234,50 @@ const SellBankForm = () => {
               fontSize: 20,
             }}
           />
-          <Form.Label className="input-label">{t('sell_bank')}</Form.Label>
+          <Form.Label className="input-label">{t("sell_bank")}</Form.Label>
 
           {bank.error && (
-            <Form.Text className="" style={{ fontSize: '12px' }}>
+            <Form.Text className="" style={{ fontSize: "12px" }}>
               *{bank.error}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group as={Col} xl={6} sm={12} controlId="city" className="mt-20 input-fill-x">
-          <Form.Control
-            className="easy-border input-fill"
-            placeholder={t('sell_city')}
-            name="city"
-            isInvalid={!city.isValid}
-            value={city.val}
-            onChange={onChange}
-            autoComplete="off"
-            style={{
-              padding: 30,
-              fontSize: 20,
-            }}
-          />
-          <Form.Label className="input-label">{t('sell_city')}</Form.Label>
 
-          {city.error && (
-            <Form.Text
-              className=""
+        {process.env.REACT_APP_HOST_NAME === "K100U" && (
+          <Form.Group
+            as={Col}
+            xl={6}
+            sm={12}
+            controlId="city"
+            className="mt-20 input-fill-x"
+          >
+            <Form.Control
+              className="easy-border input-fill"
+              placeholder={t("sell_city")}
+              name="city"
+              isInvalid={!city.isValid}
+              value={city.val}
+              onChange={onChange}
+              autoComplete="off"
               style={{
-                fontSize: '12px',
+                padding: 30,
+                fontSize: 20,
               }}
-            >
-              *{city.error}
-            </Form.Text>
-          )}
-        </Form.Group>
+            />
+            <Form.Label className="input-label">{t("sell_city")}</Form.Label>
+
+            {city.error && (
+              <Form.Text
+                className=""
+                style={{
+                  fontSize: "12px",
+                }}
+              >
+                *{city.error}
+              </Form.Text>
+            )}
+          </Form.Group>
+        )}
       </Form.Row>
 
       <Form.Row className="justify-content-center">
@@ -257,9 +286,9 @@ const SellBankForm = () => {
             onClick={validForm}
             disabled={wsPairing}
             block
-            className={wsPairing ? 'disable-easy-btn w-100' : 'easy-btn w-100'}
+            className={wsPairing ? "disable-easy-btn w-100" : "easy-btn w-100"}
           >
-            {t('btn_next')}
+            {t("btn_next")}
           </Button>
         </Form.Group>
       </Form.Row>

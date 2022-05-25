@@ -153,7 +153,6 @@ const SellDetail = () => {
     cleanAll();
   };
 
-
   return (
     <>
       <Cancel
@@ -208,9 +207,12 @@ const SellDetail = () => {
                         <span className="txt_12_grey mb-4">
                           {t("instant_bank")}：{sell1Data.P3}
                         </span>
-                        <span className="txt_12_grey">
-                          {t("instant_city")}：{sell1Data.P4}
-                        </span>
+
+                        {process.env.REACT_APP_HOST_NAME === "K100U" && (
+                          <span className="txt_12_grey">
+                            {t("instant_city")}：{sell1Data.P4}
+                          </span>
+                        )}
                       </div>
 
                       {/* 付款方資料 */}

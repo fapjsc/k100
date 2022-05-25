@@ -145,9 +145,12 @@ const SellDetail = () => {
               <p>
                 {t("sell_detail_payee_bank")}：{wsData && wsData.P3}
               </p>
-              <p>
-                {t("sell_detail_payee_city")}：{wsData && wsData.P4}
-              </p>
+
+              {process.env.REACT_APP_HOST_NAME === "K100U" && (
+                <p>
+                  {t("sell_detail_payee_city")}：{wsData && wsData.P4}
+                </p>
+              )}
             </Col>
 
             {wsData && (

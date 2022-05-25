@@ -4,6 +4,9 @@ import { useHistory } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
+// Hooks
+import { useI18n } from "../../lang";
+
 // Components
 import NoData from "../NoData";
 import ExpiredItem from "./ExpiredItem";
@@ -22,6 +25,8 @@ const HistoryExpired = () => {
 
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => state.expired);
+
+  const { t } = useI18n();
 
   useEffect(() => {
     dispatch(getExpiredOrder());
@@ -76,16 +81,18 @@ const HistoryExpired = () => {
         <thead>
           <tr>
             <th style={titleStyle} className="w55">
-              日期
+              {/* 日期 */}
+              {t("history_date")}
             </th>
             <th style={titleStyle} className="mw105">
-              {`交易额（USDT)`}
+              {/* {`交易额（USDT)`} */}
+              {t("history_transaction_deal")}
             </th>
             <th style={titleStyle} className="mw105">
-              兑换价
+              {t("history_transaction_price")}
             </th>
             <th style={titleStyle} className="mw105">
-              RMB
+              {t("history_currency")}
             </th>
           </tr>
         </thead>

@@ -254,9 +254,12 @@ const BuyDetail = () => {
                       <span className="txt_12_grey mb-4">
                         {t("instant_bank")}：{buy1Data.P3}
                       </span>
-                      <span className="txt_12_grey">
-                        {t("instant_city")}：{buy1Data.P4}
-                      </span>
+
+                      {process.env.REACT_APP_HOST_NAME === "K100U" && (
+                        <span className="txt_12_grey">
+                          {t("instant_city")}：{buy1Data.P4}
+                        </span>
+                      )}
                     </div>
                     {/* 付款方資料 */}
                     <div className="w45_m100 mobile-width w-100">
@@ -288,7 +291,9 @@ const BuyDetail = () => {
                         <p className="txt_12_grey mb-0 ">
                           {t("instant_price")}
                         </p>
-                        <p className="c_blue ">{buy1Data.D2.toFixed(2)} {locationMoneyPrefix()}</p>
+                        <p className="c_blue ">
+                          {buy1Data.D2.toFixed(2)} {locationMoneyPrefix()}
+                        </p>
                       </div>
 
                       <div>
