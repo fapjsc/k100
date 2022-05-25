@@ -117,7 +117,7 @@ const AccForm = ({ onHideHandler, setShowForm, editData }) => {
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="account">
-        <Form.Label>{t('EditBankInfoForm_bank')}</Form.Label>
+        <Form.Label>{t('EditBankInfoForm_account')}</Form.Label>
         <Form.Label style={{ color: "red" }}>(必填)</Form.Label>
         <Form.Control
           onChange={onChange}
