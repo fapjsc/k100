@@ -15,7 +15,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import classes from "./overView.module.scss";
 import phoneImg from "../../Assets/k100u-phone.png";
-import memberLevelImg from "../../Assets/88u/會員等級.png";
+import memberLevelImg from "../../Assets/88u/會員等級.webp";
 
 import { Image } from "antd-mobile";
 
@@ -29,14 +29,6 @@ const OverView = () => {
 
   return (
     <Container className={classes.container}>
-      {process.env.REACT_APP_HOST_NAME === "88U" && (
-        <Image
-          src={memberLevelImg}
-          alt="會員等級說明"
-          style={{ marginBottom: "3rem" }}
-        />
-      )}
-
       <p className="welcome_txt text-left pl-0">{t("welcome_text")}</p>
 
       <Row className="">
@@ -76,6 +68,14 @@ const OverView = () => {
           </Link>
         </Col>
       </Row>
+
+      {process.env.REACT_APP_HOST_NAME === "88U" && (
+        <Image
+          src={memberLevelImg}
+          alt="會員等級說明"
+          style={{ margin: "3rem 0" }}
+        />
+      )}
 
       {!isAgent && (
         <section className={classes.landingBlock}>
