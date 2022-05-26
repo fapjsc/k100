@@ -29,3 +29,13 @@ proxy
 ## 影響範圍
 REACT_APP_PROXY => websocket url
 REACT_APP_HOST_NAME => ui 及部分邏輯
+
+
+HOST
+1. 88U
+2. K100U
+
+PROXY
+1. www.88u.asia
+2. www.k100u.com
+3. demo.k100u.com

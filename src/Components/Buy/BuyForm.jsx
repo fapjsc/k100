@@ -160,11 +160,14 @@ const BuyForm = () => {
 
     // 有1~2位小数的正數，且不能為0或0開頭
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
+    let lowerLimit = process.env.REACT_APP_HOST_NAME === "88U" ? 30 : 100;
+    let upperLimit = 10000;
+
     if (
       !rule.test(usdtAmt.val) ||
       !rule.test(rmbAmt.val) ||
-      usdtAmt.val < 100 ||
-      usdtAmt.val > 10000
+      usdtAmt.val < lowerLimit ||
+      usdtAmt.val > upperLimit
     ) {
       setUsdtAmt({
         val: "",

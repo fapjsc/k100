@@ -15,6 +15,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import classes from "./overView.module.scss";
 import phoneImg from "../../Assets/k100u-phone.png";
+import memberLevelImg from "../../Assets/88u/會員等級.png";
+
+import { Image } from "antd-mobile";
 
 const OverView = () => {
   // Auth Context
@@ -27,16 +30,15 @@ const OverView = () => {
   return (
     <Container className={classes.container}>
       {process.env.REACT_APP_HOST_NAME === "88U" && (
-        <ul style={{ color: "white", display: "flex", gap: "3rem" }}>
-          <li>一般會員</li>
-          <li>白銀會員</li>
-          <li>白金會員</li>
-          <li>鑽石會員</li>
-          <li>黑鑽會員</li>
-        </ul>
+        <Image
+          src={memberLevelImg}
+          alt="會員等級說明"
+          style={{ marginBottom: "3rem" }}
+        />
       )}
 
       <p className="welcome_txt text-left pl-0">{t("welcome_text")}</p>
+
       <Row className="">
         <Col className="" as={Col} md={3} xs={6}>
           <Link

@@ -207,11 +207,14 @@ const SellForm = () => {
 
     // 有1~2位小数的正數，且不能為0或0開頭
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
+    let lowerLimit = process.env.REACT_APP_HOST_NAME === "88U" ? 30 : 100;
+    let upperLimit = 10000;
+
     if (
       !rule.test(usdt.val) ||
       !rule.test(cny.val) ||
-      cny.val < 100 ||
-      cny.val > 100000
+      cny.val < lowerLimit ||
+      cny.val > upperLimit
     ) {
       setUsdt({
         val: "",

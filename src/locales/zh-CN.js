@@ -429,6 +429,9 @@ export default {
   form_footer_text_5: "最小充值金额：100USDT，小于最小金额的充值将不会上账且无法退回。",
   form_footer_text_6: "请务必确认电脑及浏览器安全，防止信息被篡改或泄露。",
   form_footer_text_7: "如有其他问题或要求提出争议，可透过网页上的客服对话窗联络我们。",
+  form_footer_text_8: "",
+  form_footer_text_9: "",
+  form_footer_text_10: "",
 
   // ==========
   //  History

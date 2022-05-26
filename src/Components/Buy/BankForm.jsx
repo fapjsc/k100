@@ -5,11 +5,16 @@ import BuyContext from "../../context/buy/BuyContext";
 import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import { useI18n } from "../../lang";
 
+import { Modal } from "antd-mobile";
+
 // Style
-import Button from "react-bootstrap/Button";
+import ButtonB from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
+
+// Images
+import cautionImag from "../../Assets/88u/icon_注意.png";
 
 // Utils
 import { locationMoneyPrefix } from "../../lib/utils";
@@ -67,6 +72,31 @@ const BankFrom = () => {
 
   // Get Order Token for Connect Web Socket
   useEffect(() => {
+    if (process.env.REACT_APP_HOST_NAME === "88U" && formIsValid) {
+      Modal.alert({
+        header: <img src={cautionImag} alt="注意" />,
+        title: <p style={{ color: "#e38800", fontWeight: 400 }}>請注意</p>,
+        content: (
+          <span>
+            ATM轉帳時請註記持有人的
+            <span style={{ color: "#007be4" }}>真實姓名</span>
+            ，並顯示於雙方明細，資料不符時將不受理交易服務，並退還收款金額，相關手續費會於退款時一併扣除，謝謝。
+          </span>
+        ),
+        confirmText: "確定",
+        onConfirm: () => {
+          console.log("Confirmed");
+          setFormIsValid(false);
+          confirmBuy({
+            accountName: accountName.val,
+            bankCode: bankCode.val,
+            account: account.val,
+          });
+        },
+      });
+      return;
+    }
+
     if (formIsValid) {
       confirmBuy({
         accountName: accountName.val,
@@ -311,7 +341,7 @@ const BankFrom = () => {
 
         <Form.Row className="justify-content-center mt-4">
           <Form.Group as={Col} className="mw400 px-0">
-            <Button
+            <ButtonB
               className={
                 buyBtnLoading ? "disable-easy-btn w-100" : "easy-btn w-100"
               }
@@ -326,7 +356,7 @@ const BankFrom = () => {
               ) : (
                 t("btn_pair_start")
               )}
-            </Button>
+            </ButtonB>
           </Form.Group>
         </Form.Row>
       </Form>

@@ -1,16 +1,16 @@
-import { useState, useEffect, useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import validator from 'validator';
+import { useState, useEffect, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
+import validator from "validator";
 
 // Context
-import AuthContext from '../../context/auth/AuthContext';
+import AuthContext from "../../context/auth/AuthContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 // Style
-import { Form, Col, Spinner, Button } from 'react-bootstrap';
-import './Login/index.scss';
+import { Form, Col, Spinner, Button } from "react-bootstrap";
+import "./Login/index.scss";
 
 const LoginForm = () => {
   const history = useHistory();
@@ -24,21 +24,21 @@ const LoginForm = () => {
 
   // Init State
   const [countryCode, setCountryCode] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [phoneNumber, setPhoneNumber] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [password, setPassword] = useState({
-    val: '',
+    val: "",
     isValid: true,
-    error: '',
+    error: "",
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
@@ -60,84 +60,84 @@ const LoginForm = () => {
 
   useEffect(() => {
     return () => {
-      setErrorText('');
+      setErrorText("");
     };
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem('agent') && localStorage.getItem('token')) {
-      history.replace('/home');
+    if (localStorage.getItem("agent") && localStorage.getItem("token")) {
+      history.replace("/home");
     }
   }, [history]);
 
   // 按下enter後登入
-  const handleKeyUp = e => {
+  const handleKeyUp = (e) => {
     if (e.keyCode === 13) validateForm();
   };
 
-  const onChange = e => {
-    setErrorText('');
-    if (e.target.name === 'countryCode') {
+  const onChange = (e) => {
+    setErrorText("");
+    if (e.target.name === "countryCode") {
       // 中國
-      if (e.target.value.includes('86')) {
+      if (e.target.value.includes("86")) {
         setCountryCode({
-          val: '86',
+          val: "86",
           isValid: true,
-          error: '',
+          error: "",
         });
       }
 
       // 台灣
-      if (e.target.value.includes('886')) {
+      if (e.target.value.includes("886")) {
         setCountryCode({
-          val: '886',
+          val: "886",
           isValid: true,
-          error: '',
+          error: "",
         });
       }
 
       // 香港
-      if (e.target.value.includes('852')) {
+      if (e.target.value.includes("852")) {
         setCountryCode({
-          val: '852',
+          val: "852",
           isValid: true,
-          error: '',
+          error: "",
         });
       }
 
       // 馬來西亞
-      if (e.target.value.includes('ˊ60')) {
+      if (e.target.value.includes("ˊ60")) {
         setCountryCode({
-          val: '60',
+          val: "60",
           isValid: true,
-          error: '',
+          error: "",
         });
       }
 
       // 新加波
-      if (e.target.value.includes('65')) {
+      if (e.target.value.includes("65")) {
         setCountryCode({
-          val: '65',
+          val: "65",
           isValid: true,
-          error: '',
+          error: "",
         });
       }
     }
 
-    if (e.target.name === 'phoneNumber') {
+    if (e.target.name === "phoneNumber") {
       setPhoneNumber({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
     }
 
-    if (e.target.name === 'password') {
+    if (e.target.name === "password") {
       setPassword({
         val: e.target.value.trim(),
         isValid: true,
-        error: '',
+        error: "",
       });
     }
   };
@@ -149,31 +149,35 @@ const LoginForm = () => {
     // 驗證區碼
     if (!countryCode.val) {
       setCountryCode({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('no_countryCode'),
+        error: t("no_countryCode"),
       });
 
       setFormIsValid(false);
     }
 
     // 驗證電話號碼
-    if (phoneNumber.val === '' || !validator.isMobilePhone(phoneNumber.val)) {
+    if (phoneNumber.val === "" || !validator.isMobilePhone(phoneNumber.val)) {
       setPhoneNumber({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('invalid_phoneNumber'),
+        error: t("invalid_phoneNumber"),
       });
 
       setFormIsValid(false);
     }
 
     //驗證密碼
-    if (password.val === '' || !validator.isAlphanumeric(password.val) || password.val.length < 6) {
+    if (
+      password.val === "" ||
+      !validator.isAlphanumeric(password.val) ||
+      password.val.length < 6
+    ) {
       setPassword({
-        val: '',
+        val: "",
         isValid: false,
-        error: t('invalid_password'),
+        error: t("invalid_password"),
       });
       setFormIsValid(false);
     }
@@ -185,25 +189,29 @@ const LoginForm = () => {
         <Form.Group as={Col} md="4" controlId="CountryCode">
           <Form.Control
             style={{
-              fontSize: '17px',
-              color: '#495057',
+              fontSize: "17px",
+              color: "#495057",
             }}
             as="select"
-            defaultValue={t('countryCode')}
+            defaultValue={t("countryCode")}
             className="form-select mb-4 pl-3"
             name="countryCode"
             onChange={onChange}
             isInvalid={countryCode.error}
           >
-            <option disabled>{t('countryCode')}</option>
-            <option>{t('china')}</option>
-            <option>{t('taiwan')}</option>
-            <option>{t('hk')}</option>
+            <option disabled>{t("countryCode")}</option>
+            <option>{t("taiwan")}</option>
+            {process.env.REACT_APP_HOST_NAME === "K100U" && (
+              <>
+                <option>{t("china")}</option>
+                <option>{t("hk")}</option>
+              </>
+            )}
           </Form.Control>
           {countryCode.error && (
             <Form.Text
               className="mb-4"
-              style={{ fontSize: '12px' }}
+              style={{ fontSize: "12px" }}
             >{`*${countryCode.error}`}</Form.Text>
           )}
         </Form.Group>
@@ -215,7 +223,7 @@ const LoginForm = () => {
             name="phoneNumber"
             size="lg"
             type="tel"
-            placeholder={t('phoneNumber')}
+            placeholder={t("phoneNumber")}
             onChange={onChange}
             value={phoneNumber.val}
             // onChange={this.setPhoneNumber}
@@ -224,7 +232,7 @@ const LoginForm = () => {
           {phoneNumber.error && (
             <Form.Text
               className="mb-4"
-              style={{ fontSize: '12px' }}
+              style={{ fontSize: "12px" }}
             >{`*${phoneNumber.error}`}</Form.Text>
           )}
         </Form.Group>
@@ -238,7 +246,7 @@ const LoginForm = () => {
             name="password"
             size="lg"
             type="password"
-            placeholder={t('password')}
+            placeholder={t("password")}
             onChange={onChange}
             value={password.val}
             onKeyUp={handleKeyUp}
@@ -247,12 +255,15 @@ const LoginForm = () => {
           {password.error && (
             <Form.Text
               className="mb-4"
-              style={{ fontSize: '12px' }}
+              style={{ fontSize: "12px" }}
             >{`*${password.error}`}</Form.Text>
           )}
 
           {errorText && (
-            <Form.Text className="mb-4" style={{ fontSize: '12px' }}>{`*${errorText}`}</Form.Text>
+            <Form.Text
+              className="mb-4"
+              style={{ fontSize: "12px" }}
+            >{`*${errorText}`}</Form.Text>
           )}
         </Form.Group>
       </Form.Row>
@@ -260,10 +271,10 @@ const LoginForm = () => {
       <Button
         onClick={validateForm}
         style={{
-          display: 'block',
-          width: '100%',
-          background: loginLoading ? 'grey' : '#3e80f9',
-          cursor: loginLoading ? 'auto' : 'pointer',
+          display: "block",
+          width: "100%",
+          background: loginLoading ? "grey" : "#3e80f9",
+          cursor: loginLoading ? "auto" : "pointer",
         }}
         disabled={loginLoading}
         className="easy-btn"
@@ -280,12 +291,12 @@ const LoginForm = () => {
           />
         )}
 
-        <span>{loginLoading ? `${t('btn_loading')}...` : t('btn_login')}</span>
+        <span>{loginLoading ? `${t("btn_loading")}...` : t("btn_login")}</span>
       </Button>
       <div className="forget_pw-box">
         <Link to="/forget-pw" className="forget_pw-link">
           <span className="forget_pw"></span>
-          <u>{t('btn_forget_password')}</u>
+          <u>{t("btn_forget_password")}</u>
         </Link>
       </div>
     </Form>
