@@ -266,6 +266,7 @@ export default {
   payment_contact: "付款窗口",
   limit: "限额",
   payment_contact_time: "15分钟",
+  limit_usdt: 'USDT 100.00 - 10000.00',
 
   // Dialog
   please_wait: "请稍等，现正整合交易者资料",

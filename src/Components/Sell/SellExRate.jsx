@@ -1,10 +1,10 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useContext, useEffect } from "react";
 
 // Context
-import SellContext from '../../context/sell/SellContext';
+import SellContext from "../../context/sell/SellContext";
 
 // Lang Context
-import { useI18n } from '../../lang';
+import { useI18n } from "../../lang";
 
 const SellHeader = () => {
   // Lang Context
@@ -24,22 +24,22 @@ const SellHeader = () => {
     <Fragment>
       <p
         style={{
-          letterSpacing: '1.5px',
-          color: '#3242e47',
-          fontSize: '12px',
+          letterSpacing: "1.5px",
+          color: "#3242e47",
+          fontSize: "12px",
         }}
       >
-        {t('sell_usdt')}
+        {t("sell_usdt")}
       </p>
       <div className="pay-info txt_12">
         <p className="mb-0">
-          {t('exRate')} :<span>{Number(exRate).toFixed(2)}</span>
+          {t("exRate")} :<span>{Number(exRate).toFixed(2)}</span>
         </p>
         <p className="mb-0">
-          {t('payment_contact')}:<span>{t('payment_contact_time')}</span>
+          {t("payment_contact")}:<span>{t("payment_contact_time")}</span>
         </p>
         <p className="mb-0">
-          {t('limit')} :<span>USDT 100.00 - 10000.00</span>
+          {t("limit")} :<span>{t("limit_usdt")}</span>
         </p>
       </div>
     </Fragment>

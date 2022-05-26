@@ -9,29 +9,33 @@ header {
   }
 
   .logo {
-    background-image: url("../../Assets/logo_easy.png");
     background-position: left;
     background-repeat: no-repeat;
     background-size: 70%;
     height: 2rem;
     width: 13rem;
     margin-left: 15px;
+  }
+
+  .logo[host="K100U"] {
+    background-image: url("../../Assets/logo_easy.png");
 
     @media only screen and(max-width: 600px) {
       background-image: url("../../Assets/mstile-150x150.png");
       margin-left: 0;
       width: 6rem;
       height: 4rem;
-
       background-position: -30% -80%;
-    }
-
-    @media only screen and(max-width: 330px) {
     }
   }
 
   .logo[host="88U"] {
     background-image: url(../../Assets/88u/88u_logo.png);
+    @media only screen and(max-width: 600px) {
+      margin-left: 0;
+      width: 7rem;
+      height: 4rem;
+    }
   }
 
   .navList {
