@@ -124,7 +124,8 @@ const AccList = ({
         style={{
           maxHeight: "calc(50vh)",
           overflowY: "scroll",
-          overflowX: "hidden",
+          overflowX: "scroll",
+          // overflowX: "hidden",
         }}
       >
         {accHistoryData?.map((d) => (
@@ -171,6 +172,7 @@ const AccList = ({
                 <Button
                   variant="primary"
                   disabled={delAccStatus === "pending"}
+                  style={{ width: "3rem" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteHandler(d.H_id);
@@ -181,7 +183,12 @@ const AccList = ({
                       loading...
                     </span>
                   ) : (
-                    "DEL"
+                    <BsFillTrashFill
+                      style={{
+                        color: "white",
+                        display: "inline-block",
+                      }}
+                    />
                   )}
                 </Button>
               )}

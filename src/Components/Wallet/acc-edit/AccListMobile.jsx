@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PaginatedItems from "./PaginatedItems";
-import { BsFillPersonCheckFill } from "react-icons/bs";
+import { BsFillPersonCheckFill, BsFillTrashFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./AccListMobile.module.scss";
@@ -89,6 +89,7 @@ const AccListMobile = ({ accHistoryData, onClickHandler, getAccHistory }) => {
                 <Button
                   variant="primary"
                   disabled={delAccStatus === "pending"}
+                  style={{ width: "3rem", justifySelf: "end" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteHandler(d.H_id);
@@ -99,7 +100,12 @@ const AccListMobile = ({ accHistoryData, onClickHandler, getAccHistory }) => {
                       loading...
                     </span>
                   ) : (
-                    "DEL"
+                    <BsFillTrashFill
+                      style={{
+                        color: "white",
+                        display: "inline-block",
+                      }}
+                    />
                   )}
                 </Button>
               )}
