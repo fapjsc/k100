@@ -11,9 +11,7 @@ REACT_APP_PROXY=demo.k100u.com
 
 
 
-"proxy": "https://demo.k100u.com"
-"proxy": "https://www.k100u.com"
-"proxy": "https://www.88u.asia"
+
 
 
 
@@ -39,3 +37,9 @@ PROXY
 1. www.88u.asia
 2. www.k100u.com
 3. demo.k100u.com
+
+
+### Package.json
+"proxy": "https://demo.k100u.com"
+"proxy": "https://www.k100u.com"
+"proxy": "https://www.88u.asia"

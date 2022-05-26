@@ -29,6 +29,14 @@ const OverView = () => {
 
   return (
     <Container className={classes.container}>
+      {process.env.REACT_APP_HOST_NAME === "88U" && (
+        <Image
+          src={memberLevelImg}
+          alt="會員等級說明"
+          style={{ margin: "3rem 0" }}
+        />
+      )}
+
       <p className="welcome_txt text-left pl-0">{t("welcome_text")}</p>
 
       <Row className="">
@@ -68,14 +76,6 @@ const OverView = () => {
           </Link>
         </Col>
       </Row>
-
-      {process.env.REACT_APP_HOST_NAME === "88U" && (
-        <Image
-          src={memberLevelImg}
-          alt="會員等級說明"
-          style={{ margin: "3rem 0" }}
-        />
-      )}
 
       {!isAgent && (
         <section className={classes.landingBlock}>
