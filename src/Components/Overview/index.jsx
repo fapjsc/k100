@@ -15,7 +15,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import classes from "./overView.module.scss";
 import phoneImg from "../../Assets/k100u-phone.png";
-import memberLevelImg from "../../Assets/88u/會員等級.webp";
+import memberLevelImg from "../../Assets/88u/會員等級.png";
 
 import { Image } from "antd-mobile";
 
