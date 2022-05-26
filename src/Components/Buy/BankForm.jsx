@@ -73,9 +73,12 @@ const BankFrom = () => {
   // Get Order Token for Connect Web Socket
   useEffect(() => {
     if (process.env.REACT_APP_HOST_NAME === "88U" && formIsValid) {
+      setFormIsValid(false);
+
       Modal.alert({
         header: <img src={cautionImag} alt="注意" />,
         title: <p style={{ color: "#e38800", fontWeight: 400 }}>請注意</p>,
+        showCloseButton: true,
         content: (
           <span>
             ATM轉帳時請註記持有人的
@@ -85,8 +88,6 @@ const BankFrom = () => {
         ),
         confirmText: "確定",
         onConfirm: () => {
-          console.log("Confirmed");
-          setFormIsValid(false);
           confirmBuy({
             accountName: accountName.val,
             bankCode: bankCode.val,

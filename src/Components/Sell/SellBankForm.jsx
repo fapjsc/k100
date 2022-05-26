@@ -3,8 +3,13 @@ import { useState, useEffect, useContext } from "react";
 // Context
 import SellContext from "../../context/sell/SellContext";
 
+import { Modal } from "antd-mobile";
+
 // Lang Context
 import { useI18n } from "../../lang";
+
+// Images
+import cautionImag from "../../Assets/88u/icon_注意.png";
 
 // Style
 import Col from "react-bootstrap/Col";
@@ -142,6 +147,29 @@ const SellBankForm = () => {
       account: account.val,
       city: city.val,
     };
+
+    if (process.env.REACT_APP_HOST_NAME === "88U" && formValid) {
+      setFormValid(false);
+
+      Modal.alert({
+        header: <img src={cautionImag} alt="注意" />,
+        title: <p style={{ color: "#e38800", fontWeight: 400 }}>請注意</p>,
+        showCloseButton: true,
+        content: (
+          <span>
+            ATM轉帳時請註記持有人的
+            <span style={{ color: "#007be4" }}>真實姓名</span>
+            ，並顯示於雙方明細，資料不符時將不受理交易服務，並退還收款金額，相關手續費會於退款時一併扣除，謝謝。
+          </span>
+        ),
+        confirmText: "確定",
+        onConfirm: () => {
+          setWsPairing(true);
+          getOrderToken(data);
+        },
+      });
+      return;
+    }
 
     setWsPairing(true);
     getOrderToken(data);
