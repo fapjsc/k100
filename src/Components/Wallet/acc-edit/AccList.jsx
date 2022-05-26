@@ -159,7 +159,12 @@ const AccList = ({
                       loading...
                     </span>
                   ) : (
-                    "DEL"
+                    <BsFillTrashFill
+                      style={{
+                        color: "white",
+                        display: "inline-block",
+                      }}
+                    />
                   )}
                 </Button>
               )}

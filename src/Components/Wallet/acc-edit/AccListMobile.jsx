@@ -66,6 +66,7 @@ const AccListMobile = ({ accHistoryData, onClickHandler, getAccHistory }) => {
                 <Button
                   variant="primary"
                   disabled={delAccStatus === "pending"}
+                  style={{ width: "3rem", justifySelf: "end" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteHandler(d.H_id);
@@ -76,7 +77,12 @@ const AccListMobile = ({ accHistoryData, onClickHandler, getAccHistory }) => {
                       loading...
                     </span>
                   ) : (
-                    "DEL"
+                    <BsFillTrashFill
+                      style={{
+                        color: "white",
+                        display: "inline-block",
+                      }}
+                    />
                   )}
                 </Button>
               )}
