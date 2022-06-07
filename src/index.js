@@ -8,7 +8,8 @@ import "./index.scss";
 
 // Redux
 import { Provider } from "react-redux";
-import store from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persisStore } from "./store/store";
 
 const locales = ["en-US", "zh-TW", "zh-HK"];
 const translations = {
@@ -19,11 +20,13 @@ const translations = {
 
 ReactDOM.render(
   <Provider store={store}>
-    <HashRouter>
-      <I18nProvider locales={locales} translations={translations}>
-        <App />
-      </I18nProvider>
-    </HashRouter>
+    <PersistGate loading={null} persistor={persisStore}>
+      <HashRouter>
+        <I18nProvider locales={locales} translations={translations}>
+          <App />
+        </I18nProvider>
+      </HashRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById("root")
 );

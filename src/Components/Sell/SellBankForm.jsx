@@ -1,9 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+
 // Context
 import SellContext from "../../context/sell/SellContext";
 
+// Antd
 import { Modal } from "antd-mobile";
+
+// Actions
+import { setSellBankForm } from "../../store/actions/bankFormActions";
 
 // Lang Context
 import { useI18n } from "../../lang";
@@ -19,22 +26,30 @@ import Button from "react-bootstrap/Button";
 const SellBankForm = () => {
   // Lang Context
   const { t } = useI18n();
+  const dispatch = useDispatch();
+  const { sell } = useSelector((state) => state.bankForm);
+
+  const {
+    name: defaultName,
+    bank: defaultBank,
+    account: defaultAccount,
+  } = sell || {};
 
   // Init State
   const [name, setName] = useState({
-    val: "",
+    val: defaultName || "",
     isValid: true,
     error: "",
   });
 
   const [bank, setBank] = useState({
-    val: "",
+    val: defaultBank || "",
     isValid: true,
     error: "",
   });
 
   const [account, setAccount] = useState({
-    val: "",
+    val: defaultAccount || "",
     isValid: true,
     error: "",
   });
@@ -164,6 +179,7 @@ const SellBankForm = () => {
         ),
         confirmText: "確定",
         onConfirm: () => {
+          dispatch(setSellBankForm(data));
           setWsPairing(true);
           getOrderToken(data);
         },

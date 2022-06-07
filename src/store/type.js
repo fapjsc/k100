@@ -48,3 +48,10 @@ export const autoPickActionTypes = {
   SET_AUTO_PICK_ERROR: "SET_AUTO_PICK_ERROR",
   SET_AUTO_PICK_CLEAR: "SET_AUTO_PICK_CLEAR",
 };
+
+
+// Bank Form
+export const bankFormActionsTypes = {
+  SET_BUY_FORM: 'SET_BUY_FORM',
+  SET_SELL_FORM: 'SET_SELL_FORM'
+}

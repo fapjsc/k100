@@ -1,17 +1,24 @@
 import { useContext, useState, useEffect } from "react";
 
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+
+// Antd
+import { Modal } from "antd-mobile";
+
 // Context
 import BuyContext from "../../context/buy/BuyContext";
 import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import { useI18n } from "../../lang";
-
-import { Modal } from "antd-mobile";
 
 // Style
 import ButtonB from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
+
+// Actions
+import { setBuyBankForm } from "../../store/actions/bankFormActions";
 
 // Images
 import cautionImag from "../../Assets/88u/icon_注意.png";
@@ -22,6 +29,10 @@ import { locationMoneyPrefix } from "../../lib/utils";
 const BankFrom = () => {
   // Lang Context
   const { t } = useI18n();
+
+  const dispatch = useDispatch();
+  const { buy } = useSelector((state) => state.bankForm);
+  const {accountName: defaultAccountName, bankCode: defaultBankCode, account: defaultAccount} = buy || {}
 
   // Buy Context
   const buyContext = useContext(BuyContext);
@@ -38,19 +49,19 @@ const BankFrom = () => {
   const { errorText, setHttpError } = httpErrorContext;
 
   const [accountName, setAccountName] = useState({
-    val: "",
+    val: defaultAccountName || "",
     isValid: true,
     error: "",
   });
 
   const [account, setAccount] = useState({
-    val: "",
+    val: defaultAccount || "",
     isValid: true,
     error: "",
   });
 
   const [bankCode, setBankCode] = useState({
-    val: "",
+    val: defaultBankCode || "",
     isValid: true,
     error: "",
   });
@@ -72,7 +83,15 @@ const BankFrom = () => {
 
   // Get Order Token for Connect Web Socket
   useEffect(() => {
-    if (process.env.REACT_APP_HOST_NAME === "88U" && formIsValid) {
+    if (!formIsValid) return;
+
+    const data = {
+      accountName: accountName.val,
+      bankCode: bankCode.val,
+      account: account.val,
+    };
+
+    if (process.env.REACT_APP_HOST_NAME === "88U") {
       setFormIsValid(false);
 
       Modal.alert({
@@ -88,23 +107,14 @@ const BankFrom = () => {
         ),
         confirmText: "確定",
         onConfirm: () => {
-          confirmBuy({
-            accountName: accountName.val,
-            bankCode: bankCode.val,
-            account: account.val,
-          });
+          dispatch(setBuyBankForm(data));
+          confirmBuy(data);
         },
       });
       return;
     }
 
-    if (formIsValid) {
-      confirmBuy({
-        accountName: accountName.val,
-        bankCode: bankCode.val,
-        account: account.val,
-      });
-    }
+    confirmBuy(data);
 
     return setFormIsValid(false);
 
