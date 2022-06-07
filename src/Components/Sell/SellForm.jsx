@@ -90,6 +90,7 @@ const SellForm = () => {
 
   const onChange = (e) => {
     if (!e.target.val) setShowBank(false);
+
     if (e.target.name === "usdt") {
       if (e.target.value < 0 || e.target.value === "e") {
         setUsdt({
@@ -101,6 +102,7 @@ const SellForm = () => {
       }
 
       let counter = (e.target.value * exRate).toFixed(2);
+
       setCny({
         val: counter,
         isValid: true,
@@ -125,6 +127,7 @@ const SellForm = () => {
         return;
       }
       let counter = (e.target.value / exRate).toFixed(2);
+
       setUsdt({
         val: counter,
         isValid: true,
@@ -175,6 +178,8 @@ const SellForm = () => {
   const validForm = () => {
     setFormValid(true);
 
+
+
     if (Number(usdt.val) > Number(avb)) {
       setUsdt({
         val: usdt.val,
@@ -210,11 +215,12 @@ const SellForm = () => {
     let lowerLimit = process.env.REACT_APP_HOST_NAME === "88U" ? 30 : 100;
     let upperLimit = 10000;
 
+
     if (
       !rule.test(usdt.val) ||
       !rule.test(cny.val) ||
-      cny.val < lowerLimit ||
-      cny.val > upperLimit
+      usdt.val < lowerLimit ||
+      usdt.val > upperLimit
     ) {
       setUsdt({
         val: "",
