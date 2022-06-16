@@ -7,7 +7,7 @@ import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import { useI18n } from "../../lang";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, locationMoneyCalc } from "../../lib/utils";
 
 // Style
 import Button from "react-bootstrap/Button";
@@ -97,6 +97,7 @@ const BuyForm = () => {
   }, []);
 
   const onChange = (e) => {
+
     setHttpError(""); // http錯誤提示
     setErrorText(""); // 前端表單驗證錯誤提示
     if (e.target.name === "usdtAmt") {
@@ -109,7 +110,9 @@ const BuyForm = () => {
         return;
       }
 
-      let rmb = Number(e.target.value * buyRate).toFixed(2);
+      let rmb = locationMoneyCalc(Number(e.target.value * buyRate))
+
+
 
       setUsdtAmt({
         val: e.target.value.trim(),
@@ -136,7 +139,9 @@ const BuyForm = () => {
         return;
       }
 
-      let usdt = Number(e.target.value / buyRate).toFixed(2);
+      let usdt = locationMoneyCalc(Number(e.target.value / buyRate));
+
+
 
       setRmbAmt({
         val: e.target.value.trim(),

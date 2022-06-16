@@ -11,7 +11,7 @@ import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import BuyContext from "../../context/buy/BuyContext";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, locationMoneyCalcWithThousand } from "../../lib/utils";
 
 // Lang Context
 import { useI18n } from "../../lang";
@@ -314,7 +314,7 @@ const BuyDetail = () => {
                           {t("instant_price")}
                         </p>
                         <p className="c_blue ">
-                          {buy1Data.D2.toFixed(2)} {locationMoneyPrefix()}
+                          {locationMoneyCalcWithThousand(buy1Data.D2)} {locationMoneyPrefix()}
                         </p>
                       </div>
 

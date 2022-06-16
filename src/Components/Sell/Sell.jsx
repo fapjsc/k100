@@ -8,7 +8,7 @@ import SellContext from "../../context/sell/SellContext";
 import { useI18n } from "../../lang";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, locationMoneyCalcWithThousand, usdtThousandBitSeparator } from "../../lib/utils";
 
 // Components
 import SellExRate from "./SellExRate";
@@ -76,9 +76,7 @@ const Sell = () => {
         title={t("pair_title")}
         text={
           wsData &&
-          `${t("pair_text")}：${Math.abs(wsData.UsdtAmt).toFixed(
-            2
-          )} USDT = ${wsData.D2.toFixed(2)} ${locationMoneyPrefix()}`
+          `${t("pair_text")}：${(usdtThousandBitSeparator(wsData.UsdtAmt))} USDT = ${locationMoneyCalcWithThousand(wsData.D2)} ${locationMoneyPrefix()}`
         }
       />
     </Fragment>

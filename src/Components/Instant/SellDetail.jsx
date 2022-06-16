@@ -13,7 +13,7 @@ import BuyContext from "../../context/buy/BuyContext";
 import { useI18n } from "../../lang";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix , locationMoneyCalcWithThousand} from "../../lib/utils";
 
 // Components
 import FromFooter from "../Layout/FormFooter";
@@ -248,7 +248,7 @@ const SellDetail = () => {
                             {t("instant_price")}
                           </p>
                           <p className="c_blue">
-                            {sell1Data.D2.toFixed(2)} {locationMoneyPrefix()}
+                            {locationMoneyCalcWithThousand(sell1Data.D2)} {locationMoneyPrefix()}
                           </p>
                         </div>
                         <div>

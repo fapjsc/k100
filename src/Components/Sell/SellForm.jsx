@@ -13,7 +13,7 @@ import { useI18n } from "../../lang";
 import BaseSpinner from "../Ui/BaseSpinner";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, locationMoneyCalc } from "../../lib/utils";
 
 // Style
 import Col from "react-bootstrap/Col";
@@ -101,7 +101,7 @@ const SellForm = () => {
         return;
       }
 
-      let counter = (e.target.value * exRate).toFixed(2);
+      let counter = locationMoneyCalc(e.target.value * exRate);
 
       setCny({
         val: counter,

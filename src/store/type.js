@@ -49,9 +49,15 @@ export const autoPickActionTypes = {
   SET_AUTO_PICK_CLEAR: "SET_AUTO_PICK_CLEAR",
 };
 
-
 // Bank Form
 export const bankFormActionsTypes = {
-  SET_BUY_FORM: 'SET_BUY_FORM',
-  SET_SELL_FORM: 'SET_SELL_FORM'
-}
+  SET_BUY_FORM: "SET_BUY_FORM",
+  SET_SELL_FORM: "SET_SELL_FORM",
+};
+
+// Member Chat
+export const memberChatActionsTypes = {
+  SHOW_CHAT: "[Member-Chat]: SET_SHOW_CHAT",
+  SET_MESSAGE_LIST: "[Member-Chat]: SET_MESSAGE_LIST",
+  SET_MESSAGE: "[Member-Chat]: SET_MESSAGE",
+};

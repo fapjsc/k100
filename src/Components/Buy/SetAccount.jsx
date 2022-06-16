@@ -8,26 +8,26 @@ import Col from "react-bootstrap/Col";
 import { useI18n } from "../../lang";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix,usdtThousandBitSeparator, locationMoneyCalcWithThousand } from "../../lib/utils";
 
 const SetAccount = (props) => {
   // Lang Context
   const { t } = useI18n();
 
-  // 千分位加逗號
-  const thousandBitSeparator = (num) => {
-    return (
-      num &&
-      // eslint-disable-next-line
-      (num.toString().indexOf(".") != -1
-        ? num.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
-            return $1 + ",";
-          })
-        : num.toString().replace(/(\d)(?=(\d{3}))/g, function ($0, $1) {
-            return $1 + ",";
-          }))
-    );
-  };
+  // // 千分位加逗號
+  // const thousandBitSeparator = (num) => {
+  //   return (
+  //     num &&
+  //     // eslint-disable-next-line
+  //     (num.toString().indexOf(".") != -1
+  //       ? num.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
+  //           return $1 + ",";
+  //         })
+  //       : num.toString().replace(/(\d)(?=(\d{3}))/g, function ($0, $1) {
+  //           return $1 + ",";
+  //         }))
+  //   );
+  // };
 
   return (
     <Row
@@ -37,7 +37,7 @@ const SetAccount = (props) => {
       <Col className="pl-0" xl={12} lg={12} sm={12}>
         <p className="txt_12_grey mb-0">{t("buy_total")}</p>
         <p className="c_blue">
-          {thousandBitSeparator(Number(props.rmbAmt).toFixed(2).toString())}
+          {locationMoneyCalcWithThousand(props.rmbAmt).toString()}
           &nbsp; {locationMoneyPrefix()}
         </p>
       </Col>
@@ -46,7 +46,7 @@ const SetAccount = (props) => {
         <p className="txt_12_grey mb-0">{t("buy_quantity")}</p>
         <p className=" mb-0">
           {/* 小數第二位，千分逗號 */}
-          {thousandBitSeparator(Number(props.usdtAmt).toFixed(2).toString())}
+          {usdtThousandBitSeparator(props.usdtAmt).toString()}
           &nbsp; USDT
         </p>
       </Col>

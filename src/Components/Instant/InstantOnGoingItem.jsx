@@ -7,12 +7,14 @@ import { useI18n } from "../../lang";
 // Components
 import CountDownTimer from "../universal/countDownTimer";
 
+
+
 // Style
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, usdtThousandBitSeparator , locationMoneyCalcWithThousand} from "../../lib/utils";
 
 import {
   // orderStatusCode,
@@ -98,7 +100,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
                 {t("instant_buy")}&nbsp;&nbsp;
               </span>
               <span className="bold_22 blue mobile-text-md">
-                {el.UsdtAmt.toFixed(2)}&nbsp;
+                {usdtThousandBitSeparator(el.UsdtAmt)}&nbsp;
               </span>
               <span
                 className="blue mobile-text-md"
@@ -112,7 +114,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
             <div className="">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t("instant_pay")}&nbsp;{el.D2.toFixed(2)}{" "}
+                {t("instant_pay")}&nbsp;{locationMoneyCalcWithThousand(el.D2)}{" "}
                 {locationMoneyPrefix()}
               </span>
             </div>
@@ -198,7 +200,8 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
                 {t("instant_sell")}&nbsp;&nbsp;
               </span>
               <span className="bold_22 red mobile-text-md">
-                {el.UsdtAmt.toFixed(2)}&nbsp;
+                {/* {el.UsdtAmt.toFixed(2)}&nbsp; */}
+                {usdtThousandBitSeparator(el.UsdtAmt)}&nbsp;
               </span>
               <span
                 className="red mobile-text-md"
@@ -211,7 +214,7 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
             <div className="">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t("instant_get")}&nbsp;{el.D2.toFixed(2)}{" "}
+                {t("instant_get")}&nbsp;{locationMoneyCalcWithThousand(el.D2)}{" "}
                 {locationMoneyPrefix()}
               </span>
             </div>
@@ -243,7 +246,6 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
               <button
                 onClick={() => {
                   handleClick(el.token, "buy");
-                  console.log(el.MType);
                 }}
                 className="easy-btn margin0 w-100"
               >

@@ -6,6 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 // Antd
 import { Modal } from "antd-mobile";
 
+import {
+
+  locationMoneyCalcWithThousand,
+  usdtThousandBitSeparator
+} from "../../lib/utils";
+
 // Context
 import BuyContext from "../../context/buy/BuyContext";
 import HttpErrorContext from "../../context/httpError/HttpErrorContext";
@@ -24,7 +30,7 @@ import { setBuyBankForm } from "../../store/actions/bankFormActions";
 import cautionImag from "../../Assets/88u/icon_注意.png";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, thousandBitSeparator } from "../../lib/utils";
 
 const BankFrom = () => {
   // Lang Context
@@ -32,7 +38,11 @@ const BankFrom = () => {
 
   const dispatch = useDispatch();
   const { buy } = useSelector((state) => state.bankForm);
-  const {accountName: defaultAccountName, bankCode: defaultBankCode, account: defaultAccount} = buy || {}
+  const {
+    accountName: defaultAccountName,
+    bankCode: defaultBankCode,
+    account: defaultAccount,
+  } = buy || {};
 
   // Buy Context
   const buyContext = useContext(BuyContext);
@@ -202,20 +212,6 @@ const BankFrom = () => {
     }
   };
 
-  // 換算千分位
-  const thousandBitSeparator = (num) => {
-    return (
-      num &&
-      // eslint-disable-next-line
-      (num.toString().indexOf(".") != -1
-        ? num.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
-            return $1 + ",";
-          })
-        : num.toString().replace(/(\d)(?=(\d{3}))/g, function ($0, $1) {
-            return $1 + ",";
-          }))
-    );
-  };
   return (
     <>
       <Form className="confirmBuyContent">
@@ -329,9 +325,7 @@ const BankFrom = () => {
                 <div className="">
                   <p className="txt_12_grey mb-0">{t("buy_total")}</p>
                   <p className="confirmBuy-text c_blue mb-0">
-                    {thousandBitSeparator(
-                      Number(buyCount.rmb).toFixed(2).toString()
-                    )}
+                    {locationMoneyCalcWithThousand(Number(buyCount.rmb)).toString()}
                     &nbsp; {locationMoneyPrefix()}
                   </p>
                 </div>
@@ -339,10 +333,7 @@ const BankFrom = () => {
               <Form.Group as={Col} className=" text-right mb-0">
                 <p className="txt_12_grey mb-0">{t("buy_quantity")}</p>
                 <p className="confirmBuy-text mb-0 text-dark">
-                  {/* 小數第二位，千分逗號 */}
-                  {thousandBitSeparator(
-                    Number(buyCount.usdt).toFixed(2).toString()
-                  )}
+                  {usdtThousandBitSeparator(Number(buyCount.usdt)).toString()}
                   &nbsp; USDT
                 </p>
               </Form.Group>

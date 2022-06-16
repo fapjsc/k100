@@ -4,8 +4,9 @@ import { useI18n } from '../../lang';
 // Components
 import StopWatch from '../universal/StopWatch';
 
+
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, locationMoneyCalcWithThousand, usdtThousandBitSeparator } from "../../lib/utils";
 
 const InstantAllItem = ({ el, handleClick }) => {
   // console.log(el)
@@ -33,7 +34,7 @@ const InstantAllItem = ({ el, handleClick }) => {
             <div className="ml-2 mobile-margin0 w-50" style={{ marginRight: 100 }}>
               <span className="i_blue1" />
               <span className="blue mobile-text-md">{t('instant_buy')}&nbsp;</span>
-              <span className="bold_22 blue mobile-text-md">{el.UsdtAmt.toFixed(2)}&nbsp;</span>
+              <span className="bold_22 blue mobile-text-md">{usdtThousandBitSeparator(el.UsdtAmt)}&nbsp;</span>
               <span className="blue mobile-text-md" style={{ fontWeight: 'bold' }}>
                 USDT
               </span>
@@ -43,7 +44,7 @@ const InstantAllItem = ({ el, handleClick }) => {
             <div className="w-50">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t('instant_pay')}&nbsp;{el.D2.toFixed(2)} {locationMoneyPrefix()}
+                {t('instant_pay')}&nbsp;{locationMoneyCalcWithThousand(el.D2)} {locationMoneyPrefix()}
               </span>
             </div>
           </div>
@@ -79,7 +80,7 @@ const InstantAllItem = ({ el, handleClick }) => {
             <div className="ml-2 mobile-margin0 w-50" style={{ marginRight: 100 }}>
               <span className="i_red" />
               <span className="red mobile-text-md">{t('instant_sell')}&nbsp;</span>
-              <span className="bold_22 red mobile-text-md">{el.UsdtAmt.toFixed(2)}&nbsp;</span>
+              <span className="bold_22 red mobile-text-md">{usdtThousandBitSeparator(el.UsdtAmt)}&nbsp;</span>
               <span className="red mobile-text-md" style={{ fontWeight: 'bold' }}>
                 USDT
               </span>
@@ -88,7 +89,7 @@ const InstantAllItem = ({ el, handleClick }) => {
             <div className="w-50">
               <span className="i_cny" />
               <span className="mobile-text-md">
-                {t('instant_get')}&nbsp;{el.D2.toFixed(2)} {locationMoneyPrefix()}
+                {t('instant_get')}&nbsp;{locationMoneyCalcWithThousand(el.D2)} {locationMoneyPrefix()}
               </span>
             </div>
 

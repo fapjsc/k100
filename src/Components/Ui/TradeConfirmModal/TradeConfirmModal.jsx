@@ -1,8 +1,8 @@
-import React from "react";
-import { Button, Modal, Space, Toast, Divider } from "antd-mobile";
+// import React from "react";
+// import { Button, Modal, Space, Toast, Divider } from "antd-mobile";
 
-const TradeConfirmModal = () => {
-  return <div></div>;
-};
+// const TradeConfirmModal = () => {
+//   return <div></div>;
+// };
 
-export default TradeConfirmModal;
+// export default TradeConfirmModal;

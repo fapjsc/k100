@@ -13,7 +13,7 @@ import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import { useI18n } from "../../lang";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, locationMoneyCalcWithThousand } from "../../lib/utils";
 
 // Components
 import SetAccount from "./SetAccount";
@@ -123,7 +123,8 @@ const InfoDetail = (props) => {
                     fontWeight: "bold",
                   }}
                 >
-                  {Number(buyWsData.cny).toFixed(2)}
+                  {locationMoneyCalcWithThousand(Number(buyWsData.cny))}
+                  &nbsp;
                   {locationMoneyPrefix()}
                 </span>
               </p>

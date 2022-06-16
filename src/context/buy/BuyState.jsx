@@ -5,6 +5,8 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 
 import store from "../../store/store";
 
+import {locationMoneyCalc} from '../../lib/utils'
+
 // actions
 import { setOrderStatus } from "../../store/actions/orderActions";
 
@@ -157,7 +159,7 @@ const BuyState = (props) => {
 
         const data = {
           usdt: dataFromServer.data.UsdtAmt,
-          rmb: dataFromServer.data.D2,
+          rmb: locationMoneyCalc(dataFromServer.data.D2),
         };
         setBuyCount(data);
         handleBuyBtnLoading(false);
@@ -166,7 +168,7 @@ const BuyState = (props) => {
       // 等待付款
       if (dataFromServer.data.Order_StatusID === 33) {
         const wsData = {
-          cny: dataFromServer.data.D2,
+          cny: locationMoneyCalc(dataFromServer.data.D2),
           name: dataFromServer.data.P2,
           account: dataFromServer.data.P1,
           bank: dataFromServer.data.P3,
@@ -183,7 +185,7 @@ const BuyState = (props) => {
       // 收款確認
       if (dataFromServer.data.Order_StatusID === 34) {
         const wsData = {
-          cny: dataFromServer.data.D2,
+          cny: locationMoneyCalc(dataFromServer.data.D2),
           name: dataFromServer.data.P2,
           account: dataFromServer.data.P1,
           bank: dataFromServer.data.P3,
@@ -198,7 +200,7 @@ const BuyState = (props) => {
 
       if (dataFromServer.data.Order_StatusID === 35) {
         const wsData = {
-          cny: dataFromServer.data.D2,
+          cny: locationMoneyCalc(dataFromServer.data.D2),
           name: dataFromServer.data.P2,
           account: dataFromServer.data.P1,
           bank: dataFromServer.data.P3,
@@ -215,7 +217,7 @@ const BuyState = (props) => {
       if (dataFromServer.data.Order_StatusID === 1) {
         getBalance();
         const wsData = {
-          cny: dataFromServer.data.D2,
+          cny: locationMoneyCalc(dataFromServer.data.D2),
           name: dataFromServer.data.P2,
           account: dataFromServer.data.P1,
           bank: dataFromServer.data.P3,

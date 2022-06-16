@@ -16,7 +16,7 @@ import purpleIcon from "../../Assets/i_usdt_purple.png";
 import copyIcon from "../../Assets/i_copy.png";
 
 // Utils
-import { locationMoneyPrefix } from "../../lib/utils";
+import { locationMoneyPrefix, usdtThousandBitSeparator, usdtThousandBitSeparatorNonAbs , locationMoneyCalcWithThousand} from "../../lib/utils";
 
 const HistoryAllDetail = (props) => {
   // Lang Context
@@ -109,8 +109,8 @@ const HistoryAllDetail = (props) => {
               }
             >
               {singleDetail.type === 0 || singleDetail.type === 3
-                ? Math.abs(Number(singleDetail.usdtAmt)).toFixed(2)
-                : Number(singleDetail.usdtAmt).toFixed(2)}
+                ? usdtThousandBitSeparator(singleDetail.usdtAmt)
+                : usdtThousandBitSeparatorNonAbs(singleDetail.usdtAmt)}
             </p>
           </div>
 
@@ -173,7 +173,7 @@ const HistoryAllDetail = (props) => {
               <div style={gridContent9}>
                 <p className="txt_12_grey mb-0">{locationMoneyPrefix()}</p>
                 <p className="mb-0">
-                  {singleDetail.rmb && singleDetail.rmb.toFixed(2)}
+                  {singleDetail.rmb && locationMoneyCalcWithThousand(singleDetail.rmb)}
                 </p>
               </div>
 
