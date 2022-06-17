@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { PhotoProvider, PhotoConsumer } from "react-photo-view"; // 圖片檢視
 
-
 // Actions
 import {
   setMessage,
@@ -124,8 +123,9 @@ const MemberChat = () => {
                       className={`rce-mbox ${
                         Message_Role === 2 ? "rce-mbox-left" : "rce-mbox-right"
                       }`}
-                      style={{width: '1.5rem'}}
+                      style={{ maxWidth: "25rem" }}
                     >
+                      {Message_Role === 2 && <span style={{color: '#4f81a1'}}>*客服</span>}
                       <span
                         style={{
                           position: "absolute",
