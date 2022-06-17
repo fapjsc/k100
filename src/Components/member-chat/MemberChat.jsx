@@ -30,7 +30,7 @@ const connectWs = "ws_chatuser.ashx";
 const url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}${connectWs}?login_session=${loginSession}`;
 
 const MemberChat = () => {
-  const { socket, connectMemberLevelWs, sendMessage, sendImage } =
+  const { socket, connectMemberLevelWs, sendMessage, sendImage, online } =
     useWebSocket(url);
 
   const inputRef = useRef();
@@ -100,6 +100,7 @@ const MemberChat = () => {
     >
       <header className={styles.header}>
         <img src={csImage} alt="cs" />
+        {online ? <span>連線成功</span> : <span>連線中...</span>}
         {/* <img className={styles.close} src={closeImage} alt="close" /> */}
       </header>
       <div id="member-message" className={styles.body}>
@@ -125,7 +126,9 @@ const MemberChat = () => {
                       }`}
                       style={{ maxWidth: "25rem" }}
                     >
-                      {Message_Role === 2 && <span style={{color: '#4f81a1'}}>*客服</span>}
+                      {Message_Role === 2 && (
+                        <span style={{ color: "#4f81a1" }}>*客服</span>
+                      )}
                       <span
                         style={{
                           position: "absolute",

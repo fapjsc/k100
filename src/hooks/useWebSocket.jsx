@@ -31,7 +31,6 @@ export const useWebSocket = (path) => {
   // Open Listen
   useEffect(() => {
     const openListen = () => {
-      console.log("member level socket open");
       setOnline(true)
     };
     socket?.addEventListener("open", openListen);
@@ -44,7 +43,6 @@ export const useWebSocket = (path) => {
   // Close Listen
   useEffect(() => {
     const closeListen = (close) => {
-      console.log(close);
       setOnline(false)
     };
     socket?.addEventListener("close", closeListen);
@@ -54,22 +52,13 @@ export const useWebSocket = (path) => {
     };
   }, [socket]);
 
-  // Error Listen
-  useEffect(() => {
-    const errorListen = (error) => {
-      console.log(error);
-    };
-    socket?.addEventListener("error", errorListen);
-
-    return () => {
-      socket?.removeEventListener("error", errorListen);
-    };
-  }, [socket]);
+ 
 
   return {
     socket,
     connectMemberLevelWs,
     sendMessage,
     sendImage,
+    online
   };
 };
