@@ -3,7 +3,7 @@ import { MessageBox, Input } from "react-chat-elements";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { PhotoProvider, PhotoConsumer } from "react-photo-view"; // 圖片檢視
-import { v4 as uuid } from "uuid";
+
 
 // Actions
 import {
@@ -19,7 +19,6 @@ import { resizeFile } from "../../lib/imageResize";
 import { useWebSocket } from "../../hooks/useWebSocket";
 
 import csImage from "../../Assets/cs.png";
-// import closeImage from "../../Assets/i_close.png";
 import uploadImageIcon from "../../Assets/attach_icon.png";
 import sendImageIcon from "../../Assets/send_icon.png";
 
@@ -111,8 +110,8 @@ const MemberChat = () => {
               <div key={SysID} className={styles["message-box"]}>
                 {Message_Type === 1 && (
                   <MessageBox
-                    position={Message_Role === 1 ? "right" : "left"}
-                    title={Message_Role === 1 ? "" : "*客服"}
+                    position={Message_Role === 2 ? "left" : "right"}
+                    title={Message_Role === 2 ? "*客服" : ""}
                     type={"text"}
                     text={Message}
                     dateString={dayjs(SysDate).format("HH:mm")}
@@ -123,8 +122,9 @@ const MemberChat = () => {
                   <PhotoProvider>
                     <div
                       className={`rce-mbox ${
-                        Message_Role === 1 ? "rce-mbox-right" : "rce-mbox-left"
+                        Message_Role === 2 ? "rce-mbox-left" : "rce-mbox-right"
                       }`}
+                      style={{width: '1.5rem'}}
                     >
                       <span
                         style={{

@@ -3,6 +3,7 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 
 export const useWebSocket = (path) => {
   const [socket, setSocket] = useState(null);
+  const [online, setOnline] = useState(false)
 
   const connectMemberLevelWs = useCallback(() => {
     const ws = new ReconnectingWebSocket(path);
@@ -31,6 +32,7 @@ export const useWebSocket = (path) => {
   useEffect(() => {
     const openListen = () => {
       console.log("member level socket open");
+      setOnline(true)
     };
     socket?.addEventListener("open", openListen);
 
@@ -43,6 +45,7 @@ export const useWebSocket = (path) => {
   useEffect(() => {
     const closeListen = (close) => {
       console.log(close);
+      setOnline(false)
     };
     socket?.addEventListener("close", closeListen);
 
