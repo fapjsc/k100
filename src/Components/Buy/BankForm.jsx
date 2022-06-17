@@ -7,9 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "antd-mobile";
 
 import {
-
   locationMoneyCalcWithThousand,
-  usdtThousandBitSeparator
+  usdtThousandBitSeparator,
 } from "../../lib/utils";
 
 // Context
@@ -30,7 +29,7 @@ import { setBuyBankForm } from "../../store/actions/bankFormActions";
 import cautionImag from "../../Assets/88u/icon_注意.png";
 
 // Utils
-import { locationMoneyPrefix, thousandBitSeparator } from "../../lib/utils";
+import { locationMoneyPrefix } from "../../lib/utils";
 
 const BankFrom = () => {
   // Lang Context
@@ -325,7 +324,9 @@ const BankFrom = () => {
                 <div className="">
                   <p className="txt_12_grey mb-0">{t("buy_total")}</p>
                   <p className="confirmBuy-text c_blue mb-0">
-                    {locationMoneyCalcWithThousand(Number(buyCount.rmb)).toString()}
+                    {locationMoneyCalcWithThousand(
+                      Number(buyCount.rmb)
+                    ).toString()}
                     &nbsp; {locationMoneyPrefix()}
                   </p>
                 </div>

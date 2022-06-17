@@ -74,6 +74,8 @@ const MemberChat = () => {
   // Message Listen
   useEffect(() => {
     const messageListen = (message) => {
+      console.log(message);
+      if (!message?.data) return;
       const dataFromServer = JSON.parse(message.data);
       if (Array.isArray(dataFromServer)) {
         dispatch(setMessageList(dataFromServer));
@@ -104,53 +106,55 @@ const MemberChat = () => {
       </header>
       <div id="member-message" className={styles.body}>
         {messages.map(
-          ({ Message, SysID, Message_Role, SysDate, Message_Type }) => (
-            <div key={uuid()} className={styles["message-box"]}>
-              {Message_Type === 1 && (
-                <MessageBox
-                  position={Message_Role === 1 ? "right" : "left"}
-                  title={Message_Role === 1 ? "" : "*客服"}
-                  type={"text"}
-                  text={Message}
-                  dateString={dayjs(SysDate).format("HH:mm")}
-                />
-              )}
+          ({ Message, SysID, Message_Role, SysDate, Message_Type }) => {
+            return (
+              <div key={SysID} className={styles["message-box"]}>
+                {Message_Type === 1 && (
+                  <MessageBox
+                    position={Message_Role === 1 ? "right" : "left"}
+                    title={Message_Role === 1 ? "" : "*客服"}
+                    type={"text"}
+                    text={Message}
+                    dateString={dayjs(SysDate).format("HH:mm")}
+                  />
+                )}
 
-              {Message_Type === 2 && (
-                <PhotoProvider>
-                  <div
-                    className={`rce-mbox ${
-                      Message_Role === 1 ? "rce-mbox-right" : "rce-mbox-left"
-                    }`}
-                  >
-                    <span
-                      style={{
-                        position: "absolute",
-                        bottom: 20,
-                        right: 20,
-                        color: "#f2f2f2",
-                        fontSize: "1rem",
-                      }}
+                {Message_Type === 2 && (
+                  <PhotoProvider>
+                    <div
+                      className={`rce-mbox ${
+                        Message_Role === 1 ? "rce-mbox-right" : "rce-mbox-left"
+                      }`}
                     >
-                      {dayjs(SysDate).format("HH:mm")}
-                    </span>
-                    <PhotoConsumer key={SysID} src={Message}>
-                      <img
+                      <span
                         style={{
-                          cursor: "zoom-in",
-                          display: "block",
-                          margin: 0,
-                          width: "100%",
+                          position: "absolute",
+                          bottom: 20,
+                          right: 20,
+                          color: "#f2f2f2",
+                          fontSize: "1rem",
                         }}
-                        src={Message}
-                        alt="send img"
-                      />
-                    </PhotoConsumer>
-                  </div>
-                </PhotoProvider>
-              )}
-            </div>
-          )
+                      >
+                        {dayjs(SysDate).format("HH:mm")}
+                      </span>
+                      <PhotoConsumer key={SysID} src={Message}>
+                        <img
+                          style={{
+                            cursor: "zoom-in",
+                            display: "block",
+                            margin: 0,
+                            width: "100%",
+                          }}
+                          src={Message}
+                          alt="send img"
+                        />
+                      </PhotoConsumer>
+                    </div>
+                  </PhotoProvider>
+                )}
+              </div>
+            );
+          }
         )}
       </div>
       <form onSubmit={onSubmit} className={styles.action}>

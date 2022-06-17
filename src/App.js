@@ -54,11 +54,9 @@ const App = () => {
       setShowNotify(false);
       setNotification({ title: "", body: "" });
       deleteToken();
-      console.log("通知已關閉");
       return;
     }
 
-    console.log("通知開啟");
 
     const onMessageListenerCallback = (payload) => {
       try {

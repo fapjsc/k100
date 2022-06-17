@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import { useHistory } from "react-router-dom";
 
+
 import HttpErrorReducer from "./HttpErrorReducer";
 import HttpErrorContext from "./HttpErrorContext";
 
@@ -81,7 +82,7 @@ const HttpErrorState = (props) => {
       return;
     }
 
-     if (data.code === "18") {
+    if (data.code === "18") {
       setHttpError(`Unknown Error: ${data.message}`);
       return;
     }
@@ -118,11 +119,13 @@ const HttpErrorState = (props) => {
 
     if (data.code === "41") {
       setHttpError(t("http_error_code_41"));
+     
       return;
     }
 
     if (data.code === "42") {
       setHttpError(t("http_error_code_42"));
+     
       return;
     }
 

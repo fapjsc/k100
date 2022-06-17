@@ -1,0 +1,50 @@
+.container {
+  border: none;
+  max-width: 320px;
+  height: 250px;
+  border-radius: 10px;
+
+  .header {
+    width: 100%;
+    color: #999999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      color: #999999;
+      font-size: 1.2rem;
+    }
+
+    .header-icon {
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+
+  .body {
+    width: 100%;
+    height: 100%;
+
+    .body-title {
+      color: #007de4;
+    }
+
+    .sub-text-box {
+      margin-top: 2rem;
+      color: #07102c;
+    }
+  }
+
+  .button {
+    background: linear-gradient(to bottom, #00c9ff, #007de4);
+    width: 100%;
+    height: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    color: #ffff;
+    font-size: 1.7rem;
+  }
+}

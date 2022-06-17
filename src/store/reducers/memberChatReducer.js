@@ -25,9 +25,7 @@ export const memberChatReducer = (state = initState, action) => {
     case memberChatActionsTypes.SET_MESSAGE:
       return {
         ...state,
-        messages: [...state.messages, action.payload].sort(
-          (a, b) => dayjs(a.SysDate) - dayjs(b.SysDate)
-        ),
+        messages: [...state.messages, action.payload]
       };
     default:
       return state;
