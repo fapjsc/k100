@@ -595,8 +595,8 @@ export default {
   http_error_code_30: "無效的錢包地址",
   http_error_code_31: "不能轉帳給自己",
   http_error_code_32: "可提不足",
-  http_error_code_41: '交易額度不足',
-  http_error_code_42: '買賣功能已被鎖定',
+  http_error_code_41: '交易額度不足/每次',
+  http_error_code_42: '交易額度不足/30天',
   http_error_code_91: "session過期,請重新登入",
   http_error_other: "發生錯誤，請重新登入並重新嘗試",
 

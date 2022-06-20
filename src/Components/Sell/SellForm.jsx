@@ -81,7 +81,7 @@ const SellForm = () => {
   }, [formValid]);
 
   useEffect(() => {
-    if (errorText === "交易額度不足" || errorText === "買賣功能已被鎖定") return;
+    if (errorText === "交易額度不足/每次" || errorText === "交易額度不足/30天") return;
     if (errorText) alert(errorText);
     return () => {
       setHttpError("");

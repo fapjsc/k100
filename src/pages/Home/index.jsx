@@ -83,7 +83,7 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    if (errorText === "交易額度不足" || errorText === "買賣功能已被鎖定") {
+    if (errorText === "交易額度不足/30天" || errorText === "交易額度不足/每次") {
       setText(errorText)
       setShowModal(true);
       return;

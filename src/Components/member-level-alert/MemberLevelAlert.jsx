@@ -1,12 +1,12 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import { AiOutlineClose } from "react-icons/ai";
-import BalanceContext from '../../context/balance/BalanceContext'
+import BalanceContext from "../../context/balance/BalanceContext";
+import {usdtThousandBitSeparatorNonAbs} from '../../lib/utils'
 
 import styles from "./MemberLevelAlert.module.scss";
 
 const MemberLevelAlert = ({ show, errorText, handleClose }) => {
-
   const balanceContext = useContext(BalanceContext);
   const { level } = balanceContext;
 
@@ -54,8 +54,6 @@ const MemberLevelAlert = ({ show, errorText, handleClose }) => {
         show={show}
         onHide={handleClose}
         centered
-
-        
       >
         <Modal.Header style={{ border: "none" }}>
           <div className={styles.header}>
@@ -70,7 +68,13 @@ const MemberLevelAlert = ({ show, errorText, handleClose }) => {
         <Modal.Body className={styles.body}>
           <h3 className={styles["body-title"]}>交易額度不足</h3>
           <div className={styles["sub-text-box"]}>
-            <p>你的交易額度已達上限 {`${level?.month}/30天`}</p>
+            {errorText === "交易額度不足/30天" && (
+              <p>你的交易額度已達上限 {`${usdtThousandBitSeparatorNonAbs(level?.month)}/30天`}</p>
+            )}
+
+            {errorText === "交易額度不足/每次" && (
+              <p>你的交易額度已達上限 {`${usdtThousandBitSeparatorNonAbs(level?.month)}/每次`}</p>
+            )}
             <p>欲提高交易額度請洽客服窗口申請</p>
           </div>
         </Modal.Body>
