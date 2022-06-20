@@ -47,6 +47,7 @@ const BalanceState = (props) => {
 
       const resData = await res.json();
 
+
       if (resData.code === 200) {
         const { data } = resData;
         setBalance(data);

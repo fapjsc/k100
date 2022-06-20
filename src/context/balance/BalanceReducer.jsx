@@ -9,34 +9,37 @@ const BalanceReducer = (state, action) => {
       };
     case SET_BALANCE:
       const { Lvl, Avb_Balance, Real_Balance } = action.payload;
-      let limit;
+      let limit = {
+        month: null,
+        day: null
+      }
       switch (Lvl) {
         case 0:
-          limit = 500;
+          limit = {month: 500, day: 500};
           break;
 
         case 1:
-          limit = 20000;
+          limit = {month: 20000, day: 2000};
           break;
 
         case 2:
-          limit = 200000;
+          limit = {month: 200000, day: 10000};
           break;
 
         case 3:
-          limit = 500000;
+          limit = {month: 500000, day: 30000};
           break;
 
         case 4:
-          limit = 1000000;
+          limit = {month: 1000000, day: 60000};
           break;
 
         case 5:
-          limit = 0;
+          limit = {month: 0, day: 0};
           break;
 
         default:
-          limit = 100000;
+          limit = {month: 0, day: 0};
           break;
       }
 

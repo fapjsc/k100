@@ -4,6 +4,8 @@ import { Fragment, useContext, useEffect } from "react";
 import SellContext from "../../context/sell/SellContext";
 import BalanceContext from "../../context/balance/BalanceContext";
 
+import {usdtThousandBitSeparatorNonAbs} from '../../lib/utils'
+
 // Lang Context
 import { useI18n } from "../../lang";
 
@@ -23,6 +25,7 @@ const SellHeader = () => {
 
     // eslint-disable-next-line
   }, [exRate]);
+
 
   return (
     <Fragment>
@@ -45,12 +48,13 @@ const SellHeader = () => {
 
         <p className="mb-0">
           {t("limit")} :
-          {level === 0 && (
+          {level?.day === 0 && (
             <span style={{ color: "red" }}>帳號已鎖定，無法交易</span>
           )}
-          {level !== 0 && (
+
+          {level?.day !== 0 && (
             <span>
-              {t("limit_usdt")} {level?.toFixed(2)}
+              {t("limit_usdt")} {usdtThousandBitSeparatorNonAbs(level?.day)}
             </span>
           )}
         </p>

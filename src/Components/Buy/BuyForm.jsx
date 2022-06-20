@@ -166,7 +166,7 @@ const BuyForm = () => {
     // 有1~2位小数的正數，且不能為0或0開頭
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
     let lowerLimit = process.env.REACT_APP_HOST_NAME === "88U" ? 30 : 100;
-    let upperLimit = 10000;
+    let upperLimit = process.env.REACT_APP_HOST_NAME === "88U" ? level?.day : 10000;
 
     if (
       !rule.test(usdtAmt.val) ||
@@ -201,7 +201,7 @@ const BuyForm = () => {
             type="number"
             isInvalid={usdtAmt.error}
             onWheel={(event) => event.currentTarget.blur()}
-            disabled={level === 0}
+            disabled={level?.day === 0}
           />
 
           <span style={inputText}>USDT</span>
@@ -242,7 +242,7 @@ const BuyForm = () => {
             type="number"
             className="easy-border"
             onWheel={(event) => event.currentTarget.blur()}
-            disabled={level === 0}
+            disabled={level?.day === 0}
           />
           <span style={inputText}>{locationMoneyPrefix()}</span>
         </Form.Group>

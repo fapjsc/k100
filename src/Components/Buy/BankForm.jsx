@@ -53,6 +53,8 @@ const BankFrom = () => {
     handleBuyBtnLoading,
   } = buyContext;
 
+
+
   // Http Error context
   const httpErrorContext = useContext(HttpErrorContext);
   const { errorText, setHttpError } = httpErrorContext;

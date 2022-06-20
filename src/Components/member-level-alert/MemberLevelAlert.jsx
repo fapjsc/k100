@@ -1,10 +1,15 @@
-import React from "react";
+import React, {useContext} from "react";
 import Modal from "react-bootstrap/Modal";
 import { AiOutlineClose } from "react-icons/ai";
+import BalanceContext from '../../context/balance/BalanceContext'
 
 import styles from "./MemberLevelAlert.module.scss";
 
 const MemberLevelAlert = ({ show, errorText, handleClose }) => {
+
+  const balanceContext = useContext(BalanceContext);
+  const { level } = balanceContext;
+
   if (errorText === "買賣功能已被鎖定") {
     return (
       <>
@@ -65,7 +70,7 @@ const MemberLevelAlert = ({ show, errorText, handleClose }) => {
         <Modal.Body className={styles.body}>
           <h3 className={styles["body-title"]}>交易額度不足</h3>
           <div className={styles["sub-text-box"]}>
-            <p>你的交易額度已達上限</p>
+            <p>你的交易額度已達上限 {`${level?.month}/30天`}</p>
             <p>欲提高交易額度請洽客服窗口申請</p>
           </div>
         </Modal.Body>
