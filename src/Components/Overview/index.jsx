@@ -47,16 +47,10 @@ const OverView = () => {
           </div>
         )}
 
-        {process.env.REACT_APP_HOST_NAME === "88U" && (
-          <>
-            <MemberChat />
-            <div className={classes["cs-button"]}>
-              <button onClick={() => dispatch(setShowMemberChat())}>
-                客服
-              </button>
-            </div>
-          </>
-        )}
+        <MemberChat />
+        <div className={classes["cs-button"]}>
+          <button onClick={() => dispatch(setShowMemberChat())}>客服</button>
+        </div>
 
         <p className="welcome_txt text-left pl-0">{t("welcome_text")}</p>
 

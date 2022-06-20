@@ -88,6 +88,7 @@ const HomeScreen = () => {
       setShowModal(true);
       return;
     }
+    
     if (errorText) alert(errorText);
     return () => {
       setHttpError("");
@@ -100,6 +101,7 @@ const HomeScreen = () => {
   return (
     <>
       <MemberLevelAlert handleClose={handleClose} errorText={text} show={showModal} setShow={setShowModal} />
+      
       <Header history={history} token={token}>
         <Link to="/home" className={style.logoLink}>
           <div

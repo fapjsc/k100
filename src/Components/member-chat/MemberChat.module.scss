@@ -16,9 +16,10 @@
   transition: all 1s ease;
 
   @media only screen and(max-width: 557px) {
-    width: 100vw;
-    left: 0;
-    right: 0;
+  width: 80vw;
+  top: 10px;
+  height: 80%;
+
   }
 
   .header {

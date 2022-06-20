@@ -1,12 +1,12 @@
-import { useReducer, useContext } from 'react';
-import BalanceReducer from './BalanceReducer';
-import BalanceContext from './BalanceContext';
-import { SET_BALANCE, SET_TICK } from '../type';
+import { useReducer, useContext } from "react";
+import BalanceReducer from "./BalanceReducer";
+import BalanceContext from "./BalanceContext";
+import { SET_BALANCE, SET_TICK } from "../type";
 
 // Context
-import HttpErrorContext from '../../context/httpError/HttpErrorContext';
+import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 
-const BalanceState = props => {
+const BalanceState = (props) => {
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
   const { setHttpLoading, handleHttpError } = httpErrorContext;
@@ -15,17 +15,18 @@ const BalanceState = props => {
   const initialState = {
     avb: null, //可提
     real: null, //結餘
+    level: null,
     tick: null,
   };
 
   // Get Header
   const getHeader = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) return;
 
     let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('login_session', token);
+    headers.append("Content-Type", "application/json");
+    headers.append("login_session", token);
 
     return headers;
   };
@@ -37,7 +38,7 @@ const BalanceState = props => {
 
     setHttpLoading(true);
 
-    const balanceApi = '/j/ChkBalance.aspx';
+    const balanceApi = "/j/ChkBalance.aspx";
 
     try {
       const res = await fetch(balanceApi, {
@@ -60,12 +61,12 @@ const BalanceState = props => {
   };
 
   // Get Tick
-  const getTick = async token => {
+  const getTick = async (token) => {
     const headers = getHeader();
 
     if (!token || !headers) return;
 
-    const getTickApi = '/j/ChkUpdate.aspx';
+    const getTickApi = "/j/ChkUpdate.aspx";
 
     try {
       const res = await fetch(getTickApi, {
@@ -84,11 +85,11 @@ const BalanceState = props => {
   };
 
   // Set Balance
-  const setBalance = data => {
+  const setBalance = (data) => {
     dispatch({ type: SET_BALANCE, payload: data });
   };
 
-  const setTick = tick => {
+  const setTick = (tick) => {
     dispatch({ type: SET_TICK, payload: tick });
   };
 
@@ -100,6 +101,7 @@ const BalanceState = props => {
         avb: state.avb,
         real: state.real,
         tick: state.tick,
+        level: state.level,
 
         getBalance,
         setBalance,

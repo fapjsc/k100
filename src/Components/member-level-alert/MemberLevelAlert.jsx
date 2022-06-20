@@ -4,7 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import styles from "./MemberLevelAlert.module.scss";
 
-const MemberLevelAlert = ({ show, setShow, errorText, handleClose }) => {
+const MemberLevelAlert = ({ show, errorText, handleClose }) => {
   if (errorText === "買賣功能已被鎖定") {
     return (
       <>
@@ -45,10 +45,12 @@ const MemberLevelAlert = ({ show, setShow, errorText, handleClose }) => {
   return (
     <>
       <Modal
-        centered
         contentClassName={styles.container}
         show={show}
         onHide={handleClose}
+        centered
+
+        
       >
         <Modal.Header style={{ border: "none" }}>
           <div className={styles.header}>

@@ -266,7 +266,7 @@ export default {
   payment_contact: "付款窗口",
   limit: "限额",
   payment_contact_time: "15分钟",
-  limit_usdt: 'USDT 100.00 - 10000.00',
+  limit_usdt: 'USDT 100.00 - ',
 
   // Dialog
   please_wait: "请稍等，现正整合交易者资料",
@@ -595,7 +595,7 @@ export default {
   http_error_code_30: "无效的钱包地址",
   http_error_code_31: "不能转帐给自己",
   http_error_code_32: "可提不足",
- http_error_code_41: '交易額度不足',
+  http_error_code_41: '交易額度不足',
   http_error_code_42: '買賣功能已被鎖定',
   http_error_code_91: "session过期,请重新登入",
   http_error_other: "发生错误，请重新登入并重新尝试",

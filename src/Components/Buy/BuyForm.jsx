@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 // Context
 import SellContext from "../../context/sell/SellContext";
 import BuyContext from "../../context/buy/BuyContext";
+import BalanceContext from "../../context/balance/BalanceContext";
 import HttpErrorContext from "../../context/httpError/HttpErrorContext";
 import { useI18n } from "../../lang";
 
@@ -23,6 +24,10 @@ const BuyForm = () => {
   // sell context
   const sellContext = useContext(SellContext);
   const { buyRate } = sellContext;
+
+  // Balance
+  const balanceContext = useContext(BalanceContext);
+  const { level } = balanceContext;
 
   // but context
   const buyContext = useContext(BuyContext);
@@ -97,7 +102,6 @@ const BuyForm = () => {
   }, []);
 
   const onChange = (e) => {
-
     setHttpError(""); // http錯誤提示
     setErrorText(""); // 前端表單驗證錯誤提示
     if (e.target.name === "usdtAmt") {
@@ -110,9 +114,7 @@ const BuyForm = () => {
         return;
       }
 
-      let rmb = locationMoneyCalc(Number(e.target.value * buyRate))
-
-
+      let rmb = locationMoneyCalc(Number(e.target.value * buyRate));
 
       setUsdtAmt({
         val: e.target.value.trim(),
@@ -140,8 +142,6 @@ const BuyForm = () => {
       }
 
       let usdt = locationMoneyCalc(Number(e.target.value / buyRate));
-
-
 
       setRmbAmt({
         val: e.target.value.trim(),
@@ -201,6 +201,7 @@ const BuyForm = () => {
             type="number"
             isInvalid={usdtAmt.error}
             onWheel={(event) => event.currentTarget.blur()}
+            disabled={level === 0}
           />
 
           <span style={inputText}>USDT</span>
@@ -241,6 +242,7 @@ const BuyForm = () => {
             type="number"
             className="easy-border"
             onWheel={(event) => event.currentTarget.blur()}
+            disabled={level === 0}
           />
           <span style={inputText}>{locationMoneyPrefix()}</span>
         </Form.Group>

@@ -119,13 +119,11 @@ const HttpErrorState = (props) => {
 
     if (data.code === "41") {
       setHttpError(t("http_error_code_41"));
-     
       return;
     }
 
     if (data.code === "42") {
       setHttpError(t("http_error_code_42"));
-     
       return;
     }
 

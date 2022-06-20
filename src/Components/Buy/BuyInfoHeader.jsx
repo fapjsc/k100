@@ -40,7 +40,6 @@ const BuyInfoHeader = () => {
   // ==========
   const handleComplete = () => {
     setHideBuyInfo(true);
-    console.log("complete!!");
   };
 
   return (

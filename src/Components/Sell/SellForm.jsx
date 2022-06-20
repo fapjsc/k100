@@ -31,7 +31,7 @@ const SellForm = () => {
 
   // Balance Context
   const balanceContext = useContext(BalanceContext);
-  const { getBalance, avb } = balanceContext;
+  const { getBalance, avb, level } = balanceContext;
 
   // Sell Context
   const sellContext = useContext(SellContext);
@@ -81,6 +81,7 @@ const SellForm = () => {
   }, [formValid]);
 
   useEffect(() => {
+    if (errorText === "交易額度不足" || errorText === "買賣功能已被鎖定") return;
     if (errorText) alert(errorText);
     return () => {
       setHttpError("");
@@ -178,8 +179,6 @@ const SellForm = () => {
   const validForm = () => {
     setFormValid(true);
 
-
-
     if (Number(usdt.val) > Number(avb)) {
       setUsdt({
         val: usdt.val,
@@ -214,7 +213,6 @@ const SellForm = () => {
     let rule = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
     let lowerLimit = process.env.REACT_APP_HOST_NAME === "88U" ? 30 : 100;
     let upperLimit = 10000;
-
 
     if (
       !rule.test(usdt.val) ||
@@ -299,6 +297,7 @@ const SellForm = () => {
                 value={usdt.val}
                 name="usdt"
                 onChange={onChange}
+                disabled={level === 0}
                 style={{
                   padding: 30,
                   fontSize: 20,
@@ -339,6 +338,7 @@ const SellForm = () => {
                 isInvalid={!cny.isValid}
                 value={cny.val}
                 onChange={onChange}
+                disabled={level === 0}
                 style={{
                   padding: 30,
                   fontSize: 20,

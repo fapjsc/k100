@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MessageBox, Input } from "react-chat-elements";
+import { MessageBox, Input, SystemMessage } from "react-chat-elements";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { PhotoProvider, PhotoConsumer } from "react-photo-view"; // 圖片檢視
@@ -72,7 +72,6 @@ const MemberChat = () => {
   // Message Listen
   useEffect(() => {
     const messageListen = (message) => {
-      console.log(message);
       if (!message?.data) return;
       const dataFromServer = JSON.parse(message.data);
       if (Array.isArray(dataFromServer)) {
@@ -104,6 +103,25 @@ const MemberChat = () => {
         {/* <img className={styles.close} src={closeImage} alt="close" /> */}
       </header>
       <div id="member-message" className={styles.body}>
+        <SystemMessage
+          text={
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
+              <p>
+                親愛的會員您好，我是 88u.asia 客服，請問有什麼需要為您服務的嗎？
+              </p>
+              <span>關於會員升等請輸入"1"</span>
+              <span>關於操作說明請輸入"2"</span>
+              <span>關於其他問題請輸"3"</span>
+            </div>
+          }
+        />
+
         {messages.map(
           ({ Message, SysID, Message_Role, SysDate, Message_Type }) => {
             return (
