@@ -14,6 +14,8 @@ import {
 import { scrollToBottomAnimated } from "../../lib/scrollToBottom";
 import { resizeFile } from "../../lib/imageResize";
 
+import { unitDate } from "../../lib/unitDate";
+
 // Hooks
 import { useWebSocket } from "../../hooks/useWebSocket";
 
@@ -25,11 +27,12 @@ import styles from "./MemberChat.module.scss";
 import "react-chat-elements/dist/main.css";
 import "react-photo-view/dist/index.css";
 
-const loginSession = localStorage.getItem("token");
 const connectWs = "ws_chatuser.ashx";
-const url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}${connectWs}?login_session=${loginSession}`;
 
 const MemberChat = () => {
+  const loginSession = localStorage.getItem("token");
+  const url = `${process.env.REACT_APP_K100U_CHAT_WEBSOCKET}${connectWs}?login_session=${loginSession}`;
+
   const { socket, connectMemberLevelWs, sendMessage, sendImage, online } =
     useWebSocket(url);
 
@@ -132,7 +135,8 @@ const MemberChat = () => {
                     title={Message_Role === 2 ? "*客服" : ""}
                     type={"text"}
                     text={Message}
-                    dateString={dayjs(SysDate).format("HH:mm")}
+                    // dateString={dayjs(SysDate).format("HH:mm")}
+                    dateString={dayjs(unitDate(SysDate)).format("HH:mm")}
                   />
                 )}
 
@@ -156,7 +160,7 @@ const MemberChat = () => {
                           fontSize: "1rem",
                         }}
                       >
-                        {dayjs(SysDate).format("HH:mm")}
+                        {dayjs(unitDate(SysDate)).format("HH:mm")}
                       </span>
                       <PhotoConsumer key={SysID} src={Message}>
                         <img

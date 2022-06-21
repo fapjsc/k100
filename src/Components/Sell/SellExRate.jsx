@@ -73,11 +73,11 @@ const SellHeader = () => {
           </p>
         )} */}
 
-        {process.env.REACT_APP_HOST_NAME !== "88U" && (
+        {/* {process.env.REACT_APP_HOST_NAME !== "88U" && (
           <p className="mb-0">
             {t("limit")} :<span>{t("limit_usdt")} 10000.00</span>
           </p>
-        )}
+        )} */}
       </div>
     </Fragment>
   );

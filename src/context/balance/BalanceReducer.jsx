@@ -39,7 +39,7 @@ const BalanceReducer = (state, action) => {
           break;
 
         default:
-          limit = {month: 0, day: 0};
+          limit = {month: 999999, day: 10000};
           break;
       }
 

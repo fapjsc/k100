@@ -1,5 +1,10 @@
 import dayjs from "dayjs";
+
 import { memberChatActionsTypes } from "../type";
+
+import { unitDate } from "../../lib/unitDate";
+
+
 
 const initState = {
   showChat: false,
@@ -17,15 +22,15 @@ export const memberChatReducer = (state = initState, action) => {
     case memberChatActionsTypes.SET_MESSAGE_LIST:
       return {
         ...state,
-        messages: [...action.payload].sort(
-          (a, b) => dayjs(a.SysDate) - dayjs(b.SysDate)
-        ),
+        messages: [...action.payload].sort((a, b) => {
+          return dayjs(unitDate(a.SysDate)).valueOf() - dayjs(unitDate(b.SysDate)).valueOf();
+        }),
       };
 
     case memberChatActionsTypes.SET_MESSAGE:
       return {
         ...state,
-        messages: [...state.messages, action.payload]
+        messages: [...state.messages, action.payload],
       };
     default:
       return state;
