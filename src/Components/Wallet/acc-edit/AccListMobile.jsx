@@ -58,8 +58,36 @@ const AccListMobile = ({ accHistoryData, onClickHandler, getAccHistory }) => {
             </div>
             <div className={styles.account}>{d.P1}</div>
             <div className={styles.bank}>{d.P3}</div>
-            <div className={styles.city}>{d.P4}</div>
-            {process.env.REACT_APP_HOST_NAME === "88U" &&
+
+            {process.env.REACT_APP_HOST_NAME === "K100U" && (
+              <div className={styles.city}>{d.P4}</div>
+            )}
+
+            {currentAccData.P1 !== d.P1 && (
+              <Button
+                variant="primary"
+                disabled={delAccStatus === "pending"}
+                style={{ width: "3rem", justifySelf: "end" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteHandler(d.H_id);
+                }}
+              >
+                {delAccStatus === "pending" ? (
+                  <span style={{ fontSize: "5px", color: "white" }}>
+                    loading...
+                  </span>
+                ) : (
+                  <BsFillTrashFill
+                    style={{
+                      color: "white",
+                      display: "inline-block",
+                    }}
+                  />
+                )}
+              </Button>
+            )}
+            {/* {process.env.REACT_APP_HOST_NAME === "88U" &&
               currentAccData.P1 !== d.P1 &&
               currentAccData.P2 !== d.P2 &&
               currentAccData.P3 !== d.P3 && (
@@ -114,7 +142,7 @@ const AccListMobile = ({ accHistoryData, onClickHandler, getAccHistory }) => {
                     />
                   )}
                 </Button>
-              )}
+              )} */}
           </div>
         ))}
       </section>

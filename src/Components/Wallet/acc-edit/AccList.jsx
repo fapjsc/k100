@@ -124,7 +124,7 @@ const AccList = ({
         style={{
           maxHeight: "calc(50vh)",
           overflowY: "scroll",
-          overflowX: "scroll",
+          overflowX: "scroll"
           // overflowX: "hidden",
         }}
       >
@@ -142,10 +142,33 @@ const AccList = ({
             <div>{d.P3}</div>
             {process.env.REACT_APP_HOST_NAME === "K100U" && <div>{d.P4}</div>}
 
-            {process.env.REACT_APP_HOST_NAME === "88U" &&
-              currentAccData.P1 !== d.P1 &&
-              currentAccData.P2 !== d.P2 &&
-              currentAccData.P3 !== d.P3 && (
+            {currentAccData.P1 !== d.P1 && (
+              <Button
+                variant="primary"
+                disabled={delAccStatus === "pending"}
+                style={{ width: "3rem" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteHandler(d.H_id);
+                }}
+              >
+                {delAccStatus === "pending" ? (
+                  <span style={{ fontSize: "5px", color: "white" }}>
+                    loading...
+                  </span>
+                ) : (
+                  <BsFillTrashFill
+                    style={{
+                      color: "white",
+                      display: "inline-block",
+                    }}
+                  />
+                )}
+              </Button>
+            )}
+
+            {/* {process.env.REACT_APP_HOST_NAME === "88U" &&
+              currentAccData.P1 !== d.P1 && (
                 <Button
                   variant="primary"
                   disabled={delAccStatus === "pending"}
@@ -167,13 +190,10 @@ const AccList = ({
                     />
                   )}
                 </Button>
-              )}
+              )} */}
 
-            {process.env.REACT_APP_HOST_NAME === "K100U" &&
-              currentAccData.P1 !== d.P1 &&
-              currentAccData.P2 !== d.P2 &&
-              currentAccData.P3 !== d.P3 &&
-              currentAccData.P4 !== d.P4 && (
+            {/* {process.env.REACT_APP_HOST_NAME === "K100U" &&
+              currentAccData.P1 !== d.P1 && (
                 <Button
                   variant="primary"
                   disabled={delAccStatus === "pending"}
@@ -196,7 +216,7 @@ const AccList = ({
                     />
                   )}
                 </Button>
-              )}
+              )} */}
           </div>
         ))}
       </div>
