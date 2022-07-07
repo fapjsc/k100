@@ -55,12 +55,12 @@ const ChatState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      // console.log(message);
-      if(!message) return
+      console.log(message);
+      if (!message || !message?.data) return;
       const dataFromServer = JSON.parse(message?.data);
       // console.log("got Chat reply!", dataFromServer);
 
-      if(!dataFromServer) return
+      if (!dataFromServer) return;
 
       setChatLoading(false);
 
@@ -119,10 +119,11 @@ const ChatState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
-      if (message?.data === "" || message?.data.includes("login_session")) return;
+      if (message?.data === "" || message?.data.includes("login_session"))
+        return;
 
       const dataFromServer = JSON.parse(message?.data);
-      if(!dataFromServer) return
+      if (!dataFromServer) return;
       // console.log('instant got Chat reply!', dataFromServer);
       setChatLoading(false);
       if (dataFromServer.Message_Role === 1) {

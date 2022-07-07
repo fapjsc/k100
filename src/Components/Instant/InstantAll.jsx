@@ -27,6 +27,7 @@ const InstantAll = ({ stop }) => {
   const instantContext = useContext(InstantContext);
   const { instantData, setCountData } = instantContext;
 
+
   const handleClick = (exRate, cny, usdt, type, token) => {
     stop();
     const data = {
