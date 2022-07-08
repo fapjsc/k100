@@ -1,20 +1,28 @@
 import { useState, useEffect } from "react";
 import Countdown from "react-countdown";
 
+import moment from "moment";
+
 // Lang Context
 import { useI18n } from "../../lang";
 
 // Components
 import CountDownTimer from "../universal/countDownTimer";
 
+import useRwd from "../../hooks/useRwd";
 
+import { unitDate } from "../../lib/unitDate";
 
 // Style
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
 // Utils
-import { locationMoneyPrefix, usdtThousandBitSeparator , locationMoneyCalcWithThousand} from "../../lib/utils";
+import {
+  locationMoneyPrefix,
+  usdtThousandBitSeparator,
+  locationMoneyCalcWithThousand,
+} from "../../lib/utils";
 
 import {
   // orderStatusCode,
@@ -25,6 +33,8 @@ import {
 const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
   // Lang Context
   const { t } = useI18n();
+
+  const { isMobile } = useRwd();
 
   // Init State
   const [timeLeft] = useState(
@@ -49,45 +59,64 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
         {/* header */}
         <div
           className="d-flex align-items-center mt-4"
-          style={{ maxWidth: 186 }}
+          style={{ maxWidth: "100%", gap: isMobile ? "1rem" : "3rem" }}
         >
-          <span className="txt_12 mr-auto">
+          <span className="txt_12">
             {t("instant_exRate")}：{el.D1.toFixed(2)}
           </span>
-          <span className="i_clock mr-1 mb-1" />
-          <span className="">{t("instant_limit_time")}：</span>
 
-          {el.Order_StatusID !== 35 ? (
-            <span className="c_yellow">
-              {overTime ? (
-                <span style={{ color: "#707070" }}>
-                  {t("instant_over_time_short")}
-                </span>
-              ) : (
-                <Countdown
-                  onComplete={handleCountDownComplete}
-                  renderer={CountDownTimer}
-                  date={timeLeft}
-                />
-              )}
-            </span>
-          ) : (
-            <span style={{ color: "#707070" }}>申訴中</span>
-          )}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <span className="i_clock mr-1 mb-1" />
+            <span className="">{t("instant_limit_time")}：</span>
+            {el.Order_StatusID !== 35 ? (
+              <span className="c_yellow">
+                {overTime ? (
+                  <span style={{ color: "#707070" }}>
+                    {t("instant_over_time_short")}
+                  </span>
+                ) : (
+                  <Countdown
+                    onComplete={handleCountDownComplete}
+                    renderer={CountDownTimer}
+                    date={timeLeft}
+                  />
+                )}
+              </span>
+            ) : (
+              <span style={{ color: "#707070" }}>{t("instant_appeal")}</span>
+            )}
+          </div>
 
-          {/* {overTime ? (
-            <span style={{ color: "#707070" }}>
-              {t("instant_over_time_short")}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              gap: "1rem",
+            }}
+          >
+            <span>
+              {t("instant_name")}：{el?.P5?.split("|")[0]}
             </span>
-          ) : (
-            <span className="c_yellow">
-              <Countdown
-                onComplete={handleCountDownComplete}
-                renderer={CountDownTimer}
-                date={timeLeft}
-              />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              gap: "1rem",
+            }}
+          >
+            <span>
+              {t("instant_timer")}：{" "}
+              {moment(unitDate(el?.CreateDate)).format("MM-DD HH:mm")}
             </span>
-          )} */}
+          </div>
         </div>
 
         {/* Body */}
@@ -149,45 +178,65 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
         {/* header */}
         <div
           className="d-flex align-items-center mt-4"
-          style={{ maxWidth: 220 }}
+          style={{ maxWidth: "100%", gap: isMobile ? "1rem" : "3rem" }}
         >
-          <span className="txt_12 mr-auto">
+          <span className="txt_12">
             {t("instant_exRate")}：{el.D1.toFixed(2)}
           </span>
-          <span className="i_clock mr-1 mb-1" />
-          <span className="">{t("instant_limit_time")}：</span>
 
-          {el.Order_StatusID !== 35 ? (
-            <span className="c_yellow">
-              {overTime ? (
-                <span style={{ color: "#707070" }}>
-                  {t("instant_over_time_short")}
-                </span>
-              ) : (
-                <Countdown
-                  onComplete={handleCountDownComplete}
-                  renderer={CountDownTimer}
-                  date={timeLeft}
-                />
-              )}
-            </span>
-          ) : (
-            <span style={{ color: "#707070" }}>申訴中</span>
-          )}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span className="i_clock mr-1 mb-1" />
+            <span className="">{t("instant_limit_time")}：</span>
 
-          {/* {overTime ? (
-            <span style={{ color: "#707070" }}>
-              {t("instant_over_time_short")}
+            {el.Order_StatusID !== 35 ? (
+              <span className="c_yellow">
+                {overTime ? (
+                  <span style={{ color: "#707070" }}>
+                    {t("instant_over_time_short")}
+                  </span>
+                ) : (
+                  <Countdown
+                    onComplete={handleCountDownComplete}
+                    renderer={CountDownTimer}
+                    date={timeLeft}
+                  />
+                )}
+              </span>
+            ) : (
+              <span style={{ color: "#707070" }}>{t("instant_appeal")}</span>
+            )}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              gap: "1rem",
+            }}
+          >
+            <span>
+              {t("instant_name")}：{el?.P5?.split("|")[0]}
             </span>
-          ) : (
-            <span className="c_yellow">
-              <Countdown
-                onComplete={handleCountDownComplete}
-                renderer={CountDownTimer}
-                date={timeLeft}
-              />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              gap: "1rem",
+            }}
+          >
+            <span>
+              {t("instant_timer")}：{" "}
+              {moment(unitDate(el?.CreateDate)).format("MM-DD HH:mm")}
             </span>
-          )} */}
+          </div>
         </div>
 
         {/* Body */}

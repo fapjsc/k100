@@ -52,7 +52,9 @@ const InstantAllItem = ({ el, handleClick }) => {
               gap: "1rem",
             }}
           >
-            <span>姓名：{el?.P5?.split("||")[0]}</span>
+            <span>
+              {t("instant_name")}：{el?.P5?.split("|")[0]}
+            </span>
           </div>
 
           <div
@@ -63,7 +65,8 @@ const InstantAllItem = ({ el, handleClick }) => {
             }}
           >
             <span>
-              發起時間：{moment(unitDate(el?.CreateDate)).format("MM-DD HH:mm")}
+              {t("instant_timer")}：
+              {moment(unitDate(el?.CreateDate)).format("MM-DD HH:mm")}
             </span>
           </div>
         </div>
@@ -154,7 +157,9 @@ const InstantAllItem = ({ el, handleClick }) => {
               gap: "1rem",
             }}
           >
-            <span>姓名：{el?.P5?.split("||")[0]}</span>
+            <span>
+              {t("instant_name")}：{el?.P5?.split("|")[0]}
+            </span>
           </div>
 
           <div
@@ -165,7 +170,8 @@ const InstantAllItem = ({ el, handleClick }) => {
             }}
           >
             <span>
-              發起時間：{moment(unitDate(el?.CreateDate)).format("MM-DD HH:mm")}
+              {t("instant_timer")}：
+              {moment(unitDate(el?.CreateDate)).format("MM-DD HH:mm")}
             </span>
           </div>
         </div>

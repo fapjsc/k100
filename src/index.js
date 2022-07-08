@@ -18,6 +18,12 @@ const translations = {
   "zh-CN": require("./locales/zh-CN").default,
 };
 
+
+if(process.env.REACT_APP_HOST_NAME) {
+  // document.querySelector('meta[name="description"]').setAttribute("content", '');
+  // document.querySelector('title').setAttribute("content", '');
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persisStore}>

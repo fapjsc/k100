@@ -617,4 +617,11 @@ export default {
 
   web_push_open_notify_request: "請先開啟瀏覽器通知",
   web_push_not_support: "你的瀏覽器不支援 Notification",
+
+  // ===========
+  //  Instant
+  // ============
+  instant_name: '姓名',
+  instant_timer: '發起時間',
+  instant_appeal: '申訴中'
 };
