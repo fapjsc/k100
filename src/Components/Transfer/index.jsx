@@ -262,7 +262,8 @@ const Transfer = () => {
     await getExRate();
     setTransferLoading(false);
 
-    const all = avb - Number(transferHandle);
+    // const all = avb - Number(transferHandle);
+    const all = avb
     if (all <= 0) {
       setTransferCount({
         val: '0',
