@@ -72,6 +72,7 @@ const TransferState = (props) => {
 
     // 2.收到server回復
     client.onmessage = (message) => {
+      if(!message || !message?.data) return
       const dataFromServer = JSON.parse(message.data);
       // console.log('got transfer reply!', dataFromServer);
       dispatch({

@@ -306,7 +306,7 @@ export default {
   //  Balance
   // =========
   // Error Text
-  avb_insufficient: "可提不足",
+  avb_insufficient: "可提不足,请确定金额扣除手续费后是否足够",
   avb_over_limit: "超过最大可提",
 
   // =======
@@ -594,7 +594,7 @@ export default {
   http_error_code_22: "验证码错误",
   http_error_code_30: "无效的钱包地址",
   http_error_code_31: "不能转帐给自己",
-  http_error_code_32: "可提不足",
+  http_error_code_32: "可提不足,请确定金额扣除手续费后是否足够",
   http_error_code_41: '交易額度不足/每次',
   http_error_code_42: '交易額度不足/30天',
   http_error_code_91: "session过期,请重新登入",

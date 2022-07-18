@@ -245,15 +245,15 @@ const Transfer = () => {
     }
 
     // 輸入數量大於可提加上手續費
-    if (Number(transferCount.val) > Number(avb) - Number(transferHandle)) {
-      setTransferCount({
-        val: '',
-        isValid: false,
-        error: t('avb_over_limit'),
-      });
-      setFormIsValid(false);
-      setHttpLoading(false);
-    }
+    // if (Number(transferCount.val) > Number(avb) - Number(transferHandle)) {
+    //   setTransferCount({
+    //     val: '',
+    //     isValid: false,
+    //     error: t('avb_over_limit'),
+    //   });
+    //   setFormIsValid(false);
+    //   setHttpLoading(false);
+    // }
   };
 
   const getAll = async () => {

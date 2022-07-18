@@ -50,6 +50,7 @@ const BalanceState = (props) => {
 
       if (resData.code === 200) {
         const { data } = resData;
+        console.log(data)
         setBalance(data);
       } else {
         handleHttpError(resData);
@@ -77,6 +78,7 @@ const BalanceState = (props) => {
 
       if (resData.code === 200) {
         setTick(resData.data.UpdateTick);
+        console.log(resData.data.UpdateTick)
       } else {
         handleHttpError(resData);
       }
