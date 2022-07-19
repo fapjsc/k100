@@ -24,7 +24,7 @@ const LoginForm = () => {
 
   // Init State
   const [countryCode, setCountryCode] = useState({
-    val: "",
+    val: process.env.REACT_APP_HOST_NAME === "K100U"  ? '' : '886',
     isValid: true,
     error: "",
   });
@@ -193,7 +193,8 @@ const LoginForm = () => {
               color: "#495057",
             }}
             as="select"
-            defaultValue={t("countryCode")}
+            // defaultValue={t("countryCode")}
+            defaultValue={process.env.REACT_APP_HOST_NAME === "K100U"  ? t("countryCode") : '886'}
             className="form-select mb-4 pl-3"
             name="countryCode"
             onChange={onChange}

@@ -70,6 +70,7 @@ const MemberChat = () => {
   useEffect(() => {
     if (!showChat) return;
     scrollToBottomAnimated("member-message");
+    sendMessage("|*is-open*|:");
   }, [showChat]);
 
   // Message Listen
@@ -125,8 +126,9 @@ const MemberChat = () => {
           }
         />
 
-        {messages.map(
-          ({ Message, SysID, Message_Role, SysDate, Message_Type }) => {
+        {messages
+          .filter((el) => !el.Message.includes("|*is-open*|"))
+          .map(({ Message, SysID, Message_Role, SysDate, Message_Type }) => {
             return (
               <div key={SysID} className={styles["message-box"]}>
                 {Message_Type === 1 && (
@@ -179,8 +181,7 @@ const MemberChat = () => {
                 )}
               </div>
             );
-          }
-        )}
+          })}
       </div>
       <form onSubmit={onSubmit} className={styles.action}>
         <Input

@@ -3,7 +3,7 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 
 export const useWebSocket = (path) => {
   const [socket, setSocket] = useState(null);
-  const [online, setOnline] = useState(false)
+  const [online, setOnline] = useState(false);
 
   const connectMemberLevelWs = useCallback(() => {
     const ws = new ReconnectingWebSocket(path);
@@ -11,6 +11,7 @@ export const useWebSocket = (path) => {
   }, [path]);
 
   const sendMessage = (value) => {
+    if (!value) return;
     socket.send(
       JSON.stringify({
         Message_Type: 1,
@@ -20,6 +21,7 @@ export const useWebSocket = (path) => {
   };
 
   const sendImage = (image) => {
+    if (!image) return;
     socket.send(
       JSON.stringify({
         Message_Type: 2,
@@ -31,7 +33,7 @@ export const useWebSocket = (path) => {
   // Open Listen
   useEffect(() => {
     const openListen = () => {
-      setOnline(true)
+      setOnline(true);
     };
     socket?.addEventListener("open", openListen);
 
@@ -43,7 +45,7 @@ export const useWebSocket = (path) => {
   // Close Listen
   useEffect(() => {
     const closeListen = (close) => {
-      setOnline(false)
+      setOnline(false);
     };
     socket?.addEventListener("close", closeListen);
 
@@ -52,13 +54,11 @@ export const useWebSocket = (path) => {
     };
   }, [socket]);
 
- 
-
   return {
     socket,
     connectMemberLevelWs,
     sendMessage,
     sendImage,
-    online
+    online,
   };
 };
