@@ -74,11 +74,11 @@ export const getToken = async setTokenFound => {
 export const deleteToken = async () => {
   try {
     if (currentToken) {
-      console.log('delete token');
+      // console.log('delete token');
       const data = await messaging.deleteToken(currentToken);
 
       if (data) {
-        console.log(data, 'delete');
+        // console.log(data, 'delete');
         currentToken = '';
       }
     }

@@ -31,10 +31,10 @@ export const connectInstantWs = () => {
 
   // 2.收到server回復
   client.onmessage = (message) => {
-    console.log(message, "socket live order");
+    // console.log(message, "socket live order");
     if (!message.data) return;
     const dataFromServer = JSON.parse(message.data);
-    console.log(dataFromServer);
+    // console.log(dataFromServer);
   };
 
   // 3.錯誤處理

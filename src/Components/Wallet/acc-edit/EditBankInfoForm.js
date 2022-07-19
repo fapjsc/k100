@@ -91,7 +91,7 @@ const EditBankInfoForm = ({ accHistoryData, show, onHide }) => {
   };
 
   const addNewHandler = ({ target }) => {
-    console.log(target.id);
+    // console.log(target.id);
     setShowForm(true);
     setClearItem(true);
   };

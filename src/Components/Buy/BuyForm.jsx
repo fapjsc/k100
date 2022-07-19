@@ -168,7 +168,7 @@ const BuyForm = () => {
     let lowerLimit = process.env.REACT_APP_HOST_NAME === "88U" ? 30 : 100;
     let upperLimit = process.env.REACT_APP_HOST_NAME === "88U" ? level?.day : 10000;
 
-    console.log(level?.day)
+    // console.log(level?.day)
     if (
       !rule.test(usdtAmt.val) ||
       !rule.test(rmbAmt.val) ||

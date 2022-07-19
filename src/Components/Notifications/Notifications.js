@@ -29,7 +29,7 @@ const Notifications = props => {
     sendRequest: sendDeviceIdToServerRequest,
   } = useHttp(sendWebPushToken);
 
-  console.log('Token found', isTokenFound);
+  // console.log('Token found', isTokenFound);
 
   useEffect(() => {
     if (sendDeviceError) {
@@ -57,11 +57,11 @@ const Notifications = props => {
     );
     const tokenFunc = async () => {
       data = await getToken(setTokenFound);
-      console.log(data);
+      // console.log(data);
 
       if (data) {
         sendDeviceIdToServerRequest(data);
-        console.log('Token is', data);
+        // console.log('Token is', data);
       } else {
         dispatch(setDeviceIdAction({}));
       }

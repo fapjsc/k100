@@ -67,7 +67,7 @@ const App = () => {
             body: payload.notification.body,
           });
 
-          console.log(payload, "payload");
+          // console.log(payload, "payload");
         }
       } catch (error) {
         console.log("onMessage Fail.", error);

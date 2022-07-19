@@ -63,7 +63,7 @@ const AccList = ({
   // };
 
   useEffect(() => {
-    console.log(delAccData);
+    // console.log(delAccData);
     if (delAccStatus === "pending") return;
 
     if (delAccError) {

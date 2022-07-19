@@ -8,7 +8,7 @@ export const autoPickReq =
 
     try {
       const { data } = await authFetch.post("/Req_AutoPick.aspx", { mode });
-      console.log(data);
+      // console.log(data);
 
       // mode: 0 手動
       // mode: 1 自動
