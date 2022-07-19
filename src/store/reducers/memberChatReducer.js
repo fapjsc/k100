@@ -4,7 +4,7 @@ import { memberChatActionsTypes } from "../type";
 
 import { unitDate } from "../../lib/unitDate";
 
-
+import { customText } from "../../config/customText";
 
 const initState = {
   showChat: false,
@@ -20,11 +20,21 @@ export const memberChatReducer = (state = initState, action) => {
       };
 
     case memberChatActionsTypes.SET_MESSAGE_LIST:
+      const arr = action.payload.sort((a, b) => {
+        return (
+          dayjs(unitDate(a.SysDate)).valueOf() -
+          dayjs(unitDate(b.SysDate)).valueOf()
+        );
+      });
+
+      const existsCustomText = arr.find(
+        (el, index, arr) =>
+          el.Message === customText.Message && index === arr.length - 1
+      );
+
       return {
         ...state,
-        messages: [...action.payload].sort((a, b) => {
-          return dayjs(unitDate(a.SysDate)).valueOf() - dayjs(unitDate(b.SysDate)).valueOf();
-        }),
+        messages: existsCustomText ? [...arr] : [...arr, customText],
       };
 
     case memberChatActionsTypes.SET_MESSAGE:

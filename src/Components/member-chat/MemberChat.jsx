@@ -27,6 +27,8 @@ import styles from "./MemberChat.module.scss";
 import "react-chat-elements/dist/main.css";
 import "react-photo-view/dist/index.css";
 
+import { customText } from "../../config/customText";
+
 const connectWs = "ws_chatuser.ashx";
 
 const MemberChat = () => {
@@ -68,9 +70,18 @@ const MemberChat = () => {
   }, [connectMemberLevelWs, socket]);
 
   useEffect(() => {
-    if (!showChat) return;
+    if (!showChat) {
+      const filterArr = messages.filter(
+        (el) => el.Message !== customText.Message
+      );
+      dispatch(setMessageList(filterArr));
+
+      return;
+    }
+
     scrollToBottomAnimated("member-message");
-    sendMessage("|*is-open*|:");
+
+    console.log("test");
   }, [showChat]);
 
   // Message Listen
@@ -107,28 +118,8 @@ const MemberChat = () => {
         {/* <img className={styles.close} src={closeImage} alt="close" /> */}
       </header>
       <div id="member-message" className={styles.body}>
-        {/* <SystemMessage
-          text={
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-              }}
-            >
-              <p>
-                親愛的會員您好，我是 88u.asia 客服，請問有什麼需要為您服務的嗎？
-              </p>
-              <span>關於會員升等請輸入"1"</span>
-              <span>關於操作說明請輸入"2"</span>
-              <span>關於其他問題請輸"3"</span>
-            </div>
-          }
-        /> */}
-
-        {messages
-          .filter((el) => !el.Message.includes("|*is-open*|"))
-          .map(({ Message, SysID, Message_Role, SysDate, Message_Type }) => {
+        {messages.map(
+          ({ Message, SysID, Message_Role, SysDate, Message_Type }) => {
             return (
               <div key={SysID} className={styles["message-box"]}>
                 {Message_Type === 1 && (
@@ -181,7 +172,8 @@ const MemberChat = () => {
                 )}
               </div>
             );
-          })}
+          }
+        )}
       </div>
       <form onSubmit={onSubmit} className={styles.action}>
         <Input
