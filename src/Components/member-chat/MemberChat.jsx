@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MessageBox, Input, SystemMessage } from "react-chat-elements";
+import { MessageBox, Input } from "react-chat-elements";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { PhotoProvider, PhotoConsumer } from "react-photo-view"; // 圖片檢視
@@ -107,7 +107,7 @@ const MemberChat = () => {
         {/* <img className={styles.close} src={closeImage} alt="close" /> */}
       </header>
       <div id="member-message" className={styles.body}>
-        <SystemMessage
+        {/* <SystemMessage
           text={
             <div
               style={{
@@ -124,7 +124,7 @@ const MemberChat = () => {
               <span>關於其他問題請輸"3"</span>
             </div>
           }
-        />
+        /> */}
 
         {messages
           .filter((el) => !el.Message.includes("|*is-open*|"))
