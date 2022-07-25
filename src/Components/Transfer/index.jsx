@@ -405,12 +405,14 @@ const Transfer = () => {
                   >
                     <Form.Control
                       type="text"
+                      as="textarea"
                       placeholder={t('transfer_enter_address')}
                       className="p_sm-2 easy-border"
                       onChange={onChange}
                       value={transferAddress.val}
                       autoComplete="off"
                       name="transferAddress"
+                      // style={{backgroundColor: 'red', fontSize: '.5rem'}}
                     />
                   </div>
 

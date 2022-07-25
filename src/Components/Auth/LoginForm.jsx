@@ -24,7 +24,7 @@ const LoginForm = () => {
 
   // Init State
   const [countryCode, setCountryCode] = useState({
-    val: process.env.REACT_APP_HOST_NAME === "K100U"  ? '' : '886',
+    val: process.env.REACT_APP_HOST_NAME === "K100U" ? "" : "886",
     isValid: true,
     error: "",
   });
@@ -187,28 +187,40 @@ const LoginForm = () => {
     <Form>
       <Form.Row>
         <Form.Group as={Col} md="4" controlId="CountryCode">
-          <Form.Control
-            style={{
-              fontSize: "17px",
-              color: "#495057",
-            }}
-            as="select"
-            // defaultValue={t("countryCode")}
-            defaultValue={process.env.REACT_APP_HOST_NAME === "K100U"  ? t("countryCode") : '886'}
-            className="form-select mb-4 pl-3"
-            name="countryCode"
-            onChange={onChange}
-            isInvalid={countryCode.error}
-          >
-            <option disabled>{t("countryCode")}</option>
-            <option>{t("taiwan")}</option>
-            {process.env.REACT_APP_HOST_NAME === "K100U" && (
-              <>
-                <option>{t("china")}</option>
-                <option>{t("hk")}</option>
-              </>
-            )}
-          </Form.Control>
+          {process.env.REACT_APP_HOST_NAME === "88U" && (
+            <Form.Control
+              type="text"
+              name="countryCode"
+              className="form-select mb-4 pl-3"
+              disabled
+              // defaultValue={countryCode.val}
+              placeholder="台灣 +886"
+              onChange={onChange}
+              isInvalid={countryCode.error}
+            />
+          )}
+
+          {process.env.REACT_APP_HOST_NAME === "K100U" && (
+            <Form.Control
+              style={{
+                fontSize: "17px",
+                color: "#495057",
+              }}
+              as="select"
+              // defaultValue={t("countryCode")}
+              defaultValue={t("countryCode")}
+              className="form-select mb-4 pl-3"
+              name="countryCode"
+              onChange={onChange}
+              isInvalid={countryCode.error}
+            >
+              <option disabled>{t("countryCode")}</option>
+              <option>{t("taiwan")}</option>
+              <option>{t("china")}</option>
+              <option>{t("hk")}</option>
+            </Form.Control>
+          )}
+
           {countryCode.error && (
             <Form.Text
               className="mb-4"
