@@ -556,7 +556,7 @@ export default {
   hk: "香港＋852",
 
   // Placeholder
-  phoneNumber: "手機號碼",
+  phoneNumber: "手機號碼前面不需要加0",
   password: "密碼",
   enter_valid: "輸入驗證碼",
   enter_password: "設置密碼",

@@ -81,7 +81,6 @@ const MemberChat = () => {
 
     scrollToBottomAnimated("member-message");
 
-    console.log("test");
   }, [showChat]);
 
   // Message Listen

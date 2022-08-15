@@ -63,6 +63,10 @@ const RegisterForm = () => {
   const [btnLoading, setBtnLoading] = useState(false);
 
   const handlePhoneNumber = (event) => {
+    if (event.target.value.startsWith("0")) {
+      event.target.value = event.target.value.split("0")[1];
+    }
+
     setPhoneNumber({
       val: event.target.value.trim(),
       isValid: true,
@@ -136,6 +140,15 @@ const RegisterForm = () => {
         error: "",
       });
       setShowAlert(false);
+    }
+
+    // 菲律賓
+    if (e.target.value === '菲律宾＋63') {
+      setCountryCode({
+        val: 63,
+        isValid: true,
+        error: "",
+      });
     }
   };
 
@@ -333,6 +346,7 @@ const RegisterForm = () => {
                     <option>{t("taiwan")}</option>
                     <option>{t("china")}</option>
                     <option>{t("hk")}</option>
+                    <option>{t("philippines")}</option>
                   </Form.Control>
                 )}
 
@@ -347,14 +361,17 @@ const RegisterForm = () => {
               </Form.Group>
 
               <Form.Group as={Col} md="8" controlId="formBasicPhoneNumber">
-                <Form.Control
-                  className="form-select mb-4"
+                <input
+                  className="form-control form-select mb-4"
                   size="lg"
-                  type="tel"
+                  type="number"
                   placeholder={t("phoneNumber")}
                   onChange={handlePhoneNumber}
                   isInvalid={!phoneNumber.isValid}
                   autoComplete="off"
+                  onWheel={(event) => {
+                    event.currentTarget.blur();
+                  }}
                 />
                 {phoneNumber.error && (
                   <Form.Text

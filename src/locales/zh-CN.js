@@ -554,6 +554,8 @@ export default {
   singapore: "新加波＋65",
   malaysia: "马来西亚＋60",
   hk: "香港＋852",
+  philippines: "菲律宾＋63",
+  
 
   // Placeholder
   phoneNumber: "手机号码",

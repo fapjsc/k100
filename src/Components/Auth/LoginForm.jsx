@@ -123,6 +123,15 @@ const LoginForm = () => {
           error: "",
         });
       }
+
+      // 菲律賓
+      if (e.target.value === "菲律宾＋63") {
+        setCountryCode({
+          val: "63",
+          isValid: true,
+          error: "",
+        });
+      }
     }
 
     if (e.target.name === "phoneNumber") {
@@ -218,6 +227,7 @@ const LoginForm = () => {
               <option>{t("taiwan")}</option>
               <option>{t("china")}</option>
               <option>{t("hk")}</option>
+              <option>{t("philippines")}</option>
             </Form.Control>
           )}
 
