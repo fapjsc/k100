@@ -135,6 +135,10 @@ const LoginForm = () => {
     }
 
     if (e.target.name === "phoneNumber") {
+      if (e.target.value.startsWith("0")) {
+        e.target.value = e.target.value.split("0")[1];
+      }
+
       setPhoneNumber({
         val: e.target.value.trim(),
         isValid: true,
@@ -245,11 +249,14 @@ const LoginForm = () => {
             className="form-select mb-4"
             name="phoneNumber"
             size="lg"
-            type="tel"
+            type="number"
             placeholder={t("phoneNumber")}
             onChange={onChange}
             value={phoneNumber.val}
             // onChange={this.setPhoneNumber}
+            onWheel={(event) => {
+              event.currentTarget.blur();
+            }}
             autoComplete="off"
           />
           {phoneNumber.error && (
