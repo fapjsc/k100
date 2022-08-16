@@ -58,6 +58,7 @@ const MemberChat = () => {
     try {
       const file = e.target.files[0];
       const image = await resizeFile(file);
+      console.log(image)
       sendImage(image);
     } catch (error) {
       alert(error);

@@ -24,6 +24,7 @@ import History from "../../Components/History";
 import InstantDetail from "../../Components/Instant/InstantDetail";
 import InstantScreen from "../../pages/InstantScreen";
 import MemberLevelAlert from "../../Components/member-level-alert/MemberLevelAlert";
+import kycForm from '../../Components/Kyc/KycValidForm'
 
 // Style
 import style from "../../Components/Layout/Header.module.scss";
@@ -34,7 +35,7 @@ const HomeScreen = () => {
   const location = useLocation();
 
   const [showModal, setShowModal] = useState(false);
-  const [text, setText] = useState('')
+  const [text, setText] = useState("");
 
   // Http Error Context
   const httpErrorContext = useContext(HttpErrorContext);
@@ -76,19 +77,21 @@ const HomeScreen = () => {
     // eslint-disable-next-line
   }, []);
 
-
   const handleClose = () => {
-    setShowModal(false)
-    setText('')
+    setShowModal(false);
+    setText("");
   };
 
   useEffect(() => {
-    if (errorText === "交易額度不足/30天" || errorText === "交易額度不足/每次") {
-      setText(errorText)
+    if (
+      errorText === "交易額度不足/30天" ||
+      errorText === "交易額度不足/每次"
+    ) {
+      setText(errorText);
       setShowModal(true);
       return;
     }
-    
+
     if (errorText) alert(errorText);
     return () => {
       setHttpError("");
@@ -96,12 +99,15 @@ const HomeScreen = () => {
     // eslint-disable-next-line
   }, [errorText]);
 
- 
-
   return (
     <>
-      <MemberLevelAlert handleClose={handleClose} errorText={text} show={showModal} setShow={setShowModal} />
-      
+      <MemberLevelAlert
+        handleClose={handleClose}
+        errorText={text}
+        show={showModal}
+        setShow={setShowModal}
+      />
+
       <Header history={history} token={token}>
         <Link to="/home" className={style.logoLink}>
           <div
@@ -113,8 +119,10 @@ const HomeScreen = () => {
       </Header>
 
       <MoneyRecord />
+
       <Switch>
         <Route exact path="/home/overview" component={Overview} />
+        <Route exact path="/home/kyc-valid" component={kycForm} />
         <Route exact path="/home/wallet" component={TheWallet} />
         <Route exact path="/home/wallet/:id" component={WalletDetail} />
         <Route path="/home/history" component={History} />

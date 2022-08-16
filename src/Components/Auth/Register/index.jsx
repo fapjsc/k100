@@ -13,6 +13,8 @@ import { useI18n } from "../../../lang";
 // Components
 import ValidCode from "./ValidCode";
 
+import KycValidFrom from "../../Kyc/KycValidForm";
+
 // Style
 import { Form, Button, Col, Fade, Spinner } from "react-bootstrap";
 import "./index.scss";
@@ -143,7 +145,7 @@ const RegisterForm = () => {
     }
 
     // 菲律賓
-    if (e.target.value === '菲律宾＋63') {
+    if (e.target.value === "菲律宾＋63") {
       setCountryCode({
         val: 63,
         isValid: true,

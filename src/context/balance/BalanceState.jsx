@@ -78,7 +78,7 @@ const BalanceState = (props) => {
 
       if (resData.code === 200) {
         setTick(resData.data.UpdateTick);
-        console.log(resData.data.UpdateTick)
+        // console.log(resData.data.UpdateTick)
       } else {
         handleHttpError(resData);
       }

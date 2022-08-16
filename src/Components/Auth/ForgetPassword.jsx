@@ -97,6 +97,7 @@ const ForgetPassword = () => {
   const [expirTime, setExpirTime] = useState(null);
 
   const handleChange = e => {
+
     if (e.target.name === 'countryCode') {
       setAccountExists('notYetConfirm');
 
@@ -115,7 +116,6 @@ const ForgetPassword = () => {
           error: '',
         });
       }
-
       if (e.target.value === '852') {
         setCountryCode({
           val: 852,
@@ -126,6 +126,9 @@ const ForgetPassword = () => {
     }
 
     if (e.target.name === 'phoneNumber') {
+      if (e.target.value.startsWith("0")) {
+        e.target.value = e.target.value.split("0")[1];
+      }
       setAccountExists('notYetConfirm');
       setPhoneNumber({
         val: e.target.value,
@@ -206,8 +209,8 @@ const ForgetPassword = () => {
       setPhoneValid(false);
     }
 
-    // 驗證台灣手機是否為或10碼
-    if (countryCode.val === 886 && phoneNumber.val.length !== 10) {
+    // 驗證台灣手機是否為或9碼
+    if (countryCode.val === 886 && phoneNumber.val.length !== 9) {
       setPhoneNumber({
         val: '',
         isValid: false,
@@ -226,6 +229,8 @@ const ForgetPassword = () => {
       countryCode: countryCode.val,
       phoneNumber: phoneNumber.val,
     };
+
+    console.log(data)
     await getValidCode(data);
     setLoading(false);
   };
@@ -299,6 +304,7 @@ const ForgetPassword = () => {
 
   useEffect(() => {
     if (validCode.val.length === 6) {
+      console.log(phoneNumber.val)
       const data = {
         countryCode: countryCode.val,
         phoneNumber: phoneNumber.val,
@@ -320,7 +326,8 @@ const ForgetPassword = () => {
   useEffect(() => {
     if (passwordValid) {
       if (countryCode.val === 886) {
-        phoneNumber.val = phoneNumber.val.substr(1);
+        console.log(phoneNumber.val)
+        // phoneNumber.val = phoneNumber.val.substr(1);
       }
       const data = {
         countryCode: countryCode.val,
@@ -375,13 +382,16 @@ const ForgetPassword = () => {
                     <Form.Control
                       className="form-select"
                       size="lg"
-                      type="tel"
+                      type="number"
                       placeholder={t('phoneNumber')}
                       autoComplete="off"
                       disabled={phoneValid || showNewPw}
                       name="phoneNumber"
                       value={phoneNumber.val}
                       onChange={handleChange}
+                      onWheel={(event) => {
+                        event.currentTarget.blur();
+                      }}
                     />
                     {phoneNumber.error && <Form.Text style={{ fontSize: 12 }}>*{phoneNumber.error}</Form.Text>}
                   </Form.Group>

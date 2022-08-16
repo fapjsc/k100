@@ -248,21 +248,17 @@ const TheInstant = () => {
       <div className="contentbox">
         {/* Tab Link */}
         <InstantNav setTab={setTab} tab={tab} />
-
         {/* Content */}
-        {tab === "all" && !httpLoading && instantData ? (
+        {tab === "all" && instantData ? (
           <InstantAll stop={handleStopSound} />
         ) : null}
-        {tab === "onGoing" && !httpLoading && wsOnGoingData ? (
-          <InstantOnGoing />
-        ) : null}
-
+        {tab === "onGoing" && wsOnGoingData ? <InstantOnGoing /> : null}
         {/* Loading */}
-        {httpLoading && (
+        {/* {httpLoading && (
           <div className="mt-4">
             <BaseSpinner />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

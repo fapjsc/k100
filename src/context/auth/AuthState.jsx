@@ -155,7 +155,7 @@ const AuthState = (props) => {
   const getValidCode = async (data) => {
     const registerApi = `/j/Req_Fpwd_oneTimePwd.aspx`;
     if (data.countryCode === 886) {
-      data.phoneNumber = data.phoneNumber.substr(1);
+      // data.phoneNumber = data.phoneNumber.substr(1);
     }
     try {
       const res = await fetch(registerApi, {
@@ -187,7 +187,7 @@ const AuthState = (props) => {
   const checkValidCode = async (data) => {
     dispatch({ type: SET_AUTH_LOADING, payload: true });
     if (data.countryCode === 886) {
-      data.phoneNumber = data.phoneNumber.substr(1);
+      // data.phoneNumber = data.phoneNumber.substr(1);
     }
 
     const checkValidApi = `/j/ChkoneTimePwd.aspx`;

@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
 import { I18nProvider } from "./lang/index";
+import { ConfigProvider } from "antd-mobile";
+import zhTW from "antd-mobile/es/locales/zh-TW";
 
 import App from "./App";
 import "./index.scss";
@@ -18,8 +20,7 @@ const translations = {
   "zh-CN": require("./locales/zh-CN").default,
 };
 
-
-if(process.env.REACT_APP_HOST_NAME) {
+if (process.env.REACT_APP_HOST_NAME) {
   // document.querySelector('meta[name="description"]').setAttribute("content", '');
   // document.querySelector('title').setAttribute("content", '');
 }
@@ -29,7 +30,9 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persisStore}>
       <HashRouter>
         <I18nProvider locales={locales} translations={translations}>
-          <App />
+          <ConfigProvider locale={zhTW}>
+            <App />
+          </ConfigProvider>
         </I18nProvider>
       </HashRouter>
     </PersistGate>

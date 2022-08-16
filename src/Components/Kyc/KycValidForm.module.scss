@@ -1,0 +1,33 @@
+.container {
+  max-width: 550px;
+  margin: auto;
+  margin-top: 5rem;
+  padding: 1rem;
+
+  .header {
+    background-color: #f0f1f2;
+    padding: 1rem;
+    height: 5rem;
+    margin: -1rem -1rem 0 -1rem;
+    font-size: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .email-valid {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    gap: 1rem;
+    button {
+      max-height: 52px;
+      width: 35%;
+    }
+  }
+
+  .address-row {
+    display: flex;
+    gap: 1rem;
+  }
+}
