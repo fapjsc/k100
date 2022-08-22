@@ -4,6 +4,7 @@ import { HashRouter } from "react-router-dom";
 import { I18nProvider } from "./lang/index";
 import { ConfigProvider } from "antd-mobile";
 import zhTW from "antd-mobile/es/locales/zh-TW";
+// import enUS from "antd-mobile/es/locales/en-US";
 
 import App from "./App";
 import "./index.scss";
@@ -29,11 +30,11 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persisStore}>
       <HashRouter>
-        <I18nProvider locales={locales} translations={translations}>
-          <ConfigProvider locale={zhTW}>
+        <ConfigProvider locale={zhTW}>
+          <I18nProvider locales={locales} translations={translations}>
             <App />
-          </ConfigProvider>
-        </I18nProvider>
+          </I18nProvider>
+        </ConfigProvider>
       </HashRouter>
     </PersistGate>
   </Provider>,

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { ImageUploader, Toast, Dialog } from "antd-mobile";
+import { ImageUploader, Toast } from "antd-mobile";
 
+import { UploadOutline } from 'antd-mobile-icons'
 import styles from "./KycValidForm.module.scss";
 
 import Button from "react-bootstrap/Button";
@@ -25,19 +26,26 @@ const KycValidForm = () => {
     city: "",
     area: "",
     address: "",
+    idLocation: "",
+    idDate: "",
+    accountName: "",
+    accountCode: "",
+    account: "",
   });
 
   const [firstList, setFirstList] = useState([]);
   const [secondList, setSecondList] = useState([]);
   const [selfList, setSelfList] = useState([]);
+  const [accountList, setAccountList] = useState([]);
 
   const formBtnRef = useRef();
+  const datePickerRef = useRef();
 
-  useEffect(() => {
-    console.log(secondList, "secondList");
-    console.log(firstList, "firstList");
-    console.log(selfList, "self");
-  }, [firstList, secondList, selfList]);
+  // useEffect(() => {
+  //   console.log(secondList, "secondList");
+  //   console.log(firstList, "firstList");
+  //   console.log(selfList, "self");
+  // }, [firstList, secondList, selfList]);
 
   const mockUpload = async (file) => {
     await sleep(1000);
@@ -70,13 +78,14 @@ const KycValidForm = () => {
     } else if (
       firstList.length !== 2 ||
       secondList.length !== 2 ||
-      selfList.length !== 1
+      selfList.length !== 1 ||
+      accountList.length !== 1
     ) {
       Toast.show("image fail");
     } else {
       Toast.show({
-        icon: "loading",
-        content: "加载中…",
+        icon: <UploadOutline />,
+        content: "上傳中…",
       });
       console.log(formData);
     }
@@ -102,6 +111,9 @@ const KycValidForm = () => {
     }));
   };
 
+  useEffect(() => {
+    console.log(datePickerRef.current.setDateFormatter);
+  }, [datePickerRef]);
   return (
     <>
       <Card className={styles.container}>
@@ -175,6 +187,7 @@ const KycValidForm = () => {
           <Form.Group className="mb-3" controlId="birthday">
             <Form.Label>出生日期</Form.Label>
             <Form.Control
+              ref={datePickerRef}
               required
               type="date"
               placeholder="選擇出生日期"
@@ -211,6 +224,31 @@ const KycValidForm = () => {
               className="form-select mb-4 pl-3"
               onChange={onChange}
               value={formData.idNumber}
+              autoComplete="off"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="idDate">
+            <Form.Label>發證日期</Form.Label>
+            <Form.Control
+              required
+              // type="date"
+              placeholder="選擇發證日期"
+              className="form-date mb-4 pl-3"
+              onChange={onChange}
+              value={formData.idDate}
+              autoComplete="off"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="idLocation">
+            <Form.Label>發證地點</Form.Label>
+            <Form.Control
+              required
+              placeholder="輸入發證地點"
+              className="form-select mb-4 pl-3"
+              onChange={onChange}
+              value={formData.idLocation}
               autoComplete="off"
             />
           </Form.Group>
@@ -269,6 +307,50 @@ const KycValidForm = () => {
             />
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="accountName">
+            <Form.Label>銀行戶名</Form.Label>
+            <Form.Control
+              required
+              placeholder="輸入銀行戶名"
+              className="form-select mb-4 pl-3"
+              onChange={onChange}
+              value={formData.accountName}
+              autoComplete="off"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="accountCode">
+            <Form.Label>銀行代號</Form.Label>
+            <Form.Control
+              required
+              placeholder="輸入銀行代號"
+              className="form-select mb-4 pl-3"
+              onChange={onChange}
+              value={formData.accountCode}
+              autoComplete="off"
+              type="number"
+              onWheel={(event) => {
+                event.currentTarget.blur();
+              }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="account">
+            <Form.Label>銀行帳號</Form.Label>
+            <Form.Control
+              required
+              placeholder="輸入銀行帳號"
+              className="form-select mb-4 pl-3"
+              onChange={onChange}
+              value={formData.account}
+              autoComplete="off"
+              type="number"
+              onWheel={(event) => {
+                event.currentTarget.blur();
+              }}
+            />
+          </Form.Group>
+
           <Form.Text muted>
             請務必確保您所輸入的資料，與您的身份文件一致
           </Form.Text>
@@ -278,9 +360,11 @@ const KycValidForm = () => {
       </Card>
 
       <Card className={styles.container} style={{ marginTop: 0 }}>
-        <div style={{marginBottom: '1rem'}} className={styles.header}>實名驗證-上傳圖片</div>
+        <div style={{ marginBottom: "1rem" }} className={styles.header}>
+          實名驗證-上傳圖片
+        </div>
         <Form.Text muted>*避免模糊</Form.Text>
-        <Form.Text muted>*請問使用經過編輯的圖片</Form.Text>
+        <Form.Text muted>*請勿使用經過編輯的圖片</Form.Text>
         <Form.Text muted>*檔案大小需在1MB內</Form.Text>
         {/* <Form.Text muted>*僅接受 .JPEG / .JPG / .PNG格式</Form.Text> */}
 
@@ -336,6 +420,22 @@ const KycValidForm = () => {
               maxCount={1}
               showFailed={false}
               showUpload={selfList.length < 1}
+              beforeUpload={beforeUpload}
+            />
+          </div>
+
+          <div style={{ marginTop: "2rem" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span>上傳存摺正面</span>
+            </div>
+            <ImageUploader
+              style={{ "--cell-size": "140px" }}
+              value={accountList}
+              onChange={setAccountList}
+              upload={mockUpload}
+              maxCount={1}
+              showFailed={false}
+              showUpload={accountList.length < 1}
               beforeUpload={beforeUpload}
             />
           </div>
