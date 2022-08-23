@@ -181,6 +181,17 @@ const LoginForm = () => {
       setFormIsValid(false);
     }
 
+     // 驗證台灣手機是否為9碼
+     if (countryCode.val === 886 && phoneNumber.val.length !== 9) {
+      setPhoneNumber({
+        val: "",
+        isValid: false,
+        error: t("invalid_phoneNumber"),
+      });
+
+      setFormIsValid(false);
+    }
+
     //驗證密碼
     if (
       password.val === "" ||

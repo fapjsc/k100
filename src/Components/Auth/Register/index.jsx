@@ -215,6 +215,18 @@ const RegisterForm = () => {
       setBtnLoading(false);
     }
 
+    // 驗證台灣手機是否為9碼
+    if (countryCode.val === 886 && phoneNumber.val.length !== 9) {
+      setPhoneNumber({
+        val: "",
+        isValid: false,
+        error: t("invalid_phoneNumber"),
+      });
+
+      setFormIsValid(false);
+      setBtnLoading(false);
+    }
+
     // 驗證電話號碼
     if (phoneNumber.val === "" || !validator.isMobilePhone(phoneNumber.val)) {
       setPhoneNumber({
