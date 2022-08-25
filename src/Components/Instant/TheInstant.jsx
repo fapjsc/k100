@@ -104,7 +104,7 @@ const TheInstant = () => {
     if (!soundState) localStorage.removeItem("openSound");
 
     if (JSON.parse(soundState) && instantData.length > 0) {
-      console.log(soundState, instantData.length);
+      // console.log(soundState, instantData.length);
       // 即時買賣新訂單聲音提示
       play();
     }

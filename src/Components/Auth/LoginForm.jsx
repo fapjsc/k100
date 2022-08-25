@@ -157,6 +157,7 @@ const LoginForm = () => {
 
   // valid
   const validateForm = async () => {
+
     setFormIsValid(true);
 
     // 驗證區碼
@@ -182,7 +183,7 @@ const LoginForm = () => {
     }
 
      // 驗證台灣手機是否為9碼
-     if (countryCode.val === 886 && phoneNumber.val.length !== 9) {
+     if (countryCode.val === '886' && phoneNumber.val.length !== 9) {
       setPhoneNumber({
         val: "",
         isValid: false,
@@ -191,6 +192,7 @@ const LoginForm = () => {
 
       setFormIsValid(false);
     }
+
 
     //驗證密碼
     if (

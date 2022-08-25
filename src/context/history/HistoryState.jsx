@@ -134,7 +134,6 @@ const HistoryState = (props) => {
 
         // buy and sell
         if (data.MasterType === 1 || data.MasterType === 0) {
-          console.log(data);
 
           let payer;
           let payerAccount;

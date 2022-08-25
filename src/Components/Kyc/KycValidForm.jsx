@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 
+import { BsFillCaretDownFill } from "react-icons/bs";
+import Accordion from "react-bootstrap/Accordion";
+
 import { ImageUploader, Toast } from "antd-mobile";
 
-import { UploadOutline } from 'antd-mobile-icons'
+import { UploadOutline } from "antd-mobile-icons";
 import styles from "./KycValidForm.module.scss";
 
 import Button from "react-bootstrap/Button";
@@ -31,12 +34,20 @@ const KycValidForm = () => {
     accountName: "",
     accountCode: "",
     account: "",
+    accountNameSecond: "",
+    accountCodeSecond: "",
+    accountSecond: "",
+    accountNameThird: "",
+    accountCodeThird: "",
+    accountThird: "",
   });
 
   const [firstList, setFirstList] = useState([]);
   const [secondList, setSecondList] = useState([]);
   const [selfList, setSelfList] = useState([]);
   const [accountList, setAccountList] = useState([]);
+  const [accountListSecond, setAccountListSecond] = useState([]);
+  const [accountListThird, setAccountListThird] = useState([]);
 
   const formBtnRef = useRef();
   const datePickerRef = useRef();
@@ -75,19 +86,27 @@ const KycValidForm = () => {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+      Toast.show({
+        icon: "fail",
+        content: "表單填寫不完整！",
+      });
     } else if (
       firstList.length !== 2 ||
       secondList.length !== 2 ||
       selfList.length !== 1 ||
       accountList.length !== 1
     ) {
-      Toast.show("image fail");
+      Toast.show({
+        icon: "fail",
+        content: "請上傳驗證照片！",
+      });
     } else {
       Toast.show({
         icon: <UploadOutline />,
-        content: "上傳中…",
+        content: "資料上傳中…",
       });
-      console.log(formData);
+
+      console.log(formData); // send data to server
     }
 
     setValidated(true);
@@ -111,9 +130,6 @@ const KycValidForm = () => {
     }));
   };
 
-  useEffect(() => {
-    console.log(datePickerRef.current.setDateFormatter);
-  }, [datePickerRef]);
   return (
     <>
       <Card className={styles.container}>
@@ -440,6 +456,165 @@ const KycValidForm = () => {
             />
           </div>
         </div>
+
+        <Accordion style={{ marginTop: "3rem" }}>
+          <Card>
+            <Card.Header>
+              <Accordion.Toggle
+                style={{ color: "grey" }}
+                as={Button}
+                variant="link"
+                eventKey="0"
+              >
+                <BsFillCaretDownFill />
+                第二組銀行帳號 (選填)
+              </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body>
+                <Form.Group className="mb-3" controlId="accountNameSecond">
+                  <Form.Label>銀行戶名</Form.Label>
+                  <Form.Control
+                    required
+                    placeholder="輸入銀行戶名"
+                    className="form-select mb-4 pl-3"
+                    onChange={onChange}
+                    value={formData.accountNameSecond}
+                    autoComplete="off"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="accountCodeSecond">
+                  <Form.Label>銀行代號</Form.Label>
+                  <Form.Control
+                    required
+                    placeholder="輸入銀行代號"
+                    className="form-select mb-4 pl-3"
+                    onChange={onChange}
+                    value={formData.accountCodeSecond}
+                    autoComplete="off"
+                    type="number"
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="accountSecond">
+                  <Form.Label>銀行帳號</Form.Label>
+                  <Form.Control
+                    required
+                    placeholder="輸入銀行帳號"
+                    className="form-select mb-4 pl-3"
+                    onChange={onChange}
+                    value={formData.accountSecond}
+                    autoComplete="off"
+                    type="number"
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
+                  />
+                </Form.Group>
+
+                <div style={{ marginTop: "2rem" }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <span>上傳存摺正面</span>
+                  </div>
+                  <ImageUploader
+                    style={{ "--cell-size": "140px" }}
+                    value={accountListSecond}
+                    onChange={setAccountListSecond}
+                    upload={mockUpload}
+                    maxCount={1}
+                    showFailed={false}
+                    showUpload={accountListSecond.length < 1}
+                    beforeUpload={beforeUpload}
+                  />
+                </div>
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+
+        <Accordion style={{ marginTop: "3rem" }}>
+          <Card>
+            <Card.Header>
+              <Accordion.Toggle
+                style={{ color: "grey" }}
+                as={Button}
+                variant="link"
+                eventKey="0"
+              >
+                <BsFillCaretDownFill />
+                第三組銀行帳號(選填)
+              </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body>
+                <Form.Group className="mb-3" controlId="accountNameThird">
+                  <Form.Label>銀行戶名</Form.Label>
+                  <Form.Control
+                    required
+                    placeholder="輸入銀行戶名"
+                    className="form-select mb-4 pl-3"
+                    onChange={onChange}
+                    value={formData.accountNameThird}
+                    autoComplete="off"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="accountCodeThird">
+                  <Form.Label>銀行代號</Form.Label>
+                  <Form.Control
+                    required
+                    placeholder="輸入銀行代號"
+                    className="form-select mb-4 pl-3"
+                    onChange={onChange}
+                    value={formData.accountCodeThird}
+                    autoComplete="off"
+                    type="number"
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="accountThird">
+                  <Form.Label>銀行帳號</Form.Label>
+                  <Form.Control
+                    required
+                    placeholder="輸入銀行帳號"
+                    className="form-select mb-4 pl-3"
+                    onChange={onChange}
+                    value={formData.accountThird}
+                    autoComplete="off"
+                    type="number"
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
+                  />
+                </Form.Group>
+
+                <div style={{ marginTop: "2rem" }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <span>上傳存摺正面</span>
+                  </div>
+                  <ImageUploader
+                    style={{ "--cell-size": "140px" }}
+                    value={accountListThird}
+                    onChange={setAccountListThird}
+                    upload={mockUpload}
+                    maxCount={1}
+                    showFailed={false}
+                    showUpload={accountListThird.length < 1}
+                    beforeUpload={beforeUpload}
+                  />
+                </div>
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+
         <Button
           variant="primary"
           type="button"

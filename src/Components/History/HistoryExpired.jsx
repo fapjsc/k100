@@ -33,7 +33,6 @@ const HistoryExpired = () => {
   }, [dispatch]);
 
   const onClickHandler = (item) => {
-    console.log(item);
 
     const agent = localStorage.getItem("agent");
 

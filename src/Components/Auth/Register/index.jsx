@@ -13,7 +13,6 @@ import { useI18n } from "../../../lang";
 // Components
 import ValidCode from "./ValidCode";
 
-import KycValidFrom from "../../Kyc/KycValidForm";
 
 // Style
 import { Form, Button, Col, Fade, Spinner } from "react-bootstrap";
@@ -96,7 +95,7 @@ const RegisterForm = () => {
     // 中國
     if (e.target.value.includes("86")) {
       setCountryCode({
-        val: 86,
+        val: '86',
         isValid: true,
         error: "",
       });
@@ -106,7 +105,7 @@ const RegisterForm = () => {
     // 台灣
     if (e.target.value.includes("886")) {
       setCountryCode({
-        val: 886,
+        val: '886',
         isValid: true,
         error: "",
       });
@@ -117,7 +116,7 @@ const RegisterForm = () => {
     // 香港
     if (e.target.value.includes("852")) {
       setCountryCode({
-        val: 852,
+        val: '852',
         isValid: true,
         error: "",
       });
@@ -127,7 +126,7 @@ const RegisterForm = () => {
     // 馬來西亞
     if (e.target.value.includes("60")) {
       setCountryCode({
-        val: 60,
+        val: '60',
         isValid: true,
         error: "",
       });
@@ -137,7 +136,7 @@ const RegisterForm = () => {
     // 新加波
     if (e.target.value.includes("65")) {
       setCountryCode({
-        val: 65,
+        val: '65',
         isValid: true,
         error: "",
       });
@@ -147,7 +146,7 @@ const RegisterForm = () => {
     // 菲律賓
     if (e.target.value === "菲律宾＋63") {
       setCountryCode({
-        val: 63,
+        val: '63',
         isValid: true,
         error: "",
       });
@@ -168,6 +167,7 @@ const RegisterForm = () => {
 
   const validRegister = async () => {
     setFormIsValid(true);
+
 
     // captcha
     if (!validateCaptcha(captcha.val)) {
@@ -192,7 +192,7 @@ const RegisterForm = () => {
     }
 
     // 驗證中國手機是否為11碼
-    if (countryCode.val === 86 && phoneNumber.val.length !== 11) {
+    if (countryCode.val === '86' && phoneNumber.val.length !== 11) {
       setPhoneNumber({
         val: "",
         isValid: false,
@@ -204,7 +204,7 @@ const RegisterForm = () => {
     }
 
     // 驗證香港手機是否為8碼
-    if (countryCode.val === 852 && phoneNumber.val.length !== 8) {
+    if (countryCode.val === '852' && phoneNumber.val.length !== 8) {
       setPhoneNumber({
         val: "",
         isValid: false,
@@ -216,7 +216,7 @@ const RegisterForm = () => {
     }
 
     // 驗證台灣手機是否為9碼
-    if (countryCode.val === 886 && phoneNumber.val.length !== 9) {
+    if (countryCode.val === '886' && phoneNumber.val.length !== 9) {
       setPhoneNumber({
         val: "",
         isValid: false,

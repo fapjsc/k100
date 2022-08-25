@@ -162,7 +162,6 @@ const InstantOnGoingItem = ({ el, handleClick, btnLoading }) => {
             <button
               onClick={() => {
                 handleClick(el.token, "sell");
-                console.log(el.MType);
               }}
               className="easy-btn margin0 w-100"
             >

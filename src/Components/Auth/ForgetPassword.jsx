@@ -164,6 +164,8 @@ const ForgetPassword = () => {
   const validPhoneNumber = () => {
     setPhoneValid(true);
 
+   
+
     // 驗證電話號碼
     if (phoneNumber.val === "" || !validator.isMobilePhone(phoneNumber.val)) {
       setPhoneNumber({
@@ -191,7 +193,7 @@ const ForgetPassword = () => {
     }
 
     // 驗證中國手機是否為11碼
-    if (countryCode.val === 86 && phoneNumber.val.length !== 11) {
+    if (countryCode.val === '86' && phoneNumber.val.length !== 11) {
       setPhoneNumber({
         val: "",
         isValid: false,
@@ -202,7 +204,7 @@ const ForgetPassword = () => {
     }
 
     // 驗證香港手機是否為8碼
-    if (countryCode.val === 852 && phoneNumber.val.length !== 8) {
+    if (countryCode.val === '852' && phoneNumber.val.length !== 8) {
       setPhoneNumber({
         val: "",
         isValid: false,
@@ -212,8 +214,10 @@ const ForgetPassword = () => {
       setPhoneValid(false);
     }
 
+  
+
     // 驗證台灣手機是否為或9碼
-    if (countryCode.val === 886 && phoneNumber.val.length !== 9) {
+    if (countryCode.val === '886' && phoneNumber.val.length !== 9) {
       setPhoneNumber({
         val: "",
         isValid: false,
@@ -233,7 +237,6 @@ const ForgetPassword = () => {
       phoneNumber: phoneNumber.val,
     };
 
-    console.log(data);
     await getValidCode(data);
     setLoading(false);
   };
@@ -312,7 +315,6 @@ const ForgetPassword = () => {
 
   useEffect(() => {
     if (validCode.val.length === 6) {
-      console.log(phoneNumber.val);
       const data = {
         countryCode: countryCode.val,
         phoneNumber: phoneNumber.val,
@@ -334,7 +336,6 @@ const ForgetPassword = () => {
   useEffect(() => {
     if (passwordValid) {
       if (countryCode.val === 886) {
-        console.log(phoneNumber.val);
         // phoneNumber.val = phoneNumber.val.substr(1);
       }
       const data = {
