@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
+import { useDispatch } from "react-redux";
+
 import { BsFillCaretDownFill } from "react-icons/bs";
 import Accordion from "react-bootstrap/Accordion";
 
@@ -13,33 +15,50 @@ import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 
+import { resizeFile } from "../../lib/imageResize";
+
+import { setKyc, getKyc } from "../../store/actions/kycAction";
+
 const KycValidForm = () => {
   const [validated, setValidated] = useState(false);
 
   const [isLoading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    validCode: "",
-    birthday: "",
-    country: "",
-    idNumber: "",
-    idType: "",
-    city: "",
-    area: "",
-    address: "",
-    idLocation: "",
-    idDate: "",
-    accountName: "",
-    accountCode: "",
-    account: "",
-    accountNameSecond: "",
-    accountCodeSecond: "",
-    accountSecond: "",
-    accountNameThird: "",
-    accountCodeThird: "",
-    accountThird: "",
+    country: '台灣',
+    idType: '初'
+
+    
+    // name: "",
+    // email: "",
+    // validCode: "",
+    // birthday: "",
+    // country: "",
+    // idNumber: "",
+    // idType: "",
+    // city: "",
+    // area: "",
+    // address: "",
+    // idLocation: "",
+    // idDate: "",
+    // accountName: "",
+    // bankCode: "",
+    // account: "",
+    // accountNameSecond: "",
+    // bankCodeSecond: "",
+    // accountSecond: "",
+    // accountNameThird: "",
+    // bankCodeThird: "",
+    // accountThird: "",
+
+    // IDPhotoFront: "",
+    // IDPhotoBack: "",
+    // IDPhotoSecondFront: "",
+    // IDPhotoSecondBack: "",
+    // selfPhoto: "",
+    // bankBook: "",
+    // bankBookSecond: "",
+    // bankBookThird: "",
   });
 
   const [firstList, setFirstList] = useState([]);
@@ -52,13 +71,18 @@ const KycValidForm = () => {
   const formBtnRef = useRef();
   const datePickerRef = useRef();
 
-  // useEffect(() => {
-  //   console.log(secondList, "secondList");
-  //   console.log(firstList, "firstList");
-  //   console.log(selfList, "self");
-  // }, [firstList, secondList, selfList]);
+  const dispatch = useDispatch();
 
-  const mockUpload = async (file) => {
+ 
+
+  const mockUpload = async (file, type) => {
+    const result = await resizeFile(file);
+
+    setFormData((prev) => ({
+      ...prev,
+      [type]: result,
+    }));
+
     await sleep(1000);
     return {
       url: URL.createObjectURL(file),
@@ -107,6 +131,7 @@ const KycValidForm = () => {
       });
 
       console.log(formData); // send data to server
+      dispatch(setKyc(formData));
     }
 
     setValidated(true);
@@ -132,6 +157,7 @@ const KycValidForm = () => {
 
   return (
     <>
+    <Button onClick={() => dispatch(getKyc())}>GET</Button>
       <Card className={styles.container}>
         <div className={styles.header}>實名驗證-基本資料</div>
         <Form
@@ -225,6 +251,7 @@ const KycValidForm = () => {
               onChange={onChange}
               value={formData.country}
               id="country"
+              defaultValue='台灣'
             >
               <option>台灣</option>
               <option>中國</option>
@@ -280,6 +307,7 @@ const KycValidForm = () => {
               onChange={onChange}
               value={formData.idType}
               id="idType"
+              defaultValue='初'
             >
               <option>初</option>
               <option>補</option>
@@ -335,14 +363,14 @@ const KycValidForm = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="accountCode">
+          <Form.Group className="mb-3" controlId="bankCode">
             <Form.Label>銀行代號</Form.Label>
             <Form.Control
               required
               placeholder="輸入銀行代號"
               className="form-select mb-4 pl-3"
               onChange={onChange}
-              value={formData.accountCode}
+              value={formData.bankCode}
               autoComplete="off"
               type="number"
               onWheel={(event) => {
@@ -391,7 +419,17 @@ const KycValidForm = () => {
               style={{ "--cell-size": "140px" }}
               value={firstList}
               onChange={setFirstList}
-              upload={mockUpload}
+              upload={(file) => {
+                let type;
+
+                if (firstList.length === 0) {
+                  type = "Front";
+                } else {
+                  type = "Back";
+                }
+
+                return mockUpload(file, `IDPhoto${type}`);
+              }}
               maxCount={2}
               showUpload={firstList.length < 2}
               beforeUpload={beforeUpload}
@@ -410,7 +448,17 @@ const KycValidForm = () => {
               style={{ "--cell-size": "140px" }}
               value={secondList}
               onChange={setSecondList}
-              upload={mockUpload}
+              upload={(file) => {
+                let type;
+
+                if (secondList.length === 0) {
+                  type = "Front";
+                } else {
+                  type = "Back";
+                }
+
+                return mockUpload(file, `IDPhotoSecond${type}`);
+              }}
               maxCount={2}
               showFailed={false}
               showUpload={secondList.length < 2}
@@ -432,7 +480,7 @@ const KycValidForm = () => {
               style={{ "--cell-size": "140px" }}
               value={selfList}
               onChange={setSelfList}
-              upload={mockUpload}
+              upload={(file) => mockUpload(file, "selfPhoto")}
               maxCount={1}
               showFailed={false}
               showUpload={selfList.length < 1}
@@ -448,7 +496,7 @@ const KycValidForm = () => {
               style={{ "--cell-size": "140px" }}
               value={accountList}
               onChange={setAccountList}
-              upload={mockUpload}
+              upload={(file) => mockUpload(file, "bankBook")}
               maxCount={1}
               showFailed={false}
               showUpload={accountList.length < 1}
@@ -484,14 +532,14 @@ const KycValidForm = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="accountCodeSecond">
+                <Form.Group className="mb-3" controlId="bankCodeSecond">
                   <Form.Label>銀行代號</Form.Label>
                   <Form.Control
                     required
                     placeholder="輸入銀行代號"
                     className="form-select mb-4 pl-3"
                     onChange={onChange}
-                    value={formData.accountCodeSecond}
+                    value={formData.bankCodeSecond}
                     autoComplete="off"
                     type="number"
                     onWheel={(event) => {
@@ -524,7 +572,7 @@ const KycValidForm = () => {
                     style={{ "--cell-size": "140px" }}
                     value={accountListSecond}
                     onChange={setAccountListSecond}
-                    upload={mockUpload}
+                    upload={(file) => mockUpload(file, "bankBookSecond")}
                     maxCount={1}
                     showFailed={false}
                     showUpload={accountListSecond.length < 1}
@@ -563,14 +611,14 @@ const KycValidForm = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="accountCodeThird">
+                <Form.Group className="mb-3" controlId="bankCodeThird">
                   <Form.Label>銀行代號</Form.Label>
                   <Form.Control
                     required
                     placeholder="輸入銀行代號"
                     className="form-select mb-4 pl-3"
                     onChange={onChange}
-                    value={formData.accountCodeThird}
+                    value={formData.bankCodeThird}
                     autoComplete="off"
                     type="number"
                     onWheel={(event) => {
@@ -603,7 +651,7 @@ const KycValidForm = () => {
                     style={{ "--cell-size": "140px" }}
                     value={accountListThird}
                     onChange={setAccountListThird}
-                    upload={mockUpload}
+                    upload={(file) => mockUpload(file, "bankBookThird")}
                     maxCount={1}
                     showFailed={false}
                     showUpload={accountListThird.length < 1}

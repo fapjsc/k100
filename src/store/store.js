@@ -13,6 +13,11 @@ import { expiredReducer } from "./reducers/expiredReducer";
 import { autoPickReducer } from "./reducers/autoPickReducer";
 import { bankFormReducer } from "./reducers/bankFormReducer";
 import { memberChatReducer } from "./reducers/memberChatReducer";
+import {
+  setKycReducer,
+  getKycReducer,
+  removeKycReducer,
+} from "./reducers/kycReducer";
 
 import {
   setAccountReducer,
@@ -39,6 +44,9 @@ const reducer = combineReducers({
   autoPick: autoPickReducer,
   bankForm: bankFormReducer,
   memberChat: memberChatReducer,
+  setKyc: setKycReducer,
+  getKyc: getKycReducer,
+  removeKyc: removeKycReducer,
 });
 
 const rootReducer = (state, action) => {

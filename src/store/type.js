@@ -57,7 +57,25 @@ export const bankFormActionsTypes = {
 
 // Member Chat
 export const memberChatActionsTypes = {
-  SHOW_CHAT: "[Member-Chat]: SET_SHOW_CHAT",
-  SET_MESSAGE_LIST: "[Member-Chat]: SET_MESSAGE_LIST",
-  SET_MESSAGE: "[Member-Chat]: SET_MESSAGE",
+  SHOW_CHAT: "[member-chat]: SET_SHOW_CHAT",
+  SET_MESSAGE_LIST: "[member-chat]: SET_MESSAGE_LIST",
+  SET_MESSAGE: "[member-chat]: SET_MESSAGE",
+};
+
+// Kyc
+export const kycActionsTypes = {
+  SET_KYC_BEGIN: "SET_KYC_BEGIN",
+  SET_KYC_SUCCESS: "SET_KYC_SUCCESS",
+  SET_KYC_ERROR: "SET_KYC_ERROR",
+  SET_KYC_CLEAR: "SET_KYC_CLEAR",
+
+  GET_KYC_BEGIN: "GET_KYC_BEGIN",
+  GET_KYC_SUCCESS: "GET_KYC_SUCCESS",
+  GET_KYC_ERROR: "GET_KYC_ERROR",
+  GET_KYC_CLEAR: "GET_KYC_CLEAR",
+
+  REMOVE_KYC_BEGIN: "REMOVE_KYC_BEGIN",
+  REMOVE_KYC_SUCCESS: "REMOVE_KYC_SUCCESS",
+  REMOVE_KYC_ERROR: "REMOVE_KYC_ERROR",
+  REMOVE_KYC_CLEAR: "REMOVE_KYC_CLEAR",
 };
