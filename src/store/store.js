@@ -19,6 +19,8 @@ import {
   removeKycReducer,
 } from "./reducers/kycReducer";
 
+import { setUserReducer, getUserReducer } from "./reducers/userReducer";
+
 import {
   setAccountReducer,
   currentAccountReducer,
@@ -47,6 +49,8 @@ const reducer = combineReducers({
   setKyc: setKycReducer,
   getKyc: getKycReducer,
   removeKyc: removeKycReducer,
+  setUser: setUserReducer,
+  getUer: getUserReducer,
 });
 
 const rootReducer = (state, action) => {

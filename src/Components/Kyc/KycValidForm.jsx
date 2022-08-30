@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Stepper, Step } from "react-form-stepper";
 
 import {
   isNationalIdentificationNumberValid, // 身分證字號
@@ -23,7 +24,11 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { resizeFile } from "../../lib/imageResize";
 
-import { setKyc } from "../../store/actions/kycAction";
+import { setKyc, cleanSetKycStatus } from "../../store/actions/kycAction";
+import {
+  setKycUserData,
+  cleanKycSetUserStatus,
+} from "../../store/actions/userAction";
 
 const KycValidForm = () => {
   const history = useHistory();
@@ -40,7 +45,13 @@ const KycValidForm = () => {
     data: kycData,
   } = useSelector((state) => state.setKyc);
 
-  const [formData, setFormData] = useState({
+  const {
+    loading: userKycLoading,
+    error: userKycError,
+    data: userKycData,
+  } = useSelector((state) => state.setUser);
+
+  const [userData, setUserData] = useState({
     country: "台灣",
     idType: "初",
     name: "",
@@ -53,20 +64,27 @@ const KycValidForm = () => {
     address: "",
     idLocation: "",
     idDate: "",
-    accountName: "",
-    bankCode: "",
-    account: "",
-    accountNameSecond: "",
-    bankCodeSecond: "",
-    accountSecond: "",
-    accountNameThird: "",
-    bankCodeThird: "",
-    accountThird: "",
+
     IDPhotoFront: "",
     IDPhotoBack: "",
     IDPhotoSecondFront: "",
     IDPhotoSecondBack: "",
     selfPhoto: "",
+  });
+
+  const [formData, setFormData] = useState({
+    account: "",
+    accountName: "",
+    bankCode: "",
+
+    accountNameSecond: "",
+    bankCodeSecond: "",
+    accountSecond: "",
+
+    accountNameThird: "",
+    bankCodeThird: "",
+    accountThird: "",
+
     bankBook: "",
     bankBookSecond: "",
     bankBookThird: "",
@@ -90,13 +108,19 @@ const KycValidForm = () => {
 
   const mockUpload = async (file, type) => {
     const result = await resizeFile(file);
+    if (type === "bankBook") {
+      setFormData((prev) => ({
+        ...prev,
+        [type]: result,
+      }));
+    } else {
+      setUserData((prev) => ({
+        ...prev,
+        [type]: result,
+      }));
+    }
 
-    setFormData((prev) => ({
-      ...prev,
-      [type]: result,
-    }));
-
-    await sleep(800);
+    await sleep(200);
     return {
       url: URL.createObjectURL(file),
     };
@@ -123,7 +147,7 @@ const KycValidForm = () => {
 
     const form = event.currentTarget;
 
-    if (!isNationalIdentificationNumberValid(formData.idNumber)) {
+    if (!isNationalIdentificationNumberValid(userData.idNumber)) {
       setValidated(false);
       setBlurShowError((prev) => ({
         ...prev,
@@ -159,8 +183,17 @@ const KycValidForm = () => {
         content: "資料上傳中…",
       });
 
-      // console.log(formData); // send data to server
-      dispatch(setKyc(formData));
+      console.log("BANK", formData); // send data to servers
+      console.log("USER", userData); // send data to servers
+
+      dispatch(setKycUserData(userData));
+      dispatch(
+        setKyc({
+          P1: formData.account,
+          P2: formData.accountName,
+          P3: formData.bankCode,
+        })
+      );
     }
 
     setValidated(true);
@@ -184,24 +217,42 @@ const KycValidForm = () => {
     }));
   };
 
+  const userDataOnChange = (e) => {
+    setUserData((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
   useEffect(() => {
     if (!setKycError) return;
     Toast.show({
       icon: "fail",
       content: setKycError,
     });
-  }, [setKycError]);
+  }, [setKycError, userKycError]);
 
   useEffect(() => {
-    if (!kycData) return;
+    if (!userKycError) return;
+    Toast.show({
+      icon: "fail",
+      content: userKycError,
+    });
+  }, [userKycError]);
+
+  useEffect(() => {
+    if (!kycData || !userKycData) return;
+
     Toast.show({
       icon: "success",
       content: "上傳成功，頁面即將跳轉",
       afterClose: () => {
         history.replace("/home");
+        dispatch(cleanKycSetUserStatus());
+        dispatch(cleanSetKycStatus());
       },
     });
-  }, [kycData, history]);
+  }, [kycData, history, userKycData, dispatch]);
 
   // const onBlurHandle = (e) => {
   //   if (e.target.id === "idNumber") {
@@ -249,8 +300,8 @@ const KycValidForm = () => {
               required
               placeholder="輸入真實姓名"
               className="form-select mb-4 pl-3"
-              onChange={onChange}
-              value={formData.name}
+              onChange={userDataOnChange}
+              value={userData.name}
               autoComplete="off"
               // onBlur={onBlurHandle}
               // isInvalid={blurShowError.name}
@@ -264,8 +315,8 @@ const KycValidForm = () => {
               required
               placeholder="輸入電子信箱"
               className="form-select mb-4 pl-3"
-              onChange={onChange}
-              value={formData.email}
+              onChange={userDataOnChange}
+              value={userData.email}
               autoComplete="off"
               // onBlur={onBlurHandle}
               // isInvalid={blurShowError.email}
@@ -315,8 +366,8 @@ const KycValidForm = () => {
               type="date"
               placeholder="選擇出生日期"
               className="form-date mb-4 pl-3"
-              onChange={onChange}
-              value={formData.birthday}
+              onChange={userDataOnChange}
+              value={userData.birthday}
               autoComplete="off"
               // onBlur={onBlurHandle}
               // isInvalid={blurShowError.birthday}
@@ -331,8 +382,8 @@ const KycValidForm = () => {
               placeholder="選擇類別"
               className="form-select mb-4 pl-3"
               style={{ fontSize: "17px" }}
-              onChange={onChange}
-              value={formData.country}
+              onChange={userDataOnChange}
+              value={userData.country}
               id="country"
             >
               <option>台灣</option>
@@ -348,8 +399,8 @@ const KycValidForm = () => {
               required
               placeholder="輸入身份證字號"
               className="form-select mb-4 pl-3"
-              onChange={onChange}
-              value={formData.idNumber}
+              onChange={userDataOnChange}
+              value={userData.idNumber}
               autoComplete="off"
               // onBlur={onBlurHandle}
               isInvalid={blurShowError.idNumber}
@@ -362,8 +413,8 @@ const KycValidForm = () => {
               required
               placeholder="選擇發證日期"
               className="form-date mb-4 pl-3"
-              onChange={onChange}
-              value={formData.idDate}
+              onChange={userDataOnChange}
+              value={userData.idDate}
               autoComplete="off"
               // onBlur={onBlurHandle}
               // isInvalid={blurShowError.idDate}
@@ -376,8 +427,8 @@ const KycValidForm = () => {
               required
               placeholder="輸入發證地點"
               className="form-select mb-4 pl-3"
-              onChange={onChange}
-              value={formData.idLocation}
+              onChange={userDataOnChange}
+              value={userData.idLocation}
               autoComplete="off"
               // onBlur={onBlurHandle}
               // isInvalid={blurShowError.idLocation}
@@ -392,8 +443,8 @@ const KycValidForm = () => {
               placeholder="選擇類別"
               className="form-select mb-4 pl-3"
               style={{ fontSize: "17px" }}
-              onChange={onChange}
-              value={formData.idType}
+              onChange={userDataOnChange}
+              value={userData.idType}
               id="idType"
             >
               <option>初</option>
@@ -410,8 +461,8 @@ const KycValidForm = () => {
                 required
                 placeholder="請輸入城市"
                 className="form-select mb-4 pl-3"
-                onChange={onChange}
-                value={formData.city}
+                onChange={userDataOnChange}
+                value={userData.city}
                 id="city"
                 autoComplete="off"
                 // onBlur={onBlurHandle}
@@ -422,8 +473,8 @@ const KycValidForm = () => {
                 required
                 placeholder="請輸入區域"
                 className="form-select mb-4 pl-3"
-                onChange={onChange}
-                value={formData.area}
+                onChange={userDataOnChange}
+                value={userData.area}
                 id="area"
                 autoComplete="off"
                 // onBlur={onBlurHandle}
@@ -435,8 +486,8 @@ const KycValidForm = () => {
               required
               placeholder="請輸入地址"
               className="form-select mb-4 pl-3"
-              onChange={onChange}
-              value={formData.address}
+              onChange={userDataOnChange}
+              value={userData.address}
               id="address"
               autoComplete="off"
               // onBlur={onBlurHandle}
@@ -604,7 +655,7 @@ const KycValidForm = () => {
           </div>
         </div>
 
-        <Accordion style={{ marginTop: "3rem" }}>
+        {/* <Accordion style={{ marginTop: "3rem" }}>
           <Card>
             <Card.Header>
               <Accordion.Toggle
@@ -681,9 +732,9 @@ const KycValidForm = () => {
               </Card.Body>
             </Accordion.Collapse>
           </Card>
-        </Accordion>
+        </Accordion> */}
 
-        <Accordion style={{ marginTop: "3rem" }}>
+        {/* <Accordion style={{ marginTop: "3rem" }}>
           <Card>
             <Card.Header>
               <Accordion.Toggle
@@ -760,18 +811,18 @@ const KycValidForm = () => {
               </Card.Body>
             </Accordion.Collapse>
           </Card>
-        </Accordion>
+        </Accordion> */}
 
         <Button
           variant="primary"
           type="button"
-          disabled={setKycLoading || kycData}
+          disabled={setKycLoading || kycData || userKycLoading || userKycData}
           style={{ height: "5rem", marginTop: "3rem", fontSize: "2rem" }}
           onClick={() => {
             formBtnRef.current.click();
           }}
         >
-          {setKycLoading ? "Loading..." : "填寫完成"}
+          {setKycLoading || userKycLoading ? "Loading..." : "填寫完成"}
         </Button>
       </Card>
     </>

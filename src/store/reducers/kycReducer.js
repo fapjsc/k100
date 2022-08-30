@@ -29,8 +29,11 @@ export const setKycReducer = (state = setInitialState, action) => {
         error: action.payload,
       };
 
-    default:
+    case kycActionsTypes.SET_KYC_CLEAR:
       return setInitialState;
+
+    default:
+      return state;
   }
 };
 
@@ -63,8 +66,11 @@ export const getKycReducer = (state = getInitialState, action) => {
         error: action.payload,
       };
 
-    default:
+    case kycActionsTypes.GET_KYC_CLEAR:
       return getInitialState;
+
+    default:
+      return state;
   }
 };
 
@@ -97,7 +103,10 @@ export const removeKycReducer = (state = removeInitialState, action) => {
         error: action.payload,
       };
 
-    default:
+    case kycActionsTypes.REMOVE_KYC_CLEAR:
       return removeInitialState;
+
+    default:
+      return state;
   }
 };
