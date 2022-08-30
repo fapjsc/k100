@@ -5,7 +5,7 @@ export const setKyc = (kycData) => async (dispatch) => {
   dispatch({ type: kycActionsTypes.SET_KYC_BEGIN });
 
   try {
-    const { data } = await authFetch.post("/Req_UserBankSet.aspx", {
+    const { data } = await authFetch.post("/Req_UserData_Update.aspx", {
       ...kycData,
       P1: kycData.account,
       P2: kycData.name,
@@ -20,8 +20,9 @@ export const getKyc = () => async (dispatch) => {
   dispatch({ type: kycActionsTypes.GET_KYC_BEGIN });
 
   try {
-    const { data } = await authFetch.get("/Get_UserBankSet.aspx");
+    const { data } = await authFetch.get("/Get_UserData.aspx");
     dispatch({ type: kycActionsTypes.GET_KYC_SUCCESS, payload: data.data });
+    console.log(data)
   } catch (error) {
     dispatch({ type: kycActionsTypes.GET_KYC_ERROR, payload: error });
   }
