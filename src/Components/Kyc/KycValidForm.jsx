@@ -189,9 +189,11 @@ const KycValidForm = () => {
       dispatch(setKycUserData(userData));
       dispatch(
         setKyc({
+          SType: 1,
           P1: formData.account,
           P2: formData.accountName,
           P3: formData.bankCode,
+          img1: formData.bankBook
         })
       );
     }
