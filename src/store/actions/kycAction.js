@@ -20,7 +20,6 @@ export const getKyc = () => async (dispatch) => {
   try {
     const { data } = await authFetch.get("/Get_UserBankSet.aspx");
     dispatch({ type: kycActionsTypes.GET_KYC_SUCCESS, payload: data.data });
-    console.log(data);
   } catch (error) {
     dispatch({ type: kycActionsTypes.GET_KYC_ERROR, payload: error.message });
   }

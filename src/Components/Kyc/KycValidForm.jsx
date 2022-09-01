@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Stepper, Step } from "react-form-stepper";
+// import { Stepper, Step } from "react-form-stepper";
 
 import {
   isNationalIdentificationNumberValid, // 身分證字號
 } from "taiwan-id-validator";
+
+import Alert from "react-bootstrap/Alert";
 
 import { useHistory } from "react-router-dom";
 
@@ -24,10 +26,16 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { resizeFile } from "../../lib/imageResize";
 
-import { setKyc, cleanSetKycStatus } from "../../store/actions/kycAction";
+import {
+  setKyc,
+  cleanSetKycStatus,
+  getKyc,
+} from "../../store/actions/kycAction";
+
 import {
   setKycUserData,
   cleanKycSetUserStatus,
+  getKycUserData,
 } from "../../store/actions/userAction";
 
 const KycValidForm = () => {
@@ -50,6 +58,18 @@ const KycValidForm = () => {
     error: userKycError,
     data: userKycData,
   } = useSelector((state) => state.setUser);
+
+  const {
+    // loading: getUserKycLoading,
+    // error: getUserKycError,
+    data: getUserKycData,
+  } = useSelector((state) => state.getUer);
+
+  const {
+    // loading: getUserKycLoading,
+    // error: getUserKycError,
+    data: getKycData,
+  } = useSelector((state) => state.getKyc);
 
   const [userData, setUserData] = useState({
     country: "台灣",
@@ -90,12 +110,30 @@ const KycValidForm = () => {
     bankBookThird: "",
   });
 
+
+  useEffect(() => {
+    console.log(userData)
+    console.log(formData)
+  }, [formData, userData])
+
   const [firstList, setFirstList] = useState([]);
   const [secondList, setSecondList] = useState([]);
   const [selfList, setSelfList] = useState([]);
   const [accountList, setAccountList] = useState([]);
   const [accountListSecond, setAccountListSecond] = useState([]);
   const [accountListThird, setAccountListThird] = useState([]);
+
+  const [allowUpdate, setAllowUpdate] = useState(false);
+
+  const [kycValidBankStatus, setKycValidBankStatus] = useState({
+    variant: "",
+    text: "",
+  });
+
+  const [kycValidUerStatus, setKycValidUserStatus] = useState({
+    variant: "",
+    text: "",
+  });
 
   const formBtnRef = useRef();
   const datePickerRef = useRef();
@@ -107,6 +145,8 @@ const KycValidForm = () => {
     window.scrollTo({ top: ref.current.offsetTop, behavior: "smooth" });
 
   const mockUpload = async (file, type) => {
+    if (!allowUpdate) return;
+
     const result = await resizeFile(file);
     if (type === "bankBook") {
       setFormData((prev) => ({
@@ -127,8 +167,10 @@ const KycValidForm = () => {
   };
 
   const beforeUpload = (file) => {
-    if (file.size > 1024 * 1024) {
-      Toast.show("圖片尺寸超過1M");
+    if (!allowUpdate) return;
+
+    if (file.size > 4048 * 4048) {
+      Toast.show("圖片尺寸超過4M");
       return null;
     }
     return file;
@@ -144,6 +186,7 @@ const KycValidForm = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
+    if (!allowUpdate) return;
 
     const form = event.currentTarget;
 
@@ -193,7 +236,7 @@ const KycValidForm = () => {
           P1: formData.account,
           P2: formData.accountName,
           P3: formData.bankCode,
-          img1: formData.bankBook
+          Img1: formData.bankBook,
         })
       );
     }
@@ -203,6 +246,8 @@ const KycValidForm = () => {
 
   const getValidCode = async () => {
     if (isLoading) return;
+    if (!allowUpdate) return;
+
     setLoading(true);
     await sleep(3000);
     setLoading(false);
@@ -213,6 +258,7 @@ const KycValidForm = () => {
   };
 
   const onChange = (e) => {
+    if (!allowUpdate) return;
     setFormData((prev) => ({
       ...prev,
       [e.target.id]: e.target.value,
@@ -220,6 +266,8 @@ const KycValidForm = () => {
   };
 
   const userDataOnChange = (e) => {
+    if (!allowUpdate) return;
+
     setUserData((prev) => ({
       ...prev,
       [e.target.id]: e.target.value,
@@ -285,8 +333,103 @@ const KycValidForm = () => {
   //   }
   // };
 
+  useEffect(() => {
+    dispatch(getKycUserData());
+    dispatch(getKyc());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!getUserKycData || !getUserKycData?.Data) return;
+    const { Data, Status } = getUserKycData;
+    setUserData(Data);
+    switch (Status) {
+      case 101:
+        setAllowUpdate(false);
+        setKycValidUserStatus({
+          variant: "success",
+          text: "身份資料已完成驗證",
+        });
+        break;
+      case 1:
+        setAllowUpdate(false);
+        setKycValidUserStatus({
+          variant: "warning",
+          text: "身份資料驗證中",
+        });
+        break;
+      case 0:
+        setAllowUpdate(true);
+        setKycValidUserStatus({
+          variant: "danger",
+          text: "身份資料驗證失敗",
+        });
+        break;
+      default:
+        setAllowUpdate(true);
+        setKycValidUserStatus({
+          variant: "danger",
+          text: "身份資料尚未驗證",
+        });
+    }
+  }, [getUserKycData]);
+
+  useEffect(() => {
+    if (!getKycData) return;
+    const lastData = getKycData.slice(-1)[0];
+    console.log(lastData);
+    const { P1, P2, P3, Img1, User_BankStatus } = lastData || {};
+
+    switch (User_BankStatus) {
+      case 101:
+        setAllowUpdate(false);
+        setKycValidBankStatus({
+          variant: "success",
+          text: "銀行資料已完成驗證",
+        });
+        break;
+      case 1:
+        setAllowUpdate(false);
+        setKycValidBankStatus({
+          variant: "warning",
+          text: "銀行資料驗證中",
+        });
+        break;
+      case 0:
+        setAllowUpdate(true);
+        setKycValidBankStatus({
+          variant: "danger",
+          text: "銀行資料驗證失敗",
+        });
+        break;
+      default:
+        setAllowUpdate(true);
+        setKycValidBankStatus({
+          variant: "danger",
+          text: "銀行資料尚未驗證",
+        });
+    }
+
+    const formatData = {
+      account: P1,
+      accountName: P2,
+      bankCode: P3,
+      bankBook: Img1,
+    };
+
+    setFormData(formatData);
+  }, [getKycData]);
+
   return (
     <>
+      <div>
+        <Alert variant={kycValidBankStatus.variant}>
+          {kycValidBankStatus.text}
+        </Alert>
+        <Alert variant={kycValidUerStatus.variant}>
+          {kycValidUerStatus.text}
+        </Alert>
+      </div>
+      {/* <Button onClick={getDataHandler}>Get</Button> */}
       {/* <Button onClick={() => dispatch(getKyc())}>GET</Button> */}
       <Card className={styles.container}>
         <div className={styles.header}>實名驗證-基本資料</div>
@@ -561,7 +704,7 @@ const KycValidForm = () => {
         </div>
         <Form.Text muted>*避免模糊</Form.Text>
         <Form.Text muted>*請勿使用經過編輯的圖片</Form.Text>
-        <Form.Text muted>*檔案大小需在1MB內</Form.Text>
+        <Form.Text muted>*檔案大小需在4MB內</Form.Text>
         {/* <Form.Text muted>*僅接受 .JPEG / .JPG / .PNG格式</Form.Text> */}
 
         <div style={{ marginTop: "1rem", fontSize: "18px" }}>
@@ -815,17 +958,33 @@ const KycValidForm = () => {
           </Card>
         </Accordion> */}
 
-        <Button
-          variant="primary"
-          type="button"
-          disabled={setKycLoading || kycData || userKycLoading || userKycData}
-          style={{ height: "5rem", marginTop: "3rem", fontSize: "2rem" }}
-          onClick={() => {
-            formBtnRef.current.click();
-          }}
-        >
-          {setKycLoading || userKycLoading ? "Loading..." : "填寫完成"}
-        </Button>
+        {allowUpdate ? (
+          <Button
+            variant="primary"
+            type="button"
+            disabled={
+              setKycLoading ||
+              kycData ||
+              userKycLoading ||
+              userKycData ||
+              !allowUpdate
+            }
+            style={{ height: "5rem", marginTop: "3rem", fontSize: "2rem" }}
+            onClick={() => {
+              formBtnRef.current.click();
+            }}
+          >
+            {setKycLoading || userKycLoading ? "Loading..." : "填寫完成"}
+          </Button>
+        ) : (
+          <Button
+            style={{ height: "5rem", marginTop: "3rem", fontSize: "1.4rem" }}
+            disabled
+            variant="secondary"
+          >
+            驗證中或是已經驗證完畢
+          </Button>
+        )}
       </Card>
     </>
   );
